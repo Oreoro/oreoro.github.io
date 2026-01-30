@@ -27,13 +27,17 @@ document.addEventListener("DOMContentLoaded", () => {
 			const svgBefore = button.querySelector(".copy-icon-before");
 			const svgAfter = button.querySelector(".copy-icon-done");
 
+			// Add copied class for styling feedback
+			button.classList.add("copied");
+
 			if (svgBefore && svgAfter) {
 				svgBefore.classList.toggle("hidden");
 				svgAfter.classList.toggle("hidden");
 				setTimeout(() => {
 					svgBefore.classList.toggle("hidden");
 					svgAfter.classList.toggle("hidden");
-				}, 1000);
+					button.classList.remove("copied");
+				}, 2000);
 			}
 		});
 	});

@@ -8,25 +8,30 @@ const currentPath = normalizeNavPath(Astro.url.pathname);
 ---
 
 <footer class="site-footer" id="main-footer">
-	<nav aria-label="More on this site" class="footer-nav">
-		{
-			menuLinks.map((link, index) => (
-				<>
-					<a
-						href={link.path}
-						class="footer-link"
-						aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
-					>
-						{link.title}
-					</a>
-					{index < menuLinks.length - 1 && (
-						<div class="footer-separator" aria-hidden="true">
-							<p>•</p>
-						</div>
-					)}
-				</>
-			))
-		}
-	</nav>
-	<SocialList />
+	<div class="tech-footer-content">
+		<nav aria-label="More on this site" class="footer-nav">
+			{
+				menuLinks.map((link, index) => (
+					<>
+						<a
+							href={link.path}
+							class="footer-link font-mono text-xs"
+							aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
+						>
+							{link.title}
+						</a>
+						{index < menuLinks.length - 1 && (
+							<span class="footer-separator text-accent/30" aria-hidden="true">/</span>
+						)}
+					</>
+				))
+			}
+		</nav>
+		<div class="tech-footer-meta">
+			<SocialList />
+			<p class="tech-footer-copyright font-mono text-xs text-quote mt-4 sm:mt-0">
+				© {new Date().getFullYear()} • Built with code
+			</p>
+		</div>
+	</div>
 </footer>

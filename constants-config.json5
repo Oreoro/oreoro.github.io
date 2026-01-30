@@ -26,45 +26,45 @@
 		"menu-pages-collection": "main",
 		"full-preview-collections": ["Stream"],
 		"hide-underscore-slugs-in-lists": true,
-		// Modern tech blogs prefer card-based layouts for visual appeal
+		// Tech blog: Gallery view for modern, scannable post cards
 		"listing-view": "gallery",
 	},
 
 	// === Theme Customization ===
 	theme: {
 		preset: "classic",
-		// Modern tech aesthetic: Deep dark mode with vibrant accent colors
+		// Tech blog aesthetic: Clean, modern, code-focused design
 		// Colors MUST be in RGB format with spaces
 		colors: {
 			bg: {
-				light: "255 255 255",      // Pure white for light mode
-				dark: "17 24 39",          // Deep slate grey (modern dark mode)
+				light: "255 255 255",      // Pure white for light mode (clean, minimal)
+				dark: "15 23 42",          // Deep slate blue (tech-friendly dark mode)
 			},
 			text: {
-				light: "17 24 39",         // Deep slate for readability
-				dark: "243 244 246",       // Off-white for dark mode
+				light: "15 23 42",         // Deep slate for excellent readability
+				dark: "248 250 252",       // Almost white for dark mode (high contrast)
 			},
 			link: {
-				light: "59 130 246",       // Modern blue
-				dark: "96 165 250",        // Brighter blue for dark mode
+				light: "37 99 235",        // Bright tech blue (GitHub-style)
+				dark: "96 165 250",        // Sky blue for dark mode (high visibility)
 			},
 			accent: {
-				light: "99 102 241",       // Vibrant indigo (primary)
-				dark: "129 140 248",       // Lighter indigo for dark mode
+				light: "14 165 233",       // Cyan/blue (tech primary - like VS Code)
+				dark: "56 189 248",        // Bright cyan for dark mode (vibrant tech feel)
 			},
 			"accent-2": {
-				light: "249 115 22",       // Orange accent (secondary)
-				dark: "251 146 60",        // Brighter orange for dark
+				light: "34 197 94",        // Tech green (success, code completion)
+				dark: "74 222 128",        // Bright green for dark mode
 			},
 			quote: {
-				light: "107 114 128",      // Muted grey
-				dark: "156 163 175",       // Lighter grey for quotes
+				light: "100 116 139",      // Slate grey (subtle, readable)
+				dark: "148 163 184",       // Light slate for quotes in dark mode
 			},
 		},
-		// Modern, readable fonts optimized for tech content
+		// Tech-optimized fonts: JetBrains Mono throughout the entire app
 		"fontfamily-google-fonts": {
-			"sans-font-name": "Inter",           // Industry-standard for tech
-			"mono-font-name": "JetBrains Mono",  // Perfect for code blocks
+			"sans-font-name": "JetBrains Mono",  // Used for all body text and UI
+			"mono-font-name": "JetBrains Mono",  // Used for code blocks (same font)
 		},
 		// Modern hero with cover image backdrop
 		"cover-as-hero-background": true,
@@ -109,8 +109,8 @@
 	"og-setup": {
 		columns: 1,
 		excerpt: true,  // Show excerpts on social cards
-		// Modern, bold typography for OG images
-		"title-font-name": "Inter",
+		// JetBrains Mono typography for OG images (consistent with site)
+		"title-font-name": "JetBrains Mono",
 		"title-font-weight": 700,
 		"footnote-font-name": "JetBrains Mono",
 		"footnote-font-weight": 500,

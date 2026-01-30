@@ -63,29 +63,29 @@ const socialLinks = mapSocialLinks(SOCIALS);
 {
 	socialLinks && socialLinks.length > 0 && (
 		<>
-			<div class="flex flex-wrap items-center gap-x-4 print:hidden">
-				<p>Find me on</p>
-				<ul class="flex flex-1 items-center gap-x-2 sm:flex-initial">
+			<div class="flex flex-wrap items-center gap-x-3 print:hidden">
+				<p class="font-mono text-xs text-quote">Connect:</p>
+				<ul class="flex items-center gap-x-2">
 					{socialLinks.map(({ link, name, friendlyName, isWebmention }) => (
 						<li class="flex">
 							{friendlyName === "Email" ? (
 								<a
-									class="email-link social-link"
+									class="email-link tech-social-link flex h-8 w-8 items-center justify-center rounded border border-accent/20 transition-all hover:border-accent hover:text-accent"
 									href="#"
 									data-email={link}
 									rel={`noopener noreferrer ${isWebmention ? "me authn" : ""}`}
 								>
-									<Icon class="h-6 w-6" name={name} aria-label={friendlyName} focusable="false" />
+									<Icon class="h-4 w-4" name={name} aria-label={friendlyName} focusable="false" />
 									<span class="sr-only">{friendlyName}</span>
 								</a>
 							) : (
 								<a
-									class="social-link"
+									class="tech-social-link flex h-8 w-8 items-center justify-center rounded border border-accent/20 transition-all hover:border-accent hover:text-accent"
 									href={link}
 									target="_blank"
 									rel={`noopener noreferrer ${isWebmention ? "me authn" : ""}`}
 								>
-									<Icon class="h-6 w-6" name={name} aria-label={friendlyName} focusable="false" />
+									<Icon class="h-4 w-4" name={name} aria-label={friendlyName} focusable="false" />
 									<span class="sr-only">{friendlyName}</span>
 								</a>
 							)}

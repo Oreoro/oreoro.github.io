@@ -217,7 +217,15 @@ ${createCssVariables("dark")}
   }
 
   pre {
-    @apply rounded-md p-4 font-mono;
+    @apply rounded-lg border border-accent/20 bg-bgColor/50 p-4 font-mono backdrop-blur-sm;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-bgColor) 100%, transparent),
+      color-mix(in srgb, var(--color-bgColor) 98%, transparent)
+    );
+    box-shadow: 
+      0 1px 3px color-mix(in srgb, var(--color-accent) 5%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--color-accent) 8%, transparent);
   }
 
   /* Common styles for pre elements */
@@ -308,19 +316,19 @@ ${createCssVariables("dark")}
   }
 
   .title {
-    @apply text-3xl font-bold text-accent-2;
+    @apply text-3xl font-bold text-accent-2 font-mono;
   }
 
   .notion-h1 {
-    @apply mt-8 mb-1 cursor-pointer text-2xl font-semibold;
+    @apply mt-8 mb-1 cursor-pointer text-2xl font-semibold font-mono tracking-tight;
   }
 
   .notion-h2 {
-    @apply mt-6 mb-1 cursor-pointer text-xl font-semibold;
+    @apply mt-6 mb-1 cursor-pointer text-xl font-semibold font-mono tracking-tight;
   }
 
   .notion-h3 {
-    @apply mt-4 mb-1 cursor-pointer text-lg font-semibold;
+    @apply mt-4 mb-1 cursor-pointer text-lg font-semibold font-mono tracking-tight;
   }
 
   .notion-text {
@@ -427,21 +435,51 @@ ${createCssVariables("dark")}
     @apply relative hidden sm:block flex-[1_1_180px];
   }
 
-  /* Code */
+  /* Code Blocks - Tech Blog Enhanced */
   .code {
-    @apply relative z-0 mb-1 w-full max-w-full text-sm;
+    @apply relative z-0 mb-6 w-full max-w-full text-sm;
   }
 
   .code-scroll {
-     @apply max-h-[340px] overflow-scroll print:max-h-full min-w-0;
+    @apply max-h-[500px] overflow-auto print:max-h-full min-w-0 rounded-lg border border-accent/20 bg-bgColor/50 backdrop-blur-sm p-4;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-bgColor) 100%, transparent),
+      color-mix(in srgb, var(--color-bgColor) 98%, transparent)
+    );
+    box-shadow: 
+      0 1px 3px color-mix(in srgb, var(--color-accent) 5%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--color-accent) 8%, transparent);
   }
 
   .code-mermaid {
-     @apply overflow-x-scroll max-h-none min-w-0;
+    @apply overflow-x-scroll max-h-none min-w-0 rounded-lg border border-accent/20 bg-bgColor/50 p-4;
   }
 
   .code button[data-code] {
-    @apply absolute top-0 right-0 z-10 cursor-pointer border-none p-2 text-gray-500 sm:opacity-100 md:opacity-0 md:transition-opacity md:duration-200 md:group-hover:opacity-100 print:hidden;
+    @apply absolute top-2 right-2 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-accent/30 bg-bgColor/90 text-textColor/70 backdrop-blur-sm transition-all hover:border-accent hover:bg-accent/10 hover:text-accent sm:opacity-100 md:opacity-0 md:group-hover:opacity-100 print:hidden;
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--color-accent) 10%, transparent);
+  }
+
+  .code button[data-code]:active {
+    @apply scale-95;
+  }
+
+  /* Copy button icons */
+  .code .copy-icon-before {
+    @apply transition-opacity;
+  }
+
+  .code button[data-code].copied .copy-icon-before {
+    @apply opacity-0;
+  }
+
+  .code button[data-code].copied .copy-icon-done {
+    @apply opacity-100 text-accent-2;
+  }
+
+  .code button[data-code] .copy-icon-done {
+    @apply absolute opacity-0 transition-opacity;
   }
 
   /* Quote */
@@ -578,6 +616,9 @@ ${createCssVariables("dark")}
   .social-link {
     @apply sm:hover:text-link inline-block p-1;
   }
+  .tech-social-link {
+    @apply text-textColor/70;
+  }
 
   /* Post Preview */
   a[aria-label="Visit external site"] {
@@ -673,15 +714,31 @@ ${createCssVariables("dark")}
   }
 
   .annotation-code {
-    @apply rounded-sm border-none px-1 font-mono;
+    @apply rounded border border-accent/20 px-1.5 py-0.5 font-mono text-xs font-medium;
+    background-color: color-mix(in srgb, var(--color-accent) 8%, var(--color-bgColor));
+    color: color-mix(in srgb, var(--color-accent) 90%, var(--color-textColor));
+    transition: all 0.2s ease;
+  }
+
+  .annotation-code:hover {
+    background-color: color-mix(in srgb, var(--color-accent) 12%, var(--color-bgColor));
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
   }
 
   .annotation-code.bg-default {
-    @apply bg-gray-100 dark:bg-gray-800;
+    background-color: color-mix(in srgb, var(--color-accent) 8%, var(--color-bgColor));
+  }
+
+  .dark .annotation-code.bg-default {
+    background-color: color-mix(in srgb, var(--color-accent) 12%, var(--color-bgColor));
   }
 
   .annotation-code.text-default {
-    @apply text-rose-800 dark:text-rose-300;
+    color: color-mix(in srgb, var(--color-accent) 90%, var(--color-textColor));
+  }
+
+  .dark .annotation-code.text-default {
+    color: color-mix(in srgb, var(--color-accent) 85%, var(--color-textColor));
   }
 
   /* Recent Posts */
@@ -875,15 +932,27 @@ ${createCssVariables("dark")}
     @apply ml-1;
   }
 
-  /* Header */
+  /* Header - Tech Blog Style */
   .site-header {
-    @apply relative mb-8 flex w-full items-center justify-between sm:ps-[4.5rem] lg:-ml-[25%] lg:w-[150%];
+    @apply relative mb-10 flex w-full items-center justify-between border-b border-accent/10 pb-4 sm:ps-[4.5rem] lg:-ml-[25%] lg:w-[150%];
+  }
+  .tech-header-logo {
+    @apply no-underline;
+  }
+  .tech-logo-icon {
+    @apply transition-transform hover:scale-110;
+  }
+  .tech-header-actions {
+    @apply gap-1;
+  }
+  .tech-action-btn {
+    @apply border-accent/20 text-textColor/70;
   }
   .nav-menu {
-    @apply bg-bgColor/90 text-accent absolute -inset-x-4 top-14 hidden flex-col items-end rounded-md py-2 text-base shadow-sm backdrop-blur-sm group-[.menu-open]:z-50 group-[.menu-open]:flex sm:static sm:z-auto sm:-ms-4 sm:mt-1 sm:flex sm:flex-row sm:items-center sm:rounded-none sm:py-0 sm:text-sm sm:shadow-none sm:backdrop-blur-none lg:text-base print:hidden gap-y-3 sm:gap-y-0 lg:gap-x-4;
+    @apply bg-bgColor/95 text-accent absolute -inset-x-4 top-14 hidden flex-col items-end rounded-lg border border-accent/10 py-3 text-sm shadow-lg backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex sm:static sm:z-auto sm:-ms-4 sm:mt-2 sm:flex sm:flex-row sm:items-center sm:rounded-none sm:border-0 sm:py-0 sm:shadow-none sm:backdrop-blur-none lg:text-sm print:hidden gap-y-2 sm:gap-y-0 lg:gap-x-6;
   }
   .nav-link {
-    @apply relative z-0 w-fit self-end px-3 py-1 text-right sm:w-auto sm:self-auto sm:py-0 sm:text-left;
+    @apply relative z-0 w-fit self-end px-4 py-2 text-right transition-all hover:text-accent sm:w-auto sm:self-auto sm:px-2 sm:py-1 sm:text-left;
   }
   .nav-link::before {
     content: "";
@@ -928,18 +997,27 @@ ${createCssVariables("dark")}
     );
   }
 
-  /* Footer */
+  /* Footer - Tech Blog Style */
   .site-footer {
-    @apply text-accent mt-auto flex w-full flex-col items-center justify-center gap-y-2 pt-20 pb-4 text-center align-top text-sm sm:flex-row sm:justify-between lg:-ml-[25%] lg:w-[150%];
+    @apply text-accent mt-auto flex w-full flex-col items-center justify-center gap-y-6 border-t border-accent/10 pt-12 pb-8 text-center sm:flex-row sm:justify-between sm:gap-y-0 lg:-ml-[25%] lg:w-[150%];
+  }
+  .tech-footer-content {
+    @apply flex w-full flex-col items-center gap-6 sm:flex-row sm:justify-between;
+  }
+  .tech-footer-meta {
+    @apply flex flex-col items-center gap-3 sm:items-end;
+  }
+  .tech-footer-copyright {
+    @apply text-quote;
   }
   .footer-nav {
-    @apply flex flex-wrap gap-x-2 rounded-sm border-t-2 border-b-2 border-gray-200 sm:gap-x-2 sm:border-none dark:border-gray-700 print:hidden;
+    @apply flex flex-wrap items-center gap-x-3 print:hidden;
   }
   .footer-separator {
-    @apply flex items-center text-accent/45;
+    @apply text-accent/30;
   }
   .footer-link {
-    @apply relative z-0 px-4 py-2 sm:px-2 sm:py-0;
+    @apply relative z-0 px-2 py-1 transition-all hover:text-accent;
   }
   .footer-link + .footer-link {
     @apply sm:pl-0;
@@ -1039,7 +1117,7 @@ ${createCssVariables("dark")}
   .mdx-notion h1,
   .mdx-notion h2,
   .mdx-notion h3 {
-    @apply font-bold text-textColor tracking-[-0.01em] mt-5 mb-3;
+    @apply font-bold text-textColor tracking-tight mt-5 mb-3 font-mono;
   }
 
   .mdx-notion h1 {
@@ -1085,12 +1163,28 @@ ${createCssVariables("dark")}
   }
 
   .mdx-notion code {
-    /* Match Notion inline code styling */
-    @apply font-mono rounded-sm px-1 py-[0.15rem] text-[0.95rem] bg-gray-100 text-rose-800 dark:bg-gray-800 dark:text-rose-300;
+    /* Tech blog inline code styling */
+    @apply font-mono rounded border border-accent/20 px-1.5 py-0.5 text-xs font-medium;
+    background-color: color-mix(in srgb, var(--color-accent) 8%, var(--color-bgColor));
+    color: color-mix(in srgb, var(--color-accent) 90%, var(--color-textColor));
+    transition: all 0.2s ease;
+  }
+
+  .mdx-notion code:hover {
+    background-color: color-mix(in srgb, var(--color-accent) 12%, var(--color-bgColor));
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
   }
 
   .mdx-notion pre {
-    @apply font-mono px-4 py-4 rounded-2xl overflow-x-auto my-[1.1rem];
+    @apply font-mono px-4 py-4 rounded-lg border border-accent/20 overflow-x-auto my-[1.1rem] backdrop-blur-sm;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-bgColor) 100%, transparent),
+      color-mix(in srgb, var(--color-bgColor) 98%, transparent)
+    );
+    box-shadow: 
+      0 1px 3px color-mix(in srgb, var(--color-accent) 5%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--color-accent) 8%, transparent);
   }
 
   /* Keep block code un-tinted while preserving inline styling */

@@ -28,21 +28,21 @@ const rss_path = getNavLink("/rss.xml");
 	<div class="flex sm:flex-col">
 		<a
 			href={getNavLink("/")}
-			class="inline-flex items-center grayscale hover:filter-none sm:relative sm:inline-block"
+			class="tech-header-logo inline-flex items-center gap-3 font-mono transition-all hover:text-accent sm:relative sm:inline-block"
 			aria-current={currentPath === "/" ? "page" : false}
 		>
 			{
 				siteInfo.logo && siteInfo.logo.Type === "emoji" ? (
 					<>
-						<span class="me-3 h-10 w-10 sm:absolute sm:start-[-4.5rem] sm:me-0 sm:h-15 sm:w-15">
+						<span class="tech-logo-icon text-2xl sm:absolute sm:start-[-4.5rem] sm:text-3xl">
 							{siteInfo.logo.Emoji}
 						</span>
-						<span class="text-xl font-bold sm:text-2xl">{siteInfo.title}</span>
+						<span class="text-lg font-semibold tracking-tight sm:text-xl">{siteInfo.title}</span>
 					</>
 				) : siteInfo.logo && siteInfo.logo.Type === "external" ? (
 					<>
 						<img
-							class="me-3 h-10 w-10 object-contain sm:absolute sm:start-[-4.5rem] sm:me-0 sm:h-15 sm:w-15"
+							class="tech-logo-icon h-8 w-8 object-contain sm:absolute sm:start-[-4.5rem] sm:h-10 sm:w-10"
 							loading="eager"
 							fetchpriority="high"
 							width="60"
@@ -50,7 +50,7 @@ const rss_path = getNavLink("/rss.xml");
 							src={siteInfo.logo.Url}
 							alt="Site header image"
 						/>
-						<span class="text-xl font-bold sm:text-2xl">{siteInfo.title}</span>
+						<span class="text-lg font-semibold tracking-tight sm:text-xl">{siteInfo.title}</span>
 					</>
 				) : siteInfo.logo && siteInfo.logo.Type === "file" && customIconImage ? (
 					<>
@@ -59,13 +59,13 @@ const rss_path = getNavLink("/rss.xml");
 							src={customIconImage}
 							widths={[200]}
 							sizes="60px"
-							class="me-3 h-10 w-10 object-contain sm:absolute sm:start-[-4.5rem] sm:me-0 sm:h-15 sm:w-15"
+							class="tech-logo-icon h-8 w-8 object-contain sm:absolute sm:start-[-4.5rem] sm:h-10 sm:w-10"
 							alt="Site header image"
 						/>
-						<span class="text-xl font-bold sm:text-2xl">{siteInfo.title}</span>
+						<span class="text-lg font-semibold tracking-tight sm:text-xl">{siteInfo.title}</span>
 					</>
 				) : (
-					<span class="text-xl font-bold sm:text-2xl">{siteInfo.title}</span>
+					<span class="text-lg font-semibold tracking-tight sm:text-xl">{siteInfo.title}</span>
 				)
 			}
 		</a>
@@ -74,7 +74,7 @@ const rss_path = getNavLink("/rss.xml");
 				menuLinks.map((link) => (
 					<a
 						href={link.path}
-						class="nav-link"
+						class="nav-link font-mono text-sm"
 						aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
 						data-astro-prefetch
 					>
@@ -84,20 +84,20 @@ const rss_path = getNavLink("/rss.xml");
 			}
 		</nav>
 	</div>
-	<div class="flex flex-row print:hidden">
-		<div
-			class="hover:text-accent h-10 w-10 cursor-pointer items-center justify-center rounded-md p-1.5"
+	<div class="tech-header-actions flex flex-row items-center gap-2 print:hidden">
+		<a
+			href={rss_path}
+			class="tech-action-btn flex h-9 w-9 items-center justify-center rounded border transition-all hover:border-accent hover:text-accent"
+			aria-label="Open RSS Link"
 		>
-			<a href={rss_path}
-				><Icon name={"rss"} class="hover:text-accent h-7 w-7" aria-label="Open RSS Link" /></a
-			>
-		</div>
+			<Icon name={"rss"} class="h-5 w-5" />
+		</a>
 		<Search />
 		<ThemeIcon />
 		<mobile-button class="flex items-center">
 			<button
 				id="toggle-navigation-menu"
-				class="group relative ms-4 h-7 w-7 cursor-pointer sm:invisible sm:hidden"
+				class="group relative ms-2 h-9 w-9 cursor-pointer rounded border transition-all hover:border-accent hover:text-accent sm:invisible sm:hidden"
 				type="button"
 				aria-label="Open main menu"
 				aria-expanded="false"
@@ -105,14 +105,14 @@ const rss_path = getNavLink("/rss.xml");
 			>
 				<Icon
 					name={"menu"}
-					class="absolute start-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"
+					class="absolute start-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"
 					aria-hidden="true"
 					focusable="false"
 				/>
 
 				<Icon
 					name={"close"}
-					class="text-accent absolute start-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
+					class="text-accent absolute start-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
 					aria-hidden="true"
 					focusable="false"
 				/>
