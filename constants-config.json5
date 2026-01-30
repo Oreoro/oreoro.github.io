@@ -2,8 +2,7 @@
 {
 	// === Notion Configuration ===
 	notion: {
-		"data-source-id": "",
-		"database-id": "2f8b3ebe102881b6b7b5f99b04a1b545",
+		"database-id": "2f8b3ebe-1028-81b6-b7b5-f99b04a1b545"
 	},
 
 	// === Site Information ===
