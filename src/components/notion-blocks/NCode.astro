@@ -1,0 +1,273 @@
+---
+import * as interfaces from "@/lib/interfaces";
+import Caption from "@/components/notion-blocks/Caption.astro";
+import { SHORTCODES, TRANSFORMER_FUNCTIONS_ARR } from "@/constants";
+import { highlightCodeToHtml } from "@/utils/shiki-highlighter";
+import Icon from "@/components/ui/Icon.astro";
+import { joinPlainText } from "@/utils/richtext-utils";
+
+export interface Props {
+	block: interfaces.Block;
+	setId?: boolean;
+}
+
+const { block, setId = true } = Astro.props;
+
+/*
+//TODO for cleaning up clipboard code
+Rules:
+1. Two things to do: remove lines and clean up comments in remaining lines
+2. For remove lines, only consider these commands: [!code --] or [!code warning] or [!code error]
+3. Remove the line when the command is after the comment mark (any number of spaces between comment mark and coommand are fine). there can be text after command.
+4. do not consider command or comment mark if they are part of a string literal enclosed with ` ` or " "
+5. if a line is not removed, then consider these commands: [!code --] [!code ++] [!code warning] [!code error] [!code highlight] [!code highlight:number_here] [!code word:word_here:number_here] [!code word:word_here] [!code focus] [!code focus:number_here].
+6. if these occur right after the comment mark (any number of spaces between comment mark and coommand are fine)
+and are not part of string literal, just remove the command from if it occurs after the comment mark (and is not in string literal).
+do not remove the line. there can be stuff after the command.
+7. if the part after comment mark is empty or only white spaces, remeove the comment mark. again remember comment marks that are part of string literals are not considered for this.
+
+--
+Currently shiki transformers only find the first occurence of comment mark and command use that.
+it also deals with tokenization such that '# [!code --]' is removed but '\# [!code --]' is not considered.
+but we don't care about that, because it should not be happening in the first place
+*/
+
+const commentStyles = {
+	// Double slash comments
+	"//": [
+		"default",
+		"c",
+		"cpp",
+		"java",
+		"javascript",
+		"typescript",
+		"csharp",
+		"go",
+		"swift",
+		"kotlin",
+		"scala",
+		"rust",
+		"dart",
+		"css",
+		"php",
+		"pascal",
+		"groovy",
+	],
+
+	// Hash comments
+	"#": [
+		"python",
+		"ruby",
+		"perl",
+		"bash",
+		"powershell",
+		"php",
+		"yaml",
+		"toml",
+		"r",
+		"julia",
+		"elixir",
+	],
+
+	// Double dash comments
+	"--": ["haskell", "lua", "sql", "plsql", "ada"],
+
+	// Percent comments
+	"%": ["matlab", "octave", "latex", "katex", "erlang"],
+
+	// Semicolon comments
+	";": ["lisp", "clojure", "scheme", "ini"],
+
+	// Other specific comment styles
+	"⍝": ["apl"],
+	"!": ["fortran"],
+	"'": ["vb"],
+	"*>": ["cobol"],
+	"<!--": ["html"],
+
+	// Languages without standard comment syntax
+	"": ["brainfuck", "whitespace"],
+};
+
+function processCode(code: string, language: string): string {
+	const commentStyle =
+		Object.entries(commentStyles).find(([_, langs]) => langs.includes(language))?.[0] || "";
+
+	if (!commentStyle) return code;
+
+	const lines = code.split("\n");
+	const processedLines = lines.map((line) => {
+		const commentIndex = line.indexOf(commentStyle);
+		if (commentIndex === -1) return line;
+
+		const beforeComment = line.slice(0, commentIndex);
+		const afterComment = line.slice(commentIndex + commentStyle.length);
+		const commandRegex =
+			/^\s*(\[!code\s+(--|\+\+|warning|error|highlight(?::\d+)?|word:\w+(?::\d+)?|focus(?::\d+)?)\])(.*)/;
+		const match = afterComment.match(commandRegex);
+
+		if (match) {
+			const command = match[2];
+			const remainingContent = match[3].trim();
+
+			if (command === "--" || command === "warning" || command === "error") {
+				return "";
+			} else {
+				if (remainingContent) {
+					return beforeComment + commentStyle + " " + remainingContent;
+				} else {
+					return beforeComment.trimEnd();
+				}
+			}
+		}
+
+		return line;
+	});
+
+	return processedLines.filter((line) => line !== "").join("\n");
+}
+
+// Usage
+let code = block.Code.RichTexts.map((richText: interfaces.RichText) => richText.Text.Content).join(
+	"",
+);
+const language =
+	block.Code.Language.toLowerCase() === "plain text"
+		? "plaintext"
+		: block.Code.Language.toLowerCase();
+
+const shiki_transform_code = SHORTCODES["shiki-transform"]
+	? code.startsWith(SHORTCODES["shiki-transform"])
+	: false;
+code = shiki_transform_code ? code.replace(SHORTCODES["shiki-transform"], "").trimStart() : code;
+
+const modifiedCode = shiki_transform_code ? processCode(code, language) : code;
+
+// Notion's "Format code" feature can split the default shortcodes into two lines.
+// The following logic handles both the standard single-line shortcode and the
+// two-line version to ensure users can use the formatting feature without issues.
+
+// --- Logic for html-inject ---
+let htmlToInject: string | null = null;
+const injectShortcode = SHORTCODES["html-inject"];
+const defaultInjectShortcode = "<!DOCTYPE html> <!-- inject -->";
+
+if (injectShortcode) {
+	// Check for the standard shortcode first.
+	if (code.startsWith(injectShortcode)) {
+		htmlToInject = code.substring(injectShortcode.length);
+	}
+	// As a fallback, if the configured shortcode is the default one,
+	// check for the newline-variant that Notion's formatter creates.
+	else if (injectShortcode === defaultInjectShortcode) {
+		const injectShortcodeNewline = "<!DOCTYPE html>\n<!-- inject -->";
+		if (code.startsWith(injectShortcodeNewline)) {
+			htmlToInject = code.substring(injectShortcodeNewline.length);
+		}
+	}
+}
+
+// --- Logic for html-render ---
+let iframeSrcDoc: string | null = null;
+const renderShortcode = SHORTCODES["html-render"];
+const defaultRenderShortcode = "<!DOCTYPE html> <!-- iframe -->";
+
+if (renderShortcode) {
+	// Check for the standard shortcode first.
+	if (code.startsWith(renderShortcode)) {
+		iframeSrcDoc = code.substring(renderShortcode.length);
+	}
+	// As a fallback, if the configured shortcode is the default one,
+	// check for the newline-variant that Notion's formatter creates.
+	else if (renderShortcode === defaultRenderShortcode) {
+		const renderShortcodeNewline = "<!DOCTYPE html>\n<!-- iframe -->";
+		if (code.startsWith(renderShortcodeNewline)) {
+			iframeSrcDoc = code.substring(renderShortcodeNewline.length);
+		}
+	}
+}
+
+const code_render = iframeSrcDoc !== null;
+const code_inject = htmlToInject !== null;
+const shouldHighlight = !code_render && !code_inject && language !== "mermaid";
+const highlightedCodeHtml = shouldHighlight
+	? await highlightCodeToHtml({
+			code,
+			lang: language,
+			defaultColor: "light",
+			transformers: TRANSFORMER_FUNCTIONS_ARR,
+		})
+	: null;
+const plainTextCaption = joinPlainText(block.Code?.Caption || []);
+---
+
+{
+	code_render ? (
+		<div class="code-rendered" id={setId ? block.Id : undefined}>
+			<iframe
+				srcdoc={iframeSrcDoc}
+				class="code-iframe"
+				loading="lazy"
+				title={plainTextCaption}
+			/>
+		</div>
+	) : code_inject ? (
+		<div class="code-injected" id={setId ? block.Id : undefined}>
+			<Fragment set:html={htmlToInject} />
+			<Caption richTexts={block.Code.Caption} block={block} />
+		</div>
+	) : (
+		<div
+			class="code group"
+			id={setId ? block.Id : undefined}
+		>
+			<div
+				class={language === "mermaid" ? "code-mermaid" : "code-scroll"}
+				{...(language !== "mermaid" && { "data-pagefind-ignore": "all" })}
+			>
+				<div class="flex max-w-full">
+					<button
+						class="copy"
+						data-code={modifiedCode}
+						aria-label="copy code"
+					>
+						<Icon
+							class="copy-icon-before h-6 w-6"
+							name={"clipboard-copy-code"}
+							aria-label="copy code"
+						/>
+						<Icon
+							class="copy-icon-done hidden h-6 w-6"
+							name={"clipboard-copy-code-done"}
+							aria-label="copied code"
+						/>
+					</button>
+				</div>
+				{language === "mermaid" ? (
+					<pre class="mermaid">{code}</pre>
+				) : (
+					highlightedCodeHtml && <Fragment set:html={highlightedCodeHtml} />
+				)}
+			</div>
+			<Caption richTexts={block.Code.Caption} block={block} />
+		</div>
+	)
+}
+
+{/* prettier-ignore */}
+{
+	language === "mermaid" && (
+		<script>
+			// Only load Mermaid after page load
+			window.addEventListener("load", () => {
+				if (document.querySelector(".mermaid")) {
+					import("mermaid").then((module) => {
+						const mermaid = module.default;
+						mermaid.initialize({ startOnLoad: false, theme: "base" });
+						mermaid.run();
+					});
+				}
+			});
+		</script>
+	)
+}

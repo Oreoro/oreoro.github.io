@@ -1,0 +1,33 @@
+---
+/* @jsxImportSource astro */
+import type { RichText } from "@/lib/interfaces.ts";
+
+export interface Props {
+	richText: RichText;
+}
+
+const { richText } = Astro.props;
+
+const colorAnnotation = richText.Annotation.Color;
+const isDefaultColor =
+	!colorAnnotation ||
+	["default", "default_background", "default-background"].includes(colorAnnotation);
+const isBackgroundColor = !isDefaultColor && colorAnnotation.includes("_background");
+const isTextColor = !isDefaultColor && !colorAnnotation.includes("_background");
+---
+
+{
+	richText.Annotation.Code ? (
+		<code
+			class:list={[
+				"annotation-code",
+				{ "bg-default": !isBackgroundColor },
+				{ "text-default": !isTextColor },
+			]}
+		>
+			<slot />
+		</code>
+	) : (
+		<slot />
+	)
+}

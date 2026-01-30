@@ -1,0 +1,51 @@
+---
+import * as interfaces from "@/lib/interfaces";
+import { getNotionColorToTailwindColor } from "@/utils/style-helpers";
+import RichText from "@/components/notion-blocks/RichText.astro";
+import NotionBlocks from "@/components/NotionBlocks.astro";
+
+export interface Props {
+	block: interfaces.Block;
+	renderChildren?: boolean; // Make this optional
+	setId?: boolean;
+}
+
+const { block, renderChildren = true, setId = true } = Astro.props;
+---
+
+<ul class="notion-list-ul" id={setId ? block.Id : undefined}>
+	{
+		block.ListItems.filter((b: interfaces.Block) => b.Type === "bulleted_list_item").map(
+			(b: interfaces.Block) => (
+				<li
+					class:list={[
+						{
+							"notion-list-item-colored":
+								b.BulletedListItem.Color &&
+								!["default", "default_background", "default-background"].includes(
+									b.BulletedListItem.Color,
+								),
+							[`${getNotionColorToTailwindColor(b.BulletedListItem.Color)}`]:
+								b.BulletedListItem.Color &&
+								!["default", "default_background", "default-background"].includes(
+									b.BulletedListItem.Color,
+								),
+						},
+					]}
+					id={setId ? b.Id : undefined}
+				>
+					{b.BulletedListItem.RichTexts.map((richText: interfaces.RichText) => (
+						<RichText richText={richText} blockID={b.Id} block={b} />
+					))}
+					{b.HasChildren && renderChildren && (
+						<NotionBlocks
+							blocks={b.BulletedListItem.Children}
+							renderChildren={renderChildren}
+							setId={setId}
+						/>
+					)}
+				</li>
+			),
+		)
+	}
+</ul>
