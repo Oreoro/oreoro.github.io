@@ -743,7 +743,7 @@ ${createCssVariables("dark")}
 
   /* Recent Posts */
   #auto-recent-posts {
-    @apply relative mt-8 mb-4 cursor-pointer text-2xl font-normal;
+    @apply relative mt-12 mb-6 cursor-pointer text-2xl font-normal;
   }
 
   #auto-recent-posts::before {
@@ -934,13 +934,10 @@ ${createCssVariables("dark")}
 
   /* Header - Tech Blog Style */
   .site-header {
-    @apply relative mb-10 flex w-full items-center justify-between border-b border-accent/10 pb-4 sm:ps-[4.5rem] lg:-ml-[25%] lg:w-[150%];
+    @apply relative mb-12 flex w-full items-center justify-between border-b border-accent/10 pb-6 lg:-ml-[25%] lg:w-[150%];
   }
   .tech-header-logo {
     @apply no-underline;
-  }
-  .tech-logo-icon {
-    @apply transition-transform hover:scale-110;
   }
   .tech-header-actions {
     @apply gap-1;
@@ -948,11 +945,94 @@ ${createCssVariables("dark")}
   .tech-action-btn {
     @apply border-accent/20 text-textColor/70;
   }
+  
+  /* Right Side Navigation */
+  .right-side-nav {
+    @apply fixed top-0 right-0 h-screen w-64 bg-bgColor/98 border-l border-accent/10 py-24 px-6 flex flex-col gap-3 z-40 shadow-xl backdrop-blur-md print:hidden overflow-y-auto;
+    @apply hidden lg:flex;
+    @apply transform transition-transform duration-300 ease-in-out;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--color-accent) 20%, transparent) transparent;
+  }
+  
+  .right-side-nav::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .right-side-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .right-side-nav::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+    border-radius: 3px;
+  }
+  
+  .right-side-nav::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  }
+  
+  .right-nav-link {
+    @apply relative z-0 px-4 py-2.5 text-right transition-all hover:text-accent text-sm rounded-md;
+    @apply border-r-2 border-transparent hover:border-accent/30 hover:bg-accent/5;
+  }
+  
+  .right-nav-link::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 0.25em;
+    border-radius: 0.2em 0.4em;
+    background-image:
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-accent) 4%, transparent),
+        color-mix(in srgb, var(--color-accent) 10%, transparent) 50%,
+        color-mix(in srgb, var(--color-accent) 5%, transparent)
+      );
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 200ms ease;
+    z-index: -1;
+  }
+  
+  .dark .right-nav-link::before {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-accent) 6%, transparent),
+      color-mix(in srgb, var(--color-accent) 14%, transparent) 50%,
+      color-mix(in srgb, var(--color-accent) 7%, transparent)
+    );
+  }
+  
+  .right-nav-link:hover::before,
+  .right-nav-link:focus-visible::before {
+    transform: scaleY(1);
+  }
+  
+  .right-nav-link[aria-current="page"]::before {
+    transform: scaleY(1);
+    width: 0.35em;
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-accent-2) 8%, transparent),
+      color-mix(in srgb, var(--color-accent-2) 20%, transparent) 50%,
+      color-mix(in srgb, var(--color-accent-2) 10%, transparent)
+    );
+  }
+  
+  .right-nav-link[aria-current="page"] {
+    @apply text-accent font-medium border-accent/50;
+  }
+  
+  /* Mobile Navigation Menu (for small screens) */
   .nav-menu {
-    @apply bg-bgColor/95 text-accent absolute -inset-x-4 top-14 hidden flex-col items-end rounded-lg border border-accent/10 py-3 text-sm shadow-lg backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex sm:static sm:z-auto sm:-ms-4 sm:mt-2 sm:flex sm:flex-row sm:items-center sm:rounded-none sm:border-0 sm:py-0 sm:shadow-none sm:backdrop-blur-none lg:text-sm print:hidden gap-y-2 sm:gap-y-0 lg:gap-x-6;
+    @apply bg-bgColor/95 text-accent absolute -inset-x-4 top-14 hidden flex-col items-end rounded-lg border border-accent/10 py-3 text-sm shadow-lg backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex lg:hidden gap-y-2;
   }
   .nav-link {
-    @apply relative z-0 w-fit self-end px-4 py-2 text-right transition-all hover:text-accent sm:w-auto sm:self-auto sm:px-2 sm:py-1 sm:text-left;
+    @apply relative z-0 w-fit self-end px-4 py-2 text-right transition-all hover:text-accent;
   }
   .nav-link::before {
     content: "";

@@ -1,9 +1,8 @@
 ---
-import { Image } from "astro:assets";
 import Search from "@/components/ui/Search.astro";
 import { getMenu } from "@/utils";
 import { siteInfo } from "@/site.config";
-import { getNavLink, getNotionImage, normalizeNavPath } from "@/lib/blog-helpers";
+import { getNavLink, normalizeNavPath } from "@/lib/blog-helpers";
 import Icon from "@/components/ui/Icon.astro";
 import ThemeIcon from "@/components/ui/ThemeIcon.astro";
 
@@ -12,114 +11,84 @@ const menuLinks = await getMenu();
 const url = new URL(Astro.request.url);
 const currentPath = normalizeNavPath(url.pathname);
 
-let customIconImage = null;
-if (siteInfo.logo && siteInfo.logo.Type === "file") {
-	try {
-		customIconImage = await getNotionImage(new URL(siteInfo.logo.Url));
-	} catch (err) {
-		console.log("Invalid DB custom icon URL");
-	}
-}
-
 const rss_path = getNavLink("/rss.xml");
 ---
 
 <header id="main-header" class="site-header group">
-	<div class="flex sm:flex-col">
+	<div class="flex items-center justify-between w-full">
 		<a
 			href={getNavLink("/")}
-			class="tech-header-logo inline-flex items-center gap-3 font-mono transition-all hover:text-accent sm:relative sm:inline-block"
+			class="tech-header-logo inline-flex items-center font-mono transition-all hover:text-accent"
 			aria-current={currentPath === "/" ? "page" : false}
 		>
-			{
-				siteInfo.logo && siteInfo.logo.Type === "emoji" ? (
-					<>
-						<span class="tech-logo-icon text-2xl sm:absolute sm:start-[-4.5rem] sm:text-3xl">
-							{siteInfo.logo.Emoji}
-						</span>
-						<span class="text-lg font-semibold tracking-tight sm:text-xl">{siteInfo.title}</span>
-					</>
-				) : siteInfo.logo && siteInfo.logo.Type === "external" ? (
-					<>
-						<img
-							class="tech-logo-icon h-8 w-8 object-contain sm:absolute sm:start-[-4.5rem] sm:h-10 sm:w-10"
-							loading="eager"
-							fetchpriority="high"
-							width="60"
-							height="60"
-							src={siteInfo.logo.Url}
-							alt="Site header image"
-						/>
-						<span class="text-lg font-semibold tracking-tight sm:text-xl">{siteInfo.title}</span>
-					</>
-				) : siteInfo.logo && siteInfo.logo.Type === "file" && customIconImage ? (
-					<>
-						<Image
-							priority
-							src={customIconImage}
-							widths={[200]}
-							sizes="60px"
-							class="tech-logo-icon h-8 w-8 object-contain sm:absolute sm:start-[-4.5rem] sm:h-10 sm:w-10"
-							alt="Site header image"
-						/>
-						<span class="text-lg font-semibold tracking-tight sm:text-xl">{siteInfo.title}</span>
-					</>
-				) : (
-					<span class="text-lg font-semibold tracking-tight sm:text-xl">{siteInfo.title}</span>
-				)
-			}
+			<span class="text-lg font-semibold tracking-tight sm:text-xl">{siteInfo.title}</span>
 		</a>
-		<nav id="navigation-menu" class="nav-menu" aria-label="Main menu">
-			{
-				menuLinks.map((link) => (
-					<a
-						href={link.path}
-						class="nav-link font-mono text-sm"
-						aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
-						data-astro-prefetch
-					>
-						{link.title}
-					</a>
-				))
-			}
-		</nav>
-	</div>
-	<div class="tech-header-actions flex flex-row items-center gap-2 print:hidden">
-		<a
-			href={rss_path}
-			class="tech-action-btn flex h-9 w-9 items-center justify-center rounded border transition-all hover:border-accent hover:text-accent"
-			aria-label="Open RSS Link"
-		>
-			<Icon name={"rss"} class="h-5 w-5" />
-		</a>
-		<Search />
-		<ThemeIcon />
-		<mobile-button class="flex items-center">
-			<button
-				id="toggle-navigation-menu"
-				class="group relative ms-2 h-9 w-9 cursor-pointer rounded border transition-all hover:border-accent hover:text-accent sm:invisible sm:hidden"
-				type="button"
-				aria-label="Open main menu"
-				aria-expanded="false"
-				aria-haspopup="menu"
+		<div class="tech-header-actions flex flex-row items-center gap-2 print:hidden">
+			<a
+				href={rss_path}
+				class="tech-action-btn flex h-9 w-9 items-center justify-center rounded border transition-all hover:border-accent hover:text-accent"
+				aria-label="Open RSS Link"
 			>
-				<Icon
-					name={"menu"}
-					class="absolute start-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"
-					aria-hidden="true"
-					focusable="false"
-				/>
+				<Icon name={"rss"} class="h-5 w-5" />
+			</a>
+			<Search />
+			<ThemeIcon />
+			<mobile-button class="flex items-center lg:hidden">
+				<button
+					id="toggle-navigation-menu"
+					class="group relative ms-2 h-9 w-9 cursor-pointer rounded border transition-all hover:border-accent hover:text-accent"
+					type="button"
+					aria-label="Open main menu"
+					aria-expanded="false"
+					aria-haspopup="menu"
+				>
+					<Icon
+						name={"menu"}
+						class="absolute start-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"
+						aria-hidden="true"
+						focusable="false"
+					/>
 
-				<Icon
-					name={"close"}
-					class="text-accent absolute start-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
-					aria-hidden="true"
-					focusable="false"
-				/>
-			</button>
-		</mobile-button>
+					<Icon
+						name={"close"}
+						class="text-accent absolute start-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
+						aria-hidden="true"
+						focusable="false"
+					/>
+				</button>
+			</mobile-button>
+		</div>
 	</div>
+	<nav id="navigation-menu" class="nav-menu" aria-label="Mobile menu">
+		{
+			menuLinks.map((link) => (
+				<a
+					href={link.path}
+					class="nav-link font-mono text-sm"
+					aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
+					data-astro-prefetch
+				>
+					{link.title}
+				</a>
+			))
+		}
+	</nav>
 </header>
+
+<nav id="right-side-nav" class="right-side-nav" aria-label="Main navigation">
+	{
+		menuLinks.map((link) => (
+			<a
+				href={link.path}
+				class="right-nav-link font-mono text-sm"
+				aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
+				data-astro-prefetch
+			>
+				{link.title}
+			</a>
+		))
+	}
+</nav>
 
 <script>
 	class MobileNavBtn extends HTMLElement {
