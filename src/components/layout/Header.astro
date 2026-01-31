@@ -21,22 +21,22 @@ const rss_path = getNavLink("/rss.xml");
 			class="tech-header-logo inline-flex items-center font-mono transition-all hover:text-accent"
 			aria-current={currentPath === "/" ? "page" : false}
 		>
-			<span class="text-lg font-semibold tracking-tight sm:text-xl">{siteInfo.title}</span>
+			<span class="text-base font-medium tracking-tight sm:text-lg">{siteInfo.title}</span>
 		</a>
-		<div class="tech-header-actions flex flex-row items-center gap-2 print:hidden">
+		<div class="tech-header-actions flex flex-row items-center gap-1.5 print:hidden">
 			<a
 				href={rss_path}
-				class="tech-action-btn flex h-9 w-9 items-center justify-center rounded border transition-all hover:border-accent hover:text-accent"
+				class="tech-action-btn flex h-8 w-8 items-center justify-center rounded border transition-all hover:border-accent hover:text-accent"
 				aria-label="Open RSS Link"
 			>
-				<Icon name={"rss"} class="h-5 w-5" />
+				<Icon name={"rss"} class="h-4 w-4" />
 			</a>
 			<Search />
 			<ThemeIcon />
 			<mobile-button class="flex items-center lg:hidden">
 				<button
 					id="toggle-navigation-menu"
-					class="group relative ms-2 h-9 w-9 cursor-pointer rounded border transition-all hover:border-accent hover:text-accent"
+					class="group relative ms-1.5 h-8 w-8 cursor-pointer rounded border transition-all hover:border-accent hover:text-accent"
 					type="button"
 					aria-label="Open main menu"
 					aria-expanded="false"
@@ -44,14 +44,14 @@ const rss_path = getNavLink("/rss.xml");
 				>
 					<Icon
 						name={"menu"}
-						class="absolute start-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"
+						class="absolute start-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"
 						aria-hidden="true"
 						focusable="false"
 					/>
 
 					<Icon
 						name={"close"}
-						class="text-accent absolute start-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
+						class="text-accent absolute start-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
 						aria-hidden="true"
 						focusable="false"
 					/>

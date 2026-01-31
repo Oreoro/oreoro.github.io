@@ -675,11 +675,11 @@ ${createCssVariables("dark")}
 
   /* Theme Icon */
   .theme-toggle-btn {
-    @apply hover:text-accent relative h-10 w-10 cursor-pointer rounded-md p-2 transition-all;
+    @apply hover:text-accent relative h-8 w-8 cursor-pointer rounded-md p-1.5 transition-all;
   }
 
   .theme-icon {
-    @apply absolute top-1/2 left-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all;
+    @apply absolute top-1/2 left-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all;
   }
 
   /* Annotations */
@@ -934,7 +934,7 @@ ${createCssVariables("dark")}
 
   /* Header - Tech Blog Style */
   .site-header {
-    @apply relative mb-12 flex w-full items-center justify-between border-b border-accent/10 pb-6 lg:-ml-[25%] lg:w-[150%];
+    @apply relative mb-6 flex w-full items-center justify-between border-b border-accent/10 pb-3 lg:-ml-[25%] lg:w-[150%];
   }
   .tech-header-logo {
     @apply no-underline;
@@ -948,7 +948,7 @@ ${createCssVariables("dark")}
   
   /* Right Side Navigation */
   .right-side-nav {
-    @apply fixed top-0 right-0 h-screen w-64 bg-bgColor/98 border-l border-accent/10 py-24 px-6 flex flex-col gap-3 z-40 shadow-xl backdrop-blur-md print:hidden overflow-y-auto;
+    @apply fixed top-0 right-0 h-screen w-56 bg-bgColor/98 border-l border-accent/10 pt-20 pb-8 px-5 flex flex-col gap-2 z-40 shadow-xl backdrop-blur-md print:hidden overflow-y-auto;
     @apply hidden lg:flex;
     @apply transform transition-transform duration-300 ease-in-out;
     scrollbar-width: thin;
@@ -973,7 +973,7 @@ ${createCssVariables("dark")}
   }
   
   .right-nav-link {
-    @apply relative z-0 px-4 py-2.5 text-right transition-all hover:text-accent text-sm rounded-md;
+    @apply relative z-0 px-3 py-2 text-right transition-all hover:text-accent text-sm rounded-md;
     @apply border-r-2 border-transparent hover:border-accent/30 hover:bg-accent/5;
   }
   
@@ -1029,7 +1029,7 @@ ${createCssVariables("dark")}
   
   /* Mobile Navigation Menu (for small screens) */
   .nav-menu {
-    @apply bg-bgColor/95 text-accent absolute -inset-x-4 top-14 hidden flex-col items-end rounded-lg border border-accent/10 py-3 text-sm shadow-lg backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex lg:hidden gap-y-2;
+    @apply bg-bgColor/95 text-accent absolute -inset-x-4 top-12 hidden flex-col items-end rounded-lg border border-accent/10 py-2.5 text-sm shadow-lg backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex lg:hidden gap-y-1.5;
   }
   .nav-link {
     @apply relative z-0 w-fit self-end px-4 py-2 text-right transition-all hover:text-accent;
@@ -1157,7 +1157,7 @@ ${createCssVariables("dark")}
 
   /* Search */
   .search-btn {
-    @apply hover:text-accent flex h-10 w-10 cursor-pointer items-center justify-center rounded-md transition-all;
+    @apply hover:text-accent flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-all;
   }
 
   .search-dialog {
