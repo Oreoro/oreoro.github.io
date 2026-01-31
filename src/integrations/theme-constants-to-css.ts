@@ -948,15 +948,20 @@ ${createCssVariables("dark")}
   
   /* Right Side Navigation */
   .right-side-nav {
-    @apply fixed top-0 right-0 h-screen w-56 bg-bgColor/98 border-l border-accent/10 pt-20 pb-8 px-5 flex flex-col gap-2 z-40 shadow-xl backdrop-blur-md print:hidden overflow-y-auto;
+    @apply fixed top-0 right-0 h-screen w-52 bg-bgColor/95 border-l border-accent/15 pt-24 pb-12 px-4 flex flex-col gap-1 z-40 shadow-2xl backdrop-blur-lg print:hidden overflow-y-auto;
     @apply hidden lg:flex;
     @apply transform transition-transform duration-300 ease-in-out;
+    background: linear-gradient(
+      to left,
+      color-mix(in srgb, var(--color-bgColor) 98%, transparent),
+      color-mix(in srgb, var(--color-bgColor) 95%, transparent)
+    );
     scrollbar-width: thin;
     scrollbar-color: color-mix(in srgb, var(--color-accent) 20%, transparent) transparent;
   }
   
   .right-side-nav::-webkit-scrollbar {
-    width: 6px;
+    width: 4px;
   }
   
   .right-side-nav::-webkit-scrollbar-track {
@@ -964,67 +969,82 @@ ${createCssVariables("dark")}
   }
   
   .right-side-nav::-webkit-scrollbar-thumb {
-    background-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
-    border-radius: 3px;
+    background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
+    border-radius: 2px;
+    transition: background-color 0.2s ease;
   }
   
   .right-side-nav::-webkit-scrollbar-thumb:hover {
-    background-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+    background-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
   }
   
   .right-nav-link {
-    @apply relative z-0 px-3 py-2 text-right transition-all hover:text-accent text-sm rounded-md;
-    @apply border-r-2 border-transparent hover:border-accent/30 hover:bg-accent/5;
+    @apply relative z-0 px-3 py-2.5 text-right transition-all duration-200 ease-out text-sm rounded-lg;
+    @apply text-textColor/70 hover:text-accent hover:bg-accent/8;
+    @apply border-r-2 border-transparent;
+    @apply font-mono tracking-tight;
   }
   
   .right-nav-link::before {
     content: "";
     position: absolute;
     right: 0;
-    top: 0;
-    bottom: 0;
-    width: 0.25em;
-    border-radius: 0.2em 0.4em;
-    background-image:
-      linear-gradient(
-        to bottom,
-        color-mix(in srgb, var(--color-accent) 4%, transparent),
-        color-mix(in srgb, var(--color-accent) 10%, transparent) 50%,
-        color-mix(in srgb, var(--color-accent) 5%, transparent)
-      );
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: transform 200ms ease;
+    top: 50%;
+    transform: translateY(-50%) scaleY(0);
+    width: 3px;
+    height: 60%;
+    border-radius: 0 3px 3px 0;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-accent) 30%, transparent),
+      color-mix(in srgb, var(--color-accent) 50%, transparent),
+      color-mix(in srgb, var(--color-accent) 30%, transparent)
+    );
+    transition: transform 200ms ease-out, height 200ms ease-out;
     z-index: -1;
   }
   
   .dark .right-nav-link::before {
-    background-image: linear-gradient(
+    background: linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--color-accent) 6%, transparent),
-      color-mix(in srgb, var(--color-accent) 14%, transparent) 50%,
-      color-mix(in srgb, var(--color-accent) 7%, transparent)
+      color-mix(in srgb, var(--color-accent) 40%, transparent),
+      color-mix(in srgb, var(--color-accent) 60%, transparent),
+      color-mix(in srgb, var(--color-accent) 40%, transparent)
     );
+  }
+  
+  .right-nav-link:hover {
+    @apply translate-x-[-2px];
   }
   
   .right-nav-link:hover::before,
   .right-nav-link:focus-visible::before {
-    transform: scaleY(1);
-  }
-  
-  .right-nav-link[aria-current="page"]::before {
-    transform: scaleY(1);
-    width: 0.35em;
-    background-image: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-accent-2) 8%, transparent),
-      color-mix(in srgb, var(--color-accent-2) 20%, transparent) 50%,
-      color-mix(in srgb, var(--color-accent-2) 10%, transparent)
-    );
+    transform: translateY(-50%) scaleY(1);
   }
   
   .right-nav-link[aria-current="page"] {
-    @apply text-accent font-medium border-accent/50;
+    @apply text-accent font-semibold bg-accent/10 border-accent/40;
+  }
+  
+  .right-nav-link[aria-current="page"]::before {
+    transform: translateY(-50%) scaleY(1);
+    height: 80%;
+    width: 3px;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-accent-2) 40%, transparent),
+      color-mix(in srgb, var(--color-accent-2) 70%, transparent),
+      color-mix(in srgb, var(--color-accent-2) 40%, transparent)
+    );
+  }
+  
+  .dark .right-nav-link[aria-current="page"]::before {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-accent-2) 50%, transparent),
+      color-mix(in srgb, var(--color-accent-2) 80%, transparent),
+      color-mix(in srgb, var(--color-accent-2) 50%, transparent)
+    );
   }
   
   /* Mobile Navigation Menu (for small screens) */
