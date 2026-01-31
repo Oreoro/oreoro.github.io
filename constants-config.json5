@@ -33,32 +33,33 @@
 	// === Theme Customization ===
 	theme: {
 		preset: "classic",
-		// Modern, refined color palette with improved contrast and accessibility
+		// Tech blog-inspired color palette: Clean, professional, code-friendly
+		// Inspired by GitHub Blog, Vercel, Stripe, Hashnode
 		// Colors MUST be in RGB format with spaces
 		colors: {
 			bg: {
-				light: "252 252 253",      // Soft off-white (easier on eyes than pure white)
-				dark: "18 20 24",          // Rich dark charcoal (better than pure black)
+				light: "255 255 255",      // Pure white (clean, minimal like GitHub)
+				dark: "13 17 23",          // GitHub dark mode background
 			},
 			text: {
-				light: "23 23 23",         // Deep charcoal for excellent readability
-				dark: "250 250 250",       // Soft white for dark mode (high contrast, less harsh)
+				light: "22 27 34",         // GitHub text color (deep, readable)
+				dark: "230 237 243",       // GitHub dark text (soft white)
 			},
 			link: {
-				light: "37 99 235",        // Vibrant blue (modern, accessible)
-				dark: "96 165 250",        // Bright sky blue for dark mode
+				light: "9 105 218",        // GitHub blue (professional, accessible)
+				dark: "88 166 255",        // GitHub dark link blue
 			},
 			accent: {
-				light: "59 130 246",       // Modern blue (balanced, professional)
-				dark: "96 165 250",        // Bright blue for dark mode
+				light: "9 105 218",        // GitHub blue accent
+				dark: "88 166 255",        // Bright blue for dark mode
 			},
 			"accent-2": {
-				light: "34 197 94",        // Fresh green (success, positive)
-				dark: "74 222 128",        // Bright green for dark mode
+				light: "22 163 74",        // GitHub green (success, positive)
+				dark: "49 209 88",        // Bright green for dark mode
 			},
 			quote: {
-				light: "107 114 128",      // Balanced grey (readable, subtle)
-				dark: "156 163 175",       // Light grey for quotes in dark mode
+				light: "101 109 118",      // GitHub grey (subtle, readable)
+				dark: "139 148 158",       // Light grey for quotes in dark mode
 			},
 		},
 		// Tech-optimized fonts: JetBrains Mono throughout the entire app

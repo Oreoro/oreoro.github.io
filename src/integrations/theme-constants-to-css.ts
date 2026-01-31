@@ -202,6 +202,7 @@ ${createCssVariables("dark")}
   html {
     @apply scroll-smooth;
     font-size: 14px;
+    font-family: var(--font-mono), var(--font-sans), ui-monospace, monospace;
 
     @variant sm {
       font-size: 16px;
@@ -210,6 +211,12 @@ ${createCssVariables("dark")}
 
   html body {
     @apply mx-auto flex min-h-screen max-w-3xl flex-col bg-bgColor px-8 pt-8 text-textColor antialiased overflow-x-hidden;
+    font-family: var(--font-mono), var(--font-sans), ui-monospace, monospace;
+  }
+  
+  /* Ensure all text uses JetBrains Mono */
+  body, p, span, div, a, button, input, textarea, select {
+    font-family: var(--font-mono), var(--font-sans), ui-monospace, monospace;
   }
 
   * {
@@ -673,26 +680,27 @@ ${createCssVariables("dark")}
     @apply border-red-500/50 dark:border-red-400/60;
   }
 
-  /* Theme Icon */
+  /* Theme Icon - Tech Blog Style */
   .theme-toggle-btn {
-    @apply hover:text-accent relative cursor-pointer transition-all;
+    @apply hover:text-accent relative cursor-pointer transition-all border border-accent/15 hover:border-accent/30 hover:bg-accent/5;
   }
 
   .theme-icon {
     @apply absolute top-1/2 left-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all;
   }
   
-  /* Theme Menu */
+  /* Theme Menu - Tech Blog Style */
   .theme-menu {
-    @apply print:hidden;
+    @apply print:hidden border border-accent/10;
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--color-accent) 5%, transparent);
   }
   
   .theme-menu-item {
-    @apply text-textColor/70;
+    @apply text-textColor/70 font-mono;
   }
   
   .theme-menu-item:hover {
-    @apply text-accent;
+    @apply text-accent bg-accent/5;
   }
 
   /* Annotations */
@@ -947,12 +955,13 @@ ${createCssVariables("dark")}
 
   /* Header - Tech Blog Style - Unified Header & Navigation */
   .site-header {
-    @apply sticky top-0 z-50 w-full mb-8 border-b border-accent/10 bg-bgColor/98 backdrop-blur-lg print:static print:backdrop-blur-none;
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-accent) 8%, transparent);
+    @apply sticky top-0 z-50 w-full mb-8 border-b border-accent/10 bg-bgColor/95 backdrop-blur-md print:static print:backdrop-blur-none;
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--color-accent) 3%, transparent);
+    font-family: var(--font-mono), var(--font-sans), ui-monospace, monospace;
   }
   
   .header-container {
-    @apply flex flex-col w-full;
+    @apply flex flex-col w-full max-w-full;
   }
   
   .header-top {
@@ -960,40 +969,60 @@ ${createCssVariables("dark")}
   }
   
   .tech-header-logo {
-    @apply no-underline;
+    @apply no-underline font-mono;
+    font-family: var(--font-mono), var(--font-sans), ui-monospace, monospace;
+    letter-spacing: -0.01em;
   }
   .tech-header-actions {
     @apply gap-2;
   }
   .tech-action-btn {
-    @apply border-accent/20 text-textColor/80 hover:border-accent/40;
+    @apply border border-accent/15 text-textColor/70 hover:border-accent/30 hover:text-accent hover:bg-accent/5;
+    @apply transition-all duration-150;
   }
   
-  /* Desktop Navigation - Simple & Minimalistic */
+  /* Desktop Navigation - Tech Blog Style (Clean & Minimal) */
   .desktop-nav {
-    @apply hidden lg:flex items-center gap-2 px-6 pb-4 lg:px-8 border-t border-accent/5;
+    @apply hidden lg:flex items-center justify-start gap-1 px-6 pb-4 lg:px-8 border-t border-accent/5;
+    @apply w-full overflow-x-auto;
   }
   
   .desktop-nav-link {
-    @apply px-4 py-2.5 text-base transition-all duration-200 ease-out rounded-lg;
+    @apply px-4 py-2.5 text-sm transition-all duration-150 ease-out rounded-md whitespace-nowrap;
     @apply text-textColor/70 hover:text-accent hover:bg-accent/5;
     @apply font-mono tracking-normal;
+    @apply relative;
+    font-family: var(--font-mono), var(--font-sans), ui-monospace, monospace;
+  }
+  
+  .desktop-nav-link::after {
+    content: "";
+    @apply absolute bottom-0 left-1/2 right-1/2 h-0.5 bg-accent/0 transition-all duration-150 -translate-x-1/2;
+  }
+  
+  .desktop-nav-link:hover::after {
+    @apply bg-accent left-0 right-0 translate-x-0;
   }
   
   .desktop-nav-link[aria-current="page"] {
-    @apply text-accent font-semibold bg-accent/10;
+    @apply text-accent font-semibold bg-accent/8;
   }
   
-  /* Mobile Navigation Menu (for small screens) - Simple & Clean */
+  .desktop-nav-link[aria-current="page"]::after {
+    @apply bg-accent left-0 right-0 translate-x-0;
+  }
+  
+  /* Mobile Navigation Menu (for small screens) - Tech Blog Style */
   .nav-menu {
-    @apply bg-bgColor/98 absolute left-0 right-0 top-full mt-2 hidden flex-col rounded-lg border border-accent/10 py-3 px-2 text-base shadow-xl backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex lg:hidden gap-y-1 mx-4;
+    @apply bg-bgColor/98 absolute left-0 right-0 top-full mt-2 hidden flex-col rounded-lg border border-accent/10 py-2 px-2 text-sm shadow-lg backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex lg:hidden gap-y-0.5 mx-4;
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--color-accent) 5%, transparent);
   }
   .nav-link {
-    @apply w-full px-4 py-3 text-left transition-all hover:text-accent hover:bg-accent/5 rounded-lg font-mono;
+    @apply w-full px-4 py-2.5 text-left transition-all hover:text-accent hover:bg-accent/5 rounded-md font-mono;
     @apply text-textColor/70;
   }
   .nav-link[aria-current="page"] {
-    @apply text-accent font-semibold bg-accent/10;
+    @apply text-accent font-semibold bg-accent/8;
   }
 
   /* Footer - Tech Blog Style */
@@ -1074,9 +1103,9 @@ ${createCssVariables("dark")}
     @apply text-textColor/70 min-w-0 pt-1 text-sm;
   }
 
-  /* Search */
+  /* Search - Tech Blog Style */
   .search-btn {
-    @apply hover:text-accent flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-accent/20 transition-all hover:border-accent;
+    @apply hover:text-accent flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-accent/15 transition-all hover:border-accent/30 hover:bg-accent/5;
   }
 
   .search-dialog {

@@ -65,7 +65,7 @@ const rss_path = getNavLink("/rss.xml");
 				menuLinks.map((link) => (
 					<a
 						href={link.path}
-						class="desktop-nav-link font-mono text-sm"
+						class="desktop-nav-link font-mono text-base"
 						aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
 						data-astro-prefetch
 					>
