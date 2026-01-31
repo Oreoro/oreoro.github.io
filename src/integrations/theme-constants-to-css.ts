@@ -210,7 +210,7 @@ ${createCssVariables("dark")}
   }
 
   html body {
-    @apply mx-auto flex min-h-screen max-w-3xl flex-col bg-bgColor px-8 pt-8 text-textColor antialiased overflow-x-hidden;
+    @apply mx-auto flex min-h-screen max-w-7xl flex-col bg-bgColor px-4 sm:px-6 lg:px-8 xl:px-12 pt-8 text-textColor antialiased overflow-x-hidden;
     font-family: var(--font-mono), var(--font-sans), ui-monospace, monospace;
   }
   
@@ -956,8 +956,44 @@ ${createCssVariables("dark")}
   /* Header - Tech Blog Style - Unified Header & Navigation */
   .site-header {
     @apply sticky top-0 z-50 w-full mb-8 border-b border-accent/10 bg-bgColor/95 backdrop-blur-md print:static print:backdrop-blur-none;
-    box-shadow: 0 1px 3px color-mix(in srgb, var(--color-accent) 3%, transparent);
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--color-accent) 3%, transparent),
+                0 0 20px color-mix(in srgb, var(--color-accent) 2%, transparent);
     font-family: var(--font-mono), var(--font-sans), ui-monospace, monospace;
+    position: relative;
+  }
+  
+  .site-header::before {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in srgb, var(--color-accent) 20%, transparent) 20%,
+      color-mix(in srgb, var(--color-accent) 40%, transparent) 50%,
+      color-mix(in srgb, var(--color-accent) 20%, transparent) 80%,
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .site-header:hover::before {
+    opacity: 1;
+  }
+  
+  .tech-logo-prefix,
+  .tech-logo-cursor,
+  .tech-nav-indicator {
+    font-family: var(--font-mono), ui-monospace, monospace;
+  }
+  
+  .tech-prompt-prefix,
+  .tech-prompt-cursor {
+    font-family: var(--font-mono), ui-monospace, monospace;
   }
   
   .header-container {
@@ -1012,10 +1048,42 @@ ${createCssVariables("dark")}
     @apply bg-accent left-0 right-0 translate-x-0;
   }
   
+  .desktop-nav-link:hover {
+    @apply text-accent;
+  }
+  
+  .desktop-nav-link:hover .tech-nav-indicator {
+    @apply opacity-100;
+  }
+  
+  .tech-nav-indicator {
+    @apply opacity-0 transition-opacity duration-150;
+  }
+  
+  .desktop-nav-link[aria-current="page"] .tech-nav-indicator {
+    @apply opacity-100;
+  }
+  
   /* Mobile Navigation Menu (for small screens) - Tech Blog Style */
   .nav-menu {
     @apply bg-bgColor/98 absolute left-0 right-0 top-full mt-2 hidden flex-col rounded-lg border border-accent/10 py-2 px-2 text-sm shadow-lg backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex lg:hidden gap-y-0.5 mx-4;
     box-shadow: 0 8px 24px color-mix(in srgb, var(--color-accent) 5%, transparent);
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  }
+  
+  .site-header.menu-open .nav-menu {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .nav-link:hover .tech-nav-indicator {
+    @apply opacity-100;
+  }
+  
+  .nav-link[aria-current="page"] .tech-nav-indicator {
+    @apply opacity-100;
   }
   .nav-link {
     @apply w-full px-4 py-2.5 text-left transition-all hover:text-accent hover:bg-accent/5 rounded-md font-mono;
@@ -1027,7 +1095,25 @@ ${createCssVariables("dark")}
 
   /* Footer - Tech Blog Style */
   .site-footer {
-    @apply text-accent mt-auto flex w-full flex-col items-center justify-center gap-y-6 border-t border-accent/10 pt-12 pb-8 text-center sm:flex-row sm:justify-between sm:gap-y-0 lg:-ml-[25%] lg:w-[150%];
+    @apply text-accent mt-auto flex w-full flex-col items-center justify-center gap-y-6 border-t border-accent/10 pt-12 pb-8 text-center sm:flex-row sm:justify-between sm:gap-y-0;
+    position: relative;
+  }
+  
+  .site-footer::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in srgb, var(--color-accent) 15%, transparent) 20%,
+      color-mix(in srgb, var(--color-accent) 30%, transparent) 50%,
+      color-mix(in srgb, var(--color-accent) 15%, transparent) 80%,
+      transparent
+    );
   }
   .tech-footer-content {
     @apply flex w-full flex-col items-center gap-6 sm:flex-row sm:justify-between;
@@ -1037,6 +1123,28 @@ ${createCssVariables("dark")}
   }
   .tech-footer-copyright {
     @apply text-quote;
+  }
+  
+  .tech-footer-terminal-prompt {
+    @apply flex items-center;
+  }
+  
+  .tech-prompt-prefix {
+    @apply text-accent/60 font-mono;
+  }
+  
+  .tech-prompt-text {
+    @apply text-quote;
+  }
+  
+  .tech-prompt-cursor {
+    @apply inline-block bg-accent/60;
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
   }
   .footer-nav {
     @apply flex flex-wrap items-center gap-x-3 print:hidden;
@@ -1226,6 +1334,84 @@ ${createCssVariables("dark")}
 
   .mdx-notion a:hover {
     @apply text-accent-2;
+  }
+  
+  /* Tech-themed Utility Classes */
+  .tech-terminal-border {
+    @apply border border-accent/20 rounded;
+    box-shadow: 
+      0 0 0 1px color-mix(in srgb, var(--color-accent) 5%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--color-accent) 8%, transparent);
+  }
+  
+  .tech-code-container {
+    @apply bg-bgColor/50 backdrop-blur-sm rounded-lg border border-accent/20 p-4 font-mono text-sm;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-bgColor) 100%, transparent),
+      color-mix(in srgb, var(--color-bgColor) 98%, transparent)
+    );
+    box-shadow: 
+      0 1px 3px color-mix(in srgb, var(--color-accent) 5%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--color-accent) 8%, transparent);
+  }
+  
+  .tech-accent-glow {
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 20%, transparent);
+  }
+  
+  .tech-accent-glow:hover {
+    box-shadow: 0 0 15px color-mix(in srgb, var(--color-accent) 30%, transparent);
+  }
+  
+  /* Terminal-style prompt indicator */
+  .tech-prompt {
+    @apply font-mono;
+  }
+  
+  .tech-prompt::before {
+    content: "$ ";
+    @apply text-accent/60;
+  }
+  
+  /* Code-style separators */
+  .tech-separator {
+    @apply text-accent/30 font-mono;
+  }
+  
+  /* Enhanced link styles with tech aesthetic */
+  .tech-link {
+    @apply text-link underline decoration-wavy decoration-from-font decoration-accent-2/40 hover:decoration-accent-2/60 underline-offset-2;
+    transition: all 0.2s ease;
+  }
+  
+  .tech-link:hover {
+    @apply text-accent;
+    text-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 30%, transparent);
+  }
+  
+  /* Tech-themed callout enhancement */
+  .tech-callout {
+    @apply border-l-4 border-accent/40 bg-accent/5 rounded-r-lg p-4 font-mono text-sm;
+  }
+  
+  /* Monospace emphasis for tech content */
+  .tech-mono {
+    @apply font-mono;
+    font-family: var(--font-mono), ui-monospace, monospace;
+  }
+  
+  /* Syntax highlighting color accents */
+  .tech-color-keyword {
+    color: color-mix(in srgb, var(--color-accent) 90%, var(--color-textColor));
+  }
+  
+  .tech-color-string {
+    color: color-mix(in srgb, var(--color-accent-2) 90%, var(--color-textColor));
+  }
+  
+  .tech-color-comment {
+    @apply text-quote;
   }
 }
 

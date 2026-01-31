@@ -19,10 +19,12 @@ const rss_path = getNavLink("/rss.xml");
 		<div class="header-top">
 			<a
 				href={getNavLink("/")}
-				class="tech-header-logo inline-flex items-center font-mono transition-all hover:text-accent"
+				class="tech-header-logo inline-flex items-center font-mono transition-all hover:text-accent relative group/logo"
 				aria-current={currentPath === "/" ? "page" : false}
 			>
+				<span class="tech-logo-prefix text-accent/60 mr-1.5 font-mono text-sm opacity-0 group-hover/logo:opacity-100 transition-opacity">$</span>
 				<span class="text-xl font-semibold tracking-tight sm:text-2xl">{siteInfo.title}</span>
+				<span class="tech-logo-cursor ml-1.5 w-0.5 h-5 bg-accent animate-pulse opacity-0 group-hover/logo:opacity-100 transition-opacity"></span>
 			</a>
 			<div class="tech-header-actions flex flex-row items-center gap-2 print:hidden">
 				<a
@@ -62,30 +64,38 @@ const rss_path = getNavLink("/rss.xml");
 		</div>
 		<nav id="desktop-nav" class="desktop-nav" aria-label="Main navigation">
 			{
-				menuLinks.map((link) => (
-					<a
-						href={link.path}
-						class="desktop-nav-link font-mono text-base"
-						aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
-						data-astro-prefetch
-					>
-						{link.title}
-					</a>
-				))
+				menuLinks.map((link) => {
+					const isActive = currentPath === normalizeNavPath(link.path);
+					return (
+						<a
+							href={link.path}
+							class="desktop-nav-link font-mono text-base relative group/nav"
+							aria-current={isActive ? "page" : false}
+							data-astro-prefetch
+						>
+							{isActive && <span class="tech-nav-indicator text-accent/60 mr-1">></span>}
+							{link.title}
+						</a>
+					);
+				})
 			}
 		</nav>
 		<nav id="navigation-menu" class="nav-menu" aria-label="Mobile menu">
 			{
-				menuLinks.map((link) => (
-					<a
-						href={link.path}
-						class="nav-link font-mono text-sm"
-						aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
-						data-astro-prefetch
-					>
-						{link.title}
-					</a>
-				))
+				menuLinks.map((link) => {
+					const isActive = currentPath === normalizeNavPath(link.path);
+					return (
+						<a
+							href={link.path}
+							class="nav-link font-mono text-sm relative group/mobile"
+							aria-current={isActive ? "page" : false}
+							data-astro-prefetch
+						>
+							{isActive && <span class="tech-nav-indicator text-accent/60 mr-1">></span>}
+							{link.title}
+						</a>
+					);
+				})
 			}
 		</nav>
 	</div>

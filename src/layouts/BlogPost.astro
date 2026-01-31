@@ -75,7 +75,7 @@ const metaAuthor = getMetaAuthor();
 		author: metaAuthor,
 	}}
 >
-	<div class="max-w-[708px] sm:mr-20 print:mr-auto print:max-w-full">
+	<div class="max-w-5xl print:max-w-full">
 		<article class="break-words" data-pagefind-body>
 			<div id="blog-hero">
 				<BlogHero post={post} />
@@ -93,7 +93,7 @@ const metaAuthor = getMetaAuthor();
 		</article>
 		{!!headings.length && <TOC headings={headings} />}
 	</div>
-	<div class="max-w-[708px] sm:mr-20 print:hidden">
+	<div class="max-w-5xl print:hidden">
 		<aside class="" data-pagefind-ignore="all">
 			<WebMentions />
 			<PostComments post={post} />

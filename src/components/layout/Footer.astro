@@ -29,9 +29,13 @@ const currentPath = normalizeNavPath(Astro.url.pathname);
 		</nav>
 		<div class="tech-footer-meta">
 			<SocialList />
-			<p class="tech-footer-copyright font-mono text-xs text-quote mt-4 sm:mt-0">
-				© {new Date().getFullYear()} • Built with code
-			</p>
+			<div class="tech-footer-terminal-prompt mt-4 sm:mt-0">
+				<p class="tech-footer-copyright font-mono text-xs text-quote">
+					<span class="tech-prompt-prefix text-accent/60">$</span>
+					<span class="tech-prompt-text ml-1.5">© {new Date().getFullYear()} • Built with code</span>
+					<span class="tech-prompt-cursor ml-1 inline-block w-0.5 h-3 bg-accent animate-pulse"></span>
+				</p>
+			</div>
 		</div>
 	</div>
 </footer>
