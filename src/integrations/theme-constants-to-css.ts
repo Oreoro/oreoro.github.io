@@ -675,11 +675,24 @@ ${createCssVariables("dark")}
 
   /* Theme Icon */
   .theme-toggle-btn {
-    @apply hover:text-accent relative h-8 w-8 cursor-pointer rounded-md p-1.5 transition-all;
+    @apply hover:text-accent relative cursor-pointer transition-all;
   }
 
   .theme-icon {
-    @apply absolute top-1/2 left-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all;
+    @apply absolute top-1/2 left-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all;
+  }
+  
+  /* Theme Menu */
+  .theme-menu {
+    @apply print:hidden;
+  }
+  
+  .theme-menu-item {
+    @apply text-textColor/70;
+  }
+  
+  .theme-menu-item:hover {
+    @apply text-accent;
   }
 
   /* Annotations */
@@ -934,8 +947,8 @@ ${createCssVariables("dark")}
 
   /* Header - Tech Blog Style - Unified Header & Navigation */
   .site-header {
-    @apply sticky top-0 z-50 w-full mb-6 border-b border-accent/10 bg-bgColor/95 backdrop-blur-md print:static print:backdrop-blur-none;
-    box-shadow: 0 1px 3px color-mix(in srgb, var(--color-accent) 5%, transparent);
+    @apply sticky top-0 z-50 w-full mb-8 border-b border-accent/10 bg-bgColor/98 backdrop-blur-lg print:static print:backdrop-blur-none;
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-accent) 8%, transparent);
   }
   
   .header-container {
@@ -943,127 +956,44 @@ ${createCssVariables("dark")}
   }
   
   .header-top {
-    @apply flex items-center justify-between w-full py-3 px-4 lg:px-6;
+    @apply flex items-center justify-between w-full py-5 px-6 lg:px-8;
   }
   
   .tech-header-logo {
     @apply no-underline;
   }
   .tech-header-actions {
-    @apply gap-1;
+    @apply gap-2;
   }
   .tech-action-btn {
-    @apply border-accent/20 text-textColor/70;
+    @apply border-accent/20 text-textColor/80 hover:border-accent/40;
   }
   
-  /* Desktop Navigation - Integrated into Header */
+  /* Desktop Navigation - Simple & Minimalistic */
   .desktop-nav {
-    @apply hidden lg:flex items-center gap-1 px-4 pb-3 lg:px-6 border-t border-accent/5;
+    @apply hidden lg:flex items-center gap-2 px-6 pb-4 lg:px-8 border-t border-accent/5;
   }
   
   .desktop-nav-link {
-    @apply relative z-0 px-4 py-2 text-sm transition-all duration-200 ease-out rounded-md;
-    @apply text-textColor/70 hover:text-accent hover:bg-accent/8;
-    @apply font-mono tracking-tight;
-  }
-  
-  .desktop-nav-link::before {
-    content: "";
-    position: absolute;
-    left: 0.08em;
-    right: 0.08em;
-    bottom: 0.2em;
-    height: 0.3em;
-    border-radius: 0.2em;
-    background-image: linear-gradient(
-      to right,
-      color-mix(in srgb, var(--color-accent) 4%, transparent),
-      color-mix(in srgb, var(--color-accent) 10%, transparent) 50%,
-      color-mix(in srgb, var(--color-accent) 4%, transparent)
-    );
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 200ms ease;
-    z-index: -1;
-  }
-  
-  .dark .desktop-nav-link::before {
-    background-image: linear-gradient(
-      to right,
-      color-mix(in srgb, var(--color-accent) 6%, transparent),
-      color-mix(in srgb, var(--color-accent) 14%, transparent) 50%,
-      color-mix(in srgb, var(--color-accent) 6%, transparent)
-    );
-  }
-  
-  .desktop-nav-link:hover::before,
-  .desktop-nav-link:focus-visible::before {
-    transform: scaleX(1);
+    @apply px-4 py-2.5 text-base transition-all duration-200 ease-out rounded-lg;
+    @apply text-textColor/70 hover:text-accent hover:bg-accent/5;
+    @apply font-mono tracking-normal;
   }
   
   .desktop-nav-link[aria-current="page"] {
     @apply text-accent font-semibold bg-accent/10;
   }
   
-  .desktop-nav-link[aria-current="page"]::before {
-    transform: scaleX(1);
-    height: 0.4em;
-    background-image: linear-gradient(
-      to right,
-      color-mix(in srgb, var(--color-accent-2) 8%, transparent),
-      color-mix(in srgb, var(--color-accent-2) 20%, transparent) 50%,
-      color-mix(in srgb, var(--color-accent-2) 8%, transparent)
-    );
-  }
-  
-  /* Mobile Navigation Menu (for small screens) */
+  /* Mobile Navigation Menu (for small screens) - Simple & Clean */
   .nav-menu {
-    @apply bg-bgColor/98 text-accent absolute left-0 right-0 top-full mt-2 hidden flex-col rounded-lg border border-accent/10 py-3 px-4 text-sm shadow-xl backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex lg:hidden gap-y-1.5 mx-4;
+    @apply bg-bgColor/98 absolute left-0 right-0 top-full mt-2 hidden flex-col rounded-lg border border-accent/10 py-3 px-2 text-base shadow-xl backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex lg:hidden gap-y-1 mx-4;
   }
   .nav-link {
-    @apply relative z-0 w-full px-4 py-2.5 text-left transition-all hover:text-accent hover:bg-accent/5 rounded-md;
+    @apply w-full px-4 py-3 text-left transition-all hover:text-accent hover:bg-accent/5 rounded-lg font-mono;
+    @apply text-textColor/70;
   }
-  .nav-link::before {
-    content: "";
-    position: absolute;
-    left: 0.08em;
-    right: 0.08em;
-    bottom: 0;
-    height: 0.42em;
-    border-radius: 0.4em 0.2em;
-    background-image:
-      linear-gradient(
-        to right,
-        color-mix(in srgb, var(--color-accent) 4%, transparent),
-        color-mix(in srgb, var(--color-accent) 10%, transparent) 6%,
-        color-mix(in srgb, var(--color-accent) 5%, transparent)
-      );
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 200ms ease;
-    z-index: -1;
-  }
-  .dark .nav-link::before {
-    background-image: linear-gradient(
-      to right,
-      color-mix(in srgb, var(--color-accent) 6%, transparent),
-      color-mix(in srgb, var(--color-accent) 14%, transparent) 6%,
-      color-mix(in srgb, var(--color-accent) 7%, transparent)
-    );
-  }
-  .nav-link:hover::before,
-  .nav-link:focus-visible::before {
-    transform: scaleX(1);
-  }
-  .nav-link[aria-current="page"]::before {
-    transform: scaleX(1);
-    height: 0.62em;
-    background-image: linear-gradient(
-      to right,
-      color-mix(in srgb, var(--color-accent-2) 8%, transparent),
-      color-mix(in srgb, var(--color-accent-2) 20%, transparent) 6%,
-      color-mix(in srgb, var(--color-accent-2) 10%, transparent)
-    );
+  .nav-link[aria-current="page"] {
+    @apply text-accent font-semibold bg-accent/10;
   }
 
   /* Footer - Tech Blog Style */
@@ -1146,7 +1076,7 @@ ${createCssVariables("dark")}
 
   /* Search */
   .search-btn {
-    @apply hover:text-accent flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-all;
+    @apply hover:text-accent flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-accent/20 transition-all hover:border-accent;
   }
 
   .search-dialog {

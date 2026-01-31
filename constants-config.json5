@@ -33,32 +33,32 @@
 	// === Theme Customization ===
 	theme: {
 		preset: "classic",
-		// Tech blog aesthetic: Clean, modern, code-focused design
+		// Modern, refined color palette with improved contrast and accessibility
 		// Colors MUST be in RGB format with spaces
 		colors: {
 			bg: {
-				light: "255 255 255",      // Pure white for light mode (clean, minimal)
-				dark: "15 23 42",          // Deep slate blue (tech-friendly dark mode)
+				light: "252 252 253",      // Soft off-white (easier on eyes than pure white)
+				dark: "18 20 24",          // Rich dark charcoal (better than pure black)
 			},
 			text: {
-				light: "15 23 42",         // Deep slate for excellent readability
-				dark: "248 250 252",       // Almost white for dark mode (high contrast)
+				light: "23 23 23",         // Deep charcoal for excellent readability
+				dark: "250 250 250",       // Soft white for dark mode (high contrast, less harsh)
 			},
 			link: {
-				light: "37 99 235",        // Bright tech blue (GitHub-style)
-				dark: "96 165 250",        // Sky blue for dark mode (high visibility)
+				light: "37 99 235",        // Vibrant blue (modern, accessible)
+				dark: "96 165 250",        // Bright sky blue for dark mode
 			},
 			accent: {
-				light: "14 165 233",       // Cyan/blue (tech primary - like VS Code)
-				dark: "56 189 248",        // Bright cyan for dark mode (vibrant tech feel)
+				light: "59 130 246",       // Modern blue (balanced, professional)
+				dark: "96 165 250",        // Bright blue for dark mode
 			},
 			"accent-2": {
-				light: "34 197 94",        // Tech green (success, code completion)
+				light: "34 197 94",        // Fresh green (success, positive)
 				dark: "74 222 128",        // Bright green for dark mode
 			},
 			quote: {
-				light: "100 116 139",      // Slate grey (subtle, readable)
-				dark: "148 163 184",       // Light slate for quotes in dark mode
+				light: "107 114 128",      // Balanced grey (readable, subtle)
+				dark: "156 163 175",       // Light grey for quotes in dark mode
 			},
 		},
 		// Tech-optimized fonts: JetBrains Mono throughout the entire app

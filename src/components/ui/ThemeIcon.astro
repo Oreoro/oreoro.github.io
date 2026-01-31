@@ -4,8 +4,15 @@ const { order = 0 } = Astro.props;
 // https://docs.astro.build/en/tutorial/6-islands/2/
 ---
 
-<theme-toggle class:list={["ml-auto", `order-${order}`, "sm:order-3"]}>
-	<button type="button" id="themeToggle" class="theme-toggle-btn group" aria-label="Toggle Theme">
+<theme-toggle class:list={["ml-auto", `order-${order}`, "sm:order-3", "relative"]}>
+	<button 
+		type="button" 
+		id="themeToggle" 
+		class="theme-toggle-btn group flex h-10 w-10 items-center justify-center rounded-lg border border-accent/20 transition-all hover:border-accent hover:text-accent" 
+		aria-label="Theme Selector"
+		aria-expanded="false"
+		aria-haspopup="menu"
+	>
 		<Icon
 			class="theme-icon group-data-[theme=system]:scale-100 group-data-[theme=system]:opacity-100"
 			name={"theme-system"}
@@ -37,6 +44,35 @@ const { order = 0 } = Astro.props;
 			stroke-linecap="round"
 		/>
 	</button>
+	<div id="theme-menu" class="theme-menu hidden absolute right-0 top-full mt-2 min-w-[140px] rounded-lg border border-accent/10 bg-bgColor/98 backdrop-blur-lg shadow-xl py-2 z-50">
+		<button 
+			type="button" 
+			class="theme-menu-item w-full px-4 py-2.5 text-left text-sm transition-all hover:bg-accent/5 hover:text-accent flex items-center gap-2"
+			data-theme-value="light"
+			aria-label="Light Theme"
+		>
+			<Icon name={"theme-light"} class="h-4 w-4" stroke="currentColor" fill="none" stroke-width="1.5" />
+			<span>Light</span>
+		</button>
+		<button 
+			type="button" 
+			class="theme-menu-item w-full px-4 py-2.5 text-left text-sm transition-all hover:bg-accent/5 hover:text-accent flex items-center gap-2"
+			data-theme-value="dark"
+			aria-label="Dark Theme"
+		>
+			<Icon name={"theme-dark"} class="h-4 w-4" stroke="currentColor" fill="none" stroke-width="1.5" />
+			<span>Dark</span>
+		</button>
+		<button 
+			type="button" 
+			class="theme-menu-item w-full px-4 py-2.5 text-left text-sm transition-all hover:bg-accent/5 hover:text-accent flex items-center gap-2"
+			data-theme-value="system"
+			aria-label="System Theme"
+		>
+			<Icon name={"theme-system"} class="h-4 w-4" stroke="currentColor" fill="none" stroke-width="1.5" />
+			<span>System</span>
+		</button>
+	</div>
 </theme-toggle>
 
 <script is:inline>
@@ -59,25 +95,63 @@ const { order = 0 } = Astro.props;
 		}
 		// Set data-theme on the toggle button to drive Tailwind's group-based variants
 		const toggleButton = document.getElementById("themeToggle");
-		toggleButton.setAttribute("data-theme", theme);
+		if (toggleButton) {
+			toggleButton.setAttribute("data-theme", theme);
+		}
+		// Update menu item active states
+		updateMenuActiveState(theme);
+	};
+
+	const updateMenuActiveState = (theme) => {
+		const menuItems = document.querySelectorAll(".theme-menu-item");
+		menuItems.forEach(item => {
+			if (item.getAttribute("data-theme-value") === theme) {
+				item.classList.add("text-accent", "font-semibold");
+			} else {
+				item.classList.remove("text-accent", "font-semibold");
+			}
+		});
 	};
 
 	// Initial theme setup
 	updateTheme();
 
-	const handleToggleClick = () => {
-		const theme = getThemePreference();
-		let newTheme = "system";
+	const toggleButton = document.getElementById("themeToggle");
+	const themeMenu = document.getElementById("theme-menu");
+	let menuOpen = false;
 
-		if (theme === "system") newTheme = "light";
-		if (theme === "light") newTheme = "dark";
-		if (theme === "dark") newTheme = "system";
+	// Toggle menu visibility
+	if (toggleButton && themeMenu) {
+		toggleButton.addEventListener("click", (e) => {
+			e.stopPropagation();
+			menuOpen = !menuOpen;
+			themeMenu.classList.toggle("hidden", !menuOpen);
+			toggleButton.setAttribute("aria-expanded", menuOpen.toString());
+		});
 
-		localStorage.setItem("theme", newTheme);
-		updateTheme();
-	};
+		// Handle menu item clicks
+		const menuItems = document.querySelectorAll(".theme-menu-item");
+		menuItems.forEach(item => {
+			item.addEventListener("click", (e) => {
+				e.stopPropagation();
+				const selectedTheme = item.getAttribute("data-theme-value");
+				localStorage.setItem("theme", selectedTheme);
+				updateTheme();
+				menuOpen = false;
+				themeMenu.classList.add("hidden");
+				toggleButton.setAttribute("aria-expanded", "false");
+			});
+		});
 
-	document.getElementById("themeToggle").addEventListener("click", handleToggleClick);
+		// Close menu when clicking outside
+		document.addEventListener("click", (e) => {
+			if (menuOpen && !toggleButton.contains(e.target) && !themeMenu.contains(e.target)) {
+				menuOpen = false;
+				themeMenu.classList.add("hidden");
+				toggleButton.setAttribute("aria-expanded", "false");
+			}
+		});
+	}
 
 	// Listen for system theme changes
 	window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
