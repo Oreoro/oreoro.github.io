@@ -932,10 +932,20 @@ ${createCssVariables("dark")}
     @apply ml-1;
   }
 
-  /* Header - Tech Blog Style */
+  /* Header - Tech Blog Style - Unified Header & Navigation */
   .site-header {
-    @apply relative mb-6 flex w-full items-center justify-between border-b border-accent/10 pb-3 lg:-ml-[25%] lg:w-[150%];
+    @apply sticky top-0 z-50 w-full mb-6 border-b border-accent/10 bg-bgColor/95 backdrop-blur-md print:static print:backdrop-blur-none;
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--color-accent) 5%, transparent);
   }
+  
+  .header-container {
+    @apply flex flex-col w-full;
+  }
+  
+  .header-top {
+    @apply flex items-center justify-between w-full py-3 px-4 lg:px-6;
+  }
+  
   .tech-header-logo {
     @apply no-underline;
   }
@@ -946,113 +956,72 @@ ${createCssVariables("dark")}
     @apply border-accent/20 text-textColor/70;
   }
   
-  /* Right Side Navigation */
-  .right-side-nav {
-    @apply fixed top-0 right-0 h-screen w-52 bg-bgColor/95 border-l border-accent/15 pt-24 pb-12 px-4 flex flex-col gap-1 z-40 shadow-2xl backdrop-blur-lg print:hidden overflow-y-auto;
-    @apply hidden lg:flex;
-    @apply transform transition-transform duration-300 ease-in-out;
-    background: linear-gradient(
-      to left,
-      color-mix(in srgb, var(--color-bgColor) 98%, transparent),
-      color-mix(in srgb, var(--color-bgColor) 95%, transparent)
-    );
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--color-accent) 20%, transparent) transparent;
+  /* Desktop Navigation - Integrated into Header */
+  .desktop-nav {
+    @apply hidden lg:flex items-center gap-1 px-4 pb-3 lg:px-6 border-t border-accent/5;
   }
   
-  .right-side-nav::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  .right-side-nav::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  .right-side-nav::-webkit-scrollbar-thumb {
-    background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
-    border-radius: 2px;
-    transition: background-color 0.2s ease;
-  }
-  
-  .right-side-nav::-webkit-scrollbar-thumb:hover {
-    background-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
-  }
-  
-  .right-nav-link {
-    @apply relative z-0 px-3 py-2.5 text-right transition-all duration-200 ease-out text-sm rounded-lg;
+  .desktop-nav-link {
+    @apply relative z-0 px-4 py-2 text-sm transition-all duration-200 ease-out rounded-md;
     @apply text-textColor/70 hover:text-accent hover:bg-accent/8;
-    @apply border-r-2 border-transparent;
     @apply font-mono tracking-tight;
   }
   
-  .right-nav-link::before {
+  .desktop-nav-link::before {
     content: "";
     position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%) scaleY(0);
-    width: 3px;
-    height: 60%;
-    border-radius: 0 3px 3px 0;
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-accent) 30%, transparent),
-      color-mix(in srgb, var(--color-accent) 50%, transparent),
-      color-mix(in srgb, var(--color-accent) 30%, transparent)
+    left: 0.08em;
+    right: 0.08em;
+    bottom: 0.2em;
+    height: 0.3em;
+    border-radius: 0.2em;
+    background-image: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-accent) 4%, transparent),
+      color-mix(in srgb, var(--color-accent) 10%, transparent) 50%,
+      color-mix(in srgb, var(--color-accent) 4%, transparent)
     );
-    transition: transform 200ms ease-out, height 200ms ease-out;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms ease;
     z-index: -1;
   }
   
-  .dark .right-nav-link::before {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-accent) 40%, transparent),
-      color-mix(in srgb, var(--color-accent) 60%, transparent),
-      color-mix(in srgb, var(--color-accent) 40%, transparent)
+  .dark .desktop-nav-link::before {
+    background-image: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-accent) 6%, transparent),
+      color-mix(in srgb, var(--color-accent) 14%, transparent) 50%,
+      color-mix(in srgb, var(--color-accent) 6%, transparent)
     );
   }
   
-  .right-nav-link:hover {
-    @apply translate-x-[-2px];
+  .desktop-nav-link:hover::before,
+  .desktop-nav-link:focus-visible::before {
+    transform: scaleX(1);
   }
   
-  .right-nav-link:hover::before,
-  .right-nav-link:focus-visible::before {
-    transform: translateY(-50%) scaleY(1);
+  .desktop-nav-link[aria-current="page"] {
+    @apply text-accent font-semibold bg-accent/10;
   }
   
-  .right-nav-link[aria-current="page"] {
-    @apply text-accent font-semibold bg-accent/10 border-accent/40;
-  }
-  
-  .right-nav-link[aria-current="page"]::before {
-    transform: translateY(-50%) scaleY(1);
-    height: 80%;
-    width: 3px;
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-accent-2) 40%, transparent),
-      color-mix(in srgb, var(--color-accent-2) 70%, transparent),
-      color-mix(in srgb, var(--color-accent-2) 40%, transparent)
-    );
-  }
-  
-  .dark .right-nav-link[aria-current="page"]::before {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-accent-2) 50%, transparent),
-      color-mix(in srgb, var(--color-accent-2) 80%, transparent),
-      color-mix(in srgb, var(--color-accent-2) 50%, transparent)
+  .desktop-nav-link[aria-current="page"]::before {
+    transform: scaleX(1);
+    height: 0.4em;
+    background-image: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-accent-2) 8%, transparent),
+      color-mix(in srgb, var(--color-accent-2) 20%, transparent) 50%,
+      color-mix(in srgb, var(--color-accent-2) 8%, transparent)
     );
   }
   
   /* Mobile Navigation Menu (for small screens) */
   .nav-menu {
-    @apply bg-bgColor/95 text-accent absolute -inset-x-4 top-12 hidden flex-col items-end rounded-lg border border-accent/10 py-2.5 text-sm shadow-lg backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex lg:hidden gap-y-1.5;
+    @apply bg-bgColor/98 text-accent absolute left-0 right-0 top-full mt-2 hidden flex-col rounded-lg border border-accent/10 py-3 px-4 text-sm shadow-xl backdrop-blur-md group-[.menu-open]:z-50 group-[.menu-open]:flex lg:hidden gap-y-1.5 mx-4;
   }
   .nav-link {
-    @apply relative z-0 w-fit self-end px-4 py-2 text-right transition-all hover:text-accent;
+    @apply relative z-0 w-full px-4 py-2.5 text-left transition-all hover:text-accent hover:bg-accent/5 rounded-md;
   }
   .nav-link::before {
     content: "";

@@ -15,80 +15,81 @@ const rss_path = getNavLink("/rss.xml");
 ---
 
 <header id="main-header" class="site-header group">
-	<div class="flex items-center justify-between w-full">
-		<a
-			href={getNavLink("/")}
-			class="tech-header-logo inline-flex items-center font-mono transition-all hover:text-accent"
-			aria-current={currentPath === "/" ? "page" : false}
-		>
-			<span class="text-base font-medium tracking-tight sm:text-lg">{siteInfo.title}</span>
-		</a>
-		<div class="tech-header-actions flex flex-row items-center gap-1.5 print:hidden">
+	<div class="header-container">
+		<div class="header-top">
 			<a
-				href={rss_path}
-				class="tech-action-btn flex h-8 w-8 items-center justify-center rounded border transition-all hover:border-accent hover:text-accent"
-				aria-label="Open RSS Link"
+				href={getNavLink("/")}
+				class="tech-header-logo inline-flex items-center font-mono transition-all hover:text-accent"
+				aria-current={currentPath === "/" ? "page" : false}
 			>
-				<Icon name={"rss"} class="h-4 w-4" />
+				<span class="text-base font-medium tracking-tight sm:text-lg">{siteInfo.title}</span>
 			</a>
-			<Search />
-			<ThemeIcon />
-			<mobile-button class="flex items-center lg:hidden">
-				<button
-					id="toggle-navigation-menu"
-					class="group relative ms-1.5 h-8 w-8 cursor-pointer rounded border transition-all hover:border-accent hover:text-accent"
-					type="button"
-					aria-label="Open main menu"
-					aria-expanded="false"
-					aria-haspopup="menu"
-				>
-					<Icon
-						name={"menu"}
-						class="absolute start-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"
-						aria-hidden="true"
-						focusable="false"
-					/>
-
-					<Icon
-						name={"close"}
-						class="text-accent absolute start-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
-						aria-hidden="true"
-						focusable="false"
-					/>
-				</button>
-			</mobile-button>
-		</div>
-	</div>
-	<nav id="navigation-menu" class="nav-menu" aria-label="Mobile menu">
-		{
-			menuLinks.map((link) => (
+			<div class="tech-header-actions flex flex-row items-center gap-1.5 print:hidden">
 				<a
-					href={link.path}
-					class="nav-link font-mono text-sm"
-					aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
-					data-astro-prefetch
+					href={rss_path}
+					class="tech-action-btn flex h-8 w-8 items-center justify-center rounded border transition-all hover:border-accent hover:text-accent"
+					aria-label="Open RSS Link"
 				>
-					{link.title}
+					<Icon name={"rss"} class="h-4 w-4" />
 				</a>
-			))
-		}
-	</nav>
-</header>
+				<Search />
+				<ThemeIcon />
+				<mobile-button class="flex items-center lg:hidden">
+					<button
+						id="toggle-navigation-menu"
+						class="group relative ms-1.5 h-8 w-8 cursor-pointer rounded border transition-all hover:border-accent hover:text-accent"
+						type="button"
+						aria-label="Open main menu"
+						aria-expanded="false"
+						aria-haspopup="menu"
+					>
+						<Icon
+							name={"menu"}
+							class="absolute start-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"
+							aria-hidden="true"
+							focusable="false"
+						/>
 
-<nav id="right-side-nav" class="right-side-nav" aria-label="Main navigation">
-	{
-		menuLinks.map((link) => (
-			<a
-				href={link.path}
-				class="right-nav-link font-mono text-sm"
-				aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
-				data-astro-prefetch
-			>
-				{link.title}
-			</a>
-		))
-	}
-</nav>
+						<Icon
+							name={"close"}
+							class="text-accent absolute start-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
+							aria-hidden="true"
+							focusable="false"
+						/>
+					</button>
+				</mobile-button>
+			</div>
+		</div>
+		<nav id="desktop-nav" class="desktop-nav" aria-label="Main navigation">
+			{
+				menuLinks.map((link) => (
+					<a
+						href={link.path}
+						class="desktop-nav-link font-mono text-sm"
+						aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
+						data-astro-prefetch
+					>
+						{link.title}
+					</a>
+				))
+			}
+		</nav>
+		<nav id="navigation-menu" class="nav-menu" aria-label="Mobile menu">
+			{
+				menuLinks.map((link) => (
+					<a
+						href={link.path}
+						class="nav-link font-mono text-sm"
+						aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
+						data-astro-prefetch
+					>
+						{link.title}
+					</a>
+				))
+			}
+		</nav>
+	</div>
+</header>
 
 <script>
 	class MobileNavBtn extends HTMLElement {
