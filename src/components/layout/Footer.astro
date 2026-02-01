@@ -1,41 +1,83 @@
 ---
 import { getMenu } from "@/utils";
 import { normalizeNavPath } from "@/lib/blog-helpers";
-import SocialList from "@/components/ui/SocialList.astro";
+import { siteInfo } from "@/site.config";
 
 const menuLinks = await getMenu();
 const currentPath = normalizeNavPath(Astro.url.pathname);
 ---
 
 <footer class="site-footer" id="main-footer">
-	<div class="tech-footer-content">
-		<nav aria-label="More on this site" class="footer-nav">
+	<div class="footer-container">
+		<nav aria-label="Footer navigation" class="footer-nav">
 			{
 				menuLinks.map((link, index) => (
 					<>
 						<a
 							href={link.path}
-							class="footer-link font-mono text-xs"
+							class={`footer-link ${currentPath === normalizeNavPath(link.path) ? 'active' : ''}`}
 							aria-current={currentPath === normalizeNavPath(link.path) ? "page" : false}
 						>
 							{link.title}
 						</a>
 						{index < menuLinks.length - 1 && (
-							<span class="footer-separator text-accent/30" aria-hidden="true">/</span>
+							<span class="footer-separator" aria-hidden="true">|</span>
 						)}
 					</>
 				))
 			}
 		</nav>
-		<div class="tech-footer-meta">
-			<SocialList />
-			<div class="tech-footer-terminal-prompt mt-4 sm:mt-0">
-				<p class="tech-footer-copyright font-mono text-xs text-quote">
-					<span class="tech-prompt-prefix text-accent/60">$</span>
-					<span class="tech-prompt-text ml-1.5">© {new Date().getFullYear()} • Built with code</span>
-					<span class="tech-prompt-cursor ml-1 inline-block w-0.5 h-3 bg-accent animate-pulse"></span>
-				</p>
-			</div>
+		<div class="footer-copyright">
+			© {new Date().getFullYear()} {siteInfo.title}
 		</div>
 	</div>
 </footer>
+
+<style>
+	.site-footer {
+		border-top: 1px solid var(--color-border);
+		padding: 2rem 0;
+		margin-top: 3rem;
+	}
+
+	.footer-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1rem;
+		text-align: center;
+	}
+
+	.footer-nav {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		margin-bottom: 1rem;
+	}
+
+	.footer-link {
+		text-decoration: none;
+		color: var(--color-text);
+		font-size: 0.875rem;
+		padding: 0.25rem 0.5rem;
+	}
+
+	.footer-link:hover {
+		color: var(--color-accent);
+	}
+
+	.footer-link.active {
+		color: var(--color-accent);
+	}
+
+	.footer-separator {
+		color: var(--color-quote);
+	}
+
+	.footer-copyright {
+		font-size: 0.875rem;
+		color: var(--color-quote);
+		margin-top: 1rem;
+	}
+</style>

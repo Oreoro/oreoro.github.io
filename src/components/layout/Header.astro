@@ -4,82 +4,59 @@ import { getMenu } from "@/utils";
 import { siteInfo } from "@/site.config";
 import { getNavLink, normalizeNavPath } from "@/lib/blog-helpers";
 import Icon from "@/components/ui/Icon.astro";
-import ThemeIcon from "@/components/ui/ThemeIcon.astro";
 
 const menuLinks = await getMenu();
 
 const url = new URL(Astro.request.url);
 const currentPath = normalizeNavPath(url.pathname);
-
-const rss_path = getNavLink("/rss.xml");
 ---
 
-<header id="main-header" class="site-header group">
+<header id="main-header" class="site-header">
 	<div class="header-container">
-		<div class="header-top">
+		<div class="header-content">
 			<a
 				href={getNavLink("/")}
-				class="tech-header-logo inline-flex items-center font-mono transition-all hover:text-accent relative group/logo"
+				class="header-logo"
 				aria-current={currentPath === "/" ? "page" : false}
 			>
-				<span class="tech-logo-prefix text-accent/60 mr-1.5 font-mono text-sm opacity-0 group-hover/logo:opacity-100 transition-opacity">$</span>
-				<span class="text-xl font-semibold tracking-tight sm:text-2xl">{siteInfo.title}</span>
-				<span class="tech-logo-cursor ml-1.5 w-0.5 h-5 bg-accent animate-pulse opacity-0 group-hover/logo:opacity-100 transition-opacity"></span>
+				{siteInfo.title}
 			</a>
-			<div class="tech-header-actions flex flex-row items-center gap-2 print:hidden">
-				<a
-					href={rss_path}
-					class="tech-action-btn flex h-10 w-10 items-center justify-center rounded-lg border transition-all hover:border-accent hover:text-accent"
-					aria-label="Open RSS Link"
-				>
-					<Icon name={"rss"} class="h-5 w-5" />
-				</a>
+			<nav id="desktop-nav" class="desktop-nav" aria-label="Main navigation">
+				{
+					menuLinks.map((link, index) => {
+						const isActive = currentPath === normalizeNavPath(link.path);
+						return (
+							<>
+								<a
+									href={link.path}
+									class={`nav-link ${isActive ? 'active' : ''}`}
+									aria-current={isActive ? "page" : false}
+									data-astro-prefetch
+								>
+									{link.title}
+								</a>
+								{index < menuLinks.length - 1 && <span class="nav-separator">|</span>}
+							</>
+						);
+					})
+				}
+			</nav>
+			<div class="header-actions">
 				<Search />
-				<ThemeIcon />
-				<mobile-button class="flex items-center lg:hidden">
+				<mobile-button class="mobile-menu-btn">
 					<button
 						id="toggle-navigation-menu"
-						class="group relative ms-1.5 h-10 w-10 cursor-pointer rounded-lg border transition-all hover:border-accent hover:text-accent"
 						type="button"
 						aria-label="Open main menu"
 						aria-expanded="false"
 						aria-haspopup="menu"
 					>
-						<Icon
-							name={"menu"}
-							class="absolute start-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"
-							aria-hidden="true"
-							focusable="false"
-						/>
-
-						<Icon
-							name={"close"}
-							class="text-accent absolute start-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
-							aria-hidden="true"
-							focusable="false"
-						/>
+						<Icon name={"menu"} class="menu-icon" aria-hidden="true" focusable="false" />
+						<Icon name={"close"} class="close-icon" aria-hidden="true" focusable="false" />
 					</button>
 				</mobile-button>
 			</div>
 		</div>
-		<nav id="desktop-nav" class="desktop-nav" aria-label="Main navigation">
-			{
-				menuLinks.map((link) => {
-					const isActive = currentPath === normalizeNavPath(link.path);
-					return (
-						<a
-							href={link.path}
-							class="desktop-nav-link font-mono text-base relative group/nav"
-							aria-current={isActive ? "page" : false}
-							data-astro-prefetch
-						>
-							{isActive && <span class="tech-nav-indicator text-accent/60 mr-1">></span>}
-							{link.title}
-						</a>
-					);
-				})
-			}
-		</nav>
 		<nav id="navigation-menu" class="nav-menu" aria-label="Mobile menu">
 			{
 				menuLinks.map((link) => {
@@ -87,11 +64,10 @@ const rss_path = getNavLink("/rss.xml");
 					return (
 						<a
 							href={link.path}
-							class="nav-link font-mono text-sm relative group/mobile"
+							class={`nav-link ${isActive ? 'active' : ''}`}
 							aria-current={isActive ? "page" : false}
 							data-astro-prefetch
 						>
-							{isActive && <span class="tech-nav-indicator text-accent/60 mr-1">></span>}
 							{link.title}
 						</a>
 					);
@@ -100,6 +76,185 @@ const rss_path = getNavLink("/rss.xml");
 		</nav>
 	</div>
 </header>
+
+<style>
+	.site-header {
+		border-bottom: 1px solid var(--color-border);
+		padding: 1rem 0;
+		background-color: var(--color-bgColor);
+	}
+
+	.header-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
+
+	.header-content {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.header-logo {
+		font-size: 1.25rem;
+		font-weight: 600;
+		text-decoration: none;
+		color: var(--color-text);
+		transition: color 0.2s ease;
+	}
+
+	.header-logo:hover {
+		color: var(--color-accent);
+	}
+
+	.desktop-nav {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		flex: 1;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.nav-link {
+		text-decoration: none;
+		color: var(--color-text);
+		padding: 0.5rem 0.75rem;
+		font-size: 0.9375rem;
+		font-weight: 400;
+		border-radius: 4px;
+		transition: all 0.2s ease;
+		position: relative;
+		white-space: nowrap;
+	}
+
+	.nav-link:hover {
+		color: var(--color-accent);
+		background-color: color-mix(in srgb, var(--color-accent) 8%, transparent);
+	}
+
+	.nav-link.active {
+		color: var(--color-accent);
+		font-weight: 600;
+		background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+	}
+
+	.nav-link.active::after {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 60%;
+		height: 2px;
+		background-color: var(--color-accent);
+		border-radius: 2px;
+	}
+
+	.nav-separator {
+		color: var(--color-quote);
+		opacity: 0.4;
+		margin: 0 0.125rem;
+		font-weight: 300;
+	}
+
+	.header-actions {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.mobile-menu-btn {
+		display: none;
+	}
+
+	.mobile-menu-btn button {
+		background: none;
+		border: 1px solid var(--color-border);
+		border-radius: 4px;
+		padding: 0.5rem;
+		cursor: pointer;
+		position: relative;
+		width: 2.5rem;
+		height: 2.5rem;
+	}
+
+	.mobile-menu-btn .close-icon {
+		display: none;
+	}
+
+	.mobile-menu-btn button[aria-expanded="true"] .menu-icon {
+		display: none;
+	}
+
+	.mobile-menu-btn button[aria-expanded="true"] .close-icon {
+		display: block;
+	}
+
+	.nav-menu {
+		display: none;
+		flex-direction: column;
+		gap: 0.25rem;
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.nav-menu .nav-link {
+		padding: 0.75rem 1rem;
+		border-radius: 6px;
+		width: 100%;
+		text-align: left;
+	}
+
+	.nav-menu .nav-link:hover {
+		background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+	}
+
+	.nav-menu .nav-link.active {
+		background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
+	}
+
+	.nav-menu .nav-link.active::after {
+		display: none;
+	}
+
+	.site-header.menu-open .nav-menu {
+		display: flex;
+	}
+
+	@media (max-width: 1024px) {
+		.desktop-nav {
+			gap: 0.125rem;
+		}
+
+		.nav-link {
+			padding: 0.4rem 0.6rem;
+			font-size: 0.875rem;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.desktop-nav {
+			display: none;
+		}
+
+		.mobile-menu-btn {
+			display: block;
+		}
+
+		.header-content {
+			flex-wrap: nowrap;
+		}
+
+		.header-logo {
+			font-size: 1.125rem;
+		}
+	}
+</style>
 
 <script>
 	class MobileNavBtn extends HTMLElement {
@@ -129,14 +284,12 @@ const rss_path = getNavLink("/rss.xml");
 			var navMenu = document.getElementById("navigation-menu");
 			var mainHeader = document.getElementById("main-header");
 
-			// Check if the click is on the toggle button or a descendant of it
 			var isClickInsideToggleButton = toggleButton.contains(event.target);
 
 			if (!isClickInsideToggleButton && event.target instanceof Node) {
 				var isClickInsideNav = navMenu.contains(event.target);
 
 				if (!isClickInsideNav && mainHeader) {
-					// If the click is outside the navMenu and mainHeader exists, remove 'menu-open' attribute
 					mainHeader.classList.remove("menu-open");
 					toggleButton.setAttribute("aria-expanded", "false");
 				}
