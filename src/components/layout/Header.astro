@@ -1,5 +1,6 @@
 ---
 import Search from "@/components/ui/Search.astro";
+import ThemeIcon from "@/components/ui/ThemeIcon.astro";
 import { getMenu } from "@/utils";
 import { siteInfo } from "@/site.config";
 import { getNavLink, normalizeNavPath } from "@/lib/blog-helpers";
@@ -25,22 +26,28 @@ const currentPath = normalizeNavPath(url.pathname);
 				{menuLinks.map((link, index) => {
 					const isActive = currentPath === normalizeNavPath(link.path);
 					return (
-						<>
-							{index > 0 && <span class="nav-separator">|</span>}
-							<a
-								href={link.path}
-								class={`nav-link ${isActive ? 'active' : ''}`}
-								aria-current={isActive ? "page" : false}
-								data-astro-prefetch
-							>
-								{link.title}
-							</a>
-						</>
+						<a
+							href={link.path}
+							class={`nav-link ${isActive ? 'active' : ''}`}
+							aria-current={isActive ? "page" : false}
+							data-astro-prefetch
+						>
+							{link.title}
+						</a>
 					);
 				})}
 			</nav>
 			<div class="header-actions">
+				<a
+					href={getNavLink("/rss.xml")}
+					class="rss-link"
+					aria-label="RSS Feed"
+					title="RSS Feed"
+				>
+					<Icon name={"rss"} class="rss-icon" aria-hidden="true" />
+				</a>
 				<Search />
+				<ThemeIcon />
 				<button
 					id="toggle-navigation-menu"
 					class="mobile-menu-btn"
@@ -112,8 +119,15 @@ const currentPath = normalizeNavPath(url.pathname);
 		gap: 0;
 		flex: 1;
 		justify-content: center;
-		flex-wrap: wrap;
+		flex-wrap: nowrap;
 		min-width: 0;
+		overflow-x: auto;
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+	}
+
+	.desktop-nav::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera */
 	}
 
 	.desktop-nav .nav-link {
@@ -126,6 +140,16 @@ const currentPath = normalizeNavPath(url.pathname);
 		display: inline-block;
 	}
 
+	/* Add separator before each link except the first */
+	.desktop-nav .nav-link:not(:first-child)::before {
+		content: "|";
+		color: var(--color-quote);
+		opacity: 0.4;
+		margin-right: 0.5rem;
+		margin-left: -0.25rem;
+		display: inline-block;
+	}
+
 	.desktop-nav .nav-link:hover {
 		color: var(--color-accent);
 	}
@@ -134,19 +158,36 @@ const currentPath = normalizeNavPath(url.pathname);
 		color: var(--color-accent);
 	}
 
-	.nav-separator {
-		color: var(--color-quote);
-		opacity: 0.4;
-		margin: 0 0.25rem;
-		white-space: nowrap;
-		display: inline-block;
-	}
-
 	.header-actions {
 		display: flex;
 		align-items: center;
-		gap: 1rem;
+		gap: 0.5rem;
 		flex-shrink: 0;
+	}
+
+	.rss-link {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border: 1px solid var(--color-border);
+		border-radius: 4px;
+		color: var(--color-textColor);
+		text-decoration: none;
+		transition: all 0.2s ease;
+		flex-shrink: 0;
+	}
+
+	.rss-link:hover {
+		color: var(--color-accent);
+		border-color: var(--color-accent);
+		background-color: color-mix(in srgb, var(--color-accent) 5%, transparent);
+	}
+
+	.rss-icon {
+		width: 1.25rem;
+		height: 1.25rem;
 	}
 
 	.mobile-menu-btn {
