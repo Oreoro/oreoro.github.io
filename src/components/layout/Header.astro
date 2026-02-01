@@ -22,24 +22,24 @@ const currentPath = normalizeNavPath(url.pathname);
 				{siteInfo.title}
 			</a>
 			<nav id="desktop-nav" class="desktop-nav" aria-label="Main navigation">
-				{
-					menuLinks.map((link, index) => {
-						const isActive = currentPath === normalizeNavPath(link.path);
-						return (
-							<>
-								<a
-									href={link.path}
-									class={`nav-link ${isActive ? 'active' : ''}`}
-									aria-current={isActive ? "page" : false}
-									data-astro-prefetch
-								>
-									{link.title}
-								</a>
-								{index < menuLinks.length - 1 && <span class="nav-separator">|</span>}
-							</>
-						);
-					})
-				}
+				{menuLinks.map((link, index) => {
+					const isActive = currentPath === normalizeNavPath(link.path);
+					const items = [];
+					if (index > 0) {
+						items.push(<span class="nav-separator">|</span>);
+					}
+					items.push(
+						<a
+							href={link.path}
+							class={`nav-link ${isActive ? 'active' : ''}`}
+							aria-current={isActive ? "page" : false}
+							data-astro-prefetch
+						>
+							{link.title}
+						</a>
+					);
+					return items;
+				}).flat()}
 			</nav>
 			<div class="header-actions">
 				<Search />
@@ -95,7 +95,7 @@ const currentPath = normalizeNavPath(url.pathname);
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		flex-wrap: wrap;
+		flex-wrap: nowrap;
 	}
 
 	.header-logo {
@@ -104,6 +104,8 @@ const currentPath = normalizeNavPath(url.pathname);
 		text-decoration: none;
 		color: var(--color-text);
 		transition: color 0.2s ease;
+		flex-shrink: 0;
+		white-space: nowrap;
 	}
 
 	.header-logo:hover {
@@ -111,12 +113,23 @@ const currentPath = normalizeNavPath(url.pathname);
 	}
 
 	.desktop-nav {
-		display: flex;
+		display: flex !important;
 		align-items: center;
 		gap: 0.25rem;
 		flex: 1;
 		justify-content: center;
-		flex-wrap: wrap;
+		flex-wrap: nowrap !important;
+		flex-shrink: 1;
+		min-width: 0;
+		flex-direction: row !important;
+	}
+
+	.desktop-nav .nav-link {
+		display: inline-block !important;
+	}
+
+	.desktop-nav .nav-separator {
+		display: inline-block !important;
 	}
 
 	.nav-link {
@@ -129,6 +142,8 @@ const currentPath = normalizeNavPath(url.pathname);
 		transition: all 0.2s ease;
 		position: relative;
 		white-space: nowrap;
+		display: inline-block;
+		flex-shrink: 0;
 	}
 
 	.nav-link:hover {
@@ -159,12 +174,15 @@ const currentPath = normalizeNavPath(url.pathname);
 		opacity: 0.4;
 		margin: 0 0.125rem;
 		font-weight: 300;
+		display: inline-block;
+		flex-shrink: 0;
 	}
 
 	.header-actions {
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+		flex-shrink: 0;
 	}
 
 	.mobile-menu-btn {
@@ -232,8 +250,19 @@ const currentPath = normalizeNavPath(url.pathname);
 		}
 
 		.nav-link {
-			padding: 0.4rem 0.6rem;
+			padding: 0.4rem 0.5rem;
 			font-size: 0.875rem;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.desktop-nav {
+			gap: 0.1rem;
+		}
+
+		.nav-link {
+			padding: 0.35rem 0.4rem;
+			font-size: 0.8125rem;
 		}
 	}
 
