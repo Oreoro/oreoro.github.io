@@ -22,39 +22,35 @@ const currentPath = normalizeNavPath(url.pathname);
 				{siteInfo.title}
 			</a>
 			<nav id="desktop-nav" class="desktop-nav" aria-label="Main navigation">
-				{
-					menuLinks.map((link, index) => {
-						const isActive = currentPath === normalizeNavPath(link.path);
-						return (
-							<>
-								{index > 0 && <span class="nav-separator">|</span>}
-								<a
-									href={link.path}
-									class={`nav-link ${isActive ? 'active' : ''}`}
-									aria-current={isActive ? "page" : false}
-									data-astro-prefetch
-								>
-									{link.title}
-								</a>
-							</>
-						);
-					})
-				}
+				{menuLinks.map((link, index) => {
+					const isActive = currentPath === normalizeNavPath(link.path);
+					return (
+						<>
+							{index > 0 && <span class="nav-separator">|</span>}
+							<a
+								href={link.path}
+								class={`nav-link ${isActive ? 'active' : ''}`}
+								aria-current={isActive ? "page" : false}
+								data-astro-prefetch
+							>
+								{link.title}
+							</a>
+						</>
+					);
+				})}
 			</nav>
 			<div class="header-actions">
 				<Search />
-				<mobile-button class="mobile-menu-btn">
-					<button
-						id="toggle-navigation-menu"
-						type="button"
-						aria-label="Open main menu"
-						aria-expanded="false"
-						aria-haspopup="menu"
-					>
-						<Icon name={"menu"} class="menu-icon" aria-hidden="true" focusable="false" />
-						<Icon name={"close"} class="close-icon" aria-hidden="true" focusable="false" />
-					</button>
-				</mobile-button>
+				<button
+					id="toggle-navigation-menu"
+					class="mobile-menu-btn"
+					type="button"
+					aria-label="Toggle menu"
+					aria-expanded="false"
+				>
+					<Icon name={"menu"} class="menu-icon" aria-hidden="true" />
+					<Icon name={"close"} class="close-icon" aria-hidden="true" />
+				</button>
 			</div>
 		</div>
 		<nav id="navigation-menu" class="nav-menu" aria-label="Mobile menu">
@@ -81,7 +77,7 @@ const currentPath = normalizeNavPath(url.pathname);
 	.site-header {
 		border-bottom: 1px solid var(--color-border);
 		padding: 1rem 0;
-		background-color: var(--color-bgColor);
+		font-family: var(--font-mono), var(--font-sans), ui-monospace, monospace;
 	}
 
 	.header-container {
@@ -95,17 +91,15 @@ const currentPath = normalizeNavPath(url.pathname);
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		flex-wrap: nowrap;
+		flex-wrap: wrap;
 	}
 
 	.header-logo {
-		font-size: 1.25rem;
-		font-weight: 600;
+		font-size: 1rem;
+		font-weight: 400;
 		text-decoration: none;
-		color: var(--color-text);
-		transition: color 0.2s ease;
+		color: var(--color-textColor);
 		flex-shrink: 0;
-		white-space: nowrap;
 	}
 
 	.header-logo:hover {
@@ -115,75 +109,37 @@ const currentPath = normalizeNavPath(url.pathname);
 	.desktop-nav {
 		display: flex;
 		align-items: center;
-		gap: 0.25rem;
+		gap: 0;
 		flex: 1;
 		justify-content: center;
-		flex-wrap: nowrap;
-		flex-shrink: 1;
+		flex-wrap: wrap;
 		min-width: 0;
 	}
 
 	.desktop-nav .nav-link {
 		text-decoration: none;
-		color: var(--color-text);
-		padding: 0.5rem 0.75rem;
-		font-size: 0.9375rem;
+		color: var(--color-textColor);
+		padding: 0.25rem 0.5rem;
+		font-size: 0.875rem;
 		font-weight: 400;
-		border-radius: 4px;
-		transition: all 0.2s ease;
-		position: relative;
 		white-space: nowrap;
-		flex-shrink: 0;
+		display: inline-block;
 	}
 
 	.desktop-nav .nav-link:hover {
 		color: var(--color-accent);
-		background-color: color-mix(in srgb, var(--color-accent) 8%, transparent);
 	}
 
 	.desktop-nav .nav-link.active {
 		color: var(--color-accent);
-		font-weight: 600;
-		background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
-	}
-
-	.desktop-nav .nav-link.active::after {
-		content: "";
-		position: absolute;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 60%;
-		height: 2px;
-		background-color: var(--color-accent);
-		border-radius: 2px;
-	}
-
-	.nav-link {
-		text-decoration: none;
-		color: var(--color-text);
-		padding: 0.5rem 0.75rem;
-		font-size: 0.9375rem;
-		font-weight: 400;
-		border-radius: 4px;
-		transition: all 0.2s ease;
-		position: relative;
-		white-space: nowrap;
-	}
-
-	.desktop-nav .nav-separator {
-		color: var(--color-quote);
-		opacity: 0.4;
-		margin: 0 0.125rem;
-		font-weight: 300;
-		flex-shrink: 0;
 	}
 
 	.nav-separator {
 		color: var(--color-quote);
 		opacity: 0.4;
-		margin: 0 0.125rem;
-		font-weight: 300;
+		margin: 0 0.25rem;
+		white-space: nowrap;
+		display: inline-block;
 	}
 
 	.header-actions {
@@ -195,15 +151,11 @@ const currentPath = normalizeNavPath(url.pathname);
 
 	.mobile-menu-btn {
 		display: none;
-	}
-
-	.mobile-menu-btn button {
 		background: none;
 		border: 1px solid var(--color-border);
 		border-radius: 4px;
 		padding: 0.5rem;
 		cursor: pointer;
-		position: relative;
 		width: 2.5rem;
 		height: 2.5rem;
 	}
@@ -212,66 +164,41 @@ const currentPath = normalizeNavPath(url.pathname);
 		display: none;
 	}
 
-	.mobile-menu-btn button[aria-expanded="true"] .menu-icon {
+	.mobile-menu-btn[aria-expanded="true"] .menu-icon {
 		display: none;
 	}
 
-	.mobile-menu-btn button[aria-expanded="true"] .close-icon {
+	.mobile-menu-btn[aria-expanded="true"] .close-icon {
 		display: block;
 	}
 
 	.nav-menu {
 		display: none;
 		flex-direction: column;
-		gap: 0.25rem;
+		gap: 0.5rem;
 		margin-top: 1rem;
 		padding-top: 1rem;
 		border-top: 1px solid var(--color-border);
 	}
 
 	.nav-menu .nav-link {
-		padding: 0.75rem 1rem;
-		border-radius: 6px;
-		width: 100%;
-		text-align: left;
+		padding: 0.5rem 0;
+		color: var(--color-textColor);
+		text-decoration: none;
+		font-size: 0.875rem;
+		font-weight: 400;
 	}
 
 	.nav-menu .nav-link:hover {
-		background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+		color: var(--color-accent);
 	}
 
 	.nav-menu .nav-link.active {
-		background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
-	}
-
-	.nav-menu .nav-link.active::after {
-		display: none;
+		color: var(--color-accent);
 	}
 
 	.site-header.menu-open .nav-menu {
 		display: flex;
-	}
-
-	@media (max-width: 1024px) {
-		.desktop-nav {
-			gap: 0.125rem;
-		}
-
-		.desktop-nav .nav-link {
-			padding: 0.4rem 0.5rem;
-			font-size: 0.875rem;
-		}
-	}
-
-	@media (max-width: 900px) {
-		.desktop-nav {
-			gap: 0.1rem;
-		}
-
-		.desktop-nav .nav-link {
-			padding: 0.35rem 0.4rem;
-			font-size: 0.8125rem;
-		}
 	}
 
 	@media (max-width: 768px) {
@@ -282,55 +209,32 @@ const currentPath = normalizeNavPath(url.pathname);
 		.mobile-menu-btn {
 			display: block;
 		}
-
-		.header-content {
-			flex-wrap: nowrap;
-		}
-
-		.header-logo {
-			font-size: 1.125rem;
-		}
 	}
 </style>
 
 <script>
-	class MobileNavBtn extends HTMLElement {
-		constructor() {
-			super();
+	const toggleButton = document.getElementById("toggle-navigation-menu");
+	const navMenu = document.getElementById("navigation-menu");
+	const mainHeader = document.getElementById("main-header");
 
-			const mobileButtonEl = document.getElementById("toggle-navigation-menu");
-			let menuOpen = false;
+	if (toggleButton && navMenu && mainHeader) {
+		// Toggle menu on button click
+		toggleButton.addEventListener("click", () => {
+			const isOpen = mainHeader.classList.toggle("menu-open");
+			toggleButton.setAttribute("aria-expanded", isOpen.toString());
+		});
 
-			function toggleMobileMenu() {
-				const headerEl = document.getElementById("main-header")!;
-				headerEl.classList.toggle("menu-open");
-				menuOpen = !menuOpen;
-				mobileButtonEl.setAttribute("aria-expanded", menuOpen.toString());
-			}
-
-			mobileButtonEl.addEventListener("click", () => toggleMobileMenu());
-		}
-	}
-
-	customElements.define("mobile-button", MobileNavBtn);
-
-	document.addEventListener("DOMContentLoaded", function () {
-		var toggleButton = document.getElementById("toggle-navigation-menu");
-
-		document.addEventListener("click", function (event) {
-			var navMenu = document.getElementById("navigation-menu");
-			var mainHeader = document.getElementById("main-header");
-
-			var isClickInsideToggleButton = toggleButton.contains(event.target);
-
-			if (!isClickInsideToggleButton && event.target instanceof Node) {
-				var isClickInsideNav = navMenu.contains(event.target);
-
-				if (!isClickInsideNav && mainHeader) {
-					mainHeader.classList.remove("menu-open");
-					toggleButton.setAttribute("aria-expanded", "false");
-				}
+		// Close menu when clicking outside
+		document.addEventListener("click", (event) => {
+			const target = event.target as Node;
+			if (
+				mainHeader.classList.contains("menu-open") &&
+				!toggleButton.contains(target) &&
+				!navMenu.contains(target)
+			) {
+				mainHeader.classList.remove("menu-open");
+				toggleButton.setAttribute("aria-expanded", "false");
 			}
 		});
-	});
+	}
 </script>
