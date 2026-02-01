@@ -22,24 +22,24 @@ const currentPath = normalizeNavPath(url.pathname);
 				{siteInfo.title}
 			</a>
 			<nav id="desktop-nav" class="desktop-nav" aria-label="Main navigation">
-				{menuLinks.map((link, index) => {
-					const isActive = currentPath === normalizeNavPath(link.path);
-					const items = [];
-					if (index > 0) {
-						items.push(<span class="nav-separator">|</span>);
-					}
-					items.push(
-						<a
-							href={link.path}
-							class={`nav-link ${isActive ? 'active' : ''}`}
-							aria-current={isActive ? "page" : false}
-							data-astro-prefetch
-						>
-							{link.title}
-						</a>
-					);
-					return items;
-				}).flat()}
+				{
+					menuLinks.map((link, index) => {
+						const isActive = currentPath === normalizeNavPath(link.path);
+						return (
+							<>
+								{index > 0 && <span class="nav-separator">|</span>}
+								<a
+									href={link.path}
+									class={`nav-link ${isActive ? 'active' : ''}`}
+									aria-current={isActive ? "page" : false}
+									data-astro-prefetch
+								>
+									{link.title}
+								</a>
+							</>
+						);
+					})
+				}
 			</nav>
 			<div class="header-actions">
 				<Search />
@@ -113,23 +113,50 @@ const currentPath = normalizeNavPath(url.pathname);
 	}
 
 	.desktop-nav {
-		display: flex !important;
+		display: flex;
 		align-items: center;
 		gap: 0.25rem;
 		flex: 1;
 		justify-content: center;
-		flex-wrap: nowrap !important;
+		flex-wrap: nowrap;
 		flex-shrink: 1;
 		min-width: 0;
-		flex-direction: row !important;
 	}
 
 	.desktop-nav .nav-link {
-		display: inline-block !important;
+		text-decoration: none;
+		color: var(--color-text);
+		padding: 0.5rem 0.75rem;
+		font-size: 0.9375rem;
+		font-weight: 400;
+		border-radius: 4px;
+		transition: all 0.2s ease;
+		position: relative;
+		white-space: nowrap;
+		flex-shrink: 0;
 	}
 
-	.desktop-nav .nav-separator {
-		display: inline-block !important;
+	.desktop-nav .nav-link:hover {
+		color: var(--color-accent);
+		background-color: color-mix(in srgb, var(--color-accent) 8%, transparent);
+	}
+
+	.desktop-nav .nav-link.active {
+		color: var(--color-accent);
+		font-weight: 600;
+		background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+	}
+
+	.desktop-nav .nav-link.active::after {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 60%;
+		height: 2px;
+		background-color: var(--color-accent);
+		border-radius: 2px;
 	}
 
 	.nav-link {
@@ -142,31 +169,14 @@ const currentPath = normalizeNavPath(url.pathname);
 		transition: all 0.2s ease;
 		position: relative;
 		white-space: nowrap;
-		display: inline-block;
+	}
+
+	.desktop-nav .nav-separator {
+		color: var(--color-quote);
+		opacity: 0.4;
+		margin: 0 0.125rem;
+		font-weight: 300;
 		flex-shrink: 0;
-	}
-
-	.nav-link:hover {
-		color: var(--color-accent);
-		background-color: color-mix(in srgb, var(--color-accent) 8%, transparent);
-	}
-
-	.nav-link.active {
-		color: var(--color-accent);
-		font-weight: 600;
-		background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
-	}
-
-	.nav-link.active::after {
-		content: "";
-		position: absolute;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 60%;
-		height: 2px;
-		background-color: var(--color-accent);
-		border-radius: 2px;
 	}
 
 	.nav-separator {
@@ -174,8 +184,6 @@ const currentPath = normalizeNavPath(url.pathname);
 		opacity: 0.4;
 		margin: 0 0.125rem;
 		font-weight: 300;
-		display: inline-block;
-		flex-shrink: 0;
 	}
 
 	.header-actions {
@@ -249,7 +257,7 @@ const currentPath = normalizeNavPath(url.pathname);
 			gap: 0.125rem;
 		}
 
-		.nav-link {
+		.desktop-nav .nav-link {
 			padding: 0.4rem 0.5rem;
 			font-size: 0.875rem;
 		}
@@ -260,7 +268,7 @@ const currentPath = normalizeNavPath(url.pathname);
 			gap: 0.1rem;
 		}
 
-		.nav-link {
+		.desktop-nav .nav-link {
 			padding: 0.35rem 0.4rem;
 			font-size: 0.8125rem;
 		}
