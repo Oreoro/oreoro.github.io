@@ -80,7 +80,7 @@ const { order = 0 } = Astro.props;
 		if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
 			return localStorage.getItem("theme");
 		}
-		return "system";
+		return "dark";
 	};
 
 	const updateTheme = () => {
