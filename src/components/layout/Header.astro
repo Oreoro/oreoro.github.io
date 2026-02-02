@@ -147,17 +147,6 @@ const currentPath = normalizeNavPath(url.pathname);
 		position: relative;
 	}
 
-	/* Add separator between links */
-	.desktop-nav .nav-link:not(:last-child)::after {
-		content: "|";
-		color: var(--color-textColor);
-		opacity: 0.25;
-		margin-left: 0.75rem;
-		display: inline-block;
-		font-weight: 300;
-		pointer-events: none;
-	}
-
 	.desktop-nav .nav-link:hover {
 		color: var(--color-accent);
 	}
