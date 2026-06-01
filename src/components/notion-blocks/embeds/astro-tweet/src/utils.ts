@@ -111,15 +111,16 @@ type Entity = {
 function getEntities(tweet: TweetBase): Entity[] {
 	const textMap = Array.from(tweet.text);
 	const result: EntityWithType[] = [{ indices: tweet.display_text_range, type: "text" }];
+	const entities: Partial<TweetBase["entities"]> = tweet.entities ?? {};
 
-	addEntities(result, "hashtag", tweet.entities.hashtags);
-	addEntities(result, "mention", tweet.entities.user_mentions);
-	addEntities(result, "url", tweet.entities.urls);
-	addEntities(result, "symbol", tweet.entities.symbols);
-	if (tweet.entities.media) {
-		addEntities(result, "media", tweet.entities.media);
+	addEntities(result, "hashtag", entities.hashtags);
+	addEntities(result, "mention", entities.user_mentions);
+	addEntities(result, "url", entities.urls);
+	addEntities(result, "symbol", entities.symbols);
+	if (Array.isArray(entities.media)) {
+		addEntities(result, "media", entities.media);
 	}
-	fixRange(tweet, result);
+	fixRange(tweet, result, entities.media);
 
 	return result.map((entity) => {
 		const text = textMap.slice(entity.indices[0], entity.indices[1]).join("");
@@ -148,8 +149,10 @@ function getEntities(tweet: TweetBase): Entity[] {
 function addEntities(
 	result: EntityWithType[],
 	type: EntityWithType["type"],
-	entities: TweetEntity[],
+	entities?: TweetEntity[] | null,
 ) {
+	if (!Array.isArray(entities)) return;
+
 	for (const entity of entities) {
 		for (const [i, item] of result.entries()) {
 			if (item.indices[0] > entity.indices[0] || item.indices[1] < entity.indices[1]) {
@@ -181,9 +184,10 @@ function addEntities(
  * Update display_text_range to work w/ Array.from
  * Array.from is unicode aware, unlike string.slice()
  */
-function fixRange(tweet: TweetBase, entities: EntityWithType[]) {
-	if (tweet.entities.media && tweet.entities.media[0].indices[0] < tweet.display_text_range[1]) {
-		tweet.display_text_range[1] = tweet.entities.media[0].indices[0];
+function fixRange(tweet: TweetBase, entities: EntityWithType[], media?: MediaEntity[] | null) {
+	const firstMedia = Array.isArray(media) ? media[0] : undefined;
+	if (firstMedia && firstMedia.indices[0] < tweet.display_text_range[1]) {
+		tweet.display_text_range[1] = firstMedia.indices[0];
 	}
 	const lastEntity = entities.at(-1);
 	if (lastEntity && lastEntity.indices[1] > tweet.display_text_range[1]) {
