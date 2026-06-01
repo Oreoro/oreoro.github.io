@@ -61,6 +61,26 @@ const useGiscus =
 	GISCUS["data-repo-id"] &&
 	GISCUS["data-category"] &&
 	GISCUS["data-category-id"];
+
+const rgbStringToHex = (value?: string): string | null => {
+	if (!value) return null;
+	if (value.startsWith("#")) return value;
+
+	const channels = value
+		.trim()
+		.split(/\s+/)
+		.map((channel) => Number(channel));
+
+	if (channels.length < 3 || channels.some((channel) => Number.isNaN(channel))) {
+		return null;
+	}
+
+	return `#${channels
+		.slice(0, 3)
+		.map((channel) => Math.max(0, Math.min(255, channel)).toString(16).padStart(2, "0"))
+		.join("")}`;
+};
+const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 ---
 
 <meta charset="utf-8" />
@@ -119,7 +139,8 @@ const useGiscus =
 <meta name="author" content={metaAuthor} />
 
 {/* Theme Colour */}
-<meta name="theme-color" content="" />
+<meta name="color-scheme" content="dark light" />
+<meta name="theme-color" content={themeColor} />
 
 {/* Open Graph / Facebook */}
 <meta property="og:type" content={articleDate ? "article" : "website"} />
