@@ -1,11 +1,11 @@
 ---
 import Icon from "@/components/ui/Icon.astro";
-const { order = 0 } = Astro.props;
 // https://docs.astro.build/en/tutorial/6-islands/2/
 ---
 
-<theme-toggle class:list={["ml-auto", `order-${order}`, "sm:order-3"]}>
+<theme-toggle class="site-theme-toggle">
 	<button type="button" id="themeToggle" class="theme-toggle-btn group" aria-label="Toggle Theme">
+		<span class="theme-toggle-label">Theme</span>
 		<Icon
 			class="theme-icon group-data-[theme=system]:scale-100 group-data-[theme=system]:opacity-100"
 			name={"theme-system"}

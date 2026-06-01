@@ -209,7 +209,9 @@ ${createCssVariables("dark")}
   }
 
   html body {
-    @apply mx-auto flex min-h-screen max-w-3xl flex-col bg-bgColor px-8 pt-8 text-textColor antialiased overflow-x-hidden;
+    @apply mx-auto flex min-h-screen w-full max-w-[1040px] flex-col bg-bgColor px-5 pt-8 text-textColor antialiased overflow-x-hidden sm:px-8 sm:pt-10;
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace);
+    background-image: none;
   }
 
   @media print {
@@ -317,11 +319,11 @@ ${createCssVariables("dark")}
 
 @layer components {
   .site-page-link {
-    @apply underline decoration-wavy decoration-from-font decoration-accent-2/40 hover:decoration-accent-2/60 underline-offset-2;
+    @apply text-textColor underline decoration-[0.08em] underline-offset-[0.12em] transition-colors hover:text-accent;
   }
 
   .title {
-    @apply text-3xl font-bold text-accent-2;
+    @apply mb-4 border-b border-textColor/35 pb-1 text-xl font-bold uppercase text-textColor sm:text-2xl;
   }
 
   .notion-h1 {
@@ -1588,6 +1590,119 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
   .datatable-top.filter-active .datatable-info {
     @apply w-full pr-2 text-right;
   }
+}
+
+/* Minimal content-first layout */
+.content-shell {
+  @apply mx-auto w-full max-w-[960px];
+}
+
+.home-shell {
+  @apply mx-auto w-full max-w-[960px] space-y-12;
+}
+
+.home-intro {
+  @apply pt-12 pb-2;
+}
+
+.home-eyebrow {
+  @apply mb-2 text-base font-bold uppercase text-textColor;
+}
+
+.home-title {
+  @apply border-b border-textColor/35 pb-1 text-xl font-bold uppercase leading-tight text-textColor sm:text-2xl;
+}
+
+.home-summary {
+  @apply mt-3 max-w-none text-lg font-semibold leading-tight text-textColor sm:text-xl;
+}
+
+.writing-index {
+  @apply pt-6;
+}
+
+.writing-index-title {
+  @apply mb-3 border-b border-textColor/35 pb-1 text-xl font-bold uppercase text-textColor sm:text-2xl;
+}
+
+.minimal-post-list {
+  @apply list-none;
+}
+
+.minimal-link-row {
+  @apply block py-0 text-lg font-bold leading-tight text-textColor underline decoration-[0.08em] underline-offset-[0.12em] sm:text-xl;
+}
+
+.quiet-link {
+  @apply mt-6 inline-block text-lg font-bold text-textColor underline decoration-[0.08em] underline-offset-[0.12em] transition-colors hover:text-accent;
+}
+
+.site-header {
+  @apply mx-auto mb-14 flex w-fit max-w-full flex-col items-stretch text-center print:hidden;
+}
+
+.site-brand {
+  @apply border-b border-textColor/35 px-1 pb-1 text-xl font-bold uppercase leading-tight text-textColor no-underline transition-colors hover:text-accent sm:text-2xl;
+}
+
+.site-header-actions {
+  @apply flex shrink-0 items-center justify-between gap-10 pt-2 text-lg font-bold uppercase leading-tight text-textColor sm:text-xl;
+}
+
+.site-header-link {
+  @apply text-textColor no-underline transition-colors hover:text-accent;
+}
+
+.site-header-actions site-search,
+.site-header-actions theme-toggle {
+  @apply m-0 flex h-auto w-auto items-center justify-center;
+}
+
+.search-btn,
+.theme-toggle-btn {
+  @apply h-auto w-auto rounded-none p-0 text-lg font-bold uppercase leading-tight text-textColor hover:text-accent sm:text-xl;
+}
+
+.theme-toggle-label,
+.search-label {
+  @apply block;
+}
+
+.site-header-actions .theme-icon {
+  @apply hidden;
+}
+
+.post-preview-row {
+  @apply flex max-w-full items-baseline gap-[0.55ch] py-0 text-lg font-bold leading-tight sm:text-xl;
+}
+
+.post-preview-date {
+  @apply shrink-0 font-bold text-textColor;
+}
+
+.post-preview-date::after {
+  content: ":";
+}
+
+.post-preview-main {
+  @apply min-w-0;
+}
+
+.post-preview-title {
+  @apply m-0 inline text-lg font-bold leading-tight text-textColor sm:text-xl;
+}
+
+.post-preview-title a {
+  @apply underline decoration-[0.08em] underline-offset-[0.12em];
+}
+
+.pagination-nav {
+  @apply mt-8 border-t border-textColor/35 pt-3 text-lg font-bold text-textColor;
+  border-color: color-mix(in srgb, var(--color-textColor) 14%, transparent);
+}
+
+.site-footer {
+  @apply mt-auto flex w-full justify-center pt-16 pb-6 text-sm font-bold text-textColor/55 print:hidden;
 }
 
 /* Gallery Grid Layout - 1 col sm, 2 cols md, 3 cols lg */

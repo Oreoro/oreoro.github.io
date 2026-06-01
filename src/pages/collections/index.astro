@@ -13,14 +13,14 @@ const collections = await getCollectionsWDesc();
 ---
 
 <PageLayout meta={meta}>
-	<h1 class="title mb-6">Collections</h1>
-	<ul class="space-y-4">
-		{
-			collections.map(({ name, description }) => (
-				<li class="flex max-w-full flex-col items-start gap-x-2">
-					<div>
+	<div class="content-shell">
+		<h1 class="title mb-6">Collections</h1>
+		<ul class="minimal-post-list">
+			{
+				collections.map(({ name }) => (
+					<li>
 						<a
-							class="site-page-link inline-block"
+							class="site-page-link minimal-link-row"
 							href={getNavLink("/collections/" + slugify(name) + "/")}
 							title={`View posts within collection: ${name}`}
 							data-astro-prefetch
@@ -28,14 +28,9 @@ const collections = await getCollectionsWDesc();
 						>
 							{name}
 						</a>
-					</div>
-					{description && description.trim() !== "" && (
-						<div>
-							<q class="block italic">{description}</q>
-						</div>
-					)}
-				</li>
-			))
-		}
-	</ul>
+					</li>
+				))
+			}
+		</ul>
+	</div>
 </PageLayout>

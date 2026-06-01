@@ -4,9 +4,9 @@
 	// This section configures the connection to your Notion database.
 	notion: {
 		// (Preferred) The Data Source ID for your Notion integration. This is a more stable way to connect to your database. You can find this in UI here: https://developers.notion.com/reference/retrieve-a-data-source#finding-a-data-source-id
-		"data-source-id": "f6e3813f-eb93-4a77-bbf4-81ad653d63ba",
+		"data-source-id": "e009145c-7c53-8233-b722-077a73705e13",
 		// (Fallback) The classic Database ID. This is used only if 'data-source-id' is empty. The integration will automatically find the Data Source ID and use the first one from this if needed.
-		"database-id": "",
+		"database-id": "ffb9145c7c53830ea7d0818cbf4eae08",
 	},
 
 	// === Site Information ===
@@ -68,33 +68,33 @@
 		colors: {
 			// Background colors
 			bg: {
-				light: "249 249 249",
-				dark: "28 30 32",
+				light: "244 246 242",
+				dark: "18 20 20",
 			},
 			// Main text colors
 			text: {
-				light: "34 39 42",
-				dark: "255 255 255",
+				light: "24 28 28",
+				dark: "235 239 235",
 			},
 			// Link colors
 			link: {
-				light: "85 123 118",
-				dark: "199 200 203",
+				light: "18 22 25",
+				dark: "235 239 235",
 			},
 			// Primary accent color (e.g., for titles, highlights)
 			accent: {
-				light: "203 41 65",
-				dark: "41 188 136",
+				light: "196 55 43",
+				dark: "255 151 113",
 			},
 			// Secondary accent color (e.g., for borders, subtle highlights)
 			"accent-2": {
-				light: "17 17 17",
-				dark: "237 237 237",
+				light: "18 22 25",
+				dark: "242 246 241",
 			},
 			// Color for blockquotes and other special text
 			quote: {
-				light: "203 41 65",
-				dark: "205 254 183",
+				light: "39 131 128",
+				dark: "162 232 200",
 			},
 		},
 		"fontfamily-google-fonts": {
@@ -102,22 +102,22 @@
 			// We automatically load weights [400, 500, 600, 700] and styles [normal, italic] for all fonts (it is fine if they are not available).
 			// Main body/UI font - can be a sans-serif OR serif typeface (e.g., "Roboto", "Merriweather", "Inter")
 			// If empty and mono-font-name is set, mono will be used for everything.
-			"sans-font-name": "Roboto",
+			"sans-font-name": "Inter",
 			// Monospace font for code blocks (e.g., "Fira Code", "JetBrains Mono")
 			// No need to escape spaces in font names!
-			"mono-font-name": "Roboto Mono",
+			"mono-font-name": "JetBrains Mono",
 		},
 		// Enable using the cover image as the hero background (with an overlay for text readability).
 		// When enabled, displays a low-opacity tinted banner behind the title/date/tags area
 		// using the Cover image (only when a Cover image exists).
-		"cover-as-hero-background": true,
+		"cover-as-hero-background": false,
 	},
 
 	// === Social Media Links ===
 	// Add your social media profile URLs here. They will be displayed in the site's social list component.
 	// The keys (e.g., 'github', 'twitter') are fixed and correspond to specific icons.
 	socials: {
-		email: "mailto:your-email@example.com",
+		email: "",
 		github: "",
 		googlescholar: "",
 		semanticscholar: "",
@@ -133,7 +133,7 @@
 		kofi: "",
 		"buy-me-a-coffee": "",
 		// This link is for forked repo you'll end up having. Feel free to change it to your needs.
-		"this-github-repo": "https://github.com/nerdymomocat-templates/webtrotion-astro-notion-cms-website-blog",
+		"this-github-repo": "",
 	},
 
 	// === Analytics Tracking ===
@@ -179,10 +179,10 @@
 	comments: {
 		// Giscus is a comments system powered by GitHub Discussions. It's free and open-source. Go here for the process of setting it up: https://giscus.app/
 		giscus: {
-			"data-repo": "nerdymomocat-templates/webtrotion-astro-notion-cms-website-blog",
-			"data-repo-id": "R_kgDOK0FuUA",
-			"data-category": "Announcements",
-			"data-category-id": "DIC_kwDOK0FuUM4CbZ5A",
+			"data-repo": "",
+			"data-repo-id": "",
+			"data-category": "",
+			"data-category-id": "",
 			"data-mapping": "pathname",
 			"data-input-position": "top",
 			"data-reactions-enabled": true,

@@ -1,12 +1,8 @@
 ---
 import FormattedDate from "@/components/ui/FormattedDate.astro";
-import AuthorByline from "@/components/layout/AuthorByline.astro";
 import type { Post } from "@/lib/interfaces";
-import { getNotionColorToTailwindColor } from "@/utils/style-helpers";
 import { areDifferentDates } from "@/utils/date";
-import { getNavLink, getNotionImage, getImageComponentFormat } from "@/lib/blog-helpers";
-import Icon from "@/components/ui/Icon.astro";
-import { slugify } from "@/utils";
+import { getNotionImage, getImageComponentFormat } from "@/lib/blog-helpers";
 import { getImage } from "astro:assets";
 import { COVER_AS_HERO_BACKGROUND_ENABLED } from "@/constants";
 import HeroBackgroundCover from "@/components/layout/HeroBackgroundCover.astro";
@@ -78,21 +74,19 @@ if (showHeroBackground && post.Cover?.Url) {
 	class="mb-4"
 >
 	<h1
-		class="title mb-3 sm:mb-1"
+		class="title mb-4"
 		data-pagefind-filter=`collections:${post.Collection}`
 		data-pagefind-weight="10"
 	>
 		{post.Title}
 	</h1>
-	{post.Excerpt && <q class="mb-2 block italic">{post.Excerpt}</q>}
-	{post.Authors !== undefined && <AuthorByline authors={post.Authors} class="mb-2" />}
-	<div class="flex max-w-full flex-wrap items-center gap-x-3 gap-y-2">
-		<p class="font-semibold">
+	<div class="text-textColor/70 flex max-w-full flex-wrap items-center gap-x-3 gap-y-2 text-sm">
+		<p class="font-mono font-semibold uppercase">
 			<FormattedDate date={post.Date} dateTimeOptions={dateTimeOptions} />
 		</p>
 		{
 			post.Date && post.LastUpdatedDate && areDifferentDates(post.Date, post.LastUpdatedDate) && (
-				<span class="bg-quote/10 text-quote rounded-lg p-1">
+				<span class="border-quote/20 bg-quote/10 text-quote rounded-md border px-2 py-1">
 					{"Last Updated:"}
 					<FormattedDate
 						class="ms-1"
@@ -103,32 +97,5 @@ if (showHeroBackground && post.Cover?.Url) {
 			)
 		}
 	</div>
-	{
-		post.Tags && post.Tags.length > 0 && (
-			<div class="mt-2">
-				<Icon
-					class="me-1 inline-block h-4 w-4"
-					name={"tag-outline"}
-					aria-hidden="true"
-					focusable="false"
-				/>
-				{post.Tags.map((tag, i) => (
-					<>
-						<a
-							class={`mt-1 inline-block rounded-lg px-2 ${getNotionColorToTailwindColor(
-								tag.color + "-background",
-								true,
-							)}`}
-							aria-label={`View more blogs with the tag ${tag.name}`}
-							href={getNavLink("/tags/" + slugify(tag.name) + "/")}
-							data-pagefind-filter="tags"
-						>
-							{tag.name}
-						</a>{" "}
-					</>
-				))}
-			</div>
-		)
-	}
 </HeroBackgroundCover>
-<hr class="divider bg-accent/30 mx-auto my-4 h-1 w-full rounded-sm border-none" />
+<hr class="divider" />

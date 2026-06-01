@@ -13,7 +13,6 @@ import NotionBlocks from "@/components/NotionBlocks.astro";
 import type { Post } from "@/lib/interfaces";
 import { siteInfo } from "@/siteInfo";
 import {
-	FULL_PREVIEW_COLLECTIONS,
 	HIDE_UNDERSCORE_SLUGS_IN_LISTS,
 	HOME_PAGE_SLUG,
 	RECENT_POSTS_ON_HOME_PAGE,
@@ -22,10 +21,8 @@ import {
 	CITATIONS,
 	BIBTEX_CITATIONS_ENABLED,
 	MARKDOWN_EXPORT_ENABLED,
-	LISTING_VIEW,
 } from "@/constants";
 import PostPreview from "@/components/listing-layout/PostPreview.astro";
-import PostCardGallery from "@/components/listing-layout/PostCardGallery.astro";
 import Icon from "@/components/ui/Icon.astro";
 import { buildHeadings } from "@/utils";
 import TOC from "@/components/auto-added-sections/TOC.astro";
@@ -94,12 +91,14 @@ interface Props {
 
 const { page: slug } = Astro.params;
 const { page, shouldUseCache, pageLastUpdatedBeforeLastBuild } = Astro.props;
+const homeDescription =
+	siteInfo.description ||
+	"This is my personal website, a small archive of notes, articles, and ideas.";
 
 resetCurrentHeadings();
 
 let pageFound = true;
 let blocks = null;
-let interlinkedContentInPage = null;
 let headings = null;
 let footnotesInPage = null;
 let citationsInPage = null;
@@ -109,10 +108,12 @@ if (!page) {
 	pageFound = false;
 }
 
+const isHomePage = pageFound && page?.Slug === HOME_PAGE_SLUG;
+
 // --- HTML Cache ---
 let cachedHtml = "";
 // If the page was updated before the last build, try to read the cached HTML.
-if (pageFound && shouldUseCache) {
+if (pageFound && !isHomePage && shouldUseCache) {
 	const cacheFilePath = path.join(BUILD_FOLDER_PATHS["blocksHtmlCache"], `${page.Slug}.html`);
 	try {
 		cachedHtml = await fs.readFile(cacheFilePath, "utf-8");
@@ -126,7 +127,7 @@ let cachedHeadings = null;
 const headingsCacheDir = BUILD_FOLDER_PATHS["headingsCache"];
 const headingsCacheFile = path.join(headingsCacheDir, `${page.Slug}.json`);
 
-if (pageFound && pageLastUpdatedBeforeLastBuild) {
+if (pageFound && !isHomePage && pageLastUpdatedBeforeLastBuild) {
 	try {
 		const headingsData = await fs.readFile(headingsCacheFile, "utf-8");
 		cachedHeadings = superjson.parse(headingsData);
@@ -135,10 +136,9 @@ if (pageFound && pageLastUpdatedBeforeLastBuild) {
 	}
 }
 
-if (pageFound) {
+if (pageFound && !isHomePage) {
 	const result = await getPostContentByPostId(page);
 	blocks = result.blocks;
-	interlinkedContentInPage = result.interlinkedContentInPage;
 	footnotesInPage = result.footnotesInPage;
 	citationsInPage = result.citationsInPage;
 
@@ -156,20 +156,12 @@ if (pageFound) {
 }
 
 let recent_posts = null;
-if (pageFound && page.Slug === HOME_PAGE_SLUG && RECENT_POSTS_ON_HOME_PAGE) {
+if (isHomePage && RECENT_POSTS_ON_HOME_PAGE) {
 	recent_posts = await getAllPosts();
-	recent_posts = recent_posts.filter((post) => !FULL_PREVIEW_COLLECTIONS.includes(post.Collection));
 	if (HIDE_UNDERSCORE_SLUGS_IN_LISTS) {
 		recent_posts = recent_posts.filter((post) => !post.Slug.startsWith("_"));
 	}
-	recent_posts = recent_posts.slice(0, 5);
-	if (recent_posts && headings) {
-		headings.push({
-			text: "Recent Posts",
-			slug: "auto-recent-posts",
-			depth: 1,
-		});
-	}
+	recent_posts = recent_posts.slice(0, 24);
 }
 ---
 
@@ -184,64 +176,59 @@ if (pageFound && page.Slug === HOME_PAGE_SLUG && RECENT_POSTS_ON_HOME_PAGE) {
 					hasMarkdownAlternate: MARKDOWN_EXPORT_ENABLED,
 				}}
 			>
-				<div class="max-w-[708px] sm:mr-20 print:mr-auto print:max-w-full">
-					<article class="break-words" data-pagefind-body>
-						{shouldUseCache && cachedHtml ? (
-							<div class="post-body" data-html-type="cached" set:html={cachedHtml} />
-						) : (
-							<div class="post-body" data-html-type="new">
-								<NotionBlocks blocks={blocks} />
-								{adjustedFootnotesConfig?.["in-page-footnotes-settings"]?.enabled &&
-									adjustedFootnotesConfig?.["in-page-footnotes-settings"]?.[
-										"generate-footnotes-section"
-									] &&
-									footnotesInPage && <FootnotesSection footnotes={footnotesInPage} />}
-								{/* Bibliography section */}
-								{BIBTEX_CITATIONS_ENABLED &&
-									CITATIONS?.["extract-and-process-bibtex-citations"]?.[
-										"generate-bibliography-section"
-									] &&
-									citationsInPage &&
-									citationsInPage.length > 0 && (
-										<BibliographySection citations={citationsInPage} />
-									)}{" "}
-							</div>
-						)}
-						{headings && !!headings.length && <TOC headings={headings} />}
-					</article>
-				</div>
-				{RECENT_POSTS_ON_HOME_PAGE && recent_posts && (
-					<div class="max-w-[708px] sm:mr-20 print:mr-auto print:max-w-full">
-						<h2 id="auto-recent-posts" class="hasId">
-							<strong class="font-semibold">Recent Posts</strong>
-						</h2>
-						<section aria-label="Recent posts list">
-							{LISTING_VIEW === "gallery" ? (
-								<div class="gallery-grid">
-									{recent_posts.map((post) => (
-										<PostCardGallery post={post} as="h3" />
-									))}
-								</div>
-							) : (
-								<ul>
+				{isHomePage ? (
+					<div class="home-shell">
+						<section class="home-intro" aria-labelledby="home-title">
+							<h1 id="home-title" class="home-title">
+								{siteInfo.title}
+							</h1>
+							<p class="home-summary">{homeDescription}</p>
+						</section>
+
+						{recent_posts && (
+							<section class="writing-index" aria-label="Latest posts">
+								<h2 id="auto-recent-posts" class="writing-index-title">
+									Articles
+								</h2>
+								<ul class="minimal-post-list">
 									{recent_posts.map((post) => (
 										<li>
-											<PostPreview post={post} as="h3" withDesc />
+											<PostPreview post={post} as="h3" />
 										</li>
 									))}
 								</ul>
-							)}
-							<span class="mt-4 block sm:text-end">
-								<a
-									class="sm:hover:text-accent inline-flex items-center gap-1"
-									href={getNavLink("/posts/")}
-									aria-label="View all posts"
-								>
-									View all
-									<Icon class="h-4 w-4" name={"next"} aria-hidden="true" focusable="false" />
+								<a class="quiet-link" href={getNavLink("/posts/")} aria-label="View all posts">
+									All posts
 								</a>
-							</span>
-						</section>
+							</section>
+						)}
+					</div>
+				) : (
+					<div class="content-shell print:mr-auto print:max-w-full">
+						<article class="break-words" data-pagefind-body>
+							{shouldUseCache && cachedHtml ? (
+								<div class="post-body" data-html-type="cached" set:html={cachedHtml} />
+							) : (
+								<div class="post-body" data-html-type="new">
+									<NotionBlocks blocks={blocks} />
+									{adjustedFootnotesConfig?.["in-page-footnotes-settings"]?.enabled &&
+										adjustedFootnotesConfig?.["in-page-footnotes-settings"]?.[
+											"generate-footnotes-section"
+										] &&
+										footnotesInPage && <FootnotesSection footnotes={footnotesInPage} />}
+									{/* Bibliography section */}
+									{BIBTEX_CITATIONS_ENABLED &&
+										CITATIONS?.["extract-and-process-bibtex-citations"]?.[
+											"generate-bibliography-section"
+										] &&
+										citationsInPage &&
+										citationsInPage.length > 0 && (
+											<BibliographySection citations={citationsInPage} />
+										)}{" "}
+								</div>
+							)}
+							{headings && !!headings.length && <TOC headings={headings} />}
+						</article>
 					</div>
 				)}
 			</PageLayout>

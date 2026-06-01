@@ -10,6 +10,7 @@ import {
 	NOTION_API_SECRET,
 	DATABASE_ID,
 	DATA_SOURCE_ID,
+	HOME_PAGE_SLUG,
 	MENU_PAGES_COLLECTION,
 	OPTIMIZE_IMAGES,
 	LAST_BUILD_TIME,
@@ -99,7 +100,6 @@ const factor = 2; // doubles the wait time with each retry
 const inFlightDownloads = new Map<string, Promise<void>>();
 
 let allEntriesCache: Post[] | null = null;
-let dsCache: Database | null = null;
 let blockIdPostIdMap: { [key: string]: string } | null = null;
 type WorkspaceCustomEmoji = {
 	id: string;
@@ -129,6 +129,310 @@ let allAuthorsWithCountsCache:
 
 // Authors: Track if Authors property exists in database schema
 let authorsPropertyExistsCache: boolean | null = null;
+
+type NotionClientRuntimeState = {
+	dsCache?: Database | null;
+};
+
+function getNotionClientRuntimeState(): NotionClientRuntimeState {
+	const stateKey = "__WEBTROTION_NOTION_CLIENT_STATE__";
+	const globalState = globalThis as typeof globalThis & {
+		[key: string]: NotionClientRuntimeState | undefined;
+	};
+	globalState[stateKey] ||= {};
+	return globalState[stateKey];
+}
+
+const LOCAL_FALLBACK_POSTS_COLLECTION = "Articles";
+const LOCAL_FALLBACK_DATE = "2026-05-31";
+const LOCAL_FALLBACK_DATA_SOURCE_ID = "local-fallback";
+
+function shouldUseLocalNotionFallback(): boolean {
+	return !NOTION_API_SECRET;
+}
+
+function isNotionAuthError(error: unknown): boolean {
+	return (
+		error instanceof APIResponseError &&
+		(error.code === "unauthorized" || error.status === 401 || error.status === 403)
+	);
+}
+
+var warnedAboutLocalNotionFallback: boolean | undefined;
+
+function warnAboutLocalNotionFallback(reason: string): void {
+	if (warnedAboutLocalNotionFallback) return;
+	warnedAboutLocalNotionFallback = true;
+	console.warn(`[notion] ${reason} Using local demo content instead.`);
+}
+
+function createFallbackSelectOptions() {
+	const localFallbackPostsCollection = "Articles";
+
+	return {
+		Collection: {
+			select: {
+				options: [
+					{
+						id: "local-main",
+						name: MENU_PAGES_COLLECTION,
+						color: "gray",
+						description: "Static pages",
+					},
+					{
+						id: "local-articles",
+						name: localFallbackPostsCollection,
+						color: "gray",
+						description: "Articles",
+					},
+				],
+			},
+		},
+		Tags: {
+			multi_select: {
+				options: [
+					{
+						id: "local-design",
+						name: "Design",
+						color: "gray",
+						description: "Interface and layout notes",
+					},
+					{
+						id: "local-astro",
+						name: "Astro",
+						color: "blue",
+						description: "Astro implementation notes",
+					},
+					{
+						id: "local-notion",
+						name: "Notion",
+						color: "green",
+						description: "CMS workflow notes",
+					},
+				],
+			},
+		},
+	};
+}
+
+function createFallbackDatabase(): Database {
+	const localFallbackDate = "2026-05-31";
+
+	return {
+		Title: "Personal Website",
+		Description: "A local fallback blog rendered without a Notion API token.",
+		Icon: null,
+		Cover: null,
+		propertiesRaw: createFallbackSelectOptions() as any,
+		LastUpdatedTimeStamp: new Date(`${localFallbackDate}T00:00:00.000Z`),
+	};
+}
+
+const fallbackTagDesign: SelectProperty = {
+	id: "local-design",
+	name: "Design",
+	color: "gray",
+	description: "Interface and layout notes",
+};
+
+const fallbackTagAstro: SelectProperty = {
+	id: "local-astro",
+	name: "Astro",
+	color: "blue",
+	description: "Astro implementation notes",
+};
+
+const fallbackTagNotion: SelectProperty = {
+	id: "local-notion",
+	name: "Notion",
+	color: "green",
+	description: "CMS workflow notes",
+};
+
+function createFallbackPost({
+	pageId,
+	title,
+	slug,
+	date,
+	excerpt,
+	collection,
+	tags = [],
+	rank = null,
+	pinned = false,
+}: {
+	pageId: string;
+	title: string;
+	slug: string;
+	date: string;
+	excerpt: string;
+	collection: string;
+	tags?: SelectProperty[];
+	rank?: number | null;
+	pinned?: boolean;
+}): Post {
+	return {
+		PageId: pageId,
+		Title: title,
+		Collection: collection,
+		Icon: null,
+		Cover: null,
+		Slug: slug,
+		Date: date,
+		Tags: tags,
+		Excerpt: excerpt,
+		FeaturedImage: null,
+		Rank: rank,
+		LastUpdatedDate: "",
+		LastUpdatedTimeStamp: new Date(`${date || LOCAL_FALLBACK_DATE}T00:00:00.000Z`),
+		Pinned: pinned,
+		BlueSkyPostLink: "",
+		IsExternal: false,
+		ExternalUrl: null,
+		ExternalContent: null,
+	};
+}
+
+const fallbackEntries: Post[] = [
+	createFallbackPost({
+		pageId: "local-home",
+		title: "Personal Website",
+		slug: HOME_PAGE_SLUG,
+		date: LOCAL_FALLBACK_DATE,
+		excerpt: "A tiny local blog shell that works before Notion is connected.",
+		collection: MENU_PAGES_COLLECTION,
+		rank: 0,
+	}),
+	createFallbackPost({
+		pageId: "local-post-optional-notion",
+		title: "Making Notion Optional",
+		slug: "making-notion-optional",
+		date: "2026-05-31",
+		excerpt:
+			"The site can boot with local content first, then switch to Notion when credentials exist.",
+		collection: LOCAL_FALLBACK_POSTS_COLLECTION,
+		tags: [fallbackTagNotion, fallbackTagAstro],
+		pinned: true,
+	}),
+	createFallbackPost({
+		pageId: "local-post-monospace-system",
+		title: "A Monospace Blog System",
+		slug: "monospace-blog-system",
+		date: "2026-05-30",
+		excerpt: "A compact JetBrains Mono layout inspired by old personal engineering websites.",
+		collection: LOCAL_FALLBACK_POSTS_COLLECTION,
+		tags: [fallbackTagDesign],
+	}),
+	createFallbackPost({
+		pageId: "local-post-paper-background",
+		title: "Quiet Paper Backgrounds",
+		slug: "quiet-paper-backgrounds",
+		date: "2026-05-29",
+		excerpt: "Small texture and strict spacing can make a minimal page feel designed.",
+		collection: LOCAL_FALLBACK_POSTS_COLLECTION,
+		tags: [fallbackTagDesign, fallbackTagAstro],
+	}),
+];
+
+const fallbackAnnotation: Annotation = {
+	Bold: false,
+	Italic: false,
+	Strikethrough: false,
+	Underline: false,
+	Code: false,
+	Color: "default",
+};
+
+function fallbackRichText(content: string, annotation: Partial<Annotation> = {}): RichText {
+	return {
+		Text: { Content: content },
+		Annotation: { ...fallbackAnnotation, ...annotation },
+		PlainText: content,
+	};
+}
+
+function fallbackParagraph(id: string, content: string): Block {
+	return {
+		Id: id,
+		Type: "paragraph",
+		HasChildren: false,
+		LastUpdatedTimeStamp: new Date(`${LOCAL_FALLBACK_DATE}T00:00:00.000Z`),
+		Paragraph: {
+			RichTexts: [fallbackRichText(content)],
+			Color: "default",
+		},
+	};
+}
+
+function fallbackHeading(id: string, content: string, level: 1 | 2 | 3 = 2): Block {
+	const base = {
+		RichTexts: [fallbackRichText(content)],
+		Color: "default",
+		IsToggleable: false,
+	};
+	const block: Block = {
+		Id: id,
+		Type: level === 1 ? "heading_1" : level === 2 ? "heading_2" : "heading_3",
+		HasChildren: false,
+		LastUpdatedTimeStamp: new Date(`${LOCAL_FALLBACK_DATE}T00:00:00.000Z`),
+	};
+	if (level === 1) block.Heading1 = base;
+	if (level === 2) block.Heading2 = base;
+	if (level === 3) block.Heading3 = base;
+	return block;
+}
+
+const fallbackBlocksByPageId: Record<string, Block[]> = {
+	"local-home": [
+		fallbackHeading("local-home-heading", "Personal Website", 2),
+		fallbackParagraph(
+			"local-home-intro",
+			"This is local fallback content. Add NOTION_API_SECRET in .env to replace it with your Notion CMS pages.",
+		),
+	],
+	"local-post-optional-notion": [
+		fallbackParagraph("local-optional-date", "May 31, 2026"),
+		fallbackHeading("local-optional-heading", "Making Notion Optional", 1),
+		fallbackParagraph(
+			"local-optional-p1",
+			"Local development should not stop just because a CMS token is missing. This fallback keeps the Astro app rendering while the real Notion integration remains available.",
+		),
+		fallbackHeading("local-optional-why", "Why this matters", 2),
+		fallbackParagraph(
+			"local-optional-p2",
+			"The visual system, routes, typography, and article templates can now be worked on before Notion credentials are configured.",
+		),
+	],
+	"local-post-monospace-system": [
+		fallbackParagraph("local-mono-date", "May 30, 2026"),
+		fallbackHeading("local-mono-heading", "A Monospace Blog System", 1),
+		fallbackParagraph(
+			"local-mono-p1",
+			"JetBrains Mono gives the site a technical, editorial voice without needing much ornament. The layout relies on rhythm, rules, and dense article rows.",
+		),
+		fallbackHeading("local-mono-details", "Details", 2),
+		fallbackParagraph(
+			"local-mono-p2",
+			"Strong underlines, narrow rules, and generous top spacing carry most of the interface weight.",
+		),
+	],
+	"local-post-paper-background": [
+		fallbackParagraph("local-paper-date", "May 29, 2026"),
+		fallbackHeading("local-paper-heading", "Quiet Paper Backgrounds", 1),
+		fallbackParagraph(
+			"local-paper-p1",
+			"The background uses a tiny dot matrix so the page feels tactile while staying readable.",
+		),
+		fallbackHeading("local-paper-balance", "Balance", 2),
+		fallbackParagraph(
+			"local-paper-p2",
+			"The texture is deliberately low contrast. Text remains the primary surface.",
+		),
+	],
+};
+
+function getFallbackEntries(): Post[] {
+	return fallbackEntries.map((entry) => ({ ...entry, Tags: [...entry.Tags] }));
+}
 
 // Footnotes: Adjusted config (set once at module initialization, includes permission fallback)
 export let adjustedFootnotesConfig: any = null;
@@ -283,6 +587,12 @@ export function buildNotionHostedIconUrl(name: string, color?: string): string {
 }
 
 async function getResolvedDataSourceId(): Promise<string> {
+	if (shouldUseLocalNotionFallback()) {
+		warnAboutLocalNotionFallback("NOTION_API_SECRET is not set.");
+		resolvedDataSourceId = LOCAL_FALLBACK_DATA_SOURCE_ID;
+		return resolvedDataSourceId;
+	}
+
 	// Initialize config once at module load
 	await initializeFootnotesConfig();
 	// Note: BibTeX cache is now initialized by citations-initializer integration at build:start
@@ -304,27 +614,37 @@ async function getResolvedDataSourceId(): Promise<string> {
 
 	console.log(`DATA_SOURCE_ID not provided, fetching from database: ${DATABASE_ID}`);
 
-	const response = await retry(
-		async (bail) => {
-			try {
-				return (await client.databases.retrieve({
-					database_id: DATABASE_ID,
-				})) as any;
-			} catch (error: unknown) {
-				if (error instanceof APIResponseError) {
-					if (error.status && error.status >= 400 && error.status < 500) {
-						bail(error);
+	let response: any;
+	try {
+		response = await retry(
+			async (bail) => {
+				try {
+					return (await client.databases.retrieve({
+						database_id: DATABASE_ID,
+					})) as any;
+				} catch (error: unknown) {
+					if (error instanceof APIResponseError) {
+						if (error.status && error.status >= 400 && error.status < 500) {
+							bail(error);
+						}
 					}
+					throw error;
 				}
-				throw error;
-			}
-		},
-		{
-			retries: numberOfRetry,
-			minTimeout: minTimeout,
-			factor: factor,
-		},
-	);
+			},
+			{
+				retries: numberOfRetry,
+				minTimeout: minTimeout,
+				factor: factor,
+			},
+		);
+	} catch (error) {
+		if (isNotionAuthError(error)) {
+			warnAboutLocalNotionFallback("Notion authentication failed.");
+			resolvedDataSourceId = LOCAL_FALLBACK_DATA_SOURCE_ID;
+			return resolvedDataSourceId;
+		}
+		throw error;
+	}
 
 	const dataSources = response.data_sources;
 
@@ -364,6 +684,12 @@ export async function getAllEntries(): Promise<Post[]> {
 		return allEntriesCache;
 	}
 
+	if (shouldUseLocalNotionFallback()) {
+		warnAboutLocalNotionFallback("NOTION_API_SECRET is not set.");
+		allEntriesCache = getFallbackEntries();
+		return allEntriesCache;
+	}
+
 	allEntriesCache = loadBuildcache<Post[]>("allEntries.json");
 	if (allEntriesCache) {
 		allEntriesCache = allEntriesCache.map((entry) => ({
@@ -377,7 +703,22 @@ export async function getAllEntries(): Promise<Post[]> {
 	// console.log("Did not find cache for getAllEntries");
 
 	const queryFilters: QueryFilters = {};
-	const dataSourceId = await getResolvedDataSourceId();
+	let dataSourceId: string;
+	try {
+		dataSourceId = await getResolvedDataSourceId();
+	} catch (error) {
+		if (isNotionAuthError(error)) {
+			warnAboutLocalNotionFallback("Notion authentication failed.");
+			allEntriesCache = getFallbackEntries();
+			return allEntriesCache;
+		}
+		throw error;
+	}
+
+	if (dataSourceId === LOCAL_FALLBACK_DATA_SOURCE_ID) {
+		allEntriesCache = getFallbackEntries();
+		return allEntriesCache;
+	}
 
 	const params: any = {
 		data_source_id: dataSourceId,
@@ -421,36 +762,45 @@ export async function getAllEntries(): Promise<Post[]> {
 
 	let results: responses.PageObject[] = [];
 	// eslint-disable-next-line no-constant-condition
-	while (true) {
-		const res = await retry(
-			async (bail) => {
-				try {
-					return (await client.dataSources.query(
-						params as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-					)) as responses.QueryDatabaseResponse;
-				} catch (error: unknown) {
-					if (error instanceof APIResponseError) {
-						if (error.status && error.status >= 400 && error.status < 500) {
-							bail(error);
+	try {
+		while (true) {
+			const res = await retry(
+				async (bail) => {
+					try {
+						return (await client.dataSources.query(
+							params as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+						)) as responses.QueryDatabaseResponse;
+					} catch (error: unknown) {
+						if (error instanceof APIResponseError) {
+							if (error.status && error.status >= 400 && error.status < 500) {
+								bail(error);
+							}
 						}
+						throw error;
 					}
-					throw error;
-				}
-			},
-			{
-				retries: numberOfRetry,
-				minTimeout: minTimeout,
-				factor: factor,
-			},
-		);
+				},
+				{
+					retries: numberOfRetry,
+					minTimeout: minTimeout,
+					factor: factor,
+				},
+			);
 
-		results = results.concat(res.results);
+			results = results.concat(res.results);
 
-		if (!res.has_more) {
-			break;
+			if (!res.has_more) {
+				break;
+			}
+
+			params["start_cursor"] = res.next_cursor as string;
 		}
-
-		params["start_cursor"] = res.next_cursor as string;
+	} catch (error) {
+		if (isNotionAuthError(error)) {
+			warnAboutLocalNotionFallback("Notion authentication failed.");
+			allEntriesCache = getFallbackEntries();
+			return allEntriesCache;
+		}
+		throw error;
 	}
 
 	allEntriesCache = await Promise.all(
@@ -493,6 +843,16 @@ export async function getPostContentByPostId(post: Post): Promise<{
 	footnotesInPage: Footnote[] | null;
 	citationsInPage: Citation[] | null;
 }> {
+	const fallbackBlocks = fallbackBlocksByPageId[post.PageId];
+	if (shouldUseLocalNotionFallback() || fallbackBlocks) {
+		return {
+			blocks: fallbackBlocks || [],
+			interlinkedContentInPage: null,
+			footnotesInPage: null,
+			citationsInPage: null,
+		};
+	}
+
 	if (post.IsExternal) {
 		return {
 			blocks: [],
@@ -1743,43 +2103,77 @@ async function buildIconObject(
 }
 
 export async function getDataSource(): Promise<Database> {
-	if (dsCache !== null) {
-		return Promise.resolve(dsCache);
+	const runtimeState = getNotionClientRuntimeState();
+
+	if (runtimeState.dsCache) {
+		return Promise.resolve(runtimeState.dsCache);
 	}
 
-	const dataSourceId = await getResolvedDataSourceId();
+	if (shouldUseLocalNotionFallback()) {
+		warnAboutLocalNotionFallback("NOTION_API_SECRET is not set.");
+		runtimeState.dsCache = createFallbackDatabase();
+		return runtimeState.dsCache;
+	}
+
+	let dataSourceId: string;
+	try {
+		dataSourceId = await getResolvedDataSourceId();
+	} catch (error) {
+		if (isNotionAuthError(error)) {
+			warnAboutLocalNotionFallback("Notion authentication failed.");
+			runtimeState.dsCache = createFallbackDatabase();
+			return runtimeState.dsCache;
+		}
+		throw error;
+	}
+
+	if (dataSourceId === LOCAL_FALLBACK_DATA_SOURCE_ID) {
+		runtimeState.dsCache = createFallbackDatabase();
+		return runtimeState.dsCache;
+	}
+
 	const cacheFileName = `datasource_${dataSourceId}.json`;
 
-	dsCache = loadBuildcache<Database>(cacheFileName);
-	if (dsCache) {
-		return dsCache;
+	runtimeState.dsCache = loadBuildcache<Database>(cacheFileName);
+	if (runtimeState.dsCache) {
+		return runtimeState.dsCache;
 	}
 
 	const params: any = {
 		data_source_id: dataSourceId,
 	};
 
-	const res = await retry(
-		async (bail) => {
-			try {
-				return (await client.dataSources.retrieve(
-					params as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-				)) as responses.RetrieveDatabaseResponse;
-			} catch (error: unknown) {
-				if (error instanceof APIResponseError) {
-					if (error.status && error.status >= 400 && error.status < 500) {
-						bail(error);
+	let res: responses.RetrieveDatabaseResponse;
+	try {
+		res = await retry(
+			async (bail) => {
+				try {
+					return (await client.dataSources.retrieve(
+						params as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+					)) as responses.RetrieveDatabaseResponse;
+				} catch (error: unknown) {
+					if (error instanceof APIResponseError) {
+						if (error.status && error.status >= 400 && error.status < 500) {
+							bail(error);
+						}
 					}
+					throw error;
 				}
-				throw error;
-			}
-		},
-		{
-			retries: numberOfRetry,
-			minTimeout: minTimeout,
-			factor: factor,
-		},
-	);
+			},
+			{
+				retries: numberOfRetry,
+				minTimeout: minTimeout,
+				factor: factor,
+			},
+		);
+	} catch (error) {
+		if (isNotionAuthError(error)) {
+			warnAboutLocalNotionFallback("Notion authentication failed.");
+			runtimeState.dsCache = createFallbackDatabase();
+			return runtimeState.dsCache;
+		}
+		throw error;
+	}
 
 	const icon = await buildIconObject(res.icon, "database icon");
 
@@ -1800,8 +2194,8 @@ export async function getDataSource(): Promise<Database> {
 		LastUpdatedTimeStamp: new Date(res.last_edited_time),
 	};
 
-	dsCache = database;
-	saveBuildcache(cacheFileName, dsCache);
+	runtimeState.dsCache = database;
+	saveBuildcache(cacheFileName, runtimeState.dsCache);
 	return database;
 }
 

@@ -5,10 +5,9 @@ import PostPreview from "@/components/listing-layout/PostPreview.astro";
 import PostPreviewFull from "@/components/listing-layout/PostPreviewFull.astro";
 import PostCardGallery from "@/components/listing-layout/PostCardGallery.astro";
 import Pagination from "@/components/listing-layout/Paginator.astro";
-import { getAllPosts, getUniqueTags, getAllTagsWithCounts } from "@/lib/notion/client";
-import type { Post, SelectProperty } from "@/lib/interfaces";
+import { getAllPosts } from "@/lib/notion/client";
+import type { Post } from "@/lib/interfaces";
 import { getCollectionsWDesc, slugify } from "@/utils";
-import { getNotionColorToTailwindColor } from "@/utils/style-helpers";
 import {
 	FULL_PREVIEW_COLLECTIONS,
 	HIDE_UNDERSCORE_SLUGS_IN_LISTS,
@@ -32,27 +31,15 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 	const collections = await getCollectionsWDesc();
 
-	const allTagsWithCounts = await getAllTagsWithCounts();
-
 	return collections.flatMap((collection) => {
 		let collectionPosts = posts.filter((post) => post.Collection === collection.name);
 		collectionPosts.sort((a, b) => (a.Pinned === b.Pinned ? 0 : a.Pinned ? -1 : 1));
-		const uniqueTags = getUniqueTags(collectionPosts);
-
-		const uniqueTagsWithCounts = uniqueTags.map((tag) => {
-			const tagWithCount = allTagsWithCounts.find((t) => t.name === tag.name);
-			return {
-				...tag,
-				count: tagWithCount ? tagWithCount.count : 0,
-			};
-		});
 
 		return paginate(collectionPosts, {
 			params: { collection: slugify(collection.name) },
 			props: {
 				collection: collection.name,
 				description: collection.description,
-				uniqueTags: uniqueTagsWithCounts,
 			},
 			pageSize: NUMBER_OF_POSTS_PER_PAGE,
 		});
@@ -63,10 +50,9 @@ interface Props {
 	page: Page<Post>;
 	collection: string;
 	description: string;
-	uniqueTags: (SelectProperty & { count: number })[];
 }
 
-const { page, collection, description, uniqueTags } = Astro.props as Props;
+const { page, collection, description } = Astro.props as Props;
 
 // Compute caching info for each post in page.data
 const allPosts = await getAllPosts();
@@ -129,10 +115,10 @@ const paginationProps = {
 
 <>
 	<PageLayout meta={meta}>
-		<h1 class="title mb-6">{collection}</h1>
-		{description && <q class="-mt-3 mb-6 block italic">{description}</q>}
-		<div class="grid grid-cols-3 gap-y-16 sm:grid-cols-4 sm:items-start sm:gap-x-8">
-			<section aria-label="Blog post list" class="col-span-3 print:col-span-full">
+		<div class="content-shell">
+			<h1 class="title mb-6">{collection}</h1>
+			{description && <q class="-mt-3 mb-8 block italic">{description}</q>}
+			<section aria-label="Blog post list">
 				{
 					FULL_PREVIEW_COLLECTIONS.includes(collection) ? (
 						/* Full preview (stream) mode for full-preview collections */
@@ -166,10 +152,10 @@ const paginationProps = {
 						</div>
 					) : (
 						/* List mode for non-full-preview collections */
-						<ul class="space-y-4 text-start">
+						<ul class="minimal-post-list">
 							{postsWithCacheInfo.map(({ post }) => (
-								<li class="flex max-w-full flex-col flex-wrap gap-1.5 [&_q]:basis-full">
-									<PostPreview post={post} as="h2" withDesc />
+								<li>
+									<PostPreview post={post} as="h2" />
 								</li>
 							))}
 						</ul>
@@ -177,45 +163,6 @@ const paginationProps = {
 				}
 				<Pagination {...paginationProps} />
 			</section>
-			{
-				!!uniqueTags.length && (
-					<aside class="col-span-3 sm:col-span-1 print:hidden">
-						<h2 class="text-accent-2 mb-4 flex items-center text-lg font-semibold">
-							<Icon class="h-6 w-6" name={"tag-multiple"} aria-hidden="true" focusable="false" />
-							Tags
-						</h2>
-						<ul class="flex flex-wrap gap-2">
-							{uniqueTags.map((tag) => (
-								<li>
-									<a
-										class={`flex items-center justify-center rounded-lg px-2 ${getNotionColorToTailwindColor(
-											tag.color + "-background",
-											true,
-										)}`}
-										href={getNavLink("/tags/" + slugify(tag.name) + "/")}
-										aria-label={`View all posts with the tag: ${tag.name}`}
-									>
-										{tag.name}
-										<span class="ml-2 rounded-sm bg-gray-100 px-1 text-xs text-rose-800 dark:bg-gray-800 dark:text-rose-300">
-											{tag.count}
-										</span>
-									</a>
-								</li>
-							))}
-						</ul>
-						<span class="mt-4 block sm:text-end">
-							<a
-								class="sm:hover:text-accent inline-flex items-center gap-1"
-								href={getNavLink("/tags/")}
-								aria-label="View all tags"
-							>
-								View all
-								<Icon class="h-4 w-4" name={"next"} aria-hidden="true" focusable="false" />
-							</a>
-						</span>
-					</aside>
-				)
-			}
 		</div>
 	</PageLayout>
 	{

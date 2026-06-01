@@ -24,13 +24,7 @@ const buttonClass = `${buttonClassName}`;
 	data-copy-md-root
 >
 	{
-		isDevMode ? (
-			<button type="button" class:list={["copy-markdown-btn", buttonClass]} disabled>
-				<span class="text-textColor flex flex-col items-center justify-center text-xs">
-					Only in prod
-				</span>
-			</button>
-		) : (
+		!isDevMode && (
 			<button
 				type="button"
 				data-copy-md-button
