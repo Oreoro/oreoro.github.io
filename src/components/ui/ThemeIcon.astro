@@ -44,7 +44,7 @@ import Icon from "@/components/ui/Icon.astro";
 		if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
 			return localStorage.getItem("theme");
 		}
-		return "system";
+		return "dark";
 	};
 
 	const updateTheme = () => {
@@ -67,11 +67,11 @@ import Icon from "@/components/ui/Icon.astro";
 
 	const handleToggleClick = () => {
 		const theme = getThemePreference();
-		let newTheme = "system";
+		let newTheme = "dark";
 
-		if (theme === "system") newTheme = "light";
-		if (theme === "light") newTheme = "dark";
-		if (theme === "dark") newTheme = "system";
+		if (theme === "dark") newTheme = "light";
+		if (theme === "light") newTheme = "system";
+		if (theme === "system") newTheme = "dark";
 
 		localStorage.setItem("theme", newTheme);
 		updateTheme();
