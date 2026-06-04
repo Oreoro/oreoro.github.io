@@ -49,7 +49,7 @@
 		// The name of the Notion 'Collection' property value for pages that should appear in the main navigation menu. These are treated as static pages (e.g., 'About', 'Contact') rather than blog posts.
 		"menu-pages-collection": "main",
 		// An array of 'Collection' names where posts should be displayed in full on list pages. Useful for microblogs or "stream" style collections where showing the full content is desired.
-		"full-preview-collections": ["Updates"],
+		"full-preview-collections": ["Stream"],
 		// If true, any post with a slug starting with an underscore (e.g., "_draft-post") will be hidden from all lists (home page, collections, tags), from sitemap and search. The page will still be built and accessible via its direct URL.
 		"hide-underscore-slugs-in-lists": true,
 		// Listing view style for post lists.
@@ -68,33 +68,33 @@
 		colors: {
 			// Background colors
 			bg: {
-				light: "250 250 247",
-				dark: "12 14 15",
+				light: "246 245 239",
+				dark: "43 43 43",
 			},
 			// Main text colors
 			text: {
-				light: "24 25 26",
-				dark: "228 232 226",
+				light: "31 35 40",
+				dark: "169 183 198",
 			},
 			// Link colors
 			link: {
-				light: "24 25 26",
-				dark: "244 242 232",
+				light: "22 77 100",
+				dark: "255 198 109",
 			},
 			// Primary accent color (e.g., for titles, highlights)
 			accent: {
-				light: "24 25 26",
-				dark: "221 152 113",
+				light: "48 110 142",
+				dark: "204 120 50",
 			},
 			// Secondary accent color (e.g., for borders, subtle highlights)
 			"accent-2": {
-				light: "24 25 26",
-				dark: "132 161 156",
+				light: "127 82 148",
+				dark: "104 151 187",
 			},
 			// Color for blockquotes and other special text
 			quote: {
-				light: "24 25 26",
-				dark: "140 204 185",
+				light: "62 122 76",
+				dark: "106 135 89",
 			},
 		},
 		"fontfamily-google-fonts": {
@@ -102,7 +102,7 @@
 			// We automatically load weights [400, 500, 600, 700] and styles [normal, italic] for all fonts (it is fine if they are not available).
 			// Main body/UI font - can be a sans-serif OR serif typeface (e.g., "Roboto", "Merriweather", "Inter")
 			// If empty and mono-font-name is set, mono will be used for everything.
-			"sans-font-name": "Inter",
+			"sans-font-name": "",
 			// Monospace font for code blocks (e.g., "Fira Code", "JetBrains Mono")
 			// No need to escape spaces in font names!
 			"mono-font-name": "JetBrains Mono",
@@ -168,8 +168,8 @@
 		excerpt: false,
 		// Font configuration for OG images
 		// Title and footnote can be any google font
-		"title-font-name": "Kreon",
-		"title-font-weight": 500, // Default: 400 (regular)
+		"title-font-name": "JetBrains Mono",
+		"title-font-weight": 700, // Default: 400 (regular)
 		// Footnote font (author, date etc)
 		"footnote-font-name": "JetBrains Mono",
 		"footnote-font-weight": 700, // Default: 400 (regular)

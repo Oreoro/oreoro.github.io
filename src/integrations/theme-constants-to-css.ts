@@ -209,16 +209,9 @@ ${createCssVariables("dark")}
   }
 
   html body {
-    @apply mx-auto flex min-h-screen w-full max-w-[1280px] flex-col bg-bgColor px-5 pt-6 text-textColor antialiased overflow-x-hidden sm:px-8 sm:pt-8;
-    font-family: ${fontSans};
+    @apply mx-auto flex min-h-screen w-full max-w-[1040px] flex-col bg-bgColor px-5 pt-8 text-textColor antialiased overflow-x-hidden sm:px-8 sm:pt-10;
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace);
     background-image: none;
-    line-height: 1.65;
-    text-rendering: optimizeLegibility;
-  }
-
-  ::selection {
-    background-color: color-mix(in srgb, var(--color-accent) 28%, transparent);
-    color: var(--color-textColor);
   }
 
   @media print {
@@ -1279,21 +1272,21 @@ ${createCssVariables("dark")}
   .mdx-notion h1,
   .mdx-notion h2,
   .mdx-notion h3 {
-    @apply mt-5 mb-3 font-semibold tracking-normal text-textColor;
+    @apply font-bold text-textColor tracking-[-0.01em] mt-5 mb-3;
   }
 
   .mdx-notion h1 {
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 2.6vw, 2.05rem);
     line-height: 1.2;
   }
 
   .mdx-notion h2 {
-    font-size: 1.625rem;
+    font-size: clamp(1.45rem, 2.3vw, 1.8rem);
     line-height: 1.25;
   }
 
   .mdx-notion h3 {
-    font-size: 1.25rem;
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
     line-height: 1.3;
   }
 
@@ -1599,72 +1592,119 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
   }
 }
 
-/* Minimal content-first layout */
+/* Minimal JetBrains index layout */
+:root {
+  --jetbrains-line: color-mix(in srgb, var(--color-textColor) 16%, transparent);
+  --jetbrains-line-strong: color-mix(in srgb, var(--color-textColor) 28%, transparent);
+  --jetbrains-panel: color-mix(in srgb, var(--color-bgColor) 88%, var(--color-accent-2) 12%);
+  --jetbrains-hover: color-mix(in srgb, var(--color-accent-2) 8%, transparent);
+}
+
+html body {
+  @apply max-w-none px-4 pt-8 sm:px-8 sm:pt-10;
+  font-family: var(--font-mono, "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+  letter-spacing: 0;
+  line-height: 1.5;
+  background-image:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-accent-2) 8%, transparent),
+      transparent 12rem
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 27px,
+      color-mix(in srgb, var(--color-textColor) 4%, transparent) 28px
+    );
+  background-attachment: fixed;
+}
+
+html body::before {
+  content: "";
+  @apply fixed inset-x-0 top-0 z-50 h-0.5 print:hidden;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent-2),
+    var(--color-accent),
+    var(--color-quote)
+  );
+}
+
 .content-shell {
-  @apply mx-auto w-full max-w-[820px];
+  @apply mx-auto w-full max-w-[960px];
 }
 
 .home-shell {
-  @apply mx-auto w-full max-w-[1040px] space-y-12;
+  @apply mx-auto w-full max-w-[1180px] space-y-12;
 }
 
 .home-intro {
-  @apply grid gap-5 border-b pb-10 pt-8 sm:grid-cols-[minmax(0,0.9fr)_minmax(22rem,1.1fr)] sm:items-end sm:gap-12 sm:pt-14;
-  border-color: color-mix(in srgb, var(--color-textColor) 14%, transparent);
+  @apply pt-12 pb-2;
 }
 
 .home-eyebrow {
-  @apply mb-3 text-xs font-semibold uppercase text-textColor/50;
+  @apply mb-2 text-base font-bold uppercase text-textColor;
 }
 
 .home-title {
-  @apply max-w-[11ch] text-4xl font-semibold leading-none text-textColor sm:text-5xl;
+  @apply border-b pb-1 text-xl font-bold uppercase leading-tight text-textColor sm:text-2xl;
+  border-color: var(--jetbrains-line-strong);
 }
 
 .home-summary {
-  @apply max-w-[44rem] text-base leading-7 text-textColor/72 sm:text-lg;
+  @apply mt-3 max-w-none text-lg font-semibold leading-tight text-textColor/90 sm:text-xl;
 }
 
 .writing-index {
-  @apply pt-0;
+  @apply pt-6;
 }
 
-.writing-index-title {
-  @apply mb-4 text-xs font-semibold uppercase text-textColor/50;
+.writing-index-title,
+#auto-recent-posts {
+  @apply mb-3 border-b pb-1 text-xl font-bold uppercase text-textColor sm:text-2xl;
+  border-color: var(--jetbrains-line-strong);
 }
 
 .minimal-post-list {
-  @apply list-none border-y;
-  border-color: color-mix(in srgb, var(--color-textColor) 12%, transparent);
+  @apply list-none;
+}
+
+.minimal-post-list > li {
+  @apply -mx-1 rounded-sm px-1 transition-colors;
 }
 
 .minimal-post-list > li + li {
-  border-top: 1px solid color-mix(in srgb, var(--color-textColor) 10%, transparent);
+  border-top: 0;
+}
+
+.minimal-post-list > li:hover {
+  background-color: var(--jetbrains-hover);
 }
 
 .minimal-link-row {
-  @apply block py-3 text-base font-medium leading-7 text-textColor no-underline transition-colors hover:text-accent sm:text-lg;
+  @apply block py-0 text-lg font-bold leading-tight text-textColor underline decoration-[0.08em] underline-offset-[0.12em] transition-colors hover:text-accent sm:text-xl;
 }
 
 .quiet-link {
-  @apply mt-6 inline-flex text-sm font-semibold text-textColor/58 no-underline transition-colors hover:text-accent;
+  @apply mt-6 inline-block text-lg font-bold text-textColor underline decoration-[0.08em] underline-offset-[0.12em] transition-colors hover:text-accent;
 }
 
 .site-header {
-  @apply mx-auto mb-10 flex w-full max-w-[1040px] flex-col gap-3 border-b pb-4 text-left sm:mb-12 sm:flex-row sm:items-center sm:justify-between print:hidden;
-  border-color: color-mix(in srgb, var(--color-textColor) 12%, transparent);
+  @apply mx-auto mb-14 flex w-fit max-w-full flex-col items-stretch text-center print:hidden;
 }
 
 .site-brand {
-  @apply text-base font-semibold leading-6 text-textColor no-underline transition-colors hover:text-accent;
+  @apply border-b px-1 pb-1 text-xl font-bold uppercase leading-tight text-textColor no-underline transition-colors hover:text-accent sm:text-2xl;
+  border-color: var(--jetbrains-line-strong);
 }
 
 .site-header-actions {
-  @apply flex shrink-0 flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold leading-6 text-textColor/62;
+  @apply flex shrink-0 flex-wrap items-center justify-center gap-x-8 gap-y-1 pt-2 text-lg font-bold uppercase leading-tight text-textColor sm:text-xl;
 }
 
 .site-header-link {
-  @apply text-inherit no-underline transition-colors hover:text-textColor;
+  @apply rounded-sm px-1 text-textColor no-underline transition-colors hover:bg-accent/10 hover:text-accent focus-visible:bg-accent/10 focus-visible:text-accent;
 }
 
 .site-header-actions site-search,
@@ -1674,7 +1714,7 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 
 .search-btn,
 .theme-toggle-btn {
-  @apply h-auto w-auto rounded-none p-0 text-sm font-semibold leading-6 text-textColor/70 hover:text-textColor;
+  @apply h-auto w-auto rounded-sm p-0 px-1 text-lg font-bold uppercase leading-tight text-textColor hover:bg-accent/10 hover:text-accent sm:text-xl;
 }
 
 .theme-toggle-label,
@@ -1686,49 +1726,69 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
   @apply hidden;
 }
 
+.theme-toggle-btn[data-theme="dark"] .theme-toggle-label::after {
+  content: ":dark";
+  color: var(--color-accent);
+}
+
+.theme-toggle-btn[data-theme="light"] .theme-toggle-label::after {
+  content: ":light";
+  color: var(--color-accent-2);
+}
+
+.theme-toggle-btn[data-theme="system"] .theme-toggle-label::after {
+  content: ":auto";
+  color: var(--color-quote);
+}
+
 .post-preview-row {
-  @apply grid max-w-full gap-1 py-4 text-base leading-7 sm:grid-cols-[8.5rem_1fr] sm:gap-6;
+  @apply flex max-w-full flex-wrap items-baseline gap-[0.55ch] py-0 text-lg font-bold leading-tight sm:text-xl;
 }
 
 .post-preview-date {
-  @apply shrink-0 font-mono text-xs font-medium uppercase text-textColor/42 sm:pt-1;
+  @apply shrink-0 font-bold text-textColor transition-colors;
+}
+
+.minimal-post-list > li:hover .post-preview-date {
+  color: var(--color-accent-2);
 }
 
 .post-preview-date::after {
-  content: "";
+  content: ":";
 }
 
 .post-preview-main {
-  @apply min-w-0;
+  @apply min-w-0 flex-1;
 }
 
 .post-preview-title {
-  @apply m-0 inline text-lg font-semibold leading-7 text-textColor sm:text-xl;
+  @apply m-0 inline text-lg font-bold leading-tight text-textColor sm:text-xl;
 }
 
 .post-preview-title a {
-  @apply no-underline transition-colors hover:text-accent;
+  @apply underline decoration-[0.08em] underline-offset-[0.12em] transition-colors hover:text-accent;
 }
 
 .pagination-nav {
-  @apply mt-10 border-t pt-4 text-sm font-semibold text-textColor/65;
-  border-color: color-mix(in srgb, var(--color-textColor) 14%, transparent);
+  @apply mt-8 border-t pt-3 text-lg font-bold text-textColor;
+  border-color: var(--jetbrains-line-strong);
 }
 
 .site-footer {
-  @apply mt-auto flex w-full justify-center pt-20 pb-6 text-sm font-medium text-textColor/45 print:hidden;
+  @apply mt-auto flex w-full justify-center pt-16 pb-6 text-sm font-bold uppercase text-textColor/55 print:hidden;
 }
 
 .site-page-link {
-  @apply text-link no-underline transition-colors hover:text-accent;
+  @apply text-link underline decoration-[0.08em] underline-offset-[0.12em] transition-colors hover:text-accent;
 }
 
 .title {
-  @apply mb-6 border-0 pb-0 text-3xl font-semibold normal-case leading-tight text-textColor sm:text-4xl;
+  @apply mb-5 border-b pb-2 text-2xl font-bold uppercase leading-tight text-textColor sm:text-3xl;
+  border-color: var(--jetbrains-line-strong);
 }
 
 .post-body {
-  @apply text-base leading-7 text-textColor/85;
+  @apply text-base leading-7 text-textColor/88;
 }
 
 .post-body > * + * {
@@ -1739,7 +1799,7 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 .notion-h2,
 .notion-h3,
 .notion-h4 {
-  @apply font-semibold leading-tight text-textColor;
+  @apply font-bold leading-tight text-textColor;
 }
 
 .notion-h1 {
@@ -1761,29 +1821,29 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 .divider,
 .notion-divider {
   @apply my-8 h-px rounded-none;
-  background-color: color-mix(in srgb, var(--color-textColor) 12%, transparent);
+  background-color: var(--jetbrains-line);
 }
 
 .nquote {
-  @apply my-6 border-s-2 px-4 text-textColor/80;
+  @apply my-6 border-s-2 px-4 text-textColor/82;
   border-color: color-mix(in srgb, var(--color-quote) 72%, transparent);
 }
 
 .callout,
 .notion-tab-block,
 .bookmark-card {
-  border-color: color-mix(in srgb, var(--color-textColor) 12%, transparent);
-  background-color: color-mix(in srgb, var(--color-popover-bg) 58%, transparent);
+  border-color: var(--jetbrains-line);
+  background-color: var(--jetbrains-panel);
 }
 
 .callout {
-  @apply my-4 rounded-md border px-4 py-3;
+  @apply my-4 rounded-sm border px-4 py-3;
 }
 
 .bookmark-card,
 .notion-tab-block,
 .notion-image {
-  @apply rounded-md;
+  @apply rounded-sm;
 }
 
 .notion-image {
@@ -1792,7 +1852,7 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 
 .annotation-code.bg-default,
 .mdx-notion code {
-  background-color: color-mix(in srgb, var(--color-accent) 12%, var(--color-bgColor));
+  background-color: color-mix(in srgb, var(--color-accent) 16%, var(--color-bgColor));
 }
 
 .annotation-code.text-default,
