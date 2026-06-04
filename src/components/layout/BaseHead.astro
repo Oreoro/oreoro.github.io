@@ -1,6 +1,7 @@
 ---
 import type { SiteMeta } from "@/types";
 import "@/styles/global.css";
+import "@/styles/minimal.css";
 import { Font } from "astro:assets";
 import { siteInfo } from "@/siteInfo";
 import {
@@ -248,8 +249,3 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 		/>
 	)
 }
-<style>
-	@view-transition {
-		navigation: auto;
-	}
-</style>

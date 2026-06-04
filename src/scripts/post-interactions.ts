@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			const fullUrl = `${window.location.origin}${window.location.pathname}#${id}`;
 			navigator.clipboard.writeText(fullUrl);
 			window.history.pushState(null, "", fullUrl);
-			el.scrollIntoView({ behavior: "smooth" });
+			el.scrollIntoView();
 		});
 	});
 
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (!blockId) return;
 
 			window.location.hash = `#${blockId}`;
-			ensureVisibleInTabs(blockId)?.scrollIntoView({ behavior: "smooth" });
+			ensureVisibleInTabs(blockId)?.scrollIntoView();
 
 			delete listItem.dataset.showBackButton;
 			delete listItem.dataset.backToBlock;
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				target.dataset.showBackButton = "true";
 				target.dataset.backToBlock = originBlock;
 				window.location.hash = `#${targetId}`;
-				ensureVisibleInTabs(target)?.scrollIntoView({ behavior: "smooth" });
+				ensureVisibleInTabs(target)?.scrollIntoView();
 			}
 		});
 	});
