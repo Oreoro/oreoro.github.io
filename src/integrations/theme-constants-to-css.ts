@@ -209,8 +209,8 @@ ${createCssVariables("dark")}
   }
 
   html body {
-    @apply mx-auto flex min-h-screen w-full max-w-[1040px] flex-col bg-bgColor px-5 pt-6 text-textColor antialiased overflow-x-hidden sm:px-8 sm:pt-8;
-    font-family: var(--font-sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+    @apply mx-auto flex min-h-screen w-full max-w-[1280px] flex-col bg-bgColor px-5 pt-6 text-textColor antialiased overflow-x-hidden sm:px-8 sm:pt-8;
+    font-family: ${fontMono};
     background-image: none;
     line-height: 1.65;
     text-rendering: optimizeLegibility;
@@ -1601,15 +1601,15 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 
 /* Minimal content-first layout */
 .content-shell {
-  @apply mx-auto w-full max-w-[760px];
+  @apply mx-auto w-full max-w-[1232px];
 }
 
 .home-shell {
-  @apply mx-auto w-full max-w-[760px] space-y-14;
+  @apply mx-auto w-full max-w-[1232px] space-y-14;
 }
 
 .home-intro {
-  @apply pt-14 pb-4 sm:pt-20;
+  @apply pt-16 pb-4 sm:pt-24;
 }
 
 .home-eyebrow {
@@ -1617,11 +1617,11 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 }
 
 .home-title {
-  @apply max-w-[12ch] text-4xl font-semibold leading-tight text-textColor sm:text-5xl;
+  @apply border-b border-textColor/35 pb-2 text-xl font-bold uppercase leading-tight text-textColor sm:text-2xl;
 }
 
 .home-summary {
-  @apply mt-6 max-w-[42rem] text-base leading-7 text-textColor/70 sm:text-lg;
+  @apply mt-3 max-w-[72rem] text-base font-medium leading-6 text-textColor sm:text-lg;
 }
 
 .writing-index {
@@ -1629,16 +1629,15 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 }
 
 .writing-index-title {
-  @apply mb-4 text-xs font-semibold uppercase text-textColor/50;
+  @apply mb-3 border-b border-textColor/35 pb-2 text-xl font-bold uppercase text-textColor sm:text-2xl;
 }
 
 .minimal-post-list {
-  @apply list-none border-y;
-  border-color: color-mix(in srgb, var(--color-textColor) 12%, transparent);
+  @apply list-none border-0;
 }
 
 .minimal-post-list > li + li {
-  border-top: 1px solid color-mix(in srgb, var(--color-textColor) 10%, transparent);
+  border-top: 0;
 }
 
 .minimal-link-row {
@@ -1650,15 +1649,15 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 }
 
 .site-header {
-  @apply mx-auto mb-12 flex w-full max-w-[760px] items-center justify-between text-left print:hidden;
+  @apply mx-auto mb-24 flex w-full max-w-[24rem] flex-col items-stretch gap-3 text-left print:hidden;
 }
 
 .site-brand {
-  @apply text-sm font-semibold leading-6 text-textColor/70 no-underline transition-colors hover:text-textColor;
+  @apply border-b border-textColor/35 pb-2 text-center text-xl font-bold uppercase leading-tight text-textColor no-underline transition-colors hover:text-textColor;
 }
 
 .site-header-actions {
-  @apply flex shrink-0 items-center justify-between gap-6 text-sm font-semibold leading-6 text-textColor/70;
+  @apply flex shrink-0 items-center justify-between gap-6 text-xl font-bold uppercase leading-tight text-textColor;
 }
 
 .site-header-link {
@@ -1685,15 +1684,15 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 }
 
 .post-preview-row {
-  @apply grid max-w-full gap-1 py-3 text-base leading-7 sm:grid-cols-[9rem_1fr] sm:gap-6;
+  @apply grid max-w-full gap-1 py-0 text-base font-bold leading-6 sm:grid-cols-[10rem_1fr] sm:gap-2;
 }
 
 .post-preview-date {
-  @apply shrink-0 font-mono text-xs font-medium uppercase text-textColor/45 sm:pt-1;
+  @apply shrink-0 font-mono text-base font-normal uppercase text-textColor sm:pt-0;
 }
 
 .post-preview-date::after {
-  content: "";
+  content: ":";
 }
 
 .post-preview-main {
@@ -1701,7 +1700,7 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 }
 
 .post-preview-title {
-  @apply m-0 inline text-base font-medium leading-7 text-textColor sm:text-lg;
+  @apply m-0 inline text-base font-bold leading-6 text-textColor sm:text-lg;
 }
 
 .post-preview-title a {

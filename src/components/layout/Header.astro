@@ -13,4 +13,9 @@ const displayTitle = siteInfo.title || "Blog";
 	>
 		{displayTitle}
 	</a>
+	<nav class="site-header-actions" aria-label="Primary navigation">
+		<a class="site-header-link" href={getNavLink("/contact/")}>CONTACT</a>
+		<a class="site-header-link" href={getNavLink("/rss.xml")}>RSS</a>
+		<a class="site-header-link" href={getNavLink("/donate/")}>DONATE</a>
+	</nav>
 </header>
