@@ -68,33 +68,33 @@
 		colors: {
 			// Background colors
 			bg: {
-				light: "244 246 242",
-				dark: "18 20 20",
+				light: "246 245 239",
+				dark: "43 43 43",
 			},
 			// Main text colors
 			text: {
-				light: "24 28 28",
-				dark: "235 239 235",
+				light: "31 35 40",
+				dark: "169 183 198",
 			},
 			// Link colors
 			link: {
-				light: "18 22 25",
-				dark: "235 239 235",
+				light: "22 77 100",
+				dark: "255 198 109",
 			},
 			// Primary accent color (e.g., for titles, highlights)
 			accent: {
-				light: "196 55 43",
-				dark: "255 151 113",
+				light: "48 110 142",
+				dark: "204 120 50",
 			},
 			// Secondary accent color (e.g., for borders, subtle highlights)
 			"accent-2": {
-				light: "18 22 25",
-				dark: "242 246 241",
+				light: "127 82 148",
+				dark: "104 151 187",
 			},
 			// Color for blockquotes and other special text
 			quote: {
-				light: "39 131 128",
-				dark: "162 232 200",
+				light: "62 122 76",
+				dark: "106 135 89",
 			},
 		},
 		"fontfamily-google-fonts": {
@@ -102,7 +102,7 @@
 			// We automatically load weights [400, 500, 600, 700] and styles [normal, italic] for all fonts (it is fine if they are not available).
 			// Main body/UI font - can be a sans-serif OR serif typeface (e.g., "Roboto", "Merriweather", "Inter")
 			// If empty and mono-font-name is set, mono will be used for everything.
-			"sans-font-name": "Inter",
+			"sans-font-name": "",
 			// Monospace font for code blocks (e.g., "Fira Code", "JetBrains Mono")
 			// No need to escape spaces in font names!
 			"mono-font-name": "JetBrains Mono",
@@ -168,8 +168,8 @@
 		excerpt: false,
 		// Font configuration for OG images
 		// Title and footnote can be any google font
-		"title-font-name": "Kreon",
-		"title-font-weight": 500, // Default: 400 (regular)
+		"title-font-name": "JetBrains Mono",
+		"title-font-weight": 700, // Default: 400 (regular)
 		// Footnote font (author, date etc)
 		"footnote-font-name": "JetBrains Mono",
 		"footnote-font-weight": 700, // Default: 400 (regular)
