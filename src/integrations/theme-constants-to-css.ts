@@ -210,7 +210,7 @@ ${createCssVariables("dark")}
 
   html body {
     @apply mx-auto flex min-h-screen w-full max-w-[1280px] flex-col bg-bgColor px-5 pt-6 text-textColor antialiased overflow-x-hidden sm:px-8 sm:pt-8;
-    font-family: ${fontMono};
+    font-family: ${fontSans};
     background-image: none;
     line-height: 1.65;
     text-rendering: optimizeLegibility;
@@ -1601,15 +1601,16 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 
 /* Minimal content-first layout */
 .content-shell {
-  @apply mx-auto w-full max-w-[1232px];
+  @apply mx-auto w-full max-w-[820px];
 }
 
 .home-shell {
-  @apply mx-auto w-full max-w-[1232px] space-y-14;
+  @apply mx-auto w-full max-w-[1040px] space-y-12;
 }
 
 .home-intro {
-  @apply pt-16 pb-4 sm:pt-24;
+  @apply grid gap-5 border-b pb-10 pt-8 sm:grid-cols-[minmax(0,0.9fr)_minmax(22rem,1.1fr)] sm:items-end sm:gap-12 sm:pt-14;
+  border-color: color-mix(in srgb, var(--color-textColor) 14%, transparent);
 }
 
 .home-eyebrow {
@@ -1617,11 +1618,11 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 }
 
 .home-title {
-  @apply border-b border-textColor/35 pb-2 text-xl font-bold uppercase leading-tight text-textColor sm:text-2xl;
+  @apply max-w-[11ch] text-4xl font-semibold leading-none text-textColor sm:text-5xl;
 }
 
 .home-summary {
-  @apply mt-3 max-w-[72rem] text-base font-medium leading-6 text-textColor sm:text-lg;
+  @apply max-w-[44rem] text-base leading-7 text-textColor/72 sm:text-lg;
 }
 
 .writing-index {
@@ -1629,15 +1630,16 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 }
 
 .writing-index-title {
-  @apply mb-3 border-b border-textColor/35 pb-2 text-xl font-bold uppercase text-textColor sm:text-2xl;
+  @apply mb-4 text-xs font-semibold uppercase text-textColor/50;
 }
 
 .minimal-post-list {
-  @apply list-none border-0;
+  @apply list-none border-y;
+  border-color: color-mix(in srgb, var(--color-textColor) 12%, transparent);
 }
 
 .minimal-post-list > li + li {
-  border-top: 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-textColor) 10%, transparent);
 }
 
 .minimal-link-row {
@@ -1645,23 +1647,24 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 }
 
 .quiet-link {
-  @apply mt-6 inline-flex text-sm font-semibold text-textColor/65 no-underline transition-colors hover:text-accent;
+  @apply mt-6 inline-flex text-sm font-semibold text-textColor/58 no-underline transition-colors hover:text-accent;
 }
 
 .site-header {
-  @apply mx-auto mb-24 flex w-full max-w-[24rem] flex-col items-stretch gap-3 text-left print:hidden;
+  @apply mx-auto mb-10 flex w-full max-w-[1040px] flex-col gap-3 border-b pb-4 text-left sm:mb-12 sm:flex-row sm:items-center sm:justify-between print:hidden;
+  border-color: color-mix(in srgb, var(--color-textColor) 12%, transparent);
 }
 
 .site-brand {
-  @apply border-b border-textColor/35 pb-2 text-center text-xl font-bold uppercase leading-tight text-textColor no-underline transition-colors hover:text-textColor;
+  @apply text-base font-semibold leading-6 text-textColor no-underline transition-colors hover:text-accent;
 }
 
 .site-header-actions {
-  @apply flex shrink-0 items-center justify-between gap-6 text-xl font-bold uppercase leading-tight text-textColor;
+  @apply flex shrink-0 flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold leading-6 text-textColor/62;
 }
 
 .site-header-link {
-  @apply text-textColor no-underline transition-colors hover:text-accent;
+  @apply text-inherit no-underline transition-colors hover:text-textColor;
 }
 
 .site-header-actions site-search,
@@ -1684,15 +1687,15 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 }
 
 .post-preview-row {
-  @apply grid max-w-full gap-1 py-0 text-base font-bold leading-6 sm:grid-cols-[10rem_1fr] sm:gap-2;
+  @apply grid max-w-full gap-1 py-4 text-base leading-7 sm:grid-cols-[8.5rem_1fr] sm:gap-6;
 }
 
 .post-preview-date {
-  @apply shrink-0 font-mono text-base font-normal uppercase text-textColor sm:pt-0;
+  @apply shrink-0 font-mono text-xs font-medium uppercase text-textColor/42 sm:pt-1;
 }
 
 .post-preview-date::after {
-  content: ":";
+  content: "";
 }
 
 .post-preview-main {
@@ -1700,7 +1703,7 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 }
 
 .post-preview-title {
-  @apply m-0 inline text-base font-bold leading-6 text-textColor sm:text-lg;
+  @apply m-0 inline text-lg font-semibold leading-7 text-textColor sm:text-xl;
 }
 
 .post-preview-title a {

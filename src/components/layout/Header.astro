@@ -1,6 +1,7 @@
 ---
 import { siteInfo } from "@/site.config";
 import { getNavLink } from "@/lib/blog-helpers";
+import ThemeIcon from "@/components/ui/ThemeIcon.astro";
 
 const displayTitle = siteInfo.title || "Blog";
 ---
@@ -17,5 +18,6 @@ const displayTitle = siteInfo.title || "Blog";
 		<a class="site-header-link" href={getNavLink("/contact/")}>CONTACT</a>
 		<a class="site-header-link" href={getNavLink("/rss.xml")}>RSS</a>
 		<a class="site-header-link" href={getNavLink("/donate/")}>DONATE</a>
+		<ThemeIcon />
 	</nav>
 </header>

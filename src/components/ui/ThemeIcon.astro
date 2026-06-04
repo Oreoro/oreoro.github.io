@@ -59,7 +59,8 @@ import Icon from "@/components/ui/Icon.astro";
 		}
 		// Set data-theme on the toggle button to drive Tailwind's group-based variants
 		const toggleButton = document.getElementById("themeToggle");
-		toggleButton.setAttribute("data-theme", theme);
+		document.documentElement.dataset.theme = theme;
+		toggleButton?.setAttribute("data-theme", theme);
 	};
 
 	// Initial theme setup
@@ -77,7 +78,7 @@ import Icon from "@/components/ui/Icon.astro";
 		updateTheme();
 	};
 
-	document.getElementById("themeToggle").addEventListener("click", handleToggleClick);
+	document.getElementById("themeToggle")?.addEventListener("click", handleToggleClick);
 
 	// Listen for system theme changes
 	window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
