@@ -209,7 +209,9 @@ const baseId = `notion-tab-${block.Id}`;
 		updateScrollState(container);
 
 		if (list instanceof HTMLElement) {
-			list.addEventListener("scroll", () => updateScrollState(container), { passive: true });
+			list.addEventListener("scroll", () => updateScrollState(container), {
+				passive: true,
+			});
 
 			if ("ResizeObserver" in window) {
 				const resizeObserver = new ResizeObserver(() => updateScrollState(container));
@@ -217,7 +219,9 @@ const baseId = `notion-tab-${block.Id}`;
 			}
 		}
 
-		window.addEventListener("resize", () => updateScrollState(container), { passive: true });
+		window.addEventListener("resize", () => updateScrollState(container), {
+			passive: true,
+		});
 
 		container.addEventListener("click", (event) => {
 			const tab = event.target instanceof Element ? event.target.closest('[role="tab"]') : null;
@@ -286,7 +290,7 @@ const baseId = `notion-tab-${block.Id}`;
 				});
 			};
 
-			window.addEventListener("hashchange", () => syncHashTarget("smooth"));
+			window.addEventListener("hashchange", () => syncHashTarget("auto"));
 
 			if (window.location.hash) {
 				requestAnimationFrame(() => syncHashTarget("auto"));

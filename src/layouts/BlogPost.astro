@@ -9,8 +9,6 @@ import PostComments from "@/components/auto-added-sections/PostComments.astro";
 import { INTERLINKED_CONTENT } from "@/constants";
 import { adjustedFootnotesConfig } from "@/lib/notion/client";
 import InterlinkedContentSection from "@/components/auto-added-sections/interlinked-content/InterlinkedContentSection.astro";
-import Icon from "@/components/ui/Icon.astro";
-import CopyMarkdownButton from "@/components/auto-added-sections/CopyMarkdownButton.astro";
 import { getMachineDateISOString } from "@/utils/date";
 
 interface Props {
@@ -19,19 +17,11 @@ interface Props {
 	headings: Heading[];
 	shouldUseCache: boolean;
 	footnotesInPage?: any[] | null;
-	showCopyMarkdownButton?: boolean;
 	hasMarkdownAlternate?: boolean;
 }
 
-const {
-	post,
-	ogImage,
-	headings,
-	shouldUseCache,
-	footnotesInPage,
-	showCopyMarkdownButton = false,
-	hasMarkdownAlternate,
-} = Astro.props;
+const { post, ogImage, headings, shouldUseCache, footnotesInPage, hasMarkdownAlternate } =
+	Astro.props;
 
 // Add Interlinked Content heading to TOC if interlinked content exist
 INTERLINKED_CONTENT
@@ -103,33 +93,4 @@ const metaAuthor = getMetaAuthor();
 			<PostComments post={post} />
 		</aside>
 	</div>
-	<button id="to-top-btn" class="to-top-btn" aria-label="Back to Top" data-show="false">
-		<Icon name={"to-top"} class="h-6 w-6" aria-label="Go Back to Top" stroke-linecap="round" />
-	</button>
-	{
-		showCopyMarkdownButton && (
-			<CopyMarkdownButton class="copy-floating-btn" buttonClass="justify-center" />
-		)
-	}
 </BaseLayout>
-
-<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		const scrollBtn = document.getElementById("to-top-btn");
-		const targetHeader = document.getElementById("blog-hero");
-
-		function callback(entries) {
-			entries.forEach((entry) => {
-				if (entry.target === targetHeader) {
-					scrollBtn.dataset.show = (!entry.isIntersecting).toString();
-				}
-			});
-		}
-
-		scrollBtn.addEventListener("click", () => {
-			document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
-		});
-		const observer = new IntersectionObserver(callback);
-		observer.observe(targetHeader);
-	});
-</script>

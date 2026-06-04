@@ -1,0 +1,371 @@
+@layer base {
+	:root {
+		color-scheme: light;
+		--theme-bg: #ffffff;
+		--theme-text: #111111;
+		--theme-link: #111111;
+		--theme-accent: #111111;
+		--theme-accent-2: #5c5c5c;
+		--theme-quote: #333333;
+		--theme-popover-bg: #ffffff;
+		--minimal-line: color-mix(in srgb, var(--theme-text) 16%, transparent);
+		--minimal-muted: color-mix(in srgb, var(--theme-text) 62%, transparent);
+		--minimal-faint: color-mix(in srgb, var(--theme-text) 8%, transparent);
+	}
+
+	:root.dark {
+		color-scheme: dark;
+		--theme-bg: #080808;
+		--theme-text: #f5f5f5;
+		--theme-link: #f5f5f5;
+		--theme-accent: #f5f5f5;
+		--theme-accent-2: #aeaeae;
+		--theme-quote: #d6d6d6;
+		--theme-popover-bg: #080808;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation: none !important;
+		scroll-behavior: auto !important;
+		transition: none !important;
+	}
+
+	html {
+		scroll-behavior: auto !important;
+		font-size: 16px;
+	}
+
+	html body {
+		max-width: 880px !important;
+		padding: 2.25rem 1.25rem 1.5rem !important;
+		background: var(--theme-bg) !important;
+		background-image: none !important;
+		color: var(--theme-text);
+		font-family:
+			"JetBrains Mono", var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+			"Liberation Mono", "Courier New", monospace !important;
+		line-height: 1.68;
+	}
+
+	html body::before {
+		display: none !important;
+	}
+
+	a {
+		color: inherit;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.16em;
+	}
+}
+
+@layer components {
+	.content-shell,
+	.home-shell {
+		width: 100%;
+		max-width: 880px;
+		margin-inline: auto;
+	}
+
+	.home-shell {
+		padding-top: 2rem;
+	}
+
+	.home-intro,
+	.writing-index-title,
+	#auto-recent-posts,
+	.title,
+	.site-header,
+	.site-footer {
+		border-color: var(--minimal-line);
+	}
+
+	.home-intro {
+		padding-bottom: 1.75rem;
+	}
+
+	.home-eyebrow,
+	.post-preview-date,
+	.caption,
+	.site-footer {
+		color: var(--minimal-muted);
+	}
+
+	.home-title,
+	.writing-index-title,
+	#auto-recent-posts,
+	.title {
+		margin-bottom: 1rem;
+		padding-bottom: 0.75rem;
+		border-bottom-width: 1px;
+		text-transform: none;
+		letter-spacing: 0;
+	}
+
+	.home-title,
+	.title {
+		font-size: clamp(1.6rem, 4vw, 2.25rem);
+		line-height: 1.18;
+	}
+
+	.home-summary,
+	.post-body,
+	.mdx-notion p {
+		color: var(--theme-text);
+		font-size: 1rem;
+		line-height: 1.75;
+	}
+
+	.site-header {
+		max-width: 880px;
+		margin: 0 auto 3rem;
+		padding-bottom: 0.85rem;
+		border-bottom-width: 1px;
+		text-align: left;
+	}
+
+	.site-brand {
+		font-size: 1rem;
+		line-height: 1.5;
+		text-transform: none;
+	}
+
+	.site-header-actions {
+		gap: 0.75rem;
+		font-size: 0.875rem;
+		line-height: 1.5;
+		text-transform: none;
+	}
+
+	.site-header-link,
+	.theme-toggle-btn,
+	.search-btn,
+	.quiet-link,
+	.minimal-link-row,
+	.post-preview-title a,
+	.site-page-link,
+	.footer-link,
+	.author-name-link,
+	.mdx-notion a {
+		background: transparent !important;
+		color: inherit !important;
+		text-decoration-line: underline;
+		text-decoration-style: solid;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.16em;
+	}
+
+	.site-header-link,
+	.theme-toggle-btn,
+	.search-btn {
+		padding: 0;
+		border-radius: 0;
+		font: inherit;
+	}
+
+	.theme-toggle-btn {
+		width: auto;
+		height: auto;
+	}
+
+	.theme-toggle-label {
+		display: inline;
+	}
+
+	.theme-toggle-label::after,
+	.hasId::before,
+	.non-toggle-h2::before,
+	#auto-recent-posts::before {
+		content: none !important;
+		display: none !important;
+	}
+
+	.theme-icon,
+	.visual-container,
+	.bottom-toc-button,
+	.to-top-btn,
+	.copy-floating-btn,
+	.notion-tab-edge {
+		display: none !important;
+	}
+
+	.post-preview-row {
+		display: grid;
+		grid-template-columns: 9.5rem minmax(0, 1fr);
+		gap: 0.75rem;
+		padding-block: 0.25rem;
+		background: transparent !important;
+	}
+
+	.post-preview-date::after {
+		content: "";
+	}
+
+	.minimal-post-list > li:hover .post-preview-row,
+	.minimal-post-list > li:hover .post-preview-date {
+		background: transparent !important;
+		color: inherit !important;
+	}
+
+	.post-body > * + * {
+		margin-top: 0.85rem;
+	}
+
+	.notion-h1,
+	.notion-h2,
+	.notion-h3,
+	.notion-h4,
+	.mdx-notion h1,
+	.mdx-notion h2,
+	.mdx-notion h3 {
+		color: var(--theme-text);
+		font-weight: 700;
+		letter-spacing: 0;
+	}
+
+	.notion-h1 {
+		margin-top: 3rem;
+		font-size: 1.75rem;
+	}
+
+	.notion-h2 {
+		margin-top: 2.25rem;
+		font-size: 1.35rem;
+	}
+
+	.notion-h3 {
+		margin-top: 1.75rem;
+		font-size: 1.08rem;
+	}
+
+	.divider,
+	.notion-divider,
+	.auto-imported-section > hr {
+		height: 1px;
+		margin-block: 2rem;
+		border: 0;
+		border-radius: 0;
+		background: var(--minimal-line);
+	}
+
+	.callout,
+	.bookmark-card,
+	.notion-tab-block,
+	.search-dialog,
+	pre,
+	.code .mermaid {
+		border: 1px solid var(--minimal-line);
+		border-radius: 0 !important;
+		background: transparent !important;
+		box-shadow: none !important;
+		backdrop-filter: none !important;
+	}
+
+	.callout {
+		padding: 1rem;
+	}
+
+	.nquote,
+	.mdx-notion blockquote {
+		border-left: 2px solid var(--theme-text);
+		background: transparent !important;
+		color: var(--theme-text);
+	}
+
+	.annotation-code,
+	.annotation-code.bg-default,
+	.mdx-notion code {
+		border-radius: 0;
+		background: var(--minimal-faint) !important;
+		color: var(--theme-text) !important;
+	}
+
+	.ntable th,
+	.ntable td,
+	.ntable tr,
+	.datatable-table > thead > tr > th {
+		border-color: var(--minimal-line) !important;
+	}
+
+	.ntable th {
+		background: transparent !important;
+		color: var(--theme-text) !important;
+		text-transform: none;
+	}
+
+	.toc-container {
+		position: static;
+		display: block;
+		margin-top: 2.5rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--minimal-line);
+	}
+
+	.toc-content {
+		position: static;
+		visibility: visible !important;
+		width: auto;
+		max-height: none;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none;
+		opacity: 1 !important;
+		transform: none !important;
+	}
+
+	.cover-hero-container,
+	.cover-hero-content,
+	.post-card,
+	.post-card-image-container,
+	.post-card-image,
+	.post-card-placeholder,
+	.notion-image {
+		border-radius: 0 !important;
+		transform: none !important;
+		filter: none !important;
+	}
+
+	.popoverEl {
+		border-radius: 0 !important;
+		box-shadow: none !important;
+		backdrop-filter: none !important;
+	}
+
+	.cover-hero-image,
+	.cover-hero-tint {
+		display: none !important;
+	}
+
+	.cover-hero-container {
+		min-height: 0;
+		overflow: visible;
+	}
+
+	.cover-hero-content {
+		min-height: 0;
+		padding: 0;
+	}
+
+	.site-footer {
+		justify-content: flex-start;
+		padding-top: 4rem;
+		padding-bottom: 0;
+		text-align: left;
+	}
+}
+
+@layer components {
+	@media (max-width: 640px) {
+		.post-preview-row {
+			grid-template-columns: 1fr;
+			gap: 0;
+		}
+
+		.site-header {
+			gap: 1rem;
+		}
+	}
+}
