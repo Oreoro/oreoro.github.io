@@ -209,9 +209,16 @@ ${createCssVariables("dark")}
   }
 
   html body {
-    @apply mx-auto flex min-h-screen w-full max-w-[1040px] flex-col bg-bgColor px-5 pt-8 text-textColor antialiased overflow-x-hidden sm:px-8 sm:pt-10;
-    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace);
+    @apply mx-auto flex min-h-screen w-full max-w-[1280px] flex-col bg-bgColor px-5 pt-6 text-textColor antialiased overflow-x-hidden sm:px-8 sm:pt-8;
+    font-family: ${fontSans};
     background-image: none;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-accent) 28%, transparent);
+    color: var(--color-textColor);
   }
 
   @media print {
@@ -1272,21 +1279,21 @@ ${createCssVariables("dark")}
   .mdx-notion h1,
   .mdx-notion h2,
   .mdx-notion h3 {
-    @apply font-bold text-textColor tracking-[-0.01em] mt-5 mb-3;
+    @apply mt-5 mb-3 font-semibold tracking-normal text-textColor;
   }
 
   .mdx-notion h1 {
-    font-size: clamp(1.8rem, 2.6vw, 2.05rem);
+    font-size: 2rem;
     line-height: 1.2;
   }
 
   .mdx-notion h2 {
-    font-size: clamp(1.45rem, 2.3vw, 1.8rem);
+    font-size: 1.625rem;
     line-height: 1.25;
   }
 
   .mdx-notion h3 {
-    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    font-size: 1.25rem;
     line-height: 1.3;
   }
 
