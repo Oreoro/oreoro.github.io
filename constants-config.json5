@@ -49,7 +49,7 @@
 		// The name of the Notion 'Collection' property value for pages that should appear in the main navigation menu. These are treated as static pages (e.g., 'About', 'Contact') rather than blog posts.
 		"menu-pages-collection": "main",
 		// An array of 'Collection' names where posts should be displayed in full on list pages. Useful for microblogs or "stream" style collections where showing the full content is desired.
-		"full-preview-collections": ["Stream"],
+		"full-preview-collections": ["Updates"],
 		// If true, any post with a slug starting with an underscore (e.g., "_draft-post") will be hidden from all lists (home page, collections, tags), from sitemap and search. The page will still be built and accessible via its direct URL.
 		"hide-underscore-slugs-in-lists": true,
 		// Listing view style for post lists.
@@ -78,22 +78,22 @@
 			},
 			// Link colors
 			link: {
-				light: "22 41 45",
+				light: "24 25 26",
 				dark: "244 242 232",
 			},
 			// Primary accent color (e.g., for titles, highlights)
 			accent: {
-				light: "138 75 62",
+				light: "24 25 26",
 				dark: "221 152 113",
 			},
 			// Secondary accent color (e.g., for borders, subtle highlights)
 			"accent-2": {
-				light: "55 83 86",
+				light: "24 25 26",
 				dark: "132 161 156",
 			},
 			// Color for blockquotes and other special text
 			quote: {
-				light: "36 118 108",
+				light: "24 25 26",
 				dark: "140 204 185",
 			},
 		},
@@ -102,7 +102,7 @@
 			// We automatically load weights [400, 500, 600, 700] and styles [normal, italic] for all fonts (it is fine if they are not available).
 			// Main body/UI font - can be a sans-serif OR serif typeface (e.g., "Roboto", "Merriweather", "Inter")
 			// If empty and mono-font-name is set, mono will be used for everything.
-			"sans-font-name": "Inter",
+			"sans-font-name": "",
 			// Monospace font for code blocks (e.g., "Fira Code", "JetBrains Mono")
 			// No need to escape spaces in font names!
 			"mono-font-name": "JetBrains Mono",

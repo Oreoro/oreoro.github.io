@@ -22,7 +22,7 @@ const {
 } = Astro.props;
 ---
 
-<html lang={siteInfo.lang} class="dark">
+<html lang={siteInfo.lang}>
 	<head>
 		<BaseHead
 			title={title}
@@ -33,7 +33,7 @@ const {
 			hasMarkdownAlternate={hasMarkdownAlternate}
 		/>
 	</head>
-	<body class="w-full max-w-[1040px] print:max-w-full">
+	<body class="w-full max-w-[1280px] print:max-w-full">
 		<SkipLink />
 		<Header />
 		<main id="main" class="w-full">
