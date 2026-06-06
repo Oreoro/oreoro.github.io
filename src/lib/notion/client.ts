@@ -619,8 +619,9 @@ async function getResolvedDataSourceId(): Promise<string> {
 		response = await retry(
 			async (bail) => {
 				try {
-					return (await client.databases.retrieve({
-						database_id: DATABASE_ID,
+					return (await client.request({
+						path: `databases/${DATABASE_ID}`,
+						method: "get",
 					})) as any;
 				} catch (error: unknown) {
 					if (error instanceof APIResponseError) {
@@ -767,9 +768,17 @@ export async function getAllEntries(): Promise<Post[]> {
 			const res = await retry(
 				async (bail) => {
 					try {
-						return (await client.dataSources.query(
-							params as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-						)) as responses.QueryDatabaseResponse;
+						const {
+							data_source_id: _dataSourceId,
+							filter_properties: filterProperties,
+							...body
+						} = params;
+						return (await client.request({
+							path: `data_sources/${dataSourceId}/query`,
+							method: "post",
+							query: filterProperties ? { filter_properties: filterProperties } : undefined,
+							body,
+						})) as responses.QueryDatabaseResponse;
 					} catch (error: unknown) {
 						if (error instanceof APIResponseError) {
 							if (error.status && error.status >= 400 && error.status < 500) {
@@ -2148,9 +2157,10 @@ export async function getDataSource(): Promise<Database> {
 		res = await retry(
 			async (bail) => {
 				try {
-					return (await client.dataSources.retrieve(
-						params as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-					)) as responses.RetrieveDatabaseResponse;
+					return (await client.request({
+						path: `data_sources/${dataSourceId}`,
+						method: "get",
+					})) as responses.RetrieveDatabaseResponse;
 				} catch (error: unknown) {
 					if (error instanceof APIResponseError) {
 						if (error.status && error.status >= 400 && error.status < 500) {
