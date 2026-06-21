@@ -11,22 +11,9 @@ interface Props {
 const { post, as: Tag = "div" } = Astro.props;
 const postLink = resolvePostHref(post);
 const external = isExternalPost(post);
-
-const parsedDate = post.Date?.includes("T")
-	? new Date(post.Date)
-	: new Date(`${post.Date}T00:00:00Z`);
-const articleDate = Number.isNaN(parsedDate.valueOf())
-	? post.Date
-	: new Intl.DateTimeFormat("en-GB", {
-			day: "2-digit",
-			month: "2-digit",
-			year: "numeric",
-			timeZone: "UTC",
-		}).format(parsedDate);
 ---
 
 <article class="post-preview-row">
-	<time datetime={post.Date} class="post-preview-date">{articleDate}</time>
 	<div class="post-preview-main">
 		<Tag class="post-preview-title">
 			<a

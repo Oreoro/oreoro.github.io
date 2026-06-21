@@ -1674,7 +1674,7 @@ html body::before {
 }
 
 .minimal-post-list {
-  @apply list-none;
+  @apply list-none space-y-3;
 }
 
 .minimal-post-list > li {
@@ -1690,11 +1690,11 @@ html body::before {
 }
 
 .minimal-link-row {
-  @apply block py-0 text-lg font-bold leading-tight text-textColor underline decoration-[0.08em] underline-offset-[0.12em] transition-colors hover:text-accent sm:text-xl;
+  @apply block py-0 text-lg font-bold leading-snug text-textColor no-underline transition-colors hover:text-accent sm:text-xl;
 }
 
 .quiet-link {
-  @apply mt-6 inline-block text-lg font-bold text-textColor underline decoration-[0.08em] underline-offset-[0.12em] transition-colors hover:text-accent;
+  @apply mt-6 inline-block text-lg font-bold text-textColor no-underline transition-colors hover:text-accent;
 }
 
 .site-header {
@@ -1749,7 +1749,7 @@ html body::before {
 }
 
 .post-preview-row {
-  @apply flex max-w-full flex-wrap items-baseline gap-[0.55ch] py-0 text-lg font-bold leading-tight sm:text-xl;
+  @apply block max-w-full py-1 text-lg font-bold leading-snug sm:text-xl;
 }
 
 .post-preview-date {
@@ -1765,15 +1765,15 @@ html body::before {
 }
 
 .post-preview-main {
-  @apply min-w-0 flex-1;
+  @apply min-w-0;
 }
 
 .post-preview-title {
-  @apply m-0 inline text-lg font-bold leading-tight text-textColor sm:text-xl;
+  @apply m-0 block text-lg font-bold leading-snug text-textColor sm:text-xl;
 }
 
 .post-preview-title a {
-  @apply underline decoration-[0.08em] underline-offset-[0.12em] transition-colors hover:text-accent;
+  @apply no-underline transition-colors hover:text-accent;
 }
 
 .pagination-nav {
@@ -1790,7 +1790,7 @@ html body::before {
 }
 
 .title {
-  @apply mb-5 border-b pb-2 text-2xl font-bold uppercase leading-tight text-textColor sm:text-3xl;
+  @apply mb-6 border-0 pb-0 text-2xl font-bold uppercase leading-tight text-textColor sm:text-3xl;
   border-color: var(--jetbrains-line-strong);
 }
 
