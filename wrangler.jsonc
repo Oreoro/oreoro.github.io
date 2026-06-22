@@ -2,5 +2,8 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "oreoro-github-io",
 	"compatibility_date": "2026-06-20",
-	"pages_build_output_dir": "./dist"
+	"main": "src/worker.js",
+	"assets": {
+		"directory": "./dist"
+	}
 }
