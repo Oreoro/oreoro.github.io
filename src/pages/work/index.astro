@@ -2,7 +2,6 @@
 import PageLayout from "@/layouts/Base.astro";
 import { getProducts, getPostContentByPostId } from "@/lib/notion/client";
 import { getNavLink } from "@/lib/blog-helpers";
-import { siteInfo } from "@/siteInfo";
 import "@/styles/work.css";
 
 const products = await getProducts();
@@ -104,7 +103,7 @@ const previousHref = cards.length
 				))}
 			</div>
 
-			<div class="stack__cta" style="margin-top: calc(var(--line-height) * 2)">
+			<div class="cta-panel" style="margin-top: calc(var(--line-height) * 2)">
 				<p>Have something to build? We're open to contract work.</p>
 				<a class="button button--theme" href={getNavLink("/contact/")}>
 					Start a project <span>&rarr;</span>

@@ -1519,6 +1519,27 @@ html body.signals-shell .policies {
 	margin-bottom: 3.7em;
 }
 
+/* Shared call-to-action panel used by index pages. */
+html body.signals-shell .cta-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--spacing);
+	max-width: 42em;
+	padding: 1.4em 1.6em;
+	border: 1px solid rgba(var(--rgb-white), 0.16);
+	border-radius: 0.4em;
+	background: rgba(var(--rgb-white), 0.06);
+}
+
+html body.signals-shell .cta-panel p {
+	margin: 0;
+	color: var(--color-white);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+
 /* ---------- Focus Lab polish ---------- */
 
 /* Align the capabilities content column with its indented headline. */
