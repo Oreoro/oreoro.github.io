@@ -60,21 +60,19 @@
 	--rgb-white: 255, 255, 255;
 
 	--rgb-theme: var(--rgb-black);
-	/* Refined, editorial palette — deep, desaturated tones instead of vivid
-	 * primaries. Each page still gets its own subtle hue, but they read as a
-	 * cohesive set rather than a cartoon. */
-	--rgb-theme-1: 16, 20, 24; /* ink */
-	--rgb-theme-2: 18, 27, 46; /* navy */
-	--rgb-theme-3: 14, 36, 34; /* deep teal */
-	--rgb-theme-4: 27, 42, 31; /* forest */
-	--rgb-theme-5: 42, 20, 20; /* oxblood */
-	--rgb-theme-6: 36, 26, 51; /* aubergine */
-	--rgb-theme-7: 43, 33, 23; /* espresso */
-	--rgb-theme-8: 32, 24, 31; /* plum charcoal */
-	--rgb-theme-9: 20, 26, 28; /* slate */
-	--rgb-theme-10: 58, 13, 22; /* deep brand red */
-	--rgb-theme-11: 24, 32, 44; /* steel */
-	--rgb-theme-12: 30, 30, 24; /* olive charcoal */
+	/* 37signals palette — one vivid colour per page load. */
+	--rgb-theme-1: 244, 103, 199;
+	--rgb-theme-2: 190, 82, 255;
+	--rgb-theme-3: 139, 119, 255;
+	--rgb-theme-4: 0, 170, 194;
+	--rgb-theme-5: 154, 162, 0;
+	--rgb-theme-6: 248, 121, 23;
+	--rgb-theme-7: 240, 177, 3;
+	--rgb-theme-8: 204, 61, 51;
+	--rgb-theme-9: 41, 152, 80;
+	--rgb-theme-10: 0, 100, 230;
+	--rgb-theme-11: 236, 67, 67;
+	--rgb-theme-12: 207, 111, 182;
 
 	--color-black: rgb(var(--rgb-black));
 	--color-error: rgb(var(--rgb-error));
@@ -328,8 +326,7 @@ html body.signals-shell .button span {
 }
 
 html body.signals-shell .button--theme {
-	background: rgba(var(--rgb-white), 0.14);
-	border: 1px solid rgba(var(--rgb-white), 0.45);
+	background: var(--color-theme);
 	color: var(--color-white) !important;
 }
 
@@ -1555,6 +1552,7 @@ html body.signals-shell input:focus-visible {
 
 /* Buttons: a touch more life than a flat swap. */
 html body.signals-shell .button {
+	font-size: 0.95rem;
 	transition:
 		background-color var(--transition) !important,
 		color var(--transition) !important,
