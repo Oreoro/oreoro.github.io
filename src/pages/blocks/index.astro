@@ -1,0 +1,73 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import NotionBlocks from "@/components/NotionBlocks.astro";
+import { getPostBySlug, getPostContentByPostId } from "@/lib/notion/client";
+import {
+	getNavLink,
+	resetCurrentHeadings,
+	resetFirstImage,
+	setTrackCurrentPageId,
+} from "@/lib/blog-helpers";
+import { siteInfo } from "@/siteInfo";
+
+const GALLERY_SLUG = "notion-blocks-gallery";
+
+const post = await getPostBySlug(GALLERY_SLUG);
+
+resetCurrentHeadings();
+resetFirstImage();
+
+let blocks: Awaited<ReturnType<typeof getPostContentByPostId>>["blocks"] = [];
+if (post) {
+	setTrackCurrentPageId(post.PageId);
+	const result = await getPostContentByPostId(post);
+	blocks = result.blocks;
+}
+
+const nextHref = getNavLink("/work/");
+const previousHref = getNavLink("/stack/");
+---
+
+<PageLayout
+	meta={{
+		title: "Blocks",
+		description:
+			"Native Notion blocks rendered as a static Astro site — text, lists, media, embeds, tables, columns, and more.",
+		ogImage: `/og-image/${GALLERY_SLUG}.png`,
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>Blocks</h6>
+			<h1>Native Notion, exported static.</h1>
+			<p>
+				Every block below is authored in Notion and rendered here as plain HTML at build time.
+				Edit it in Notion, rebuild, and the site updates.
+			</p>
+		</div>
+
+		<div class="page__content content">
+			{post ? (
+				<NotionBlocks blocks={blocks} />
+			) : (
+				<p>
+					The gallery entry <code>{GALLERY_SLUG}</code> isn't in the CMS yet. Create an Article
+					with that slug to populate this page.
+				</p>
+			)}
+		</div>
+	</div>
+
+	<div class="boundary"></div>
+
+	<div
+		class="controller controller--origin"
+		data-next={nextHref}
+		data-previous={previousHref}
+		role="navigation"
+	>
+		<a href={nextHref} aria-label="Next: Work" tabindex="-1"></a>
+	</div>
+
+	<div class="origin"></div>
+</PageLayout>

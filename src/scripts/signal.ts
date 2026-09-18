@@ -205,7 +205,6 @@ function initTheme() {
 		"--rgb-theme-10",
 		"--rgb-theme-11",
 		"--rgb-theme-12",
-		"--rgb-theme-13",
 	];
 
 	const themeSession = sessionStorage.getItem("theme");

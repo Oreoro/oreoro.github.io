@@ -5,12 +5,14 @@ const primary: Array<[string, string]> = [
 	["Work", "/work/"],
 	["Capabilities", "/capabilities/"],
 	["Stack", "/stack/"],
+	["Blocks", "/blocks/"],
 	["Blog", "/blog/"],
 	["Contact", "/contact/"],
 ];
 
 const secondary: Array<[string, string]> = [
 	["Writing", "/blog/"],
+	["Blocks", "/blocks/"],
 	["Tags", "/tags/"],
 	["RSS", "/rss.xml"],
 	["Contact", "/contact/"],
@@ -24,7 +26,6 @@ const secondary: Array<[string, string]> = [
 <nav class="nav" aria-label="Mobile navigation">
 	<div class="nav__logo">
 		<a href={getNavLink("/")} aria-label="Focus Lab">
-			<img class="brand-mark" src={getNavLink("/favicon.svg")} alt="" width="20" height="20" />
 			<span class="wordmark">Focus Lab</span>
 		</a>
 	</div>
@@ -54,7 +55,6 @@ const secondary: Array<[string, string]> = [
 <header class="header">
 	<h1>
 		<a href={getNavLink("/")} aria-label="Focus Lab">
-			<img class="brand-mark" src={getNavLink("/favicon.svg")} alt="" width="20" height="20" />
 			<span class="wordmark">Focus Lab</span>
 		</a>
 	</h1>

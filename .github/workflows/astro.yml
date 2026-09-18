@@ -1,12 +1,8 @@
 name: Deploy to GitHub Pages
 
+# Disabled: Focus Lab deploys to Cloudflare (see deploy-cloudflare.yml).
+# Kept for reference / manual runs only.
 on:
-  create:
-    types: [repository] # Triggers on new repo creation from template
-  push:
-    branches: [main]
-  schedule:
-    - cron: "0 */8 * * *"
   workflow_dispatch:
 
 permissions:

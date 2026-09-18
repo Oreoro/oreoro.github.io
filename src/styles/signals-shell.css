@@ -60,20 +60,21 @@
 	--rgb-white: 255, 255, 255;
 
 	--rgb-theme: var(--rgb-black);
-	--rgb-theme-1: 244, 103, 199;
-	--rgb-theme-2: 190, 82, 255;
-	--rgb-theme-3: 139, 119, 255;
-	--rgb-theme-4: 0, 170, 194;
-	--rgb-theme-5: 154, 162, 0;
-	--rgb-theme-6: 248, 121, 23;
-	--rgb-theme-7: 240, 177, 3;
-	--rgb-theme-8: 204, 61, 51;
-	--rgb-theme-9: 41, 152, 80;
-	--rgb-theme-10: 0, 100, 230;
-	--rgb-theme-11: 236, 67, 67;
-	--rgb-theme-12: 207, 111, 182;
-	/* Focus Lab brand red ("Hornet Sting") — a 13th option in the rotation. */
-	--rgb-theme-13: 255, 0, 47;
+	/* Refined, editorial palette — deep, desaturated tones instead of vivid
+	 * primaries. Each page still gets its own subtle hue, but they read as a
+	 * cohesive set rather than a cartoon. */
+	--rgb-theme-1: 16, 20, 24; /* ink */
+	--rgb-theme-2: 18, 27, 46; /* navy */
+	--rgb-theme-3: 14, 36, 34; /* deep teal */
+	--rgb-theme-4: 27, 42, 31; /* forest */
+	--rgb-theme-5: 42, 20, 20; /* oxblood */
+	--rgb-theme-6: 36, 26, 51; /* aubergine */
+	--rgb-theme-7: 43, 33, 23; /* espresso */
+	--rgb-theme-8: 32, 24, 31; /* plum charcoal */
+	--rgb-theme-9: 20, 26, 28; /* slate */
+	--rgb-theme-10: 58, 13, 22; /* deep brand red */
+	--rgb-theme-11: 24, 32, 44; /* steel */
+	--rgb-theme-12: 30, 30, 24; /* olive charcoal */
 
 	--color-black: rgb(var(--rgb-black));
 	--color-error: rgb(var(--rgb-error));
@@ -327,7 +328,8 @@ html body.signals-shell .button span {
 }
 
 html body.signals-shell .button--theme {
-	background: var(--color-theme);
+	background: rgba(var(--rgb-white), 0.14);
+	border: 1px solid rgba(var(--rgb-white), 0.45);
 	color: var(--color-white) !important;
 }
 
@@ -541,15 +543,6 @@ html body.signals-shell .header h1 a,
 html body.signals-shell .nav__logo a {
 	display: flex;
 	align-items: center;
-	gap: 0.45em;
-}
-
-html body.signals-shell .header h1 a img.brand-mark,
-html body.signals-shell .nav__logo a img.brand-mark {
-	width: 1.15em;
-	height: 1.15em;
-	border-radius: 0.28em;
-	box-shadow: 0 0 0 1px rgba(var(--rgb-white), 0.25);
 }
 
 html body.signals-shell .header h1 a img {

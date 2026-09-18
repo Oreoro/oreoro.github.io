@@ -33,6 +33,7 @@ const push = (label: string, href: string) => {
 
 push("Start here", "/capabilities/");
 push("Our stack", "/stack/");
+push("Notion blocks", "/blocks/");
 for (const product of products) push(product.Title, `/work/${product.Slug}/`);
 for (const [name, href] of capabilities) push(name, href);
 for (const article of articles) push(article.Title, `/posts/${article.Slug}/`);
