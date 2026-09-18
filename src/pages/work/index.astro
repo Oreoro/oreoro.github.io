@@ -1,13 +1,50 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { getProducts } from "@/lib/notion/client";
+import { getProducts, getPostContentByPostId } from "@/lib/notion/client";
 import { getNavLink } from "@/lib/blog-helpers";
+import { siteInfo } from "@/siteInfo";
+import "@/styles/work.css";
 
 const products = await getProducts();
 
-const nextHref = products[0] ? getNavLink(`/work/${products[0].Slug}/`) : getNavLink("/");
-const previousHref = products.length
-	? getNavLink(`/work/${products[products.length - 1].Slug}/`)
+type Card = {
+	slug: string;
+	title: string;
+	excerpt: string;
+	tags: string[];
+	imageUrl: string;
+	external: string;
+};
+
+const cards: Card[] = await Promise.all(
+	products.map(async (product) => {
+		let imageUrl = "";
+		try {
+			const { blocks } = await getPostContentByPostId(product);
+			const imageBlock = blocks.find(
+				(block) =>
+					block.Type === "image" && (block.NImage?.External?.Url || block.NImage?.File?.Url),
+			);
+			imageUrl =
+				imageBlock?.NImage?.External?.Url || imageBlock?.NImage?.File?.Url || "";
+		} catch {
+			imageUrl = "";
+		}
+
+		return {
+			slug: product.Slug,
+			title: product.Title,
+			excerpt: product.Excerpt,
+			tags: product.Tags.map((tag) => tag.name),
+			imageUrl,
+			external: typeof product.Fields?.Link === "string" ? product.Fields.Link : "",
+		};
+	}),
+);
+
+const nextHref = cards[0] ? getNavLink(`/work/${cards[0].slug}/`) : getNavLink("/");
+const previousHref = cards.length
+	? getNavLink(`/work/${cards[cards.length - 1].slug}/`)
 	: getNavLink("/");
 ---
 
@@ -30,26 +67,45 @@ const previousHref = products.length
 		</div>
 
 		<div class="page__content">
-			<div class="jobs">
-				<div class="jobs__container">
-					{products.map((product) => (
-						<article class="jobs__job">
-							<h2>
-								<a href={getNavLink(`/work/${product.Slug}/`)}>{product.Title}</a>
-							</h2>
-							{product.Excerpt && <p>{product.Excerpt}</p>}
-							{product.Tags.length > 0 && (
-								<p class="font-size-small">{product.Tags.map((tag) => tag.name).join(" · ")}</p>
+			<div class="work-grid">
+				{cards.map((card, index) => (
+					<a
+						class="work-card"
+						href={getNavLink(`/work/${card.slug}/`)}
+						style={`--work-index:${index}`}
+					>
+						<div class="work-card__media">
+							{card.imageUrl ? (
+								<img
+									src={card.imageUrl}
+									alt={`${card.title} preview`}
+									loading="lazy"
+									decoding="async"
+								/>
+							) : (
+								<span class="work-card__placeholder">
+									{card.title
+										.split(/\s+/)
+										.slice(0, 2)
+										.map((word) => word.charAt(0))
+										.join("")}
+								</span>
 							)}
-						</article>
-					))}
-				</div>
+						</div>
+						<div class="work-card__body">
+							<div class="work-card__meta">
+								<span>{String(index + 1).padStart(2, "0")}</span>
+								{card.tags.length > 0 && <span>{card.tags.slice(0, 2).join(" · ")}</span>}
+							</div>
+							<h2 class="work-card__title">{card.title}</h2>
+							{card.excerpt && <p class="work-card__desc">{card.excerpt}</p>}
+						</div>
+					</a>
+				))}
 			</div>
 
-			<div class="signup" style="margin-top: calc(var(--line-height) * 2)">
-				<p>
-					Have something to build?<br /> We're open to contract work.
-				</p>
+			<div class="stack__cta" style="margin-top: calc(var(--line-height) * 2)">
+				<p>Have something to build? We're open to contract work.</p>
 				<a class="button button--theme" href={getNavLink("/contact/")}>
 					Start a project <span>&rarr;</span>
 				</a>
