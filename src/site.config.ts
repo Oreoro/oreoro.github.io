@@ -3,7 +3,7 @@ import type { SiteConfig } from "@/types";
 import { AUTHOR, WEBMENTION_LINK, HOME_PAGE_SLUG } from "@/constants";
 
 const tl = "Focus Lab",
-	ds = "A product company in Islamabad. We build and operate our own AI, SaaS, mobile, and ecommerce products — and we're open to contract work.",
+	ds = "A product company in Islamabad. We build and run our own software — AI, SaaS, mobile, ecommerce — and we build it for a few others, too.",
 	path = "/",
 	oim = "";
 const database = await getDataSource();

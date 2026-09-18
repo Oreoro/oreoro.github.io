@@ -1533,6 +1533,10 @@ html body.signals-shell .cta-panel p {
 /* ---------- Focus Lab polish ---------- */
 
 /* Align the capabilities content column with its indented headline. */
+html body.signals-shell .page__content.content {
+	max-width: 60ch;
+}
+
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	html body.signals-shell .page__content.content {
 		margin-left: 2.8ch;

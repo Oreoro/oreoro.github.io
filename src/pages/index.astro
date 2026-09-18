@@ -16,12 +16,12 @@ const articles = entries
 	.slice(0, 3);
 
 const capabilities: Array<[string, string]> = [
-	["AI product engineering", "/capabilities/#ai-product-engineering"],
-	["SaaS platform engineering", "/capabilities/#saas-platform-engineering"],
-	["Mobile app development", "/capabilities/#mobile-app-development"],
-	["Web app development", "/capabilities/#web-app-development"],
-	["Ecommerce engineering", "/capabilities/#ecommerce-engineering"],
-	["Framer & CMS sites", "/capabilities/#framer-cms-sites"],
+	["AI products that hold up", "/capabilities/#ai-product-engineering"],
+	["SaaS platforms done properly", "/capabilities/#saas-platform-engineering"],
+	["Mobile that feels native", "/capabilities/#mobile-app-development"],
+	["Web apps built to last", "/capabilities/#web-app-development"],
+	["Ecommerce that converts", "/capabilities/#ecommerce-engineering"],
+	["Sites your team can edit", "/capabilities/#framer-cms-sites"],
 ];
 
 type Signal = { num: string; label: string; href: string };
@@ -32,8 +32,8 @@ const push = (label: string, href: string) => {
 };
 
 push("Start here", "/capabilities/");
-push("Our stack", "/stack/");
-push("Notion blocks", "/blocks/");
+push("The stack we reach for", "/stack/");
+push("Native Notion, exported static", "/blocks/");
 for (const product of products) push(product.Title, `/work/${product.Slug}/`);
 for (const [name, href] of capabilities) push(name, href);
 for (const article of articles) push(article.Title, `/posts/${article.Slug}/`);
