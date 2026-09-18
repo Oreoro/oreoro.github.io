@@ -1,0 +1,89 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import NotionBlocks from "@/components/NotionBlocks.astro";
+import { getProducts, getPostContentByPostId } from "@/lib/notion/client";
+import {
+	getNavLink,
+	resetCurrentHeadings,
+	resetFirstImage,
+	setTrackCurrentPageId,
+} from "@/lib/blog-helpers";
+import { siteInfo } from "@/siteInfo";
+import { buildHeadings } from "@/utils";
+
+export async function getStaticPaths() {
+	const products = await getProducts();
+	return products.map((product) => ({
+		params: { slug: product.Slug },
+		props: { product },
+	}));
+}
+
+const { product } = Astro.props;
+
+resetCurrentHeadings();
+resetFirstImage();
+setTrackCurrentPageId(product.PageId);
+
+const { blocks } = await getPostContentByPostId(product);
+const headings = buildHeadings(blocks);
+
+const externalLink =
+	typeof product.Fields?.Link === "string" && product.Fields.Link.length > 0
+		? product.Fields.Link
+		: "";
+
+const allProducts = await getProducts();
+const index = allProducts.findIndex((item) => item.Slug === product.Slug);
+const nextProduct = allProducts[(index + 1) % allProducts.length];
+const previousProduct = allProducts[(index - 1 + allProducts.length) % allProducts.length];
+const nextHref = nextProduct ? getNavLink(`/work/${nextProduct.Slug}/`) : getNavLink("/work/");
+const previousHref = previousProduct
+	? getNavLink(`/work/${previousProduct.Slug}/`)
+	: getNavLink("/work/");
+---
+
+<PageLayout
+	meta={{
+		title: product.Title,
+		description: product.Excerpt || siteInfo.description,
+		ogImage: `/og-image/${product.Slug}.png`,
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>
+				{product.Tags.length ? product.Tags.map((tag) => tag.name).join(" · ") : "Product"}
+			</h6>
+			<h1>{product.Title}</h1>
+			{product.Excerpt && <p>{product.Excerpt}</p>}
+			<div style="display:flex;flex-wrap:wrap;gap:0.5em;margin-top:0.6em">
+				{externalLink && (
+					<a class="button" href={externalLink} target="_blank" rel="noopener">
+						Visit site <span>&rarr;</span>
+					</a>
+				)}
+				<a class="button button--theme" href={getNavLink("/contact/")}>
+					Start a project <span>&rarr;</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="page__content content">
+			<NotionBlocks blocks={blocks} />
+		</div>
+	</div>
+
+	<div class="boundary"></div>
+
+	<div
+		class="controller controller--origin"
+		data-next={nextHref}
+		data-previous={previousHref}
+		role="navigation"
+	>
+		<a href={nextHref} aria-label="Next product" tabindex="-1"></a>
+	</div>
+
+	<div class="origin"></div>
+</PageLayout>

@@ -13,9 +13,9 @@
 	// Basic details about your website used for metadata, RSS feeds, and SEO.
 	"site-info": {
 		// Your name or the name of your site's author. Used in RSS feeds, OG images etc and other metadata for attribution.
-		author: "",
+		author: "Focus Lab",
 		// Your custom domain name (e.g., "example.com"). Important: Do NOT include "https://" or a trailing slash. Leave this empty if you are deploying to a service like Vercel or Netlify without a custom domain.
-		"custom-domain": "",
+		"custom-domain": "focuslab.pk",
 		// The sub-directory your site is deployed in (e.g., "/blog"). Leave empty if your site is at the root of your domain. Must start with a forward slash "/" if used.
 		"base-path": "",
 		// If the Authors property doesn't exist in your Notion database, all settings from now on below in this key are ignored.
@@ -46,10 +46,10 @@
 		"recent-posts-on-home-page": true,
 		// The number of posts to show on each page of a paginated list (e.g., /posts, /tags/mytag).
 		"number-of-posts-per-page": 10,
-		// The name of the Notion 'Collection' property value for pages that should appear in the main navigation menu. These are treated as static pages (e.g., 'About', 'Contact') rather than blog posts.
-		"menu-pages-collection": "main",
+		// The name of the Notion 'Collection'/'Type' property value for pages that should appear in the main navigation menu. These are treated as static pages (e.g., 'About', 'Contact') rather than blog posts.
+		"menu-pages-collection": "Page",
 		// An array of 'Collection' names where posts should be displayed in full on list pages. Useful for microblogs or "stream" style collections where showing the full content is desired.
-		"full-preview-collections": ["Updates"],
+		"full-preview-collections": ["Update"],
 		// If true, any post with a slug starting with an underscore (e.g., "_draft-post") will be hidden from all lists (home page, collections, tags), from sitemap and search. The page will still be built and accessible via its direct URL.
 		"hide-underscore-slugs-in-lists": true,
 		// Listing view style for post lists.
@@ -69,32 +69,32 @@
 			// Background colors
 			bg: {
 				light: "255 255 255",
-				dark: "8 8 8",
+				dark: "15 14 14",
 			},
 			// Main text colors
 			text: {
-				light: "17 17 17",
+				light: "15 14 14",
 				dark: "245 245 245",
 			},
 			// Link colors
 			link: {
-				light: "17 17 17",
+				light: "15 14 14",
 				dark: "245 245 245",
 			},
 			// Primary accent color (e.g., for titles, highlights)
 			accent: {
-				light: "17 17 17",
-				dark: "245 245 245",
+				light: "255 0 47",
+				dark: "255 0 47",
 			},
 			// Secondary accent color (e.g., for borders, subtle highlights)
 			"accent-2": {
-				light: "92 92 92",
-				dark: "174 174 174",
+				light: "110 110 110",
+				dark: "150 150 150",
 			},
 			// Color for blockquotes and other special text
 			quote: {
-				light: "51 51 51",
-				dark: "214 214 214",
+				light: "60 60 60",
+				dark: "200 200 200",
 			},
 		},
 		"fontfamily-google-fonts": {
@@ -102,10 +102,10 @@
 			// We automatically load weights [400, 500, 600, 700] and styles [normal, italic] for all fonts (it is fine if they are not available).
 			// Main body/UI font - can be a sans-serif OR serif typeface (e.g., "Roboto", "Merriweather", "Inter")
 			// If empty and mono-font-name is set, mono will be used for everything.
-			"sans-font-name": "JetBrains Mono",
+			"sans-font-name": "Geist",
 			// Monospace font for code blocks (e.g., "Fira Code", "JetBrains Mono")
 			// No need to escape spaces in font names!
-			"mono-font-name": "JetBrains Mono",
+			"mono-font-name": "Geist Mono",
 		},
 		// Enable using the cover image as the hero background (with an overlay for text readability).
 		// When enabled, displays a low-opacity tinted banner behind the title/date/tags area
@@ -168,11 +168,11 @@
 		excerpt: false,
 		// Font configuration for OG images
 		// Title and footnote can be any google font
-		"title-font-name": "JetBrains Mono",
+		"title-font-name": "Geist",
 		"title-font-weight": 700, // Default: 400 (regular)
 		// Footnote font (author, date etc)
-		"footnote-font-name": "JetBrains Mono",
-		"footnote-font-weight": 700, // Default: 400 (regular)
+		"footnote-font-name": "Geist Mono",
+		"footnote-font-weight": 600, // Default: 400 (regular)
 	},
 
 	// === Comments Configuration ===
@@ -372,5 +372,10 @@
 	// Create 301 redirects for old URLs to new URLs. Useful for SEO when migrating content.
 	// Format: "/old-path": "/new-path"
 	// Example: "/my-old-post.html": "/posts/my-new-post-slug/"
-	redirects: {},
+	redirects: {
+		// Focus Lab is a product company; "services" now lives at /capabilities/.
+		"/services": "/capabilities/",
+		// The blog index lives at /blog/.
+		"/posts": "/blog/",
+	},
 }

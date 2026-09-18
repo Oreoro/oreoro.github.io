@@ -2,6 +2,8 @@
 import type { SiteMeta } from "@/types";
 import "@/styles/global.css";
 import "@/styles/minimal.css";
+import "@/styles/signals-shell.css";
+import "@/styles/notion-signals.css";
 import { Font } from "astro:assets";
 import { siteInfo } from "@/siteInfo";
 import {
@@ -19,7 +21,8 @@ type Props = SiteMeta;
 const { title, description, ogImage, articleDate, author, hasMarkdownAlternate } = Astro.props;
 
 const titleSeparator = "•";
-const siteTitle = `${title} ${titleSeparator} ${siteInfo.title}`;
+const siteTitle =
+	title && title !== siteInfo.title ? `${title} ${titleSeparator} ${siteInfo.title}` : siteInfo.title;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const markdownAlternateUrl = new URL("./index.html.md", Astro.url).href;
 const socialImageURL = new URL(
@@ -93,6 +96,22 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 {/*Preconnect ti giscus for faster loading */}
 {useGiscus && <link rel="preconnect" href="https://giscus.app" crossorigin />}
 
+{/* 37signals-style grotesque */}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+/>
+
+{/* Grotesque display face for the signals shell */}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&display=swap"
+/>
+
 {/* Astro Fonts - served locally from your domain */}
 {
 	THEME?.["fontfamily-google-fonts"] && (
@@ -128,7 +147,9 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 <title>{siteTitle}</title>
 
 {/* Icons / Favicon */}
+<link rel="icon" href={getNavLink("/favicon.svg")} type="image/svg+xml" />
 <link rel="icon" href={faviconLink} sizes="any" />
+<link rel="apple-touch-icon" href={getNavLink("/favicon.svg")} />
 <link rel="canonical" href={canonicalURL} />
 {hasMarkdownAlternate && (
 	<link rel="alternate" type="text/markdown" href={markdownAlternateUrl} />

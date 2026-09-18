@@ -2,14 +2,15 @@ import { getDataSource } from "@/lib/notion/client";
 import type { SiteConfig } from "@/types";
 import { AUTHOR, WEBMENTION_LINK, HOME_PAGE_SLUG } from "@/constants";
 
-const tl = "",
-	ds = "",
+const tl = "Focus Lab",
+	ds = "A product company in Islamabad. We build and operate our own AI, SaaS, mobile, and ecommerce products — and we're open to contract work.",
 	path = "/",
 	oim = "";
 const database = await getDataSource();
 
-const siteTitle = tl ? `${tl} - ${database.Title}` : database.Title;
-const siteDescription = ds ? ds : database.Description;
+// Explicit site identity wins over the Notion database title/description.
+const siteTitle = tl || database.Title;
+const siteDescription = ds || database.Description;
 
 export const siteInfo: SiteConfig = {
 	title: siteTitle,

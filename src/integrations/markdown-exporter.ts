@@ -24,6 +24,7 @@ import { getAllPosts, getAllPages } from "../lib/notion/client";
 import type { Post, Citation, Footnote, InterlinkedContentInPage } from "../lib/interfaces";
 import { getMachineDateISOString } from "../utils/date";
 import { slugify } from "../utils/slugify";
+import { PRODUCT_TYPE_VALUES } from "../lib/content/config";
 
 type FootnoteDefinition = {
 	marker: string;
@@ -94,9 +95,10 @@ const markdownExporter = (): AstroIntegration => {
 					let pageUrl: string;
 
 					if (isPost) {
-						htmlPath = path.join(distDir, "posts", slug, "index.html");
-						mdPath = path.join(distDir, "posts", slug, "index.html.md");
-						pageUrl = new URL(path.posix.join("posts", `${slug}/`), siteUrl).toString();
+						const section = PRODUCT_TYPE_VALUES.includes(entry.Collection) ? "work" : "posts";
+						htmlPath = path.join(distDir, section, slug, "index.html");
+						mdPath = path.join(distDir, section, slug, "index.html.md");
+						pageUrl = new URL(path.posix.join(section, `${slug}/`), siteUrl).toString();
 					} else if (slug === HOME_PAGE_SLUG) {
 						htmlPath = path.join(distDir, "index.html");
 						mdPath = path.join(distDir, "index.html.md");

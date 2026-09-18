@@ -1,7 +1,29 @@
 ---
-import SocialList from "@/components/ui/SocialList.astro";
+import { getNavLink } from "@/lib/blog-helpers";
+
+const links: Array<[string, string]> = [
+	["Work", "/work/"],
+	["Capabilities", "/capabilities/"],
+	["Stack", "/stack/"],
+	["Blog", "/blog/"],
+	["Tags", "/tags/"],
+	["RSS", "/rss.xml"],
+	["Contact", "/contact/"],
+];
+
+const nextHref = getNavLink("/work/");
 ---
 
-<footer class="site-footer" id="main-footer">
-	<SocialList />
+<footer class="footer">
+	<ul>
+		{links.map(([label, href]) => (
+			<li>
+				<a href={getNavLink(href)} aria-label={label}>{label}</a>
+			</li>
+		))}
+	</ul>
+
+	<div class="footer__next">
+		<a href={nextHref} aria-label="Next: Work" tabindex="-1"></a>
+	</div>
 </footer>

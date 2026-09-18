@@ -29,6 +29,14 @@ import {
 import { resolveExternalContentDescriptor } from "../external-content/external-content-utils";
 import { extractFootnotesFromBlock } from "../../lib/footnotes";
 import { extractCitationsFromBlock } from "../../lib/citations";
+import {
+	detectFieldMap,
+	mappedPropertyNames,
+	type FieldMap,
+	type PropertyMap,
+} from "../content/schema";
+import { toFieldValue, richTextToPlain } from "../content/values";
+import { CONTENT_FIELD_OVERRIDES } from "../content/config";
 import type * as responses from "@/lib/notion/responses";
 import type * as requestParams from "@/lib/notion/request-params";
 import type {
@@ -199,15 +207,15 @@ function createFallbackSelectOptions() {
 					},
 					{
 						id: "local-astro",
-						name: "Astro",
+						name: "Engineering",
 						color: "blue",
-						description: "Astro implementation notes",
+						description: "Engineering and implementation notes",
 					},
 					{
 						id: "local-notion",
-						name: "Notion",
+						name: "AI",
 						color: "green",
-						description: "CMS workflow notes",
+						description: "AI product notes",
 					},
 				],
 			},
@@ -219,8 +227,9 @@ function createFallbackDatabase(): Database {
 	const localFallbackDate = "2026-05-31";
 
 	return {
-		Title: "Personal Website",
-		Description: "A local fallback blog rendered without a Notion API token.",
+		Title: "Focus Lab",
+		Description:
+			"Software studio in Islamabad building AI products, SaaS platforms, and high-converting ecommerce experiences.",
 		Icon: null,
 		Cover: null,
 		propertiesRaw: createFallbackSelectOptions() as any,
@@ -237,16 +246,16 @@ const fallbackTagDesign: SelectProperty = {
 
 const fallbackTagAstro: SelectProperty = {
 	id: "local-astro",
-	name: "Astro",
+	name: "Engineering",
 	color: "blue",
-	description: "Astro implementation notes",
+	description: "Engineering and implementation notes",
 };
 
 const fallbackTagNotion: SelectProperty = {
 	id: "local-notion",
-	name: "Notion",
+	name: "AI",
 	color: "green",
-	description: "CMS workflow notes",
+	description: "AI product notes",
 };
 
 function createFallbackPost({
@@ -295,39 +304,41 @@ function createFallbackPost({
 const fallbackEntries: Post[] = [
 	createFallbackPost({
 		pageId: "local-home",
-		title: "Personal Website",
+		title: "Focus Lab",
 		slug: HOME_PAGE_SLUG,
 		date: LOCAL_FALLBACK_DATE,
-		excerpt: "A tiny local blog shell that works before Notion is connected.",
+		excerpt:
+			"Software studio building AI products, SaaS platforms, and high-converting ecommerce experiences.",
 		collection: MENU_PAGES_COLLECTION,
 		rank: 0,
 	}),
 	createFallbackPost({
-		pageId: "local-post-optional-notion",
-		title: "Making Notion Optional",
-		slug: "making-notion-optional",
+		pageId: "local-post-shipping-ai",
+		title: "Shipping AI Products That People Actually Use",
+		slug: "shipping-ai-products",
 		date: "2026-05-31",
 		excerpt:
-			"The site can boot with local content first, then switch to Notion when credentials exist.",
+			"How we scope, prototype, and ship AI features without letting the demo become the product.",
 		collection: LOCAL_FALLBACK_POSTS_COLLECTION,
 		tags: [fallbackTagNotion, fallbackTagAstro],
 		pinned: true,
 	}),
 	createFallbackPost({
-		pageId: "local-post-monospace-system",
-		title: "A Monospace Blog System",
-		slug: "monospace-blog-system",
+		pageId: "local-post-framer-workflow",
+		title: "From Framer to Production: Our Web Workflow",
+		slug: "framer-to-production",
 		date: "2026-05-30",
-		excerpt: "A compact JetBrains Mono layout inspired by old personal engineering websites.",
+		excerpt: "Designing in Framer and handing off a fast, maintainable site your team can edit.",
 		collection: LOCAL_FALLBACK_POSTS_COLLECTION,
 		tags: [fallbackTagDesign],
 	}),
 	createFallbackPost({
-		pageId: "local-post-paper-background",
-		title: "Quiet Paper Backgrounds",
-		slug: "quiet-paper-backgrounds",
+		pageId: "local-post-shopify-conversion",
+		title: "Shopify Engineering for Conversion",
+		slug: "shopify-engineering-for-conversion",
 		date: "2026-05-29",
-		excerpt: "Small texture and strict spacing can make a minimal page feel designed.",
+		excerpt:
+			"Store builds like warp-n-woof.com: speed, UX, and the details that move revenue.",
 		collection: LOCAL_FALLBACK_POSTS_COLLECTION,
 		tags: [fallbackTagDesign, fallbackTagAstro],
 	}),
@@ -383,49 +394,58 @@ function fallbackHeading(id: string, content: string, level: 1 | 2 | 3 = 2): Blo
 
 const fallbackBlocksByPageId: Record<string, Block[]> = {
 	"local-home": [
-		fallbackHeading("local-home-heading", "Personal Website", 2),
+		fallbackHeading("local-home-heading", "Focus Lab", 2),
 		fallbackParagraph(
 			"local-home-intro",
+			"Focus Lab is a software studio based in Gulberg, Islamabad. We design and build AI products, SaaS platforms, mobile apps, and high-converting ecommerce experiences.",
+		),
+		fallbackHeading("local-home-services", "What we do", 2),
+		fallbackParagraph(
+			"local-home-services-list",
+			"AI product engineering, SaaS platform engineering, mobile app development, UI/UX product systems, web app development, Shopify ecommerce engineering, and Framer & Webflow CMS builds.",
+		),
+		fallbackParagraph(
+			"local-home-notion-note",
 			"This is local fallback content. Add NOTION_API_SECRET in .env to replace it with your Notion CMS pages.",
 		),
 	],
-	"local-post-optional-notion": [
-		fallbackParagraph("local-optional-date", "May 31, 2026"),
-		fallbackHeading("local-optional-heading", "Making Notion Optional", 1),
+	"local-post-shipping-ai": [
+		fallbackParagraph("local-ai-date", "May 31, 2026"),
+		fallbackHeading("local-ai-heading", "Shipping AI Products That People Actually Use", 1),
 		fallbackParagraph(
-			"local-optional-p1",
-			"Local development should not stop just because a CMS token is missing. This fallback keeps the Astro app rendering while the real Notion integration remains available.",
+			"local-ai-p1",
+			"AI features are easy to demo and hard to ship. The work is in scoping the problem, designing for failure, and making the model a supporting actor rather than the whole show.",
 		),
-		fallbackHeading("local-optional-why", "Why this matters", 2),
+		fallbackHeading("local-ai-why", "Start from the workflow", 2),
 		fallbackParagraph(
-			"local-optional-p2",
-			"The visual system, routes, typography, and article templates can now be worked on before Notion credentials are configured.",
-		),
-	],
-	"local-post-monospace-system": [
-		fallbackParagraph("local-mono-date", "May 30, 2026"),
-		fallbackHeading("local-mono-heading", "A Monospace Blog System", 1),
-		fallbackParagraph(
-			"local-mono-p1",
-			"JetBrains Mono gives the site a technical, editorial voice without needing much ornament. The layout relies on rhythm, rules, and dense article rows.",
-		),
-		fallbackHeading("local-mono-details", "Details", 2),
-		fallbackParagraph(
-			"local-mono-p2",
-			"Strong underlines, narrow rules, and generous top spacing carry most of the interface weight.",
+			"local-ai-p2",
+			"We map the existing workflow first, then find the smallest place where a model removes real friction. Everything else is infrastructure.",
 		),
 	],
-	"local-post-paper-background": [
-		fallbackParagraph("local-paper-date", "May 29, 2026"),
-		fallbackHeading("local-paper-heading", "Quiet Paper Backgrounds", 1),
+	"local-post-framer-workflow": [
+		fallbackParagraph("local-framer-date", "May 30, 2026"),
+		fallbackHeading("local-framer-heading", "From Framer to Production: Our Web Workflow", 1),
 		fallbackParagraph(
-			"local-paper-p1",
-			"The background uses a tiny dot matrix so the page feels tactile while staying readable.",
+			"local-framer-p1",
+			"Framer is where we design and validate marketing sites quickly. The handoff is where most teams lose the craft, so we plan for editing and performance from day one.",
 		),
-		fallbackHeading("local-paper-balance", "Balance", 2),
+		fallbackHeading("local-framer-details", "Details", 2),
 		fallbackParagraph(
-			"local-paper-p2",
-			"The texture is deliberately low contrast. Text remains the primary surface.",
+			"local-framer-p2",
+			"Clear component boundaries, sensible CMS fields, and a real content model keep the site maintainable after launch.",
+		),
+	],
+	"local-post-shopify-conversion": [
+		fallbackParagraph("local-shopify-date", "May 29, 2026"),
+		fallbackHeading("local-shopify-heading", "Shopify Engineering for Conversion", 1),
+		fallbackParagraph(
+			"local-shopify-p1",
+			"Stores like warp-n-woof.com live or die on speed, clarity, and checkout friction. We treat the storefront as a product, not a template.",
+		),
+		fallbackHeading("local-shopify-balance", "Measure, then refine", 2),
+		fallbackParagraph(
+			"local-shopify-p2",
+			"Performance budgets, merchandising, and small UX wins compound into measurable revenue.",
 		),
 	],
 };
@@ -721,37 +741,45 @@ export async function getAllEntries(): Promise<Post[]> {
 		return allEntriesCache;
 	}
 
+	// Adapt to whatever schema this data source has. Filters are only applied
+	// for properties that actually exist, so no DB is forced into a fixed layout.
+	const { propertiesRaw } = await getDataSource();
+	const schemaProps = propertiesRaw as unknown as PropertyMap;
+	const fieldMap = detectFieldMap(schemaProps, CONTENT_FIELD_OVERRIDES);
+
+	const conditionalFilters: requestParams.PropertyFilterObject[] = [];
+	const nowIso = new Date().toISOString();
+
+	if (fieldMap.published && schemaProps[fieldMap.published]?.type === "checkbox") {
+		conditionalFilters.push({
+			property: fieldMap.published,
+			checkbox: { equals: true },
+		});
+	}
+
+	if (fieldMap.date && schemaProps[fieldMap.date]) {
+		const dateType = schemaProps[fieldMap.date].type;
+		if (dateType === "date") {
+			conditionalFilters.push({
+				property: fieldMap.date,
+				date: { on_or_before: nowIso },
+			});
+		} else if (dateType === "formula") {
+			conditionalFilters.push({
+				property: fieldMap.date,
+				formula: { date: { on_or_before: nowIso } },
+			});
+		} else if (dateType === "created_time") {
+			conditionalFilters.push({
+				property: fieldMap.date,
+				created_time: { on_or_before: nowIso },
+			});
+		}
+	}
+
+	const andFilters = [...conditionalFilters, ...(queryFilters?.and || [])];
 	const params: any = {
 		data_source_id: dataSourceId,
-		filter: {
-			and: [
-				{
-					property: "Published",
-					checkbox: {
-						equals: true,
-					},
-				},
-				{
-					property: "Publish Date",
-					formula: {
-						date: {
-							on_or_before: new Date().toISOString(),
-						},
-					},
-				},
-				{
-					property: "Slug",
-					formula: {
-						string: {
-							is_not_empty: true,
-						},
-					},
-				},
-
-				...(queryFilters?.and || []),
-			],
-			or: queryFilters?.or || undefined,
-		},
 		sorts: [
 			{
 				timestamp: "created_time",
@@ -760,6 +788,13 @@ export async function getAllEntries(): Promise<Post[]> {
 		],
 		page_size: 100,
 	};
+
+	if (andFilters.length || queryFilters?.or) {
+		params.filter = {
+			and: andFilters,
+			or: queryFilters?.or || undefined,
+		};
+	}
 
 	let results: responses.PageObject[] = [];
 	// eslint-disable-next-line no-constant-condition
@@ -814,8 +849,8 @@ export async function getAllEntries(): Promise<Post[]> {
 
 	allEntriesCache = await Promise.all(
 		results
-			.filter((pageObject) => _validPageObject(pageObject))
-			.map((pageObject) => _buildPost(pageObject)),
+			.filter((pageObject) => _validPageObject(pageObject, fieldMap))
+			.map((pageObject) => _buildPost(pageObject, fieldMap)),
 	);
 
 	allEntriesCache = allEntriesCache.sort(
@@ -834,6 +869,24 @@ export async function getAllPosts(): Promise<Post[]> {
 export async function getAllPages(): Promise<Post[]> {
 	const allEntries = await getAllEntries();
 	return allEntries.filter((post) => MENU_PAGES_COLLECTION === post.Collection);
+}
+
+/**
+ * Entries whose type/collection property matches the given value.
+ * Collection names are whatever you set in Notion (e.g. "Product", "Article").
+ */
+export async function getEntriesByCollection(collection: string): Promise<Post[]> {
+	const allEntries = await getAllEntries();
+	return allEntries.filter((post) => post.Collection === collection);
+}
+
+export async function getProducts(): Promise<Post[]> {
+	const products = await getEntriesByCollection("Product");
+	return products.sort((a, b) => (a.Rank ?? 99) - (b.Rank ?? 99));
+}
+
+export async function getArticles(): Promise<Post[]> {
+	return getEntriesByCollection("Article");
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
@@ -1157,7 +1210,8 @@ export async function getAllBlocksByBlockId(
 			block.Video?.File?.Url ||
 			block.NImage?.File?.Url ||
 			block.NAudio?.File?.Url ||
-			block.File?.File?.Url,
+			block.File?.File?.Url ||
+			block.Pdf?.File?.Url,
 	);
 
 	for (let i = 0; i < allBlocks.length; i++) {
@@ -1356,7 +1410,8 @@ export async function getBlock(
 			(block.Video?.File?.Url ||
 				block.NImage?.File?.Url ||
 				block.NAudio?.File?.Url ||
-				block.File?.File?.Url)
+				block.File?.File?.Url ||
+				block.Pdf?.File?.Url)
 		) {
 			await processFileBlocks([block]);
 		}
@@ -1898,7 +1953,8 @@ async function ensureDownloaded(url: URL, isImageForAstro: boolean): Promise<voi
 export async function processFileBlocks(fileAttachedBlocks: Block[]) {
 	await Promise.all(
 		fileAttachedBlocks.map(async (block) => {
-			const fileDetails = (block.NImage || block.File || block.Video || block.NAudio).File;
+			const fileDetails = (block.NImage || block.File || block.Video || block.NAudio || block.Pdf)
+				.File;
 			const expiryTime = fileDetails.ExpiryTime;
 			let url = new URL(fileDetails.Url);
 
@@ -1923,7 +1979,8 @@ export async function processFileBlocks(fileAttachedBlocks: Block[]) {
 							updatedBlock.NImage ||
 							updatedBlock.File ||
 							updatedBlock.Video ||
-							updatedBlock.NAudio
+							updatedBlock.NAudio ||
+							updatedBlock.Pdf
 						).File.Url,
 					);
 				}
@@ -2372,6 +2429,24 @@ async function _buildBlock(blockObject: responses.BlockObject, pageId?: string):
 				block.File = file;
 			}
 			break;
+		case "pdf":
+			if (blockObject.pdf) {
+				const pdf: File = {
+					Caption: await Promise.all(blockObject.pdf.caption?.map(_buildRichText) || []),
+					Type: blockObject.pdf.type,
+				};
+				if (blockObject.pdf.type === "external" && blockObject.pdf.external) {
+					pdf.External = { Url: blockObject.pdf.external.url };
+				} else if (blockObject.pdf.type === "file" && blockObject.pdf.file) {
+					pdf.File = {
+						Type: blockObject.pdf.type,
+						Url: blockObject.pdf.file.url,
+						ExpiryTime: blockObject.pdf.file.expiry_time,
+					};
+				}
+				block.Pdf = pdf;
+			}
+			break;
 		case "code":
 			if (blockObject.code) {
 				const code: Code = {
@@ -2685,13 +2760,16 @@ async function _getSyncedBlockChildren(
 	return { blocks: children, fileBlocks };
 }
 
-function _validPageObject(pageObject: responses.PageObject): boolean {
-	const prop = pageObject.properties;
-	return !!prop.Page.title && prop.Page.title.length > 0;
+function _validPageObject(pageObject: responses.PageObject, map: FieldMap): boolean {
+	const prop = pageObject.properties as Record<string, any>;
+	if (!map.title) return true;
+	const titleProp = prop[map.title];
+	return !!titleProp?.title && titleProp.title.length > 0;
 }
 
-async function _buildPost(pageObject: responses.PageObject): Promise<Post> {
-	const prop = pageObject.properties;
+async function _buildPost(pageObject: responses.PageObject, map: FieldMap): Promise<Post> {
+	const prop = pageObject.properties as Record<string, any>;
+	const get = (name: string | null) => (name ? prop[name] : undefined);
 
 	const icon = await buildIconObject(pageObject.icon, "page icon");
 
@@ -2703,50 +2781,94 @@ async function _buildPost(pageObject: responses.PageObject): Promise<Post> {
 		};
 	}
 
+	// --- Normalized fields, resolved from the auto-detected mapping ---
+	const titleProp = get(map.title);
+	const Title = titleProp?.title
+		? titleProp.title.map((richText: any) => richText.plain_text).join("")
+		: "";
+
+	const slugProp = get(map.slug);
+	let slugValue = "";
+	if (slugProp?.type === "formula") {
+		slugValue = slugProp.formula?.string ? slugify(slugProp.formula.string) : "";
+	} else if (slugProp?.type === "rich_text") {
+		slugValue = slugify(richTextToPlain(slugProp.rich_text));
+	} else if (slugProp?.type === "title") {
+		slugValue = slugify(richTextToPlain(slugProp.title));
+	} else if (slugProp?.type === "url" && slugProp.url) {
+		slugValue = slugify(slugProp.url);
+	}
+	if (!slugValue) slugValue = slugify(Title);
+
+	const typeProp = get(map.type);
+	const Collection = typeProp?.select?.name || typeProp?.status?.name || "";
+
+	const dateProp = get(map.date);
+	let rawDate = "";
+	if (dateProp?.type === "date") rawDate = dateProp.date?.start || "";
+	else if (dateProp?.type === "formula") rawDate = dateProp.formula?.date?.start || "";
+	else if (dateProp?.type === "created_time") rawDate = dateProp.created_time || "";
+	else if (dateProp?.type === "last_edited_time") rawDate = dateProp.last_edited_time || "";
+	const dateValue = normalizeNotionCalendarDate(rawDate);
+
+	const tagsProp = get(map.tags);
+	const Tags = tagsProp?.multi_select ? tagsProp.multi_select : [];
+
+	const summaryProp = get(map.summary);
+	const Excerpt = summaryProp?.rich_text ? richTextToPlain(summaryProp.rich_text) : "";
+
+	// Cover image: a `files` property or a plain `url` property.
 	let featuredImage: FileObject | null = null;
-	if (prop.FeaturedImage.files && prop.FeaturedImage.files.length > 0) {
-		if (prop.FeaturedImage.files[0].external) {
+	const coverProp = get(map.cover);
+	if (coverProp?.type === "files" && coverProp.files?.length > 0) {
+		const first = coverProp.files[0];
+		if (first.external) {
+			featuredImage = { Type: coverProp.type, Url: first.external.url };
+		} else if (first.file) {
 			featuredImage = {
-				Type: prop.FeaturedImage.type,
-				Url: prop.FeaturedImage.files[0].external.url,
-			};
-		} else if (prop.FeaturedImage.files[0].file) {
-			featuredImage = {
-				Type: prop.FeaturedImage.type,
-				Url: prop.FeaturedImage.files[0].file.url,
-				ExpiryTime: prop.FeaturedImage.files[0].file.expiry_time,
+				Type: coverProp.type,
+				Url: first.file.url,
+				ExpiryTime: first.file.expiry_time,
 			};
 		}
+	} else if (coverProp?.type === "url" && coverProp.url) {
+		featuredImage = { Type: "external", Url: coverProp.url };
 	}
 
+	const orderProp = get(map.order);
+	const Rank = typeof orderProp?.number === "number" ? orderProp.number : null;
+
+	const Pinned =
+		Boolean(get(map.pinned)?.checkbox) || Boolean(prop.Pinned?.checkbox);
+
+	// `External URL` is a special content-source marker, NOT a generic link column.
 	const externalUrl =
 		prop["External URL"] && "url" in prop["External URL"] && prop["External URL"]?.url
 			? prop["External URL"].url.trim()
 			: "";
 	const isExternal = !!externalUrl;
-
-	const slugValue = prop.Slug?.formula?.string ? slugify(prop.Slug.formula.string) : "";
 	const externalContentDescriptor = resolveExternalContentDescriptor(externalUrl);
 
 	// Parse Authors multi-select if the property exists
 	// Returns undefined if property doesn't exist (different from empty array)
 	let authors: AuthorProperty[] | undefined = undefined;
-	if (prop.Authors && "multi_select" in prop.Authors) {
-		// Property exists - parse it (may be empty array)
-		const rawAuthors = prop.Authors.multi_select || [];
+	const authorsProp = get(map.authors);
+	if (authorsProp && "multi_select" in authorsProp) {
+		const rawAuthors = authorsProp.multi_select || [];
 
-		// Fetch schema to get author descriptions
 		const { propertiesRaw } = await getDataSource();
-		const options = propertiesRaw.Authors?.multi_select?.options || [];
+		const authorsPropName = map.authors || "Authors";
+		const options =
+			(propertiesRaw as any)[authorsPropName]?.multi_select?.options || [];
 		const authorsDescMap = options.reduce(
-			(acc, option) => {
+			(acc: Record<string, string>, option: any) => {
 				acc[option.name] = option.description || "";
 				return acc;
 			},
 			{} as Record<string, string>,
 		);
 
-		const parsedAuthors = rawAuthors.map((author) => {
+		const parsedAuthors = rawAuthors.map((author: any) => {
 			const description = authorsDescMap[author.name] || "";
 			const parsed = parseAuthorDescription(description);
 			return {
@@ -2759,9 +2881,8 @@ async function _buildPost(pageObject: responses.PageObject): Promise<Post> {
 				bio: parsed.bio,
 			};
 		});
-		// Deduplicate authors by name (keep first occurrence)
 		const seenNames = new Set<string>();
-		authors = parsedAuthors.filter((author) => {
+		authors = parsedAuthors.filter((author: any) => {
 			if (seenNames.has(author.name)) {
 				return false;
 			}
@@ -2770,26 +2891,31 @@ async function _buildPost(pageObject: responses.PageObject): Promise<Post> {
 		});
 	}
 
+	// Everything not consumed above is exposed to templates as typed fields.
+	const used = mappedPropertyNames(map);
+	const Fields: Record<string, unknown> = {};
+	for (const [name, value] of Object.entries(prop)) {
+		if (used.has(name)) continue;
+		Fields[name] = toFieldValue(value);
+	}
+
 	const post: Post = {
 		PageId: pageObject.id,
-		Title: prop.Page?.title ? prop.Page.title.map((richText) => richText.plain_text).join("") : "",
+		Title,
 		LastUpdatedTimeStamp: pageObject.last_edited_time
 			? new Date(pageObject.last_edited_time)
 			: null,
 		Icon: icon,
 		Cover: cover,
-		Collection: prop.Collection?.select ? prop.Collection.select.name : "",
+		Collection,
 		Slug: slugValue,
-		Date: normalizeNotionCalendarDate(prop["Publish Date"]?.formula?.date?.start),
-		Tags: prop.Tags?.multi_select ? prop.Tags.multi_select : [],
-		Excerpt:
-			prop.Excerpt?.rich_text && prop.Excerpt.rich_text.length > 0
-				? prop.Excerpt.rich_text.map((richText) => richText.plain_text).join("")
-				: "",
+		Date: dateValue,
+		Tags,
+		Excerpt,
 		FeaturedImage: featuredImage,
-		Rank: prop.Rank?.number ?? null,
-		LastUpdatedDate: normalizeNotionCalendarDate(prop["Last Updated Date"]?.formula?.date?.start),
-		Pinned: prop.Pinned && prop.Pinned.checkbox === true ? true : false,
+		Rank,
+		LastUpdatedDate: normalizeNotionCalendarDate(pageObject.last_edited_time),
+		Pinned,
 		BlueSkyPostLink:
 			prop["Bluesky Post Link"] && prop["Bluesky Post Link"].url
 				? prop["Bluesky Post Link"].url
@@ -2798,6 +2924,7 @@ async function _buildPost(pageObject: responses.PageObject): Promise<Post> {
 		ExternalUrl: externalUrl || null,
 		ExternalContent: externalContentDescriptor,
 		Authors: authors,
+		Fields,
 	};
 	return post;
 }

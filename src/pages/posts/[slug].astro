@@ -11,7 +11,7 @@ import {
 	loadCachedHeadings,
 	saveCachedHeadings,
 } from "@/lib/blog-helpers";
-import { getAllPosts, getPostContentByPostId } from "@/lib/notion/client";
+import { getArticles, getPostContentByPostId } from "@/lib/notion/client";
 import type { Post } from "@/lib/interfaces";
 import { buildHeadings } from "@/utils";
 import {
@@ -28,7 +28,7 @@ import { renderExternalHtml } from "@/lib/external-content/external-html-content
 import { renderExternalMarkdown } from "@/lib/external-content/external-markdown-content";
 import { renderExternalMdx } from "@/lib/external-content/external-mdx-content";
 export async function getStaticPaths() {
-	const posts = (await getAllPosts()).filter((post) => !post.IsExternal || !!post.ExternalContent);
+	const posts = (await getArticles()).filter((post) => !post.IsExternal || !!post.ExternalContent);
 	const allPostsMap: Record<string, Post> = Object.fromEntries(posts.map((p) => [p.PageId, p])); // Map of PageId to Post
 
 	return posts.map((post) => {
@@ -181,7 +181,7 @@ if (postFound && isExternalHtml) {
 			hasMarkdownAlternate={MARKDOWN_EXPORT_ENABLED && !hasExternalDescriptor}
 		>
 			<div
-				class="post-body content-shell print:max-w-full"
+				class="post-body print:max-w-full"
 				data-html-type={shouldUseCache && cachedHtml ? "cached" : "new"}
 			>
 				{isExternalHtml ? (

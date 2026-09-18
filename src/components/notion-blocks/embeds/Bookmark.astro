@@ -34,7 +34,7 @@ try {
 	// Remove ONLY text fragments for metascraper, preserving normal anchors
 	const urlForMetascraper = url.toString().replace(/#:~:text=.*$/, "");
 
-	const html = urlMap[urlString];
+	const html = urlMap[urlString] || urlMap[url.toString()];
 	if (html) {
 		metadata = await metascraper({ html, url: urlForMetascraper });
 		if (metadata && metadata.title == "Just a moment...") {
@@ -44,6 +44,9 @@ try {
 } catch (err) {
 	console.log(`Error in Bookmark for URL: ${urlString}`, err);
 }
+
+const displayTitle = metadata?.title || url?.hostname || urlString;
+const displayDescription = metadata?.description || "";
 ---
 
 <div class="bookmark no-rss" id={setId ? block.Id : undefined}>
@@ -52,8 +55,8 @@ try {
 			<div class="bookmark-link-container">
 				<a href={url.toString()} target="_blank" rel="noopener noreferrer" class="bookmark-card">
 					<div class="bookmark-text">
-						<div class="bookmark-title">{metadata && metadata.title}</div>
-						<div class="bookmark-description">{metadata && metadata.description}</div>
+						<div class="bookmark-title">{displayTitle}</div>
+						<div class="bookmark-description">{displayDescription}</div>
 						<div class="bookmark-caption-container">
 							<div class="bookmark-icon-container">
 								<img

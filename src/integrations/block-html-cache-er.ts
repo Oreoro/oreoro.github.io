@@ -1,5 +1,6 @@
 import type { AstroIntegration } from "astro";
 import * as fs from "fs/promises";
+import { existsSync } from "fs";
 import * as path from "path";
 import { parseDocument } from "htmlparser2";
 import { DomUtils } from "htmlparser2";
@@ -7,6 +8,7 @@ import { render } from "dom-serializer";
 import { getAllPosts, getAllPages } from "../lib/notion/client";
 import { getInterlinkedContentInPage } from "../lib/blog-helpers";
 import { LAST_BUILD_TIME, HOME_PAGE_SLUG, BUILD_FOLDER_PATHS } from "../constants";
+import { PRODUCT_TYPE_VALUES } from "../lib/content/config";
 
 const blocksHtmlCacher = (): AstroIntegration => {
 	return {
@@ -34,11 +36,18 @@ const blocksHtmlCacher = (): AstroIntegration => {
 					if (slug === HOME_PAGE_SLUG) {
 						filePath = path.join(distDir, "index.html");
 					} else {
-						// Determine file path based on whether the entry is a post or a page.
-						filePath =
-							posts.find((p) => p.Slug === slug) !== undefined
-								? path.join(distDir, "posts", slug, "index.html")
-								: path.join(distDir, slug, "index.html");
+						// Resolve by section: products live under /work, posts under /posts,
+						// static pages at the root. Fall back to whichever file exists.
+						const isPost = posts.find((p) => p.Slug === slug) !== undefined;
+						const section = PRODUCT_TYPE_VALUES.includes(entry.Collection) ? "work" : "posts";
+						const candidates = isPost
+							? [
+									path.join(distDir, section, slug, "index.html"),
+									path.join(distDir, "posts", slug, "index.html"),
+									path.join(distDir, "work", slug, "index.html"),
+								]
+							: [path.join(distDir, slug, "index.html")];
+						filePath = candidates.find((candidate) => existsSync(candidate)) ?? candidates[0];
 					}
 
 					const blocksCacheFilePath = path.join(tmpBlocksCacheDir, `${slug}.html`);

@@ -30,7 +30,7 @@ const filename = decodeURIComponent(url.pathname.split("/").slice(-1)[0]);
 				{"  "}
 				<span class="notion-file-container">
 					<a
-						href={block.File.External ? url.String() : filePath(url)}
+						href={block.File.External ? url.toString() : filePath(url)}
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -42,7 +42,7 @@ const filename = decodeURIComponent(url.pathname.split("/").slice(-1)[0]);
 					{/* Conditional Preview for PDFs */}
 					{filename.endsWith(".pdf") && ENABLE_LIGHTBOX && (
 						<a
-							href={block.File.External ? url.String() : filePath(url)}
+							href={block.File.External ? url.toString() : filePath(url)}
 							class="fileglightbox hidden sm:inline"
 							type="application/pdf"
 						>

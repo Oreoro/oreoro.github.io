@@ -1,23 +1,68 @@
 ---
-import { siteInfo } from "@/site.config";
 import { getNavLink } from "@/lib/blog-helpers";
-import ThemeIcon from "@/components/ui/ThemeIcon.astro";
 
-const displayTitle = siteInfo.title || "Blog";
+const primary: Array<[string, string]> = [
+	["Work", "/work/"],
+	["Capabilities", "/capabilities/"],
+	["Stack", "/stack/"],
+	["Blog", "/blog/"],
+	["Contact", "/contact/"],
+];
+
+const secondary: Array<[string, string]> = [
+	["Writing", "/blog/"],
+	["Tags", "/tags/"],
+	["RSS", "/rss.xml"],
+	["Contact", "/contact/"],
+];
 ---
 
-<header id="main-header" class="site-header">
-	<a
-		href={getNavLink("/")}
-		class="site-brand"
-		aria-current={Astro.url.pathname === "/" ? "page" : false}
-	>
-		{displayTitle}
-	</a>
-	<nav class="site-header-actions" aria-label="Primary navigation">
-		<a class="site-header-link" href={getNavLink("/contact/")}>CONTACT</a>
-		<a class="site-header-link" href={getNavLink("/rss.xml")}>RSS</a>
-		<a class="site-header-link" href={getNavLink("/donate/")}>DONATE</a>
-		<ThemeIcon />
-	</nav>
+<input class="nav-active" id="nav-active" type="checkbox" />
+
+<label class="nav-underlay" for="nav-active"></label>
+
+<nav class="nav" aria-label="Mobile navigation">
+	<div class="nav__logo">
+		<a href={getNavLink("/")} aria-label="Focus Lab">
+			<img class="brand-mark" src={getNavLink("/favicon.svg")} alt="" width="20" height="20" />
+			<span class="wordmark">Focus Lab</span>
+		</a>
+	</div>
+	<div class="nav__toggle">
+		<label for="nav-active">
+			<span>Menu</span>
+		</label>
+	</div>
+	<div class="nav__options">
+		<ul>
+			{primary.map(([label, href]) => (
+				<li>
+					<a href={getNavLink(href)} aria-label={label}>{label}</a>
+				</li>
+			))}
+		</ul>
+		<ul>
+			{secondary.map(([label, href]) => (
+				<li>
+					<a href={getNavLink(href)} aria-label={label}>{label}</a>
+				</li>
+			))}
+		</ul>
+	</div>
+</nav>
+
+<header class="header">
+	<h1>
+		<a href={getNavLink("/")} aria-label="Focus Lab">
+			<img class="brand-mark" src={getNavLink("/favicon.svg")} alt="" width="20" height="20" />
+			<span class="wordmark">Focus Lab</span>
+		</a>
+	</h1>
+	<ul>
+		{primary.map(([label, href]) => (
+			<li>
+				<a href={getNavLink(href)} aria-label={label}>{label}</a>
+			</li>
+		))}
+	</ul>
 </header>

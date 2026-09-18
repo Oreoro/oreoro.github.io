@@ -1,0 +1,133 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { getNavLink } from "@/lib/blog-helpers";
+
+const capabilities: Array<{ id: string; title: string; body: string[] }> = [
+	{
+		id: "ai-product-engineering",
+		title: "AI product engineering",
+		body: [
+			"We don't sell AI as a feature list. We build AI into products people use every day — then keep tuning it after launch.",
+			"Model selection, evaluation, latency budgets, cost ceilings, guardrails, and the interface that makes it all feel obvious. We ship the whole thing, not a demo.",
+		],
+	},
+	{
+		id: "saas-platform-engineering",
+		title: "SaaS platform engineering",
+		body: [
+			"Multi-tenant platforms, billing, permissions, dashboards, and the unglamorous parts that decide whether a product survives its second year.",
+			"We build them the way we build our own: small surface area, boring infrastructure, and no feature you can't explain in one sentence.",
+		],
+	},
+	{
+		id: "mobile-app-development",
+		title: "Mobile app development",
+		body: [
+			"Native-feeling iOS and Android products with one maintainable codebase underneath.",
+			"Offline behavior, push, deep links, and store submission handled properly — because a mobile product is only finished when it's in someone's hand.",
+		],
+	},
+	{
+		id: "web-app-development",
+		title: "Web app development",
+		body: [
+			"Fast, accessible web applications built to survive years of iteration and a growing team.",
+			"Performance budgets, sensible data flow, and interfaces that stay coherent as the product expands.",
+		],
+	},
+	{
+		id: "ecommerce-engineering",
+		title: "Ecommerce engineering",
+		body: [
+			"Shopify storefronts engineered for speed, usability, and conversion — the kind of work behind warp-n-woof.com.",
+			"Theme architecture, checkout, subscriptions, and the analytics that tell you what's actually working.",
+		],
+	},
+	{
+		id: "framer-cms-sites",
+		title: "Framer & CMS sites",
+		body: [
+			"Marketing sites your team can edit without breaking the design.",
+			"Framer, Webflow, and headless CMS builds with real component systems, real performance, and no dependence on us to change a headline.",
+		],
+	},
+];
+---
+
+<PageLayout
+	meta={{
+		title: "Capabilities",
+		description:
+			"Focus Lab is a product company. We design, build, and operate AI products, SaaS platforms, mobile apps, and ecommerce — and we're open to contract work.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>Capabilities</h6>
+			<h1>
+				We build our own products.<br /> We'll build yours, too.
+			</h1>
+			<p>
+				Focus Lab is a product company. Everything we know comes from shipping and operating
+				software we own — and we take on a small number of contract builds each year.
+			</p>
+		</div>
+
+		<div class="page__anchors">
+			<dl>
+				<dt>On this page</dt>
+				{capabilities.map((capability) => (
+					<dd>
+						<a href={`#${capability.id}`}>{capability.title}</a>
+					</dd>
+				))}
+				<dd>
+					<a href="#open-to-contract">Open to contract</a>
+				</dd>
+			</dl>
+		</div>
+
+		<div class="page__content content">
+			{capabilities.map((capability) => (
+				<section id={capability.id}>
+					<h2>{capability.title}</h2>
+					{capability.body.map((paragraph) => (
+						<p>{paragraph}</p>
+					))}
+				</section>
+			))}
+
+			<hr class="ornament" />
+
+			<section id="open-to-contract">
+				<h2>Open to contract</h2>
+				<p>
+					We're a product company first, but we partner with founders and teams who want the same
+					standard. If you have something worth building, tell us what it is and what "done"
+					looks like.
+				</p>
+				<p>
+					Most engagements start with a short, paid discovery: a working slice, a fixed scope, and
+					a clear number. No decks, no retainers we can't justify.
+				</p>
+				<a class="button" href={getNavLink("/contact/")}>
+					Start a project <span>&rarr;</span>
+				</a>
+			</section>
+		</div>
+	</div>
+
+	<div class="boundary"></div>
+
+	<div
+		class="controller controller--origin"
+		data-next={getNavLink("/work/")}
+		data-previous={getNavLink("/blog/")}
+		role="navigation"
+	>
+		<a href={getNavLink("/work/")} aria-label="Next: Work" tabindex="-1"></a>
+	</div>
+
+	<div class="origin"></div>
+</PageLayout>

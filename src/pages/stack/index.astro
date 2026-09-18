@@ -1,0 +1,206 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { getNavLink } from "@/lib/blog-helpers";
+import "@/styles/stack.css";
+
+type StackItem = { name: string; note: string };
+type StackGroup = { title: string; note: string; items: StackItem[] };
+
+const groups: StackGroup[] = [
+	{
+		title: "Languages",
+		note: "Typed first, boring on purpose.",
+		items: [
+			{ name: "TypeScript", note: "Everywhere — frontend, backend, workers, tooling." },
+			{ name: "JavaScript", note: "Runtime glue and the occasional script." },
+			{ name: "Go", note: "Small, fast services and CLIs." },
+			{ name: "Python", note: "AI pipelines, evals, and data work." },
+			{ name: "Rust", note: "When performance or safety is the whole point." },
+			{ name: "SQL", note: "Postgres and SQLite, queried properly." },
+		],
+	},
+	{
+		title: "Frontend",
+		note: "Fast by default, accessible always.",
+		items: [
+			{ name: "Astro", note: "Content sites and product marketing that stay fast." },
+			{ name: "React", note: "Interactive product surfaces." },
+			{ name: "Svelte", note: "Small bundles, big interactions." },
+			{ name: "Tailwind CSS", note: "Design systems without the drift." },
+			{ name: "Framer", note: "Marketing sites teams can edit themselves." },
+			{ name: "Web Components", note: "Framework-agnostic building blocks." },
+		],
+	},
+	{
+		title: "Backend & APIs",
+		note: "Edge-first, multi-tenant, observable.",
+		items: [
+			{ name: "Node.js", note: "The default runtime for product APIs." },
+			{ name: "Bun", note: "Speed for tooling and local dev." },
+			{ name: "Hono", note: "Tiny routers for edge runtimes." },
+			{ name: "tRPC / REST", note: "Typed contracts, documented and versioned." },
+			{ name: "WebSockets", note: "Realtime without the drama." },
+			{ name: "GraphQL", note: "When the client needs to drive the shape." },
+		],
+	},
+	{
+		title: "AI & Data",
+		note: "Models in production, not in demos.",
+		items: [
+			{ name: "OpenAI", note: "Frontier models behind real product features." },
+			{ name: "Anthropic", note: "Long-context reasoning and safe tool use." },
+			{ name: "Workers AI", note: "Inference at the edge, next to the data." },
+			{ name: "Vectorize / pgvector", note: "Retrieval that scales with the corpus." },
+			{ name: "MCP", note: "Tools and context for agents, standardized." },
+			{ name: "D1 / Postgres", note: "Relational data at the edge and in the core." },
+		],
+	},
+	{
+		title: "Infrastructure",
+		note: "Global, cheap, and reproducible.",
+		items: [
+			{ name: "Cloudflare Workers", note: "Compute at the edge with zero cold starts." },
+			{ name: "R2 / KV", note: "Object storage and low-latency config." },
+			{ name: "Durable Objects", note: "Coordination and state where it matters." },
+			{ name: "Queues", note: "Async work that survives failures." },
+			{ name: "Docker", note: "Reproducible builds and local parity." },
+			{ name: "Terraform / Wrangler", note: "Infrastructure as code, reviewed like code." },
+		],
+	},
+	{
+		title: "Commerce & CMS",
+		note: "Content and checkout that convert.",
+		items: [
+			{ name: "Shopify", note: "Storefronts engineered for speed and conversion." },
+			{ name: "Notion API", note: "The CMS behind this site — native blocks included." },
+			{ name: "Stripe", note: "Billing, subscriptions, and usage metering." },
+			{ name: "Sanity / Webflow", note: "Structured content for marketing teams." },
+			{ name: "Framer", note: "Design-led pages with a real component system." },
+			{ name: "Open Graph", note: "Link previews and SEO that actually render." },
+		],
+	},
+	{
+		title: "Mobile",
+		note: "Native feel, one codebase.",
+		items: [
+			{ name: "Swift / SwiftUI", note: "iOS where the platform matters." },
+			{ name: "Kotlin / Compose", note: "Android, modern and maintainable." },
+			{ name: "React Native", note: "Shared product code with native reach." },
+			{ name: "Expo", note: "Fast iteration, painless releases." },
+		],
+	},
+	{
+		title: "Tooling",
+		note: "The unglamorous parts, done properly.",
+		items: [
+			{ name: "Vite", note: "Instant dev feedback." },
+			{ name: "Vitest / Playwright", note: "Unit and end-to-end confidence." },
+			{ name: "GitHub Actions", note: "Every change built, tested, and shipped." },
+			{ name: "Wrangler", note: "Deploys and previews from the terminal." },
+			{ name: "ESLint / Prettier", note: "One style, no arguments." },
+			{ name: "Pagefind", note: "Search that ships as static files." },
+		],
+	},
+];
+
+const principles: Array<[string, string]> = [
+	["Boring where it counts", "We choose proven tools for the parts you can't afford to debug at 3am."],
+	["Typed end to end", "If it crosses a boundary, it has a type. Fewer surprises in production."],
+	["Own the whole path", "From data model to deploy — we don't hand off and hope."],
+	["Measure, then optimize", "Performance budgets and evals, not vibes."],
+];
+
+const nextHref = getNavLink("/work/");
+const previousHref = getNavLink("/capabilities/");
+---
+
+<PageLayout
+	meta={{
+		title: "Stack",
+		description:
+			"The languages, frameworks, infrastructure, and AI tooling Focus Lab uses to build and operate products.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>Stack</h6>
+			<h1>The tools we reach for.</h1>
+			<p>
+				Focus Lab is a technical product team. We pick boring, proven technology and push it hard.
+				Here's what's behind our products and the work we do for partners.
+			</p>
+		</div>
+
+		<div class="page__anchors">
+			<dl>
+				<dt>On this page</dt>
+				{groups.map((group) => (
+					<dd>
+						<a href={`#${group.title.toLowerCase().replace(/[^a-z]+/g, "-")}`}>{group.title}</a>
+					</dd>
+				))}
+				<dd>
+					<a href="#principles">Principles</a>
+				</dd>
+			</dl>
+		</div>
+
+		<div class="page__content">
+			<div class="stack">
+				{groups.map((group, groupIndex) => (
+					<section
+						class="stack__group"
+						id={group.title.toLowerCase().replace(/[^a-z]+/g, "-")}
+						style={`--stack-index:${groupIndex}`}
+					>
+						<header class="stack__header">
+							<h2 class="stack__title">{group.title}</h2>
+							<p class="stack__note">{group.note}</p>
+						</header>
+						<ul class="stack__items">
+							{group.items.map((item, itemIndex) => (
+								<li class="stack__item" style={`--stack-item-index:${itemIndex}`}>
+									<span class="stack__name">{item.name}</span>
+									<span class="stack__desc">{item.note}</span>
+								</li>
+							))}
+						</ul>
+					</section>
+				))}
+
+				<section class="stack__principles" id="principles">
+					<h2 class="stack__title">Principles</h2>
+					<dl class="stack__principles-list">
+						{principles.map(([title, body]) => (
+							<div class="stack__principle">
+								<dt>{title}</dt>
+								<dd>{body}</dd>
+							</div>
+						))}
+					</dl>
+				</section>
+			</div>
+
+			<div class="stack__cta">
+				<p>Building something technical? We're open to contract work.</p>
+				<a class="button button--theme" href={getNavLink("/contact/")}>
+					Start a project <span>&rarr;</span>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="boundary"></div>
+
+	<div
+		class="controller controller--origin"
+		data-next={nextHref}
+		data-previous={previousHref}
+		role="navigation"
+	>
+		<a href={nextHref} aria-label="Next: Work" tabindex="-1"></a>
+	</div>
+
+	<div class="origin"></div>
+</PageLayout>

@@ -1,19 +1,28 @@
 ---
-import { Image } from "astro:assets";
-
 import PageLayout from "@/layouts/Base.astro";
-import img404 from "@/assets/404-Error-with-a-cute-animal-amico.svg";
+import { getNavLink } from "@/lib/blog-helpers";
 
 const meta = {
-	title: "Oops! You found a missing page!",
-	description: "Oops! It looks like this page is lost in space!",
+	title: "Page not found",
+	description: "That page doesn't exist. Here's the way back.",
 };
 ---
 
 <PageLayout meta={meta}>
-	<h1 class="title mb-6">404 | Oops something went wrong</h1>
-	<p class="mb-8">Please use the navigation to find your way back</p>
-	<div class="my-4 grid justify-center">
-		<Image loading="eager" src={img404} alt="A cat is lost!" />
+	<div class="page">
+		<div class="page__headline">
+			<h6>404</h6>
+			<h1>That page doesn't exist.</h1>
+			<p>
+				The link is broken or the page has moved. No harm done — everything worth seeing is one
+				click away.
+			</p>
+			<div style="display:flex;flex-wrap:wrap;gap:0.5em;margin-top:0.6em">
+				<a class="button" href={getNavLink("/")}>Back home <span>&rarr;</span></a>
+				<a class="button button--theme" href={getNavLink("/work/")}>See our work</a>
+			</div>
+		</div>
 	</div>
+
+	<div class="boundary"></div>
 </PageLayout>

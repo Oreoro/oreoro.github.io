@@ -69,28 +69,34 @@ const metaAuthor = getMetaAuthor();
 		hasMarkdownAlternate,
 	}}
 >
-	<div class="content-shell print:mr-auto print:max-w-full">
-		<article class="break-words" data-pagefind-body>
-			<div id="blog-hero">
-				<BlogHero post={post} />
-			</div>
-			<div class="mt-8">
-				<slot />
-				{/* Post body content */}
-				<hr class="divider" />
-				{
-					INTERLINKED_CONTENT && (
-						<InterlinkedContentSection post={post} shouldUseCache={shouldUseCache} />
-					)
-				}
-			</div>
-		</article>
-		{!!headings.length && <TOC headings={headings} />}
+	<div class="page">
+		<div class="page__content">
+			<article class="thought" data-pagefind-body>
+				<div class="thought__content content">
+					<div id="blog-hero">
+						<BlogHero post={post} />
+					</div>
+					<div>
+						<slot />
+						{
+							INTERLINKED_CONTENT && (
+								<InterlinkedContentSection post={post} shouldUseCache={shouldUseCache} />
+							)
+						}
+					</div>
+				</div>
+			</article>
+
+			{!!headings.length && <TOC headings={headings} />}
+
+			<aside class="thought" data-pagefind-ignore="all">
+				<div class="thought__content content">
+					<WebMentions />
+					<PostComments post={post} />
+				</div>
+			</aside>
+		</div>
 	</div>
-	<div class="content-shell print:hidden">
-		<aside class="" data-pagefind-ignore="all">
-			<WebMentions />
-			<PostComments post={post} />
-		</aside>
-	</div>
+
+	<div class="boundary"></div>
 </BaseLayout>

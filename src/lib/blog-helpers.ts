@@ -25,6 +25,7 @@ import { getBlock, getPostByPageId } from "../lib/notion/client";
 import superjson from "superjson";
 import { prepareBibliography } from "./citations";
 import { joinPlainText } from "../utils/richtext-utils";
+import { PRODUCT_TYPE_VALUES } from "./content/config";
 
 const BASE_PATH = import.meta.env.BASE_URL;
 let downloadedImagesinSrc = null;
@@ -561,12 +562,16 @@ export const getInterlinkedContentLink = async (
 	return [null, null];
 };
 
-export const getPostLink = (slug: string, isRoot: boolean = false): string => {
+export const getPostLink = (
+	slug: string,
+	isRoot: boolean = false,
+	section: string = "posts",
+): string => {
 	const linkedPath = isRoot
 		? slug === HOME_PAGE_SLUG
 			? path.posix.join(BASE_PATH, "/")
 			: path.posix.join(BASE_PATH, slug)
-		: path.posix.join(BASE_PATH, "posts", slug);
+		: path.posix.join(BASE_PATH, section, slug);
 
 	return linkedPath.endsWith("/") ? linkedPath : `${linkedPath}/`; // Ensure trailing slash
 };
@@ -602,7 +607,15 @@ export const resolvePostHref = (
 			? options.forceIsRoot
 			: post.Collection === MENU_PAGES_COLLECTION;
 
-	return getPostLink(post.Slug, isRoot);
+	if (isRoot) {
+		return getPostLink(post.Slug, true);
+	}
+
+	if (PRODUCT_TYPE_VALUES.includes(post.Collection)) {
+		return getPostLink(post.Slug, false, "work");
+	}
+
+	return getPostLink(post.Slug, false);
 };
 
 export const isTweetURL = (url: URL): boolean => {

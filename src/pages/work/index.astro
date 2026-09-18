@@ -1,0 +1,72 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { getProducts } from "@/lib/notion/client";
+import { getNavLink } from "@/lib/blog-helpers";
+
+const products = await getProducts();
+
+const nextHref = products[0] ? getNavLink(`/work/${products[0].Slug}/`) : getNavLink("/");
+const previousHref = products.length
+	? getNavLink(`/work/${products[products.length - 1].Slug}/`)
+	: getNavLink("/");
+---
+
+<PageLayout
+	meta={{
+		title: "Work",
+		description:
+			"Products and platforms built and operated by Focus Lab — AI, SaaS, mobile, ecommerce, and Framer.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>Work</h6>
+			<h1>Products and platforms we've shipped.</h1>
+			<p>
+				We don't hand over decks. We build, launch, and keep operating real products — some our
+				own, some for partners. Here's a slice of the work.
+			</p>
+		</div>
+
+		<div class="page__content">
+			<div class="jobs">
+				<div class="jobs__container">
+					{products.map((product) => (
+						<article class="jobs__job">
+							<h2>
+								<a href={getNavLink(`/work/${product.Slug}/`)}>{product.Title}</a>
+							</h2>
+							{product.Excerpt && <p>{product.Excerpt}</p>}
+							{product.Tags.length > 0 && (
+								<p class="font-size-small">{product.Tags.map((tag) => tag.name).join(" · ")}</p>
+							)}
+						</article>
+					))}
+				</div>
+			</div>
+
+			<div class="signup" style="margin-top: calc(var(--line-height) * 2)">
+				<p>
+					Have something to build?<br /> We're open to contract work.
+				</p>
+				<a class="button button--theme" href={getNavLink("/contact/")}>
+					Start a project <span>&rarr;</span>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="boundary"></div>
+
+	<div
+		class="controller controller--origin"
+		data-next={nextHref}
+		data-previous={previousHref}
+		role="navigation"
+	>
+		<a href={nextHref} aria-label="Next product" tabindex="-1"></a>
+	</div>
+
+	<div class="origin"></div>
+</PageLayout>

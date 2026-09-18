@@ -1,0 +1,201 @@
+/*
+ * Stack page — a wide, card-based index of the technology Focus Lab uses.
+ * Built on the 37signals shell tokens (--spacing, --line-height, --color-white).
+ */
+
+html body.signals-shell .stack {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--line-height) * 1.6);
+	max-width: 68rem;
+}
+
+/* ---------- Group: label column + item grid ---------- */
+
+html body.signals-shell .stack__group {
+	display: grid;
+	gap: var(--line-height);
+	border-top: 1px solid rgba(var(--rgb-white), 0.16);
+	padding-top: calc(var(--line-height) * 0.6);
+}
+
+html body.signals-shell .stack__header {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35em;
+}
+
+html body.signals-shell .stack__title {
+	margin: 0;
+	color: var(--color-white);
+	font-size: var(--font-size-x-large);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.1;
+}
+
+html body.signals-shell .stack__note {
+	margin: 0;
+	max-width: 32ch;
+	color: rgba(var(--rgb-white), 0.65);
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+	line-height: 1.4;
+	text-wrap: pretty;
+}
+
+html body.signals-shell .stack__items {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(14.5em, 1fr));
+	gap: 0.6em;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+html body.signals-shell .stack__item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25em;
+	padding: 0.85em 1em;
+	border: 1px solid rgba(var(--rgb-white), 0.22);
+	border-radius: 0.3em;
+	background: rgba(var(--rgb-white), 0.04);
+	transition:
+		background-color var(--transition) !important,
+		border-color var(--transition) !important,
+		transform var(--transition) !important;
+}
+
+html body.signals-shell .stack__name {
+	color: var(--color-white);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+}
+
+html body.signals-shell .stack__desc {
+	color: rgba(var(--rgb-white), 0.65);
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+	line-height: 1.4;
+	text-wrap: pretty;
+}
+
+/* ---------- Principles ---------- */
+
+html body.signals-shell .stack__principles {
+	border-top: 1px solid rgba(var(--rgb-white), 0.16);
+	padding-top: calc(var(--line-height) * 0.6);
+}
+
+html body.signals-shell .stack__principles-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(16em, 1fr));
+	gap: var(--line-height);
+	margin: var(--line-height) 0 0;
+}
+
+html body.signals-shell .stack__principle {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35em;
+}
+
+html body.signals-shell .stack__principle dt {
+	color: var(--color-white);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+}
+
+html body.signals-shell .stack__principle dd {
+	margin: 0;
+	color: rgba(var(--rgb-white), 0.7);
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+	line-height: 1.45;
+	text-wrap: pretty;
+}
+
+/* ---------- CTA ---------- */
+
+html body.signals-shell .stack__cta {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--spacing);
+	margin-top: calc(var(--line-height) * 2);
+	padding: 1.4em 1.6em;
+	border: 1px solid rgba(var(--rgb-white), 0.16);
+	border-radius: 0.4em;
+	background: rgba(var(--rgb-white), 0.06);
+}
+
+html body.signals-shell .stack__cta p {
+	margin: 0;
+	color: var(--color-white);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+
+/* ---------- Hover (pointer devices) ---------- */
+
+@media (hover: hover) and (pointer: fine) {
+	html body.signals-shell .stack__item:hover {
+		background: rgba(var(--rgb-white), 0.12);
+		border-color: var(--color-white);
+		transform: translateY(-2px);
+	}
+}
+
+/* ---------- Layout on larger screens ---------- */
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .stack {
+		margin-left: 2.8ch;
+		margin-right: 2.8ch;
+	}
+
+	html body.signals-shell .stack__group {
+		grid-template-columns: minmax(0, 15em) minmax(0, 1fr);
+		gap: calc(var(--line-height) * 1.5);
+	}
+
+	html body.signals-shell .stack__header {
+		position: sticky;
+		top: max(22.2vh, 5.4em);
+		align-self: start;
+	}
+}
+
+/* ---------- Reveal ---------- */
+
+@keyframes stack-rise {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+html body.signals-shell.is-ready .stack__group {
+	animation: stack-rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both !important;
+	animation-delay: calc(var(--stack-index, 0) * 60ms) !important;
+}
+
+html body.signals-shell.is-ready .stack__item {
+	animation: stack-rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both !important;
+	animation-delay: calc((var(--stack-index, 0) * 60ms) + (var(--stack-item-index, 0) * 35ms)) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html body.signals-shell.is-ready .stack__group,
+	html body.signals-shell.is-ready .stack__item {
+		animation: none !important;
+	}
+}

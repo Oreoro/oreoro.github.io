@@ -1,0 +1,57 @@
+---
+import * as interfaces from "@/lib/interfaces";
+import { filePath } from "@/lib/blog-helpers";
+import Icon from "@/components/ui/Icon.astro";
+
+export interface Props {
+	block: interfaces.Block;
+	setId?: boolean;
+}
+
+const { block, setId = true } = Astro.props;
+
+const source = block.Pdf?.External?.Url || block.Pdf?.File?.Url || "";
+
+let url: URL | null = null;
+try {
+	url = source ? new URL(source) : null;
+} catch (err) {
+	console.error(`Invalid PDF URL. error: ${err}`);
+}
+
+const filename = url ? decodeURIComponent(url.pathname.split("/").slice(-1)[0]) : "document.pdf";
+const href = block.Pdf?.External ? source : url ? filePath(url) : source;
+const caption = block.Pdf?.Caption?.[0]?.Text?.Content || filename;
+---
+
+{
+	source && (
+		<figure class="notion-pdf" id={setId ? block.Id : undefined}>
+			<div class="notion-pdf__frame">
+				<iframe
+					src={href}
+					title={caption}
+					loading="lazy"
+					allowfullscreen
+					referrerpolicy="no-referrer"
+				/>
+			</div>
+			<figcaption class="notion-pdf__caption">
+				<a href={href} target="_blank" rel="noopener noreferrer">
+					<span class="notion-pdf__name">{caption}</span>
+					<span class="notion-pdf__action">
+						Open PDF <Icon name={"preview-pdf"} class="inline h-4 w-4 align-sub" aria-hidden="true" />
+					</span>
+				</a>
+				<a
+					class="notion-pdf__download"
+					href={href}
+					download={filename}
+					aria-label={`Download ${caption}`}
+				>
+					Download <Icon name={"download"} class="inline h-4 w-4 align-sub" aria-hidden="true" />
+				</a>
+			</figcaption>
+		</figure>
+	)
+}

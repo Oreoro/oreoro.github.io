@@ -24,20 +24,6 @@ const {
 
 <html lang={siteInfo.lang} class="dark">
 	<head>
-		<script is:inline>
-			(() => {
-				try {
-					const theme = localStorage.getItem("theme") || "dark";
-					const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-					const useDark = theme === "dark" || (theme === "system" && prefersDark);
-					document.documentElement.classList.toggle("dark", useDark);
-					document.documentElement.dataset.theme = theme;
-				} catch {
-					document.documentElement.classList.add("dark");
-					document.documentElement.dataset.theme = "dark";
-				}
-			})();
-		</script>
 		<BaseHead
 			title={title}
 			description={description}
@@ -47,13 +33,14 @@ const {
 			hasMarkdownAlternate={hasMarkdownAlternate}
 		/>
 	</head>
-	<body class="w-full max-w-[1280px] print:max-w-full">
+	<body class="signals-shell">
 		<SkipLink />
 		<Header />
-		<main id="main" class="w-full">
+		<main id="main">
 			<slot />
 		</main>
 		<Footer />
+		<script src="../scripts/signal.ts"></script>
 		<script src="../scripts/print.ts"></script>
 		{ENABLE_LIGHTBOX && <script src="../scripts/lightbox.ts" />}
 		<script src="../scripts/popover.ts"></script>

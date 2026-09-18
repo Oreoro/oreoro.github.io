@@ -1,0 +1,1790 @@
+/*
+ * Focus Lab — an exact port of 37signals.com's stylesheet.
+ *
+ * Source: https://37signals.com/assets/css/{reset,root,fonts,elements,button,
+ * page,boundary,header,nav,footer,cluster,signal,controller,origin,content,
+ * thoughts,thought,jobs,books,downloads,signup}.css
+ *
+ * Class names, spacing tokens, gradients, hover/dim behaviour and the reveal
+ * are reproduced 1:1. Rules are scoped to `html body.signals-shell` so they
+ * win over the Notion content theme (minimal.css) without `!important` wars.
+ */
+
+/* ---------- fonts.css ---------- */
+
+@font-face {
+	font-family: "Lab Grotesque";
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+	src: url("/fonts/lab-grotesque/labgrotesque-300.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("/fonts/lab-grotesque/labgrotesque-400.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque";
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url("/fonts/lab-grotesque/labgrotesque-500.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("/fonts/lab-grotesque/labgrotesque-700.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque";
+	font-style: normal;
+	font-weight: 800;
+	font-display: swap;
+	src: url("/fonts/lab-grotesque/labgrotesque-800.woff2") format("woff2");
+}
+
+/* ---------- root.css ---------- */
+
+:root {
+	--rgb-black: 0, 0, 0;
+	--rgb-error: 255, 1, 1;
+	--rgb-white: 255, 255, 255;
+
+	--rgb-theme: var(--rgb-black);
+	--rgb-theme-1: 244, 103, 199;
+	--rgb-theme-2: 190, 82, 255;
+	--rgb-theme-3: 139, 119, 255;
+	--rgb-theme-4: 0, 170, 194;
+	--rgb-theme-5: 154, 162, 0;
+	--rgb-theme-6: 248, 121, 23;
+	--rgb-theme-7: 240, 177, 3;
+	--rgb-theme-8: 204, 61, 51;
+	--rgb-theme-9: 41, 152, 80;
+	--rgb-theme-10: 0, 100, 230;
+	--rgb-theme-11: 236, 67, 67;
+	--rgb-theme-12: 207, 111, 182;
+	/* Focus Lab brand red ("Hornet Sting") — a 13th option in the rotation. */
+	--rgb-theme-13: 255, 0, 47;
+
+	--color-black: rgb(var(--rgb-black));
+	--color-error: rgb(var(--rgb-error));
+	--color-white: rgb(var(--rgb-white));
+
+	--color-theme: rgb(var(--rgb-theme));
+	--color-theme-1: rgb(var(--rgb-theme-1));
+	--color-theme-2: rgb(var(--rgb-theme-2));
+	--color-theme-3: rgb(var(--rgb-theme-3));
+	--color-theme-4: rgb(var(--rgb-theme-4));
+	--color-theme-5: rgb(var(--rgb-theme-5));
+	--color-theme-6: rgb(var(--rgb-theme-6));
+	--color-theme-7: rgb(var(--rgb-theme-7));
+	--color-theme-8: rgb(var(--rgb-theme-8));
+	--color-theme-9: rgb(var(--rgb-theme-9));
+	--color-theme-10: rgb(var(--rgb-theme-10));
+	--color-theme-11: rgb(var(--rgb-theme-11));
+	--color-theme-12: rgb(var(--rgb-theme-12));
+
+	--font-family: "Lab Grotesque", Sans-Serif;
+	--font-family-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+	--font-size: calc(1em + 1vw);
+	--font-size-x-small: 60%;
+	--font-size-small: 80%;
+	--font-size-large: 105%;
+	--font-size-x-large: 110%;
+	--font-size-xx-large: 115%;
+	--font-size-xxx-large: 125%;
+	--font-size-xxxx-large: 140%;
+
+	--line-height: calc(1.3em + 1vw);
+	--spacing: 0.75em;
+	--transition: 0.2s ease;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	:root {
+		--font-size: calc(1.25em + 1vw);
+		--font-size-x-small: 50%;
+		--font-size-small: 65%;
+		--font-size-large: 110%;
+		--font-size-x-large: 120%;
+		--font-size-xx-large: 130%;
+		--font-size-xxx-large: 150%;
+		--font-size-xxxx-large: 180%;
+		--line-height: 1.3em;
+	}
+}
+
+/* ---------- elements.css ---------- */
+
+html {
+	font-size: 16px;
+	scroll-padding-top: calc(var(--font-size) * 7.4);
+}
+
+html:not(.is-signal) {
+	scroll-behavior: smooth;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html {
+		scroll-padding-top: 22.2vh;
+	}
+}
+
+/* minimal.css disables all motion; restore the 37signals transitions. */
+html body.signals-shell *,
+html body.signals-shell *::before,
+html body.signals-shell *::after {
+	animation: none !important;
+	transition: none !important;
+}
+
+html body.signals-shell {
+	align-items: stretch;
+	background: var(--color-theme) !important;
+	background-image: none !important;
+	color: rgba(var(--rgb-white), 0.85) !important;
+	display: flex;
+	flex-direction: column;
+	font-family: var(--font-family) !important;
+	font-feature-settings: "liga", "ss02";
+	font-size: var(--font-size);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-style: normal;
+	font-weight: 400;
+	letter-spacing: -0.01em;
+	line-height: 1.3;
+	margin: 0 !important;
+	max-width: none !important;
+	min-height: 100vh;
+	min-height: 100dvh;
+	overflow-x: hidden;
+	padding: 0 !important;
+	transition: background-color 0.4s ease !important;
+	width: 100% !important;
+	-webkit-tap-highlight-color: rgba(var(--rgb-white), 0);
+	text-rendering: optimizeLegibility;
+}
+
+html body.signals-shell:not(.is-ready) {
+	visibility: hidden;
+	animation: shell-force-visible 0s linear 3s forwards !important;
+}
+
+@keyframes shell-force-visible {
+	to {
+		visibility: visible;
+	}
+}
+
+html body.signals-shell ::selection {
+	background: rgba(var(--rgb-white), 0.15);
+}
+
+html body.signals-shell main {
+	position: relative;
+	flex: 1 0 auto;
+}
+
+html body.signals-shell h1,
+html body.signals-shell h2,
+html body.signals-shell h3,
+html body.signals-shell h4,
+html body.signals-shell h5,
+html body.signals-shell h6 {
+	color: var(--color-white) !important;
+	font-weight: 700;
+}
+
+html body.signals-shell a {
+	color: var(--color-white);
+	font-weight: 700;
+	letter-spacing: normal;
+	text-decoration: underline;
+	text-decoration-thickness: 0.085em;
+	text-underline-offset: 0.0875em;
+}
+
+html body.signals-shell em,
+html body.signals-shell i {
+	font-style: italic;
+}
+
+html body.signals-shell strong,
+html body.signals-shell b {
+	color: var(--color-white);
+	font-weight: 700;
+}
+
+html body.signals-shell img,
+html body.signals-shell video {
+	height: auto;
+	max-width: 100%;
+	width: 100%;
+}
+
+html body.signals-shell blockquote {
+	position: relative;
+}
+
+html body.signals-shell blockquote > * + * {
+	margin-top: 0.5em;
+}
+
+html body.signals-shell blockquote:before {
+	content: "\201C";
+	font-size: 200%;
+	font-weight: 300;
+	left: 0;
+	line-height: 1;
+	position: absolute;
+	top: 0;
+	transform: translate(-128%, -8%);
+}
+
+html body.signals-shell table {
+	background: rgba(var(--rgb-white), 0.08);
+	border-collapse: collapse;
+	table-layout: fixed;
+	width: 100%;
+}
+
+html body.signals-shell table thead tr {
+	text-align: center;
+}
+
+html body.signals-shell table tbody tr:nth-of-type(odd) {
+	background: rgba(var(--rgb-white), 0.06);
+}
+
+html body.signals-shell table th,
+html body.signals-shell table td {
+	border: 2px solid var(--color-theme);
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+	padding: 1.1em 1.3em;
+}
+
+html body.signals-shell table th {
+	font-weight: 800;
+	vertical-align: middle;
+}
+
+html body.signals-shell .font-size-small {
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+}
+
+html body.signals-shell .font-size-large {
+	font-size: var(--font-size-large);
+}
+
+html body.signals-shell .font-size-x-large {
+	color: var(--color-white);
+	font-size: var(--font-size-x-large);
+}
+
+html body.signals-shell .font-size-xx-large {
+	color: var(--color-white);
+	font-size: var(--font-size-xx-large);
+}
+
+html body.signals-shell .font-size-xxx-large {
+	color: var(--color-white);
+	font-size: var(--font-size-xxx-large);
+}
+
+/* ---------- button.css ---------- */
+
+html body.signals-shell .button {
+	align-self: flex-start;
+	background: var(--color-white);
+	border-radius: 1.3em;
+	color: var(--color-theme) !important;
+	cursor: pointer;
+	display: inline-flex;
+	font-size: var(--font-size-small);
+	font-weight: 500;
+	gap: 0.4em;
+	letter-spacing: normal;
+	padding: 0.6em 1.1em 0.55em 1.1em;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+html body.signals-shell .button span {
+	display: inline-flex;
+}
+
+html body.signals-shell .button--theme {
+	background: var(--color-theme);
+	color: var(--color-white) !important;
+}
+
+/* ---------- page.css ---------- */
+
+html body.signals-shell .page {
+	display: flex;
+	flex-direction: column;
+	margin: 7.4em var(--spacing) calc(var(--line-height) + var(--spacing)) var(--spacing);
+	position: relative;
+}
+
+html body.signals-shell .page:after,
+html body.signals-shell .page:before {
+	content: "";
+	left: 0;
+	pointer-events: none;
+	position: fixed;
+	width: 100%;
+	z-index: 101;
+}
+
+html body.signals-shell .page:after {
+	background: linear-gradient(180deg, rgba(var(--rgb-theme), 1) 0, rgba(var(--rgb-theme), 0) 100%);
+	height: 7.4em;
+	top: 0;
+}
+
+html body.signals-shell .page:before {
+	background: linear-gradient(0deg, rgba(var(--rgb-theme), 1) 0, rgba(var(--rgb-theme), 0) 100%);
+	bottom: 0;
+	height: calc(3.7em + var(--line-height));
+}
+
+html body.signals-shell .page__headline,
+html body.signals-shell .page__anchors,
+html body.signals-shell .page__body {
+	display: flex;
+	flex-direction: column;
+	max-width: 49ch;
+}
+
+html body.signals-shell .page__headline {
+	color: var(--color-white);
+	gap: 0.6em;
+	position: relative;
+	z-index: 1;
+}
+
+html body.signals-shell .page__headline h1,
+html body.signals-shell .page__headline h2 {
+	font-size: var(--font-size-xxx-large);
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+html body.signals-shell .page__headline h6 {
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+html body.signals-shell .page__headline small {
+	font-size: var(--font-size-small);
+	font-weight: 700;
+}
+
+html body.signals-shell .page__headline br {
+	display: none;
+}
+
+html body.signals-shell .page__anchors {
+	color: var(--color-white);
+}
+
+html body.signals-shell .page__anchors dl {
+	display: flex;
+	flex-direction: column;
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	gap: 0.4em;
+	letter-spacing: normal;
+	margin-top: var(--line-height);
+}
+
+html body.signals-shell .page__anchors dl dd {
+	padding-left: 2ch;
+	position: relative;
+}
+
+html body.signals-shell .page__anchors dl dd:before {
+	content: "\2193";
+	left: 0;
+	position: absolute;
+	width: 2ch;
+}
+
+html body.signals-shell .page__content {
+	margin-bottom: 3.7em;
+	margin-top: 3.7em;
+}
+
+html body.signals-shell .page__back {
+	--flow-space: calc(var(--line-height) * 2);
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .page {
+		margin-top: max(22.2vh, 5.4em);
+	}
+
+	html body.signals-shell .page:after {
+		height: max(22.2vh, 5.4em);
+	}
+
+	html body.signals-shell .page:before {
+		height: calc(3.7em + var(--spacing));
+	}
+
+	html body.signals-shell .page__headline,
+	html body.signals-shell .page__anchors,
+	html body.signals-shell .page__body {
+		margin-left: 2.8ch;
+		margin-right: 2.8ch;
+	}
+
+	html body.signals-shell .page__headline br {
+		display: inline;
+	}
+
+	html body.signals-shell .page__body {
+		max-width: 39ch;
+	}
+}
+
+/* ---------- boundary.css ---------- */
+
+html body.signals-shell .boundary:after,
+html body.signals-shell .boundary:before {
+	content: "";
+	height: 7.4em;
+	left: 0;
+	pointer-events: none;
+	position: fixed;
+	width: 100%;
+	z-index: 101;
+}
+
+html body.signals-shell .boundary:after {
+	background: linear-gradient(180deg, rgba(var(--rgb-theme), 1) 0, rgba(var(--rgb-theme), 0) 100%);
+	top: 0;
+}
+
+html body.signals-shell .boundary:before {
+	background: linear-gradient(0deg, rgba(var(--rgb-theme), 1) 0, rgba(var(--rgb-theme), 0) 100%);
+	bottom: 0;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .boundary:after {
+		height: max(22.2vh, 5.4em);
+	}
+
+	html body.signals-shell .boundary:before {
+		height: 44.4vh;
+	}
+}
+
+/* ---------- header.css ---------- */
+
+html body.signals-shell .header {
+	background: linear-gradient(180deg, rgba(var(--rgb-theme), 1) 0, rgba(var(--rgb-theme), 0) 100%);
+	display: flex;
+	justify-content: flex-end;
+	left: 0;
+	pointer-events: none;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 104;
+}
+
+html body.signals-shell .header h1 {
+	order: 2;
+	pointer-events: auto;
+}
+
+html body.signals-shell .header h1 a {
+	display: block;
+	height: var(--line-height);
+	margin-right: var(--spacing);
+	margin-top: var(--spacing);
+	text-decoration: none;
+}
+
+html body.signals-shell .header h1 a .wordmark,
+html body.signals-shell .nav__logo a .wordmark {
+	align-items: center;
+	color: var(--color-white);
+	display: flex;
+	font-size: 1.05rem;
+	font-weight: 700;
+	height: 100%;
+	letter-spacing: -0.02em;
+	line-height: 1;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+html body.signals-shell .header h1 a,
+html body.signals-shell .nav__logo a {
+	display: flex;
+	align-items: center;
+	gap: 0.45em;
+}
+
+html body.signals-shell .header h1 a img.brand-mark,
+html body.signals-shell .nav__logo a img.brand-mark {
+	width: 1.15em;
+	height: 1.15em;
+	border-radius: 0.28em;
+	box-shadow: 0 0 0 1px rgba(var(--rgb-white), 0.25);
+}
+
+html body.signals-shell .header h1 a img {
+	height: 100%;
+	max-height: 100%;
+	width: auto;
+}
+
+html body.signals-shell .header ul {
+	align-items: center;
+	display: none;
+	flex: 1;
+	line-height: var(--line-height);
+	order: 1;
+	padding-left: var(--spacing);
+	padding-top: var(--spacing);
+	pointer-events: auto;
+}
+
+html body.signals-shell .header ul li {
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	letter-spacing: normal;
+}
+
+html body.signals-shell .header ul li a {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	text-decoration: none;
+}
+
+html body.signals-shell .header ul li:first-child {
+	margin-left: -0.5em;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .header ul {
+		display: flex;
+	}
+
+	html body.signals-shell .header ul li a:hover,
+	html body.signals-shell .header ul li a:focus {
+		text-decoration: underline;
+	}
+}
+
+/* ---------- nav.css ---------- */
+
+html body.signals-shell .nav-active {
+	display: none;
+}
+
+html body.signals-shell .nav-active:checked ~ .nav-underlay {
+	display: block;
+}
+
+html body.signals-shell .nav-active:checked ~ .nav {
+	background: var(--color-white);
+	border-radius: 0 0 var(--spacing) var(--spacing);
+	pointer-events: auto;
+}
+
+html body.signals-shell .nav-active:checked ~ .nav .nav__logo {
+	display: block;
+}
+
+html body.signals-shell .nav-active:checked ~ .nav .nav__toggle label span {
+	color: var(--color-black);
+}
+
+html body.signals-shell .nav-active:checked ~ .nav .nav__options {
+	display: flex;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .nav-active:checked ~ .nav-underlay,
+	html body.signals-shell .nav-active:checked ~ .nav {
+		display: none;
+	}
+}
+
+html body.signals-shell .nav-underlay {
+	background: rgba(var(--rgb-theme), 0.8);
+	display: none;
+	height: 100%;
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 107;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .nav-underlay {
+		display: none;
+	}
+}
+
+html body.signals-shell .nav {
+	display: flex;
+	flex-direction: column;
+	left: 0;
+	pointer-events: none;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 108;
+}
+
+html body.signals-shell .nav__logo {
+	display: none;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+html body.signals-shell .nav__logo a {
+	display: block;
+	height: var(--line-height);
+	margin-right: var(--spacing);
+	margin-top: var(--spacing);
+}
+
+html body.signals-shell .nav__logo a img {
+	height: 100%;
+	max-height: 100%;
+	width: auto;
+}
+
+html body.signals-shell .nav__toggle {
+	display: flex;
+}
+
+html body.signals-shell .nav__toggle label {
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+	justify-content: flex-start;
+	line-height: var(--line-height);
+	padding: var(--spacing);
+	pointer-events: auto;
+}
+
+html body.signals-shell .nav__toggle label span {
+	color: var(--color-white);
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	letter-spacing: normal;
+}
+
+html body.signals-shell .nav__options {
+	display: none;
+	flex-direction: column;
+	padding-left: var(--spacing);
+	padding-right: var(--spacing);
+}
+
+html body.signals-shell .nav__options ul {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	line-height: var(--line-height);
+}
+
+html body.signals-shell .nav__options ul li {
+	font-weight: 700;
+}
+
+html body.signals-shell .nav__options ul li a {
+	color: var(--color-black);
+	text-decoration: none;
+}
+
+html body.signals-shell .nav__options ul:last-child {
+	border-top: 1px solid rgba(var(--rgb-black), 0.1);
+	margin-top: calc(var(--spacing) * 1.5);
+	padding-bottom: calc(var(--spacing) * 1.5);
+	padding-top: calc(var(--spacing) * 1.5);
+}
+
+html body.signals-shell .nav__options ul:last-child li {
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+	line-height: var(--line-height);
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .nav {
+		display: none;
+	}
+}
+
+/* ---------- footer.css ---------- */
+
+html body.signals-shell .footer {
+	background: linear-gradient(0deg, rgba(var(--rgb-theme), 1) 0, rgba(var(--rgb-theme), 0) 100%);
+	bottom: 0;
+	display: flex;
+	justify-content: flex-end;
+	left: 0;
+	pointer-events: none;
+	position: fixed;
+	width: 100%;
+	z-index: 104;
+}
+
+html body.signals-shell .footer ul {
+	display: none;
+	flex: 1;
+	line-height: var(--line-height);
+	padding-bottom: var(--spacing);
+	padding-left: var(--spacing);
+	pointer-events: auto;
+}
+
+html body.signals-shell .footer ul li {
+	align-items: center;
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	letter-spacing: normal;
+}
+
+html body.signals-shell .footer ul li a {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	text-decoration: none;
+}
+
+html body.signals-shell .footer ul li:first-child {
+	margin-left: -0.5em;
+}
+
+html body.signals-shell .footer__next {
+	pointer-events: none;
+	touch-action: none;
+	user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+}
+
+html body.signals-shell .footer__next a {
+	display: flex;
+	margin-top: calc(-1 * var(--spacing));
+	padding: var(--spacing);
+	pointer-events: auto;
+	touch-action: none;
+}
+
+html body.signals-shell .footer__next a:after {
+	background: var(--color-white);
+	border-radius: 100%;
+	box-shadow: 0 0 1.3em 0.1em rgba(var(--rgb-theme), 0.8);
+	content: "";
+	height: var(--line-height);
+	width: var(--line-height);
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .footer ul {
+		display: flex;
+	}
+
+	html body.signals-shell .footer ul li a:hover,
+	html body.signals-shell .footer ul li a:focus {
+		text-decoration: underline;
+	}
+
+	html body.signals-shell .footer__next {
+		display: none;
+	}
+}
+
+/* ---------- cluster.css ---------- */
+
+html body.signals-shell .cluster {
+	margin: 7.4em var(--spacing) 4.5em var(--spacing);
+	opacity: 0;
+}
+
+html body.signals-shell .cluster--index {
+	margin-bottom: 7.4em;
+	opacity: 1;
+	pointer-events: none;
+}
+
+html body.signals-shell .cluster--signal .signal {
+	display: none;
+}
+
+html body.signals-shell .cluster--signal .signal .signal__header a {
+	color: rgba(var(--rgb-white), 0.4375);
+}
+
+html body.signals-shell .cluster--signal .signal .signal__header a dl dd {
+	opacity: 0;
+}
+
+html body.signals-shell .cluster--signal .signal.signal--select {
+	display: block;
+	z-index: 102;
+}
+
+html body.signals-shell .cluster--loaded {
+	opacity: 1;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .cluster {
+		margin-bottom: 44.4vh;
+		margin-top: max(22.2vh, 5.4em);
+	}
+
+	html body.signals-shell .cluster--index {
+		margin-bottom: 44.4vh;
+	}
+
+	html body.signals-shell .cluster--index:hover header a:not(:hover),
+	html body.signals-shell .cluster--index:focus-within header a:not(:focus) {
+		color: rgba(var(--rgb-white), 0.4375);
+	}
+
+	html body.signals-shell .cluster--signal .signal {
+		display: block;
+	}
+
+	html body.signals-shell .cluster--signal .signal .signal__header a:hover,
+	html body.signals-shell .cluster--signal .signal .signal__header a:focus {
+		color: var(--color-white);
+	}
+
+	html body.signals-shell .cluster--signal .signal .signal__header a:hover dl dd,
+	html body.signals-shell .cluster--signal .signal .signal__header a:focus dl dd {
+		opacity: 1;
+	}
+}
+
+/* ---------- signal.css ---------- */
+
+html body.signals-shell .signal {
+	color: var(--color-white);
+	position: relative;
+}
+
+html body.signals-shell .signal__header dl,
+html body.signals-shell .signal__header h2 {
+	display: flex;
+	font-weight: 700;
+	padding-bottom: 0.15em;
+	padding-top: 0.15em;
+}
+
+html body.signals-shell .signal__header dl dt,
+html body.signals-shell .signal__header h2 span {
+	font-feature-settings: "ss02", "tnum";
+	width: 2.8ch;
+}
+
+html body.signals-shell .signal__header dl dd,
+html body.signals-shell .signal__header h2 strong {
+	transition: opacity var(--transition) !important;
+	width: calc(100% - 2.8ch);
+}
+
+html body.signals-shell .signal__header a {
+	display: block;
+	letter-spacing: -0.01em;
+	pointer-events: auto;
+	text-decoration: none;
+	transition: color var(--transition) !important;
+}
+
+html body.signals-shell .signal__content {
+	margin-left: 2.8ch;
+	margin-top: 0.5em;
+	max-width: 50ch;
+	pointer-events: auto;
+}
+
+html body.signals-shell .signal__content > * + * {
+	margin-top: 0.5em;
+}
+
+html body.signals-shell .signal--clone {
+	display: none;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .signal:hover,
+	html body.signals-shell .signal:focus,
+	html body.signals-shell .signal:focus-within {
+		z-index: 103;
+	}
+
+	html body.signals-shell .signal:not(:last-child) .signal__content {
+		margin-bottom: 0.5em;
+	}
+
+	html body.signals-shell .signal__header dl,
+	html body.signals-shell .signal__header h2 {
+		padding-bottom: 0;
+		padding-top: 0;
+	}
+
+	html body.signals-shell .signal__header a:hover,
+	html body.signals-shell .signal__header a:focus {
+		color: var(--color-white);
+	}
+}
+
+/* ---------- controller.css ---------- */
+
+html body.signals-shell .controller {
+	opacity: 0;
+	pointer-events: none;
+	position: fixed;
+	touch-action: none;
+	user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	visibility: hidden;
+	z-index: 106;
+}
+
+html body.signals-shell .controller a {
+	display: flex;
+	padding: var(--spacing);
+	pointer-events: auto;
+	touch-action: none;
+}
+
+html body.signals-shell .controller a:after {
+	background: var(--color-white);
+	border-radius: 100%;
+	box-shadow: 0 0 1.3em 0.1em rgba(var(--rgb-theme), 0.8);
+	content: "";
+	height: var(--line-height);
+	width: var(--line-height);
+}
+
+html body.signals-shell .controller--loaded {
+	opacity: 1;
+}
+
+html body.signals-shell .controller--origin {
+	bottom: 0;
+	right: 0;
+}
+
+html body.signals-shell .controller--transition {
+	transition: bottom var(--transition) !important;
+	transition: bottom var(--transition), right var(--transition) !important;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .controller {
+		visibility: visible;
+	}
+}
+
+/* ---------- origin.css ---------- */
+
+html body.signals-shell .origin {
+	bottom: 0;
+	display: flex;
+	height: calc(var(--line-height) + (var(--spacing) * 2));
+	opacity: 0;
+	position: fixed;
+	right: 0;
+	transition: opacity var(--transition) !important;
+	user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	visibility: hidden;
+	width: calc(var(--line-height) + (var(--spacing) * 2));
+	z-index: 105;
+}
+
+html body.signals-shell .origin:after {
+	border: 1px solid rgba(var(--rgb-white), 0.3);
+	border-radius: 100%;
+	content: "";
+	height: var(--line-height);
+	margin: var(--spacing);
+	width: var(--line-height);
+}
+
+html body.signals-shell .origin--overlap {
+	opacity: 1;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .origin {
+		visibility: visible;
+	}
+}
+
+/* ---------- content.css ---------- */
+
+html body.signals-shell .content {
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+}
+
+html body.signals-shell .content > * + * {
+	margin-top: var(--flow-space, var(--line-height));
+}
+
+html body.signals-shell .content > * + h1,
+html body.signals-shell .content > * + h2,
+html body.signals-shell .content > * + h3,
+html body.signals-shell .content > * + h4,
+html body.signals-shell .content > * + h5,
+html body.signals-shell .content > * + h6 {
+	--flow-space: calc(var(--line-height) * 1.2);
+}
+
+html body.signals-shell .content h1,
+html body.signals-shell .content h2,
+html body.signals-shell .content h3,
+html body.signals-shell .content h4,
+html body.signals-shell .content h5,
+html body.signals-shell .content h6 {
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+html body.signals-shell .content h1 a,
+html body.signals-shell .content h2 a,
+html body.signals-shell .content h3 a,
+html body.signals-shell .content h4 a,
+html body.signals-shell .content h5 a,
+html body.signals-shell .content h6 a {
+	text-decoration: none;
+}
+
+html body.signals-shell .content h1 + *,
+html body.signals-shell .content h2 + *,
+html body.signals-shell .content h3 + *,
+html body.signals-shell .content h4 + *,
+html body.signals-shell .content h5 + *,
+html body.signals-shell .content h6 + * {
+	--flow-space: calc(var(--line-height) * 0.5);
+}
+
+html body.signals-shell .content h1,
+html body.signals-shell .content h2 {
+	font-size: var(--font-size-xxx-large);
+}
+
+html body.signals-shell .content h3,
+html body.signals-shell .content h4 {
+	font-size: var(--font-size-x-large);
+}
+
+html body.signals-shell .content h5,
+html body.signals-shell .content h6 {
+	font-size: var(--font-size-large);
+}
+
+html body.signals-shell .content hr {
+	--flow-space: 0;
+	height: 3.7em;
+}
+
+html body.signals-shell .content hr + * {
+	--flow-space: 0;
+}
+
+html body.signals-shell .content hr.ornament {
+	display: flex;
+	flex-direction: column;
+	height: auto;
+	margin-bottom: 2.6em;
+	margin-top: 2.6em;
+	text-align: center;
+}
+
+html body.signals-shell .content hr.ornament:before {
+	color: var(--color-white);
+	content: "***";
+	font-size: var(--font-size-xx-large);
+	font-weight: 500;
+	letter-spacing: 0.15em;
+	line-height: 1;
+	padding-top: 0.4em;
+}
+
+html body.signals-shell .content ul li ul,
+html body.signals-shell .content ul li ol,
+html body.signals-shell .content ol li ul,
+html body.signals-shell .content ol li ol {
+	margin-top: 0.3em;
+}
+
+html body.signals-shell .content ul li ul li:before,
+html body.signals-shell .content ul li ol li:before,
+html body.signals-shell .content ol li ul li:before,
+html body.signals-shell .content ol li ol li:before {
+	display: none;
+}
+
+html body.signals-shell .content ul li + li,
+html body.signals-shell .content ol li + li {
+	margin-top: 0.3em;
+}
+
+html body.signals-shell .content ul.list-spaced li + li,
+html body.signals-shell .content ol.list-spaced li + li {
+	margin-top: 0.8em;
+}
+
+html body.signals-shell .content ul {
+	list-style: disc;
+	padding-left: 1.85ch;
+}
+
+html body.signals-shell .content ol {
+	counter-reset: counter;
+	padding-left: 3.25ch;
+}
+
+html body.signals-shell .content ol li {
+	counter-increment: counter;
+}
+
+html body.signals-shell .content ol li:before {
+	content: counter(counter) ".";
+	display: inline-block;
+	font-feature-settings: "ss02", "tnum";
+	font-weight: 700;
+	margin-left: -2.5em;
+	margin-right: 0.5em;
+	text-align: right;
+	width: 2em;
+}
+
+html body.signals-shell .content code {
+	background: rgba(var(--rgb-white), 0.2);
+	border: 1px solid rgba(var(--rgb-white), 0.2);
+	border-radius: 0.15em;
+	color: var(--color-white);
+	display: inline-block;
+	font-family: var(--font-family-mono);
+	font-size: 75%;
+	line-height: 1.3;
+	padding: 0 0.25em;
+}
+
+html body.signals-shell .content.content--jobs * + h2,
+html body.signals-shell .content.content--policies * + h2,
+html body.signals-shell .content.content--thoughts * + h2 {
+	--flow-space: calc(var(--line-height) * 1.8);
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .content h1 a:hover,
+	html body.signals-shell .content h2 a:hover,
+	html body.signals-shell .content h3 a:hover,
+	html body.signals-shell .content h4 a:hover,
+	html body.signals-shell .content h5 a:hover,
+	html body.signals-shell .content h6 a:hover,
+	html body.signals-shell .content h1 a:focus,
+	html body.signals-shell .content h2 a:focus,
+	html body.signals-shell .content h3 a:focus,
+	html body.signals-shell .content h4 a:focus,
+	html body.signals-shell .content h5 a:focus,
+	html body.signals-shell .content h6 a:focus {
+		text-decoration: underline;
+	}
+}
+
+/* ---------- thoughts.css (blog index) ---------- */
+
+html body.signals-shell .thoughts {
+	display: flex;
+	flex-direction: column;
+	max-width: 49ch;
+}
+
+html body.signals-shell .thoughts__container {
+	display: flex;
+	flex-direction: column;
+	font-size: var(--font-size-small);
+	gap: calc(var(--line-height) * 2);
+	letter-spacing: normal;
+	margin-bottom: 3.7em;
+	margin-top: 3.7em;
+}
+
+html body.signals-shell .thoughts__thought {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6em;
+}
+
+html body.signals-shell .thoughts__thought h3 {
+	font-size: var(--font-size-xxx-large);
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+html body.signals-shell .thoughts__thought a.button {
+	margin-top: 0.35em;
+}
+
+html body.signals-shell .thoughts .signup {
+	margin-bottom: 3.7em;
+	order: 1;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .thoughts {
+		margin-left: 2.8ch;
+		margin-right: 2.8ch;
+		max-width: 39ch;
+	}
+
+	html body.signals-shell .thoughts .signup {
+		margin-bottom: 0;
+		margin-top: 3.7em;
+		order: 0;
+	}
+}
+
+/* ---------- thought.css (single post) ---------- */
+
+html body.signals-shell .thought {
+	display: flex;
+	flex-direction: column;
+	max-width: 49ch;
+}
+
+html body.signals-shell .thought__content {
+	margin-bottom: 3.7em;
+	margin-top: 3.7em;
+}
+
+html body.signals-shell .thought .signup {
+	margin-bottom: 3.7em;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .thought {
+		margin-left: 2.8ch;
+		margin-right: 2.8ch;
+		max-width: 39ch;
+	}
+}
+
+/* ---------- jobs.css ---------- */
+
+html body.signals-shell .jobs {
+	display: flex;
+	flex-direction: column;
+	max-width: 49ch;
+}
+
+html body.signals-shell .jobs__container {
+	display: flex;
+	flex-direction: column;
+	font-size: var(--font-size-small);
+	gap: calc(var(--line-height) * 2);
+	letter-spacing: normal;
+	margin-bottom: 3.7em;
+	margin-top: 3.7em;
+}
+
+html body.signals-shell .jobs__job h2 {
+	font-size: var(--font-size-xxx-large);
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+html body.signals-shell .jobs__job h2 a {
+	text-decoration: underline;
+}
+
+html body.signals-shell .jobs__job h2 + * {
+	--flow-space: calc(var(--line-height) * 0.5);
+}
+
+html body.signals-shell .jobs__job > * + * {
+	margin-top: var(--flow-space, var(--line-height));
+}
+
+html body.signals-shell .jobs__content {
+	margin-bottom: 3.7em;
+}
+
+html body.signals-shell .jobs .signup {
+	margin-bottom: 3.7em;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .jobs {
+		margin-left: 2.8ch;
+		margin-right: 2.8ch;
+		max-width: 39ch;
+	}
+}
+
+/* ---------- downloads.css ---------- */
+
+html body.signals-shell .downloads {
+	display: grid;
+	position: relative;
+}
+
+html body.signals-shell .downloads__container {
+	display: grid;
+	font-size: var(--font-size-small);
+	gap: 3.7em;
+	margin-bottom: 3.7em;
+	margin-top: 3.7em;
+}
+
+html body.signals-shell .downloads__group {
+	display: grid;
+	gap: var(--line-height);
+	grid-template-columns: repeat(auto-fit, minmax(14em, 1fr));
+}
+
+html body.signals-shell .downloads__group h2 {
+	grid-column: 1 / -1;
+	font-size: var(--font-size-xxx-large);
+	font-weight: 700;
+	letter-spacing: normal;
+	line-height: 1.2;
+	margin-bottom: -0.3em;
+}
+
+html body.signals-shell .downloads__group a {
+	background: var(--color-white);
+	border-radius: 0.3em;
+	box-shadow:
+		0 0 0 1px rgba(var(--rgb-black), 0.03),
+		0 0.2em 1.6em -0.8em rgba(var(--rgb-black), 0.1),
+		0 0.4em 2.4em -1.2em rgba(var(--rgb-black), 0.1),
+		0 0.4em 0.8em -1.2em rgba(var(--rgb-black), 0.2),
+		0 0.8em 1.2em -1.6em rgba(var(--rgb-black), 0.2),
+		0 1.2em 1.6em -2em rgba(var(--rgb-black), 0.3);
+	display: grid;
+	overflow: hidden;
+	position: relative;
+	text-decoration: none;
+}
+
+html body.signals-shell .downloads__group a figure {
+	background: rgba(var(--rgb-black), 0.05);
+}
+
+html body.signals-shell .downloads__group a figure figcaption {
+	align-items: center;
+	background: var(--color-white);
+	color: var(--color-black);
+	display: flex;
+	font-size: 72.5%;
+	justify-content: space-between;
+	padding: 1em 1em 1em 1.3em;
+}
+
+html body.signals-shell .downloads__group a figure figcaption span {
+	background: rgba(var(--rgb-black), 0.05);
+	border: 1px solid rgba(var(--rgb-black), 0.1);
+	border-radius: 0.275em;
+	font-family: var(--font-family-mono);
+	font-size: 85%;
+	font-weight: 700;
+	padding: 0.125em 0.425em;
+	text-transform: uppercase;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .downloads {
+		margin-left: 2.8ch;
+		margin-right: 2.8ch;
+	}
+
+	html body.signals-shell .downloads__group {
+		gap: calc(var(--line-height) * 1.5);
+		grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
+	}
+}
+
+/* ---------- signup.css ---------- */
+
+html body.signals-shell .signup {
+	align-self: flex-start;
+	background: rgba(var(--rgb-white), 0.08);
+	border-radius: 0.3em;
+	display: flex;
+	flex-direction: column;
+	padding: 1.3em 1.6em;
+}
+
+html body.signals-shell .signup p br {
+	display: none;
+}
+
+html body.signals-shell .signup form {
+	--flow-space: 1em;
+	background: var(--color-white);
+	border-radius: 2em;
+	display: flex;
+	max-width: 20em;
+	padding: 0.25em;
+}
+
+html body.signals-shell .signup form input[type="email"] {
+	appearance: none;
+	border: none;
+	color: rgba(var(--rgb-black), 0.75);
+	flex: 1;
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-small);
+	line-height: 1;
+	margin-right: 0.25em;
+	padding: 0.15em 0 0.15em 1.2em;
+	vertical-align: middle;
+}
+
+html body.signals-shell .signup form input[type="email"]::placeholder {
+	color: rgba(var(--rgb-black), 0.4);
+}
+
+html body.signals-shell .signup form.error input {
+	color: var(--color-error);
+	text-decoration: underline;
+	text-decoration-thickness: from-font;
+}
+
+html body.signals-shell .signup--inline {
+	align-self: auto;
+	background: none;
+	border-radius: initial;
+	padding: 0;
+}
+
+html body.signals-shell .signup--inline form {
+	max-width: 24em;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .signup {
+		align-self: auto;
+		margin-left: -1em;
+		max-width: calc(100% + 2em);
+		width: calc(100% + 2em);
+	}
+
+	html body.signals-shell .signup p br {
+		display: inline;
+	}
+
+	html body.signals-shell .signup--inline {
+		margin-left: 0;
+		max-width: none;
+		width: 100%;
+	}
+}
+
+/* ---------- policies.css ---------- */
+
+html body.signals-shell .policies {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 3.7em;
+}
+
+/* ---------- Focus Lab polish ---------- */
+
+/* Align the capabilities content column with its indented headline. */
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .page__content.content {
+		margin-left: 2.8ch;
+		margin-right: 2.8ch;
+	}
+}
+
+/* Visible, consistent keyboard focus everywhere. */
+html body.signals-shell a:focus-visible,
+html body.signals-shell button:focus-visible,
+html body.signals-shell summary:focus-visible,
+html body.signals-shell input:focus-visible {
+	outline: 2px solid var(--color-white);
+	outline-offset: 0.18em;
+	border-radius: 0.15em;
+}
+
+/* Buttons: a touch more life than a flat swap. */
+html body.signals-shell .button {
+	transition:
+		background-color var(--transition) !important,
+		color var(--transition) !important,
+		transform var(--transition) !important;
+}
+
+html body.signals-shell .button:hover {
+	transform: translateY(-1px);
+}
+
+html body.signals-shell .button:active {
+	transform: translateY(0);
+}
+
+html body.signals-shell .button--theme:hover {
+	background: var(--color-white);
+	color: var(--color-theme) !important;
+}
+
+/* Content media sits in soft, consistent frames. */
+html body.signals-shell .content img,
+html body.signals-shell .post-body img,
+html body.signals-shell .notion-image {
+	border-radius: 0.35em;
+}
+
+/* Body links get the 37signals underline on hover, not always. */
+html body.signals-shell .content p a {
+	text-decoration: none;
+}
+
+html body.signals-shell .content p a:hover,
+html body.signals-shell .content p a:focus {
+	text-decoration: underline;
+}
+
+/* Smooth, unobtrusive image reveal once the shell is ready. */
+@keyframes shell-fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+html body.signals-shell.is-ready main {
+	animation: shell-fade 0.4s ease both !important;
+}
+
+/* ---------- Listing & index pages (tags, collections, authors, posts) ---------- */
+
+html body.signals-shell .content-shell,
+html body.signals-shell .home-shell {
+	width: 100%;
+	max-width: 60ch;
+	margin: 7.4em 0 calc(var(--line-height) + var(--spacing));
+	padding: 0;
+}
+
+html body.signals-shell .title,
+html body.signals-shell .home-title {
+	margin: 0 0 var(--spacing);
+	padding: 0;
+	border: 0;
+	color: var(--color-white);
+	font-size: var(--font-size-xxx-large);
+	font-weight: 700;
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	text-transform: none;
+	text-wrap: balance;
+}
+
+html body.signals-shell .minimal-post-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid rgba(var(--rgb-white), 0.16);
+}
+
+html body.signals-shell .minimal-post-list > li {
+	border-bottom: 1px solid rgba(var(--rgb-white), 0.16);
+}
+
+html body.signals-shell .post-preview-row {
+	display: block;
+	padding-block: 0.7em;
+}
+
+html body.signals-shell .post-preview-title {
+	font-size: var(--font-size-x-large);
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: -0.01em;
+}
+
+html body.signals-shell .post-preview-title a,
+html body.signals-shell .site-page-link,
+html body.signals-shell .minimal-link-row,
+html body.signals-shell .quiet-link,
+html body.signals-shell .footer-link,
+html body.signals-shell .author-name-link {
+	background: transparent !important;
+	color: var(--color-white) !important;
+	text-decoration: none;
+}
+
+html body.signals-shell .post-preview-title a:hover,
+html body.signals-shell .site-page-link:hover,
+html body.signals-shell .minimal-link-row:hover,
+html body.signals-shell .quiet-link:hover {
+	text-decoration: underline;
+}
+
+html body.signals-shell .pagination-nav {
+	display: flex;
+	gap: var(--spacing);
+	margin-top: calc(var(--line-height) * 1.5);
+	font-size: var(--font-size-small);
+	font-weight: 700;
+}
+
+html body.signals-shell .pagination-nav a {
+	color: var(--color-white) !important;
+	text-decoration: none;
+}
+
+html body.signals-shell .pagination-nav a:hover {
+	text-decoration: underline;
+}
+
+html body.signals-shell .count-badge {
+	display: inline-block;
+	margin-left: 0.4em;
+	padding: 0.05em 0.5em;
+	border-radius: 1em;
+	background: rgba(var(--rgb-white), 0.18);
+	font-size: 70%;
+	font-weight: 700;
+	line-height: 1.6;
+}
+
+/* Notion colour chips (tags, authors) → one consistent themed pill. */
+html body.signals-shell a span[class*="-background"] {
+	padding: 0.15em 0.7em;
+	border: 1px solid rgba(var(--rgb-white), 0.22);
+	border-radius: 1em;
+	background: rgba(var(--rgb-white), 0.12) !important;
+	color: var(--color-white) !important;
+	text-decoration: none;
+}
+
+html body.signals-shell a span[class*="-background"] img {
+	border-radius: 50%;
+}
+
+html body.signals-shell a:hover span[class*="-background"] {
+	background: rgba(var(--rgb-white), 0.2) !important;
+	border-color: var(--color-white);
+}
+
+html body.signals-shell .divider,
+html body.signals-shell .notion-divider {
+	height: 1px;
+	margin-block: 2em;
+	border: 0;
+	background: rgba(var(--rgb-white), 0.16);
+}
+
+/* Gallery cards */
+html body.signals-shell .gallery-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+	gap: var(--line-height);
+}
+
+html body.signals-shell .post-card {
+	border: 1px solid rgba(var(--rgb-white), 0.16);
+	border-radius: 0.35em;
+	overflow: hidden;
+	background: rgba(var(--rgb-white), 0.04);
+	transition: border-color var(--transition) !important;
+}
+
+html body.signals-shell .post-card:hover {
+	border-color: var(--color-white);
+}
+
+html body.signals-shell .post-card-link {
+	text-decoration: none;
+}
+
+html body.signals-shell .post-card-image-container {
+	aspect-ratio: 3 / 2;
+	background: rgba(var(--rgb-white), 0.06);
+}
+
+html body.signals-shell .post-card-image,
+html body.signals-shell .post-card-placeholder {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+html body.signals-shell .post-card-placeholder {
+	display: grid;
+	place-items: center;
+	color: var(--color-white);
+	font-size: var(--font-size-x-large);
+	font-weight: 700;
+}
+
+/* Blocks that minimal.css flattens get a soft frame again. */
+html body.signals-shell .callout,
+html body.signals-shell .bookmark-card,
+html body.signals-shell .ntable,
+html body.signals-shell pre {
+	border: 1px solid rgba(var(--rgb-white), 0.16);
+	border-radius: 0.35em !important;
+	background: rgba(var(--rgb-white), 0.05) !important;
+}
+
+html body.signals-shell .caption {
+	color: rgba(var(--rgb-white), 0.6);
+}
+
+/* Blog post reading column */
+html body.signals-shell .thought__content.content {
+	max-width: 42ch;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .content-shell,
+	html body.signals-shell .home-shell {
+		margin-left: 2.8ch;
+		margin-right: 2.8ch;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html body.signals-shell.is-ready main,
+	html body.signals-shell.is-ready .stack__group,
+	html body.signals-shell.is-ready .stack__item {
+		animation: none !important;
+	}
+}

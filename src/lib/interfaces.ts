@@ -30,6 +30,12 @@ export interface Post {
 	ExternalUrl: string | null;
 	ExternalContent?: ExternalContentDescriptor | null;
 	/**
+	 * Every Notion property not consumed by the normalized fields, converted to
+	 * plain JS values. Lets templates read custom columns (price, features,
+	 * links, ...) without adapter changes.
+	 */
+	Fields?: Record<string, unknown>;
+	/**
 	 * Authors from Notion multi-select property.
 	 * - undefined: Authors property doesn't exist in Notion DB (behave as current, no bylines)
 	 * - []: Authors property exists but is empty on this post (use default author from config)
@@ -63,6 +69,7 @@ export interface Block {
 	NImage?: NImage;
 	NAudio?: NAudio;
 	File?: File;
+	Pdf?: File;
 	Code?: Code;
 	MdxSnippet?: {
 		PageId: string;

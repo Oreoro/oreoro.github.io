@@ -43,3 +43,6 @@ output/
 
 #agent conversation copies
 .agents/**/conversation.md
+
+# opencode runtime (may contain local secrets like particle.env)
+.opencode/

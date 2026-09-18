@@ -1,5 +1,5 @@
 {
-	"name": "webtrotion-astro-notion-cms-website-blog",
+	"name": "focuslab-website",
 	"version": "2.4.1b",
 	"private": false,
 	"cacheVersion": {
@@ -21,8 +21,12 @@
 		"build": "rm -rf buildcache && astro build",
 		"postbuild": "pagefind --site dist",
 		"preview": "astro preview",
+		"deploy": "wrangler deploy",
+		"cf:dev": "wrangler dev",
+		"index": "pagefind --site dist",
 		"format": "prettier -w --cache .",
 		"check": "astro check",
+		"notion:setup": "node --env-file=.env scripts/notion-setup.mjs",
 		"build:cached": "npm run cache:fetch && astro build"
 	},
 	"dependencies": {

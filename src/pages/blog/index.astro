@@ -1,0 +1,80 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { getArticles } from "@/lib/notion/client";
+import { getNavLink } from "@/lib/blog-helpers";
+import { HIDE_UNDERSCORE_SLUGS_IN_LISTS } from "@/constants";
+import FormattedDate from "@/components/ui/FormattedDate.astro";
+
+const all = await getArticles();
+const articles = (HIDE_UNDERSCORE_SLUGS_IN_LISTS
+	? all.filter((post) => !post.Slug.startsWith("_"))
+	: all
+).sort((a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime());
+
+const nextHref = getNavLink("/contact/");
+const previousHref = getNavLink("/capabilities/");
+---
+
+<PageLayout
+	meta={{
+		title: "Blog",
+		description:
+			"Notes, essays, and engineering write-ups from the Focus Lab studio — on shipping AI, SaaS, mobile, and ecommerce products.",
+		ogImage: "/og-image/postsindex---index.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>Blog</h6>
+			<h1>Notes from a product company.</h1>
+			<p>
+				We write about the things we build and operate. No growth hacks, no thought leadership —
+				just what we learned shipping the product in front of us.
+			</p>
+		</div>
+
+		<div class="page__content">
+			<div class="thoughts">
+				<div class="thoughts__container">
+					{articles.map((article) => (
+						<article class="thoughts__thought">
+							<h3>
+								<a href={getNavLink(`/posts/${article.Slug}/`)}>{article.Title}</a>
+							</h3>
+							<p class="font-size-small">
+								<FormattedDate date={article.Date} />
+								{article.Tags.length > 0 && ` · ${article.Tags.map((tag) => tag.name).join(", ")}`}
+							</p>
+							{article.Excerpt && <p>{article.Excerpt}</p>}
+							<a class="button" href={getNavLink(`/posts/${article.Slug}/`)}>
+								Read <span>&rarr;</span>
+							</a>
+						</article>
+					))}
+				</div>
+
+				<div class="signup">
+					<p>
+						Building something?<br /> We're open to contract work.
+					</p>
+					<a class="button button--theme" href={getNavLink("/contact/")}>
+						Start a project <span>&rarr;</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="boundary"></div>
+
+	<div
+		class="controller controller--origin"
+		data-next={nextHref}
+		data-previous={previousHref}
+		role="navigation"
+	>
+		<a href={nextHref} aria-label="Next: Contact" tabindex="-1"></a>
+	</div>
+
+	<div class="origin"></div>
+</PageLayout>

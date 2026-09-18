@@ -196,9 +196,15 @@ export const EXTERNAL_CONTENT_PATHS = {
 export const NOTION_API_SECRET =
 	import.meta.env.NOTION_API_SECRET || process.env.NOTION_API_SECRET || "";
 export const DATABASE_ID =
-	process.env.DATABASE_ID || key_value_from_json?.notion?.["database-id"] || "";
+	import.meta.env.DATABASE_ID ||
+	process.env.DATABASE_ID ||
+	key_value_from_json?.notion?.["database-id"] ||
+	"";
 export const DATA_SOURCE_ID =
-	process.env.DATA_SOURCE_ID || key_value_from_json?.notion?.["data-source-id"] || "";
+	import.meta.env.DATA_SOURCE_ID ||
+	process.env.DATA_SOURCE_ID ||
+	key_value_from_json?.notion?.["data-source-id"] ||
+	"";
 export const AUTHOR = key_value_from_json?.["site-info"]?.author || "";
 
 // Authors configuration for multi-author support

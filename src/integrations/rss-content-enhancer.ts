@@ -42,17 +42,28 @@ const rssContentEnhancer = (): AstroIntegration => {
 					const segments = item.link.split("/").filter(Boolean);
 					const encodedSlug = segments.pop();
 					const slug = decodeURIComponent(encodedSlug);
-					const htmlPath = path.join(distDir, "posts", slug, "index.html");
 
-					let htmlContent: string;
-					try {
-						htmlContent = await fs.readFile(htmlPath, "utf-8");
-					} catch (error: any) {
-						if (error?.code === "ENOENT") {
-							// External or skipped entry, nothing was rendered
-							continue;
+					// Products render under /work, posts under /posts, pages at the root.
+					const candidates = [
+						path.join(distDir, "posts", slug, "index.html"),
+						path.join(distDir, "work", slug, "index.html"),
+						path.join(distDir, slug, "index.html"),
+					];
+
+					let htmlContent = "";
+					for (const candidate of candidates) {
+						try {
+							htmlContent = await fs.readFile(candidate, "utf-8");
+							break;
+						} catch (error: any) {
+							if (error?.code !== "ENOENT") {
+								throw error;
+							}
 						}
-						throw error;
+					}
+					if (!htmlContent) {
+						// External or skipped entry, nothing was rendered
+						continue;
 					}
 
 					try {

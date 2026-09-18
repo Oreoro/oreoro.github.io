@@ -1599,7 +1599,7 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
   }
 }
 
-/* Minimal JetBrains index layout */
+/* Minimal index layout */
 :root {
   --jetbrains-line: color-mix(in srgb, var(--color-textColor) 16%, transparent);
   --jetbrains-line-strong: color-mix(in srgb, var(--color-textColor) 28%, transparent);
@@ -1609,7 +1609,7 @@ html.dark :not(.datatable-ascending):not(.datatable-descending)>.datatable-sorte
 
 html body {
   @apply max-w-none px-4 pt-8 sm:px-8 sm:pt-10;
-  font-family: var(--font-mono, "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+  font-family: var(--font-mono, "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
   letter-spacing: 0;
   line-height: 1.5;
   background-image:
