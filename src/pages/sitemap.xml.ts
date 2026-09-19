@@ -8,8 +8,6 @@ export const GET = () => {
 	const paths = [
 		"/",
 		"/studio/",
-		"/work/",
-		"/now/",
 		"/books/",
 		"/stack/",
 		...products.map((product) => `/products/${product.slug}/`),
@@ -20,7 +18,6 @@ export const GET = () => {
 		...episodes.map((episode) => `/podcast/${episode.slug}/`),
 		"/policies/",
 		...policies.map((policy) => `/policies/${policy.slug}/`),
-		"/faq/",
 		"/contact/",
 		"/signup/",
 		...stream.map((entry) => `/${entry.num}/`),
