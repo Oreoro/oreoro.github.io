@@ -2,6 +2,7 @@ import type { AstroIntegration } from "astro";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { parseDocument } from "htmlparser2";
 import { DomUtils } from "htmlparser2";
 import type { AnyNode, Element as ElementNode } from "domhandler";
@@ -111,6 +112,8 @@ const markdownExporter = (): AstroIntegration => {
 						mdPath = path.join(distDir, slug, "index.html.md");
 						pageUrl = new URL(path.posix.join(slug, "/"), siteUrl).toString();
 					}
+
+					if (!existsSync(htmlPath)) continue;
 
 					const entryTimestamp = entry.LastUpdatedTimeStamp
 						? new Date(entry.LastUpdatedTimeStamp)
