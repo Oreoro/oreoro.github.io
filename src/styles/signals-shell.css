@@ -116,19 +116,19 @@
 	--rgb-white: 255, 255, 255;
 
 	--rgb-theme: var(--rgb-black);
-	/* 37signals palette — one vivid colour per page load. */
-	--rgb-theme-1: 244, 103, 199;
-	--rgb-theme-2: 190, 82, 255;
-	--rgb-theme-3: 139, 119, 255;
-	--rgb-theme-4: 0, 170, 194;
-	--rgb-theme-5: 154, 162, 0;
-	--rgb-theme-6: 248, 121, 23;
-	--rgb-theme-7: 240, 177, 3;
-	--rgb-theme-8: 204, 61, 51;
-	--rgb-theme-9: 41, 152, 80;
-	--rgb-theme-10: 0, 100, 230;
-	--rgb-theme-11: 236, 67, 67;
-	--rgb-theme-12: 207, 111, 182;
+	/* Focus Lab palette — one rich colour per page load. */
+	--rgb-theme-1: 199, 74, 58;
+	--rgb-theme-2: 176, 52, 84;
+	--rgb-theme-3: 150, 70, 140;
+	--rgb-theme-4: 96, 82, 200;
+	--rgb-theme-5: 54, 104, 168;
+	--rgb-theme-6: 32, 128, 120;
+	--rgb-theme-7: 56, 128, 76;
+	--rgb-theme-8: 110, 120, 40;
+	--rgb-theme-9: 155, 105, 18;
+	--rgb-theme-10: 180, 90, 28;
+	--rgb-theme-11: 132, 86, 58;
+	--rgb-theme-12: 88, 92, 104;
 
 	--color-black: rgb(var(--rgb-black));
 	--color-error: rgb(var(--rgb-error));
@@ -1046,7 +1046,9 @@ html body.signals-shell .controller--origin {
 
 html body.signals-shell .controller--transition {
 	transition: bottom var(--transition) !important;
-	transition: bottom var(--transition), right var(--transition) !important;
+	transition:
+		bottom var(--transition),
+		right var(--transition) !important;
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {

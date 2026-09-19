@@ -1,65 +1,67 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { site } from "@/data/focuslab";
-import { signals } from "@/data/signals";
+import { stream } from "@/data/stream";
 import { getNavLink } from "@/lib/blog-helpers";
 
 export function getStaticPaths() {
-	return signals.map((signal, index) => ({
-		params: { num: signal.num },
-		props: { signal, index },
+	return stream.map((entry, index) => ({
+		params: { num: entry.num },
+		props: { entry, index },
 	}));
 }
 
-const { signal, index } = Astro.props;
-const nextSignal = signals[(index + 1) % signals.length]!;
-const previousSignal = signals[(index - 1 + signals.length) % signals.length]!;
+const { entry, index } = Astro.props;
+const nextEntry = stream[(index + 1) % stream.length]!;
+const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 ---
 
 <PageLayout
 	meta={{
-		title: `${signal.num}. ${signal.label}`,
-		description: site.description,
+		title: `${entry.num}. ${entry.label}`,
+		description: entry.label,
 		ogImage: "/og-image/home.png",
 	}}
 >
-	<section class="signal signal--clone" data-signal={signal.num}>
+	<section class="signal signal--clone" data-signal={index}>
 		<header class="signal__header" tabindex="-1" autofocus>
-			<h2 aria-label={`Signal ${signal.num}. ${signal.label}`}>
-				<span>{signal.num}.</span>
-				<strong>{signal.label}</strong>
+			<h2 aria-label={`${entry.num}. ${entry.label}`}>
+				<span>{entry.num}.</span>
+				<strong>{entry.label}</strong>
 			</h2>
 		</header>
-		<div class="signal__content" set:html={signal.content} />
+		<div class="signal__content">
+			<p class="font-size-small">{entry.date}</p>
+			<Fragment set:html={entry.content} />
+		</div>
 	</section>
 
 	<div class="cluster cluster--signal">
-		{signals.map((item) => (
-			<section class="signal">
-				<header class="signal__header">
-					<a href={getNavLink(`/${item.num}`)} aria-label={`Signal ${item.num}. ${item.label}`}>
-						<dl>
-							<dt>{item.num}.</dt>
-							<dd>{item.label}</dd>
-						</dl>
-					</a>
-				</header>
-			</section>
-		))}
+		{
+			stream.map((item) => (
+				<section class="signal">
+					<header class="signal__header">
+						<a href={getNavLink(`/${item.num}`)} aria-label={`${item.num}. ${item.label}`}>
+							<dl>
+								<dt>{item.num}.</dt>
+								<dd>{item.label}</dd>
+							</dl>
+						</a>
+					</header>
+				</section>
+			))
+		}
 	</div>
 
 	<div class="boundary"></div>
 
 	<div
 		class="controller controller--origin"
-		data-next={getNavLink(`/${nextSignal.num}`)}
-		data-previous={getNavLink(`/${previousSignal.num}`)}
+		data-next={getNavLink(`/${nextEntry.num}`)}
+		data-previous={getNavLink(`/${previousEntry.num}`)}
 		role="navigation"
 	>
-		<a
-			href={getNavLink(`/${nextSignal.num}`)}
-			aria-label={`Next Signal: ${nextSignal.label}`}
-			tabindex="-1"></a>
+		<a href={getNavLink(`/${nextEntry.num}`)} aria-label={`Next: ${nextEntry.label}`} tabindex="-1"
+		></a>
 	</div>
 
 	<div class="origin"></div>

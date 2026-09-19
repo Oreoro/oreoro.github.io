@@ -1,4 +1,4 @@
-import { signals } from "@/data/signals";
+import { stream } from "@/data/stream";
 import { thoughts } from "@/data/thoughts";
 import { episodes } from "@/data/podcast";
 import { policies } from "@/data/policies";
@@ -16,7 +16,7 @@ export const GET = () => {
 		...policies.map((policy) => `/policies/${policy.slug}/`),
 		"/downloads/",
 		"/signup/",
-		...signals.map((signal) => `/${signal.num}/`),
+		...stream.map((entry) => `/${entry.num}/`),
 	];
 
 	const entries = paths
