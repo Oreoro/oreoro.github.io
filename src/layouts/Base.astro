@@ -14,10 +14,10 @@ const {
 	meta: {
 		title = siteInfo.title,
 		description = siteInfo.description,
-		ogImage,
 		articleDate,
 		author,
 		hasMarkdownAlternate,
+		jsonLd,
 	},
 } = Astro.props;
 ---
@@ -27,10 +27,10 @@ const {
 		<BaseHead
 			title={title}
 			description={description}
-			ogImage={ogImage}
 			articleDate={articleDate}
 			author={author}
 			hasMarkdownAlternate={hasMarkdownAlternate}
+			jsonLd={jsonLd}
 		/>
 	</head>
 	<body class="signals-shell">

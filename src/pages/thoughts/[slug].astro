@@ -16,7 +16,14 @@ const { thought } = Astro.props;
 	meta={{
 		title: thought.title,
 		description: thought.intro,
-		ogImage: "/og-image/home.png",
+		jsonLd: {
+			"@context": "https://schema.org",
+			"@type": "Article",
+			headline: thought.title,
+			description: thought.intro,
+			author: { "@type": "Organization", name: "Focus Lab" },
+			publisher: { "@type": "Organization", name: "Focus Lab" },
+		},
 	}}
 >
 	<div class="page">

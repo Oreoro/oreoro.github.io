@@ -19,7 +19,15 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 	meta={{
 		title: `${entry.num}. ${entry.label}`,
 		description: entry.label,
-		ogImage: "/og-image/home.png",
+		articleDate: entry.date,
+		jsonLd: {
+			"@context": "https://schema.org",
+			"@type": "Article",
+			headline: entry.label,
+			datePublished: entry.date,
+			author: { "@type": "Organization", name: "Focus Lab" },
+			publisher: { "@type": "Organization", name: "Focus Lab" },
+		},
 	}}
 >
 	<section class="signal signal--clone" data-signal={index}>
@@ -51,6 +59,9 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 								<dt>{item.num}.</dt>
 								<dd>{item.label}</dd>
 							</dl>
+							<time class="signal__date" datetime={item.date}>
+								{item.date}
+							</time>
 						</a>
 					</header>
 				</section>

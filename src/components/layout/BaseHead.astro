@@ -13,23 +13,36 @@ import {
 	GOOGLE_SEARCH_CONSOLE_META_TAG,
 	GISCUS,
 } from "@/constants";
-import { HOME_PAGE_SLUG } from "@/constants";
 import { getNavLink } from "@/lib/blog-helpers";
 
 type Props = SiteMeta;
 
-const { title, description, ogImage, articleDate, author, hasMarkdownAlternate } = Astro.props;
+const { title, description, articleDate, author, hasMarkdownAlternate, jsonLd } = Astro.props;
 
 const titleSeparator = "•";
 const siteTitle =
 	title && title !== siteInfo.title ? `${title} ${titleSeparator} ${siteInfo.title}` : siteInfo.title;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const markdownAlternateUrl = new URL("./index.html.md", Astro.url).href;
-const socialImageURL = new URL(
-	getNavLink(ogImage ? ogImage : `/og-image/${HOME_PAGE_SLUG}.png`),
-	Astro.url,
-).href;
 const faviconLink = getNavLink("/favicon.ico");
+
+const siteUrl = import.meta.env.SITE?.toString().replace(/\/$/, "") ?? canonicalURL.origin;
+const structuredData = [
+	{
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		name: siteInfo.title,
+		url: siteUrl,
+		description: siteInfo.description,
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		name: siteInfo.title,
+		url: siteUrl,
+	},
+	...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
+];
 const isBuildOrPreviewMode = import.meta.env.MODE === "production";
 // Use provided author or fallback to site author
 const metaAuthor = author || siteInfo.author;
@@ -171,15 +184,6 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:site_name" content={siteInfo.title} />
 <meta property="og:locale" content={siteInfo.ogLocale} />
-{
-	ogImage && (
-		<>
-			<meta property="og:image" content={socialImageURL} />
-			<meta property="og:image:width" content="1200" />
-			<meta property="og:image:height" content="630" />
-		</>
-	)
-}
 
 {
 	articleDate && (
@@ -190,17 +194,14 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 	)
 }
 
-{/* Twitter */}
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={canonicalURL} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
 {
 	GOOGLE_SEARCH_CONSOLE_META_TAG && (
 		<meta name="google-site-verification" content={GOOGLE_SEARCH_CONSOLE_META_TAG} />
 	)
 }
-{ogImage && <meta property="twitter:image" content={socialImageURL} />}
+
+{/* Structured data */}
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
 {/* Sitemap */}
 <link rel="sitemap" href="/sitemap.xml" />

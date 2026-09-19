@@ -17,7 +17,15 @@ const { episode } = Astro.props;
 	meta={{
 		title: episode.title,
 		description: episode.summary,
-		ogImage: "/og-image/home.png",
+		articleDate: episode.date,
+		jsonLd: {
+			"@context": "https://schema.org",
+			"@type": "PodcastEpisode",
+			name: episode.title,
+			datePublished: episode.date,
+			description: episode.summary,
+			partOfSeries: { "@type": "PodcastSeries", name: "The Focus Lab Podcast" },
+		},
 	}}
 >
 	<div class="page">
@@ -29,11 +37,7 @@ const { episode } = Astro.props;
 		<div class="thought">
 			<div class="thought__content content">
 				<p class="font-size-small">{episode.date}</p>
-				{
-					episode.body.map((paragraph) => (
-						<p>{paragraph}</p>
-					))
-				}
+				{episode.body.map((paragraph) => <p>{paragraph}</p>)}
 				<hr />
 				<p>
 					<a href={getNavLink("/podcast/")}>All episodes</a>

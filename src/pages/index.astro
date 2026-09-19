@@ -12,7 +12,6 @@ const previousHref = getNavLink(`/${stream[stream.length - 1]!.num}`);
 		title: "Focus Lab",
 		description:
 			"Focus Lab is a product-led studio. We design, build, and run our own software — and partner with a small number of teams to do the same.",
-		ogImage: "/og-image/home.png",
 	}}
 >
 	<div class="cluster cluster--index">
@@ -25,6 +24,9 @@ const previousHref = getNavLink(`/${stream[stream.length - 1]!.num}`);
 								<dt>{entry.num}.</dt>
 								<dd>{entry.label}</dd>
 							</dl>
+							<time class="signal__date" datetime={entry.date}>
+								{entry.date}
+							</time>
 						</a>
 					</header>
 				</section>

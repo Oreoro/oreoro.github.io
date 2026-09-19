@@ -17,7 +17,13 @@ const { product } = Astro.props;
 	meta={{
 		title: product.name,
 		description: product.summary,
-		ogImage: "/og-image/home.png",
+		jsonLd: {
+			"@context": "https://schema.org",
+			"@type": "Product",
+			name: product.name,
+			description: product.summary,
+			brand: { "@type": "Organization", name: "Focus Lab" },
+		},
 	}}
 >
 	<div class="page">
