@@ -1,0 +1,72 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+
+const groups = [
+	{
+		title: "Frontend",
+		note: "Fast by default, accessible always.",
+		items: ["Astro", "React", "TypeScript", "Tailwind CSS", "Framer"],
+	},
+	{
+		title: "Backend & data",
+		note: "Small, typed services.",
+		items: ["Node.js", "Hono", "PostgreSQL", "Cloudflare D1", "Durable Objects"],
+	},
+	{
+		title: "Infrastructure",
+		note: "Global, cheap, reproducible.",
+		items: ["Cloudflare Workers", "Cloudflare R2", "Cloudflare KV", "GitHub Actions"],
+	},
+	{
+		title: "Commerce & CMS",
+		note: "Content and checkout that convert.",
+		items: ["Shopify", "Stripe", "Framer", "Headless CMS"],
+	},
+	{
+		title: "AI",
+		note: "Models in production, not in demos.",
+		items: ["OpenAI", "Anthropic", "Cloudflare Workers AI", "MCP"],
+	},
+	{
+		title: "Design",
+		note: "Systems, not one-off screens.",
+		items: ["Figma", "Framer"],
+	},
+];
+---
+
+<PageLayout
+	meta={{
+		title: "Stack",
+		description:
+			"The tools Focus Lab builds with — Shopify, Cloudflare, Framer, Astro, TypeScript, and a small typed core around them.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>Stack</h6>
+			<h1>The tools we build with.</h1>
+			<p>
+				We pick boring, proven technology and push it hard. Shopify, Cloudflare, and Framer for the
+				edges — a small typed core for everything that matters.
+			</p>
+		</div>
+
+		<div class="page__content content">
+			{
+				groups.map((group) => (
+					<>
+						<h2>{group.title}</h2>
+						<p>{group.note}</p>
+						<ul class="list-spaced">
+							{group.items.map((item) => (
+								<li>{item}</li>
+							))}
+						</ul>
+					</>
+				))
+			}
+		</div>
+	</div>
+</PageLayout>

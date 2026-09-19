@@ -7,6 +7,7 @@ export const GET = () => {
 	const paths = [
 		"/",
 		"/books/",
+		"/stack/",
 		"/thoughts/",
 		...thoughts.map((thought) => `/thoughts/${thought.slug}/`),
 		"/jobs/",
