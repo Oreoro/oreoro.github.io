@@ -324,4 +324,128 @@ export const thoughts: Thought[] = [
 			},
 		],
 	},
+	{
+		slug: "owning-the-outcome",
+		title: "Owning the Outcome",
+		intro: "We do not sell effort. We own the result.",
+		sections: [
+			{
+				id: "the-result-is-the-product",
+				heading: "The result is the product",
+				body: [
+					"No one buys a backlog. They buy a working thing that solves a problem. That is what we hold ourselves to.",
+					"Owning the outcome means we cannot hide behind activity. If the thing does not work, the work is not done, no matter how many hours went in.",
+				],
+			},
+			{
+				id: "skin-in-the-game",
+				heading: "Skin in the game",
+				body: [
+					"We run our own products, so we carry the same weight a founder does. Support tickets, downtime, churn. We know what it costs when software fails.",
+					"That experience keeps us honest. We do not recommend anything we would not run ourselves.",
+				],
+			},
+			{
+				id: "the-buck-stops-here",
+				heading: "The buck stops here",
+				body: [
+					"When something breaks in production, we fix it. There is no vendor to blame and no ticket to escalate. We are the last line.",
+					"Ownership is not a slogan. It is who gets the call at the wrong hour.",
+				],
+			},
+		],
+	},
+	{
+		slug: "why-we-ship-early",
+		title: "Why We Ship Early",
+		intro: "The fastest way to learn is to put the work in front of real users.",
+		sections: [
+			{
+				id: "feedback-beats-speculation",
+				heading: "Feedback beats speculation",
+				body: [
+					"A debate about what users want is just guessing with confidence. A release turns that guess into evidence.",
+					"So we ship early and let the reaction tell us what to do next. The product answers questions a meeting cannot.",
+				],
+			},
+			{
+				id: "early-does-not-mean-sloppy",
+				heading: "Early does not mean sloppy",
+				body: [
+					"Shipping early is not an excuse to cut corners. The core has to be solid: data, security, the paths people use most.",
+					"We hold back the polish that depends on knowing what users actually do. We do not hold back the foundation.",
+				],
+			},
+			{
+				id: "momentum-is-a-feature",
+				heading: "Momentum is a feature",
+				body: [
+					"A team that sees its work live stays engaged. Shipping creates its own energy and attracts better decisions.",
+					"Waiting for perfect is the slowest way to get there. We would rather move, learn, and correct.",
+				],
+			},
+		],
+	},
+	{
+		slug: "the-second-year",
+		title: "The Second Year",
+		intro: "Launch is the easy part. The second year is the real test.",
+		sections: [
+			{
+				id: "what-the-first-year-hides",
+				heading: "What the first year hides",
+				body: [
+					"On launch day, the product is small and the team still remembers everything. The second year brings more data, more users, and a longer list of promises.",
+					"That is when shortcuts come due. The shortcuts you took at the start are the work you inherit now.",
+				],
+			},
+			{
+				id: "build-for-the-inheritor",
+				heading: "Build for the inheritor",
+				body: [
+					"The person who maintains this will not have the context you have today. We write and structure the code so they can move without fear.",
+					"Clear boundaries and plain names are not polish. They are the difference between a system that ages and one that rots.",
+				],
+			},
+			{
+				id: "the-compound-of-small-calls",
+				heading: "The compound of small calls",
+				body: [
+					"Products are won by a hundred small, unglamorous decisions: how data is shaped, how errors are handled, how a feature is named.",
+					"None of them matter on their own. Together they decide whether the second year is calm or a rewrite.",
+				],
+			},
+		],
+	},
+	{
+		slug: "small-studio-big-ambition",
+		title: "Small Studio, Big Ambition",
+		intro: "We stay small on purpose, and we aim far.",
+		sections: [
+			{
+				id: "small-is-a-choice",
+				heading: "Small is a choice",
+				body: [
+					"We could hire faster and take on more. We choose not to. A small studio keeps senior people close to the work and decisions close to the people affected.",
+					"Growth is not the goal. Good products, run well, are the goal.",
+				],
+			},
+			{
+				id: "ambition-without-noise",
+				heading: "Ambition without noise",
+				body: [
+					"We want our products to be used by many people and to last. That ambition does not require a big team or a loud one.",
+					"It requires picking hard problems, staying with them, and refusing to ship things we cannot stand behind.",
+				],
+			},
+			{
+				id: "the-long-view",
+				heading: "The long view",
+				body: [
+					"We are building a studio that is still here in ten years, still running its own software, still working with a few good partners.",
+					"Everything we do now is in service of that. Slow, steady, and deliberate beats fast and forgotten.",
+				],
+			},
+		],
+	},
 ];

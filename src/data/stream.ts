@@ -96,4 +96,46 @@ export const stream: StreamEntry[] = [
 		content:
 			"<p>We price the work, not the hours. You get a scope, a number, and a date before we start. If the scope changes, we say so before it becomes a surprise.</p>",
 	},
+	{
+		num: "13",
+		label: "Why we write things down",
+		date: "2026-06-27",
+		content:
+			"<p>Memory is unreliable, especially your own. Writing forces the vague thing into a sentence you can argue with.</p><p>We write decisions down so we can revisit them honestly instead of re-litigating what we think we meant.</p>",
+	},
+	{
+		num: "14",
+		label: "What done means to us",
+		date: "2026-06-20",
+		content:
+			"<p>Done is not a merged pull request. Done is in front of users, measured, and supported.</p><p>If nobody is using it, we aren't done — we're just finished typing.</p>",
+	},
+	{
+		num: "15",
+		label: "Choosing what not to build",
+		date: "2026-06-13",
+		content:
+			"<p>Every feature is a promise to maintain forever. That's the real cost, and it never shows up on the roadmap.</p><p>We say no early and often, so the few yeses get the attention they need.</p>",
+	},
+	{
+		num: "16",
+		label: "The first hundred users",
+		date: "2026-06-06",
+		content:
+			"<p>The first hundred users teach you more than the next ten thousand. They tell you what's broken and what you misunderstood.</p><p>We stay close to them on purpose, while the product is still soft enough to change.</p>",
+	},
+	{
+		num: "17",
+		label: "On saying no to features",
+		date: "2026-05-30",
+		content:
+			"<p>A feature request is usually a problem wearing a solution as a disguise. We look for the problem first.</p><p>Sometimes the answer is a small fix. Sometimes it's a no. Both are fine, as long as we say it plainly.</p>",
+	},
+	{
+		num: "18",
+		label: "The second year",
+		date: "2026-05-23",
+		content:
+			"<p>The first year is about getting something real into the world. The second year is about keeping it good once the novelty is gone.</p><p>That's the part most teams underestimate, and the part we design for from the start.</p>",
+	},
 ];

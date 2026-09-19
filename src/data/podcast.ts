@@ -127,4 +127,52 @@ export const episodes: Episode[] = [
 			"We keep pricing legible: few tiers, clear limits, no traps. If a customer cannot explain the bill to themselves, the model is too clever.",
 		],
 	},
+	{
+		slug: "owning-the-outcome",
+		title: "Owning the Outcome",
+		date: "2026-04-29",
+		summary:
+			"We take responsibility for results, not deliverables. This episode is about what changes when you own the outcome instead of the task.",
+		body: [
+			"When you own a deliverable, success is shipping it. When you own the outcome, success is what happens after. That shift changes every decision we make, from scope to pricing.",
+			"Owning the outcome means we stay after launch. We watch usage, measure what matters, and fix what does not work. The work is not done when the code ships.",
+			"It also means we say no. If a request will not move the outcome, we push back instead of quietly billing for it.",
+		],
+	},
+	{
+		slug: "shipping-early",
+		title: "Why We Ship Early",
+		date: "2026-04-15",
+		summary:
+			"Early shipping is not about speed for its own sake. It is how we learn what to build next. Here is how we do it without cutting corners.",
+		body: [
+			"A working version in front of real users beats a plan every time. We ship early because the feedback is worth more than the polish we would add in another month.",
+			"Shipping early is a discipline. We cut scope, not quality. The small version still has to be honest, reliable, and clear about what it does not do yet.",
+			"Each release is a question. We ship, watch, and decide the next slice from evidence instead of opinion.",
+		],
+	},
+	{
+		slug: "the-second-year",
+		title: "The Second Year",
+		date: "2026-04-01",
+		summary:
+			"The second year of a product is where most of the real work lives. We talk about maintenance, migration, and the decisions that only show up later.",
+		body: [
+			"The first year is about finding out if the product works. The second year is about living with it. Schema changes, data growth, and support all arrive at once.",
+			"We plan for the second year by keeping the stack boring and the data model honest. Migrations are easier when the foundation has not moved.",
+			"The second year also tests the team. Boring, steady work is what keeps a product alive long after the launch energy is gone.",
+		],
+	},
+	{
+		slug: "small-studio-big-ambition",
+		title: "Small Studio, Big Ambition",
+		date: "2026-03-18",
+		summary:
+			"We stay small on purpose. This episode explains how a small studio can build and run products with the ambition of a much larger team.",
+		body: [
+			"Small is not a limitation we tolerate. It is the advantage. Fewer people means fewer handoffs, faster decisions, and direct contact with the work.",
+			"We run three products and a handful of partnerships with a tight team. That is only possible because we keep scope small and tools simple.",
+			"Ambition and size are different things. We want to build software that lasts, and staying small is how we keep the attention that requires.",
+		],
+	},
 ];
