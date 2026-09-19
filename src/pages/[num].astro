@@ -32,6 +32,12 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 		<div class="signal__content">
 			<p class="font-size-small">{entry.date}</p>
 			<Fragment set:html={entry.content} />
+			<hr />
+			<p class="font-size-small">
+				<a href={getNavLink("/")}>All entries</a>
+				{" · "}
+				Next: <a href={getNavLink(`/${nextEntry.num}`)}>{nextEntry.label}</a>
+			</p>
 		</div>
 	</section>
 
