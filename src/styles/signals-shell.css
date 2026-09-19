@@ -987,8 +987,14 @@ html body.signals-shell .signal__header h2 span {
 
 html body.signals-shell .signal__header dl dd,
 html body.signals-shell .signal__header h2 strong {
-	transition: opacity var(--transition) !important;
-	width: calc(100% - 2.8ch);
+	flex: 1;
+	transition: opacity var(--transition);
+	width: auto;
+}
+
+html body.signals-shell .signal__label {
+	flex: 1;
+	font-weight: 700;
 }
 
 html body.signals-shell .signal__header a {

@@ -21,14 +21,13 @@ const previousHref = getNavLink(`/${stream[stream.length - 1]!.num}`);
 			stream.map((entry) => (
 				<section class="signal">
 					<header class="signal__header">
-						<a href={getNavLink(`/${entry.num}`)} aria-label={`${entry.num}. ${entry.label}`}>
-							<dl>
-								<dt>{entry.num}.</dt>
-								<dd>{entry.label}</dd>
-							</dl>
-							<time class="signal__date" datetime={entry.date}>
-								{entry.date}
-							</time>
+						<a
+							href={getNavLink(`/${entry.num}`)}
+							aria-label={entry.label}
+							target="_blank"
+							rel="noopener"
+						>
+							<span class="signal__label">{entry.label}</span>
 						</a>
 					</header>
 				</section>
@@ -49,4 +48,21 @@ const previousHref = getNavLink(`/${stream[stream.length - 1]!.num}`);
 	</div>
 
 	<div class="origin"></div>
+
+	<script is:inline>
+		(function () {
+			var cluster = document.querySelector(".cluster--index");
+			if (!cluster) return;
+			var items = Array.prototype.slice.call(cluster.children);
+			for (var i = items.length - 1; i > 0; i--) {
+				var j = Math.floor(Math.random() * (i + 1));
+				var swap = items[i];
+				items[i] = items[j];
+				items[j] = swap;
+			}
+			items.forEach(function (el) {
+				cluster.appendChild(el);
+			});
+		})();
+	</script>
 </PageLayout>

@@ -17,7 +17,7 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 
 <PageLayout
 	meta={{
-		title: `${entry.num}. ${entry.label}`,
+		title: entry.label,
 		description: entry.label,
 		articleDate: entry.date,
 		jsonLd: {
@@ -31,17 +31,15 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 		},
 	}}
 >
-	<h1 class="visually-hidden">{entry.num}. {entry.label}</h1>
+	<h1 class="visually-hidden">{entry.label}</h1>
 
 	<section class="signal signal--clone" data-signal={index}>
 		<header class="signal__header" tabindex="-1">
-			<h2 aria-label={`${entry.num}. ${entry.label}`}>
-				<span>{entry.num}.</span>
+			<h2 aria-label={entry.label}>
 				<strong>{entry.label}</strong>
 			</h2>
 		</header>
 		<div class="signal__content">
-			<p class="font-size-small">{entry.date}</p>
 			<Fragment set:html={entry.content} />
 			<hr />
 			<p class="font-size-small">
@@ -57,14 +55,13 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 			stream.map((item) => (
 				<section class="signal">
 					<header class="signal__header">
-						<a href={getNavLink(`/${item.num}`)} aria-label={`${item.num}. ${item.label}`}>
-							<dl>
-								<dt>{item.num}.</dt>
-								<dd>{item.label}</dd>
-							</dl>
-							<time class="signal__date" datetime={item.date}>
-								{item.date}
-							</time>
+						<a
+							href={getNavLink(`/${item.num}`)}
+							aria-label={item.label}
+							target="_blank"
+							rel="noopener"
+						>
+							<span class="signal__label">{item.label}</span>
 						</a>
 					</header>
 				</section>
