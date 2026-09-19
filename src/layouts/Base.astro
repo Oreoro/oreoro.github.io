@@ -5,8 +5,6 @@ import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
 import SkipLink from "@/components/ui/SkipLink.astro";
 import { siteInfo } from "@/siteInfo";
-import { BIBTEX_CITATIONS_ENABLED, CITATIONS, ENABLE_LIGHTBOX } from "@/constants";
-import { adjustedFootnotesConfig } from "@/lib/notion/client";
 interface Props {
 	meta: SiteMeta;
 }
@@ -41,20 +39,5 @@ const {
 		</main>
 		<Footer />
 		<script src="../scripts/signal.ts"></script>
-		<script src="../scripts/print.ts"></script>
-		{ENABLE_LIGHTBOX && <script src="../scripts/lightbox.ts" />}
-		<script src="../scripts/popover.ts"></script>
-		{
-			((adjustedFootnotesConfig &&
-				adjustedFootnotesConfig["in-page-footnotes-settings"]?.[
-					"show-in-margin-on-large-screens"
-				]) ||
-				(BIBTEX_CITATIONS_ENABLED &&
-					CITATIONS?.["extract-and-process-bibtex-citations"]?.[
-						"show-in-margin-on-large-screens"
-					])) && <script src="../scripts/margin-notes.ts" />
-		}
-		<script src="../scripts/datatables.ts"></script>
-		<script src="../scripts/post-interactions.ts"></script>
 	</body>
 </html>

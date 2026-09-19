@@ -4,7 +4,6 @@ import "@/styles/global.css";
 import "@/styles/minimal.css";
 import "@/styles/signals-shell.css";
 import "@/styles/notion-signals.css";
-import { Font } from "astro:assets";
 import { siteInfo } from "@/siteInfo";
 import {
 	ENABLE_LIGHTBOX,
@@ -103,49 +102,25 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 
-{/* Preconnect to external CDN resources for faster loading */}
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
-{/*Preconnect ti giscus for faster loading */}
+{/* Preconnect to giscus for faster loading */}
 {useGiscus && <link rel="preconnect" href="https://giscus.app" crossorigin />}
 
-{/* Grotesque display face */}
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+{/* Preload the shell font */}
 <link
-	rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+	rel="preload"
+	href="/assets/fonts/LabGrotesque-Regular.woff2"
+	as="font"
+	type="font/woff2"
+	crossorigin
+/>
+<link
+	rel="preload"
+	href="/assets/fonts/LabGrotesque-Bold.woff2"
+	as="font"
+	type="font/woff2"
+	crossorigin
 />
 
-{/* Grotesque display face for the signals shell */}
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-	rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&display=swap"
-/>
-
-{/* Astro Fonts - served locally from your domain */}
-{
-	THEME?.["fontfamily-google-fonts"] && (
-		<>
-			{(THEME["fontfamily-google-fonts"]["sans-font-name"] ||
-				THEME["fontfamily-google-fonts"]["mono-font-name"]) && (
-				<Font
-					cssVariable="--font-sans"
-					preload={[
-						{ weight: 400, style: "normal" },
-						{ weight: 600, style: "normal" },
-						{ weight: 700, style: "normal" },
-					]}
-				/>
-			)}
-			{THEME["fontfamily-google-fonts"]["mono-font-name"] && (
-				<Font cssVariable="--font-mono" preload={[{ weight: 400, style: "normal" }]} />
-			)}
-		</>
-	)
-}
 {
 	ENABLE_LIGHTBOX && (
 		<link
@@ -206,16 +181,6 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 {/* Sitemap */}
 <link rel="sitemap" href="/sitemap.xml" />
 
-{/* Katex */}
-<link
-	rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex-swap.min.css"
-	integrity="sha384-TmCphkQRJZ6h5e3VPBmWxyG5KVl/1N27oPYDX+Qsu0H8tPq7vHsJphjzvK9Gxwls"
-	crossorigin="anonymous"
-	media="print"
-	onload="this.media='all'"
-/>
-
 {/* RSS auto-discovery */}
 <link
 	rel="alternate"
@@ -226,7 +191,7 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 
 {/* Webmentions */}
 {
-	siteInfo.webmentions && Object.keys(siteInfo.webmentions).length > 0 && (
+	siteInfo.webmentions && siteInfo.webmentions.link && (
 		<>
 			<link rel="webmention" href={siteInfo.webmentions.link} />
 			{siteInfo.webmentions.pingback && (
@@ -235,12 +200,6 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 		</>
 	)
 }
-<script
-	is:inline
-	src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
-	crossorigin="anonymous"
-	async=""></script>
-
 {
 	publicGaTrackingId && (
 		<>

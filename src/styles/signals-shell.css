@@ -195,14 +195,6 @@ html:not(.is-signal) {
 	}
 }
 
-/* minimal.css disables all motion; restore the 37signals transitions. */
-html body.signals-shell *,
-html body.signals-shell *::before,
-html body.signals-shell *::after {
-	animation: none !important;
-	transition: none !important;
-}
-
 html body.signals-shell {
 	align-items: stretch;
 	background: var(--color-theme) !important;
