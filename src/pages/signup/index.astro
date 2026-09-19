@@ -12,12 +12,15 @@ import PageLayout from "@/layouts/Base.astro";
 	<div class="page">
 		<div class="page__headline">
 			<h1>Sign up</h1>
-			<p>Placeholder intro. Replace with your own copy.</p>
+			<p>Sign up to get occasional updates from 37signals. No spam, ever.</p>
 		</div>
 
 		<div class="page__body">
 			<div class="signup signup--mc content">
-				<p>Placeholder copy. Replace with your own.</p>
+				<p>
+					We'll send you the occasional update about what we're working on. We will never share your
+					email, or use it for any other purpose.
+				</p>
 				<form
 					novalidate
 					action="#"
@@ -37,7 +40,12 @@ import PageLayout from "@/layouts/Base.astro";
 						name="EMAIL"
 						id="mce-EMAIL"
 					/>
-					<button class="button button--theme" type="submit" name="subscribe" id="mc-embedded-subscribe">
+					<button
+						class="button button--theme"
+						type="submit"
+						name="subscribe"
+						id="mc-embedded-subscribe"
+					>
 						Subscribe
 					</button>
 				</form>

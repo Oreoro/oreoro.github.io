@@ -1,15 +1,87 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 
-const placeholder =
-	"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='260'%3E%3Crect width='420' height='260' fill='%23e7e5e2'/%3E%3C/svg%3E";
-
-// Placeholder assets — replace labels and links with your own.
 const assets = [
-	{ label: "Focus Lab Symbol", type: "SVG", href: "#" },
-	{ label: "Focus Lab Logo", type: "SVG", href: "#" },
-	{ label: "Focus Lab Wordmark", type: "SVG", href: "#" },
-	{ label: "Focus Lab Icon", type: "PNG", href: "#" },
+	{
+		label: "37signals Logo",
+		image: "/assets/downloads/37signals-logo.png",
+		href: "https://37signals.com/downloads/37signals-logo.zip",
+	},
+	{
+		label: "37signals Symbol",
+		image: "/assets/downloads/37signals-symbol.png",
+		href: "https://37signals.com/downloads/37signals-symbol.zip",
+	},
+	{
+		label: "Basecamp Logo",
+		image: "/assets/downloads/basecamp-logo.png",
+		href: "https://37signals.com/downloads/basecamp-logo.zip",
+	},
+	{
+		label: "Basecamp Symbol",
+		image: "/assets/downloads/basecamp-symbol.png",
+		href: "https://37signals.com/downloads/basecamp-symbol.zip",
+	},
+	{
+		label: "Campfire Logo",
+		image: "/assets/downloads/campfire-logo.png",
+		href: "https://37signals.com/downloads/campfire-logo.zip",
+	},
+	{
+		label: "HEY Logo",
+		image: "/assets/downloads/hey-logo.png",
+		href: "https://37signals.com/downloads/hey-logo.zip",
+	},
+	{
+		label: "HEY Symbol",
+		image: "/assets/downloads/hey-symbol.png",
+		href: "https://37signals.com/downloads/hey-symbol.zip",
+	},
+	{
+		label: "HEY Icon",
+		image: "/assets/downloads/hey-icon.png",
+		href: "https://37signals.com/downloads/hey-icon.zip",
+	},
+	{
+		label: "HEY Calendar Icon",
+		image: "/assets/downloads/hey-calendar-icon.png",
+		href: "https://37signals.com/downloads/hey-calendar-icon.zip",
+	},
+	{
+		label: "Omarchy Logo",
+		image: "/assets/downloads/omarchy-logo.png",
+		href: "https://37signals.com/downloads/omarchy-logo.zip",
+	},
+	{
+		label: "Omarchy Symbol",
+		image: "/assets/downloads/omarchy-symbol.png",
+		href: "https://37signals.com/downloads/omarchy-symbol.zip",
+	},
+	{
+		label: "ONCE Logo",
+		image: "/assets/downloads/once-logo.png",
+		href: "https://37signals.com/downloads/once-logo.zip",
+	},
+	{
+		label: "Rails Logo",
+		image: "/assets/downloads/rails-logo.png",
+		href: "https://37signals.com/downloads/rails-logo.zip",
+	},
+	{
+		label: "Rails Symbol",
+		image: "/assets/downloads/rails-symbol.png",
+		href: "https://37signals.com/downloads/rails-symbol.zip",
+	},
+	{
+		label: "Rails Badge",
+		image: "/assets/downloads/rails-badge.png",
+		href: "https://37signals.com/downloads/rails-badge.zip",
+	},
+	{
+		label: "Writebook Logo",
+		image: "/assets/downloads/writebook-logo.png",
+		href: "https://37signals.com/downloads/writebook-logo.zip",
+	},
 ];
 ---
 
@@ -22,7 +94,7 @@ const assets = [
 >
 	<div class="page">
 		<div class="page__headline">
-			<h1>Downloads</h1>
+			<h1>Brand Downloads</h1>
 		</div>
 
 		<div class="downloads">
@@ -32,11 +104,8 @@ const assets = [
 						assets.map((asset) => (
 							<a download href={asset.href}>
 								<figure>
-									<img src={placeholder} alt={asset.label} />
-									<figcaption>
-										{asset.label}
-										<span>{asset.type}</span>
-									</figcaption>
+									<img src={asset.image} alt={asset.label} />
+									<figcaption>{asset.label}</figcaption>
 								</figure>
 							</a>
 						))

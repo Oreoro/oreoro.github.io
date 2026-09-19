@@ -51,10 +51,9 @@ export type Capability = {
 export type StackGroup = { title: string; note: string; items: { name: string; note: string }[] };
 
 export const site = {
-	name: "Focus Lab",
-	tagline: "A product company.",
-	description:
-		"A product company in Islamabad. We build and run our own software — AI, SaaS, mobile, ecommerce — and we build it for a few others, too.",
+	name: "37signals",
+	tagline: "A catalog of ideas.",
+	description: "A catalog of ideas — signals — that drive us.",
 	email: "bilal@focuslab.pk",
 	phone: "+92 333 5507394",
 	location: "Gulberg, Islamabad",
@@ -65,19 +64,34 @@ export const capabilities: Capability[] = [
 		id: "ai-product-engineering",
 		title: "AI product engineering",
 		body: "Models are easy now. Products aren't. We ship AI that survives real users — evals, latency budgets, guardrails, and an interface people trust.",
-		points: ["Evaluation harnesses", "Latency and cost budgets", "Guardrails and fallbacks", "Human-in-the-loop UX"],
+		points: [
+			"Evaluation harnesses",
+			"Latency and cost budgets",
+			"Guardrails and fallbacks",
+			"Human-in-the-loop UX",
+		],
 	},
 	{
 		id: "saas-platform-engineering",
 		title: "SaaS platform engineering",
 		body: "Multi-tenant, billed, permissioned, observable. The unglamorous parts decide whether a product survives year two. We do those properly.",
-		points: ["Multi-tenancy", "Billing and metering", "Permissions and audit logs", "Dashboards that answer questions"],
+		points: [
+			"Multi-tenancy",
+			"Billing and metering",
+			"Permissions and audit logs",
+			"Dashboards that answer questions",
+		],
 	},
 	{
 		id: "mobile-app-development",
 		title: "Mobile app development",
 		body: "One codebase, native feel. Offline, push, deep links, and store submission — finished when it's in someone's hand, not in a demo.",
-		points: ["iOS and Android", "Offline-first sync", "Push and deep links", "Store release pipelines"],
+		points: [
+			"iOS and Android",
+			"Offline-first sync",
+			"Push and deep links",
+			"Store release pipelines",
+		],
 	},
 	{
 		id: "web-app-development",
@@ -89,7 +103,12 @@ export const capabilities: Capability[] = [
 		id: "ecommerce-engineering",
 		title: "Ecommerce engineering",
 		body: "Faster storefronts convert better, and most of the win is removing weight — not adding features. Like warp-n-woof.com.",
-		points: ["Shopify theme engineering", "Checkout and subscriptions", "Core Web Vitals", "Conversion analytics"],
+		points: [
+			"Shopify theme engineering",
+			"Checkout and subscriptions",
+			"Core Web Vitals",
+			"Conversion analytics",
+		],
 	},
 	{
 		id: "framer-cms-sites",
@@ -240,7 +259,11 @@ export const products: Product[] = [
 					"A multi-tenant core that keeps each organizer's data separate.",
 				],
 			},
-			{ type: "callout", emoji: "🎟️", text: "A multi-tenant events platform built to run, not to demo." },
+			{
+				type: "callout",
+				emoji: "🎟️",
+				text: "A multi-tenant events platform built to run, not to demo.",
+			},
 			{
 				type: "quote",
 				text: "The hard part of ticketing isn't the checkout. It's everything after it.",
@@ -279,7 +302,8 @@ export const products: Product[] = [
 		slug: "framer-websites",
 		name: "Framer Websites",
 		tagline: "High-craft marketing sites",
-		summary: "High-craft marketing sites designed and shipped in Framer, with a real component system.",
+		summary:
+			"High-craft marketing sites designed and shipped in Framer, with a real component system.",
 		tags: ["Framer", "Design"],
 		accent: "rgb(244, 103, 199)",
 		story: [
@@ -371,8 +395,7 @@ export const articles: Article[] = [
 		slug: "shopify-engineering-for-conversion",
 		title: "Shopify Engineering for Conversion",
 		date: "2026-08-12",
-		summary:
-			"Store builds like warp-n-woof.com: speed, UX, and the details that move revenue.",
+		summary: "Store builds like warp-n-woof.com: speed, UX, and the details that move revenue.",
 		tags: ["Shopify", "Ecommerce"],
 		body: [
 			{

@@ -1,11 +1,10 @@
 /**
- * Focus Lab signals — the numbered catalog that drives the home page and the
+ * 37signals signals — the numbered catalog that drives the home page and the
  * signal detail pages, mirroring 37signals.com's `.cluster--index` /
  * `.cluster--signal` structure.
  *
  * The 38 labels below are 37signals' signal titles (short navigational
- * phrases). The `content` bodies are placeholder copy written in the same
- * terse voice — replace them with your own (or the real) text.
+ * phrases), with bodies written in the same terse voice.
  */
 
 export interface Signal {
