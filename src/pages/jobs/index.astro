@@ -1,6 +1,5 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { getNavLink } from "@/lib/blog-helpers";
 ---
 
 <PageLayout
@@ -25,41 +24,17 @@ import { getNavLink } from "@/lib/blog-helpers";
 				</div>
 			</div>
 
-			<div class="signup signup--mc signup--jobs content">
-				<h5>Get notified</h5>
+			<div class="signup signup--jobs content">
+				<h2>Get notified</h2>
 				<p>
-					When we do hire, we post it here. Sign up below, or
-					<a href={getNavLink("/feed/jobs.xml")}>grab the jobs feed</a>. We will never share your
-					email, or use it for any other purpose.
+					When we do hire, we post it here. We will never share your email, or use it for any other
+					purpose.
 				</p>
-				<form
-					novalidate
-					action="#"
-					method="post"
-					id="mc-embedded-subscribe-form"
-					name="mc-embedded-subscribe-form"
-					target="_self"
-				>
-					<div aria-hidden="true" style="position: absolute; left: -5000px;">
-						<input type="text" name="b_honeypot" tabindex="-1" value="" />
-					</div>
-					<input
-						type="email"
-						placeholder="you@example.com"
-						spellcheck="false"
-						value=""
-						name="EMAIL"
-						id="mce-EMAIL"
-					/>
-					<button
-						class="button button--theme"
-						type="submit"
-						name="subscribe"
-						id="mc-embedded-subscribe"
-					>
-						Subscribe
-					</button>
-				</form>
+				<p>
+					<a class="button button--theme" href="mailto:bilal@focuslab.pk?subject=Focus%20Lab%20jobs">
+						Email us to be notified <span>&rarr;</span>
+					</a>
+				</p>
 			</div>
 
 			<div class="jobs__content content content--jobs">

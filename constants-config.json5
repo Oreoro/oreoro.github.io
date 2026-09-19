@@ -373,9 +373,11 @@
 	// Format: "/old-path": "/new-path"
 	// Example: "/my-old-post.html": "/posts/my-new-post-slug/"
 	redirects: {
-		// Focus Lab is a product company; "services" now lives at /capabilities/.
-		"/services": "/capabilities/",
-		// The blog index lives at /blog/.
-		"/posts": "/blog/",
+		"/services": "/studio/",
+		"/capabilities": "/studio/",
+		"/work": "/studio/",
+		"/posts": "/",
+		"/blog": "/",
+		"/downloads": "/",
 	},
 }

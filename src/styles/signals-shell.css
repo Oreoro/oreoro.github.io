@@ -117,7 +117,7 @@
 
 	--rgb-theme: var(--rgb-black);
 	/* Focus Lab palette — one rich colour per page load. */
-	--rgb-theme-1: 199, 74, 58;
+	--rgb-theme-1: 186, 64, 48;
 	--rgb-theme-2: 176, 52, 84;
 	--rgb-theme-3: 150, 70, 140;
 	--rgb-theme-4: 96, 82, 200;
@@ -125,7 +125,7 @@
 	--rgb-theme-6: 32, 128, 120;
 	--rgb-theme-7: 56, 128, 76;
 	--rgb-theme-8: 110, 120, 40;
-	--rgb-theme-9: 155, 105, 18;
+	--rgb-theme-9: 140, 94, 14;
 	--rgb-theme-10: 180, 90, 28;
 	--rgb-theme-11: 132, 86, 58;
 	--rgb-theme-12: 88, 92, 104;
@@ -207,7 +207,7 @@ html body.signals-shell {
 	align-items: stretch;
 	background: var(--color-theme) !important;
 	background-image: none !important;
-	color: rgba(var(--rgb-white), 0.85) !important;
+	color: rgba(var(--rgb-white), 0.95) !important;
 	display: flex;
 	flex-direction: column;
 	font-family: var(--font-family) !important;
@@ -652,7 +652,18 @@ html body.signals-shell .header ul li:first-child {
 /* ---------- nav.css ---------- */
 
 html body.signals-shell .nav-active {
-	display: none;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+html body.signals-shell .nav-active:focus-visible ~ .nav .nav__toggle label {
+	outline: 2px solid var(--color-white);
+	outline-offset: 2px;
 }
 
 html body.signals-shell .nav-active:checked ~ .nav-underlay {
@@ -827,7 +838,7 @@ html body.signals-shell .footer__name {
 }
 
 html body.signals-shell .footer__note {
-	opacity: 0.7;
+	opacity: 0.85;
 }
 
 html body.signals-shell .footer ul {
@@ -915,7 +926,7 @@ html body.signals-shell .cluster--signal .signal {
 }
 
 html body.signals-shell .cluster--signal .signal .signal__header a {
-	color: rgba(var(--rgb-white), 0.4375);
+	color: rgba(var(--rgb-white), 0.7);
 }
 
 html body.signals-shell .cluster--signal .signal .signal__header a dl dd {
@@ -943,7 +954,7 @@ html body.signals-shell .cluster--loaded {
 
 	html body.signals-shell .cluster--index:hover header a:not(:hover),
 	html body.signals-shell .cluster--index:focus-within header a:not(:focus) {
-		color: rgba(var(--rgb-white), 0.4375);
+		color: rgba(var(--rgb-white), 0.7);
 	}
 
 	html body.signals-shell .cluster--signal .signal {
@@ -1003,7 +1014,7 @@ html body.signals-shell .signal__header dl {
 }
 
 html body.signals-shell .signal__date {
-	color: rgba(var(--rgb-white), 0.45);
+	color: rgba(var(--rgb-white), 0.85);
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	white-space: nowrap;
@@ -1804,7 +1815,7 @@ html body.signals-shell pre {
 }
 
 html body.signals-shell .caption {
-	color: rgba(var(--rgb-white), 0.6);
+	color: rgba(var(--rgb-white), 0.8);
 }
 
 /* Blog post reading column */
