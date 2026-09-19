@@ -1847,3 +1847,21 @@ html body.signals-shell .visually-hidden {
 	white-space: nowrap;
 	width: 1px;
 }
+
+/* Center the editorial column so pages read well at any width. */
+@media (min-width: 64em) {
+	html body.signals-shell .page {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 56rem;
+		width: 100%;
+	}
+
+	html body.signals-shell .page__headline,
+	html body.signals-shell .page__anchors,
+	html body.signals-shell .page__body {
+		margin-left: 0;
+		margin-right: 0;
+		max-width: 100%;
+	}
+}

@@ -31,23 +31,123 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 		},
 	}}
 >
-	<div class="page" data-theme-index={index % 12}>
-		<div class="page__headline">
-			<h1>{entry.label}</h1>
-		</div>
+	<div class="entry" data-theme-index={index % 12}>
+		<article class="entry__article">
+			<h1 class="entry__title">{entry.label}</h1>
 
-		<div class="page__content content">
-			<Fragment set:html={entry.content} />
+			<div class="entry__body">
+				<Fragment set:html={entry.content} />
+			</div>
 
-			<hr />
-
-			<p class="font-size-small">
-				<a href={getNavLink("/")}>All entries</a>
-				{" · "}
-				Previous: <a href={getNavLink(`/${previousEntry.num}`)}>{previousEntry.label}</a>
-				{" · "}
-				Next: <a href={getNavLink(`/${nextEntry.num}`)}>{nextEntry.label}</a>
+			<p class="entry__studio">
+				Focus Lab is a product-led studio — we design, build, and run our own software.
+				<a href={getNavLink("/studio/")}>More about us &rarr;</a>
 			</p>
-		</div>
+
+			<nav class="entry__nav" aria-label="Entry navigation">
+				<a class="entry__back" href={getNavLink("/")}>&larr; All entries</a>
+				<a class="entry__next" href={getNavLink(`/${nextEntry.num}`)}>
+					Next: {nextEntry.label} &rarr;
+				</a>
+			</nav>
+		</article>
 	</div>
 </PageLayout>
+
+<style>
+	.entry {
+		align-items: center;
+		box-sizing: border-box;
+		display: flex;
+		justify-content: center;
+		min-height: 100vh;
+		padding: 9rem 1.5rem 7rem;
+		width: 100%;
+	}
+
+	.entry__article {
+		max-width: 44rem;
+		width: 100%;
+	}
+
+	.entry__title {
+		color: var(--color-white);
+		font-size: clamp(2rem, 4.5vw, 3.25rem);
+		font-weight: 700;
+		letter-spacing: -0.025em;
+		line-height: 1.08;
+		margin: 0 0 1.6rem;
+	}
+
+	.entry__body {
+		color: rgba(var(--rgb-white), 0.95);
+		font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+		line-height: 1.75;
+	}
+
+	.entry__body :global(p) {
+		margin: 0 0 1.3em;
+	}
+
+	.entry__body :global(p:last-child) {
+		margin-bottom: 0;
+	}
+
+	.entry__body :global(a) {
+		color: var(--color-white);
+		text-decoration: underline;
+		text-underline-offset: 0.15em;
+	}
+
+	.entry__body :global(strong) {
+		font-weight: 700;
+	}
+
+	.entry__nav {
+		align-items: baseline;
+		border-top: 1px solid rgba(var(--rgb-white), 0.25);
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 1.5rem;
+		justify-content: space-between;
+		margin-top: 4rem;
+		padding-top: 1.5rem;
+	}
+
+	.entry__studio {
+		color: rgba(var(--rgb-white), 0.7);
+		font-size: 0.95rem;
+		line-height: 1.6;
+		margin: 3rem 0 0;
+	}
+
+	.entry__studio a {
+		color: rgba(var(--rgb-white), 0.9);
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.entry__studio a:hover,
+	.entry__studio a:focus-visible {
+		color: var(--color-white);
+		text-decoration: underline;
+	}
+
+	.entry__nav a {
+		color: rgba(var(--rgb-white), 0.85);
+		font-size: 0.95rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.entry__nav a:hover,
+	.entry__nav a:focus-visible {
+		color: var(--color-white);
+		text-decoration: underline;
+	}
+
+	.entry__next {
+		margin-left: auto;
+		text-align: right;
+	}
+</style>
