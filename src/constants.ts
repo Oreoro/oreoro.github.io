@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import JSON5 from "json5";
-import type { ExternalContentType } from "./lib/interfaces";
 
 const configContent = fs.readFileSync("./constants-config.json5", "utf8");
 const config = JSON5.parse(configContent);
@@ -57,8 +56,8 @@ function parseGitHubTreeUrl(rawUrl: string | null | undefined): GitHubTreeInfo |
 			return null;
 		}
 
-		const owner = segments[0];
-		const repo = segments[1];
+		const owner = segments[0] ?? "";
+		const repo = segments[1] ?? "";
 		const ref = segments[keywordIndex + 1] || "main";
 		const pathSegments = segments.slice(keywordIndex + 2);
 

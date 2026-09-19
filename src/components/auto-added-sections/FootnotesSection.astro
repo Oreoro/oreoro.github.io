@@ -26,6 +26,11 @@ uniqueFootnotes.sort((a, b) => {
 const isStartOfChildBlocks =
 	adjustedFootnotesConfig?.["in-page-footnotes-settings"]?.source?.["start-of-child-blocks"] ===
 	true;
+
+const getFootnoteLabel = (footnote: Footnote): string => {
+	const alphabet = footnote.Index !== undefined ? numberToAlphabet(footnote.Index) : "";
+	return alphabet || footnote.Marker;
+};
 ---
 
 {
@@ -42,17 +47,22 @@ const isStartOfChildBlocks =
 							<NBlocksPopover
 								block={footnote.SourceBlock}
 								linkedTo={`#${footnote.SourceBlockId}`}
-								popoverSpanText={`[${numberToAlphabet(footnote.Index) || footnote.Marker}]`}
+								popoverSpanText={`[${getFootnoteLabel(footnote)}]`}
 								linkText="Jump to"
 								isInterlinkedBack={true}
 							/>
 						) : (
 							<span class="text-accent-2/60 shrink-0 font-mono text-sm">
-								[{numberToAlphabet(footnote.Index) || footnote.Marker}]
+								[{getFootnoteLabel(footnote)}]
 							</span>
 						)}
 						<div class="flex-1">
-							<FootnoteContent content={footnote.Content} sourceBlockId={footnote.SourceBlockId} />
+							<FootnoteContent
+								content={footnote.Content}
+								{...(footnote.SourceBlockId !== undefined
+									? { sourceBlockId: footnote.SourceBlockId }
+									: {})}
+							/>
 						</div>
 					</li>
 				))}

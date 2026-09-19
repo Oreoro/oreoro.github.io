@@ -30,7 +30,8 @@ interface Props {
 }
 const { tweet, components, quoted } = Astro.props;
 const length = tweet.mediaDetails?.length ?? 0;
-const Img = components?.MediaImg ?? MediaImg;
+const Img = components?.MediaImg?.default ?? MediaImg;
+const mediaLoadingAttr = { loading: getFirstImage() ? "eager" : "lazy" };
 ---
 
 <div class={`${styles.root}${!quoted ? ` ${styles.rounded}` : ""}`}>
@@ -51,9 +52,9 @@ const Img = components?.MediaImg ?? MediaImg;
 							<Img
 								src={getMediaUrl(media, "small")}
 								alt={media.ext_alt_text || "Image"}
-								class={styles.image}
+								{...(styles.image ? { class: styles.image } : {})}
 								draggable
-								loading={getFirstImage() ? "eager" : "lazy"}
+								{...mediaLoadingAttr}
 							/>
 						</a>
 					) : (

@@ -1,3 +1,5 @@
+declare const GLightbox: (options: { selector: string }) => { reload: () => void };
+
 window.addEventListener("load", function () {
 	// Load GLightbox script
 	const script = document.createElement("script");

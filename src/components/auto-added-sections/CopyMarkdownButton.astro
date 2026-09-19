@@ -57,7 +57,7 @@ const buttonClass = `${buttonClassName}`;
 <script>
 	(() => {
 		const init = () => {
-			document.querySelectorAll("[data-copy-md-root]").forEach((root) => {
+			document.querySelectorAll<HTMLElement>("[data-copy-md-root]").forEach((root) => {
 				const el = root;
 				if (el.dataset.initialized) return;
 				el.dataset.initialized = "true";

@@ -47,7 +47,10 @@ const blocksHtmlCacher = (): AstroIntegration => {
 									path.join(distDir, "work", slug, "index.html"),
 								]
 							: [path.join(distDir, slug, "index.html")];
-						filePath = candidates.find((candidate) => existsSync(candidate)) ?? candidates[0];
+						filePath =
+							candidates.find((candidate) => existsSync(candidate)) ??
+							candidates[0] ??
+							path.join(distDir, slug, "index.html");
 					}
 
 					const blocksCacheFilePath = path.join(tmpBlocksCacheDir, `${slug}.html`);
@@ -55,8 +58,9 @@ const blocksHtmlCacher = (): AstroIntegration => {
 						tmpInterlinkedContentCacheDir,
 						`${slug}-static.html`,
 					);
-					const postLastUpdatedBeforeLastBuild = LAST_BUILD_TIME
-						? entry.LastUpdatedTimeStamp < LAST_BUILD_TIME
+					const lastBuildTime = LAST_BUILD_TIME;
+					const postLastUpdatedBeforeLastBuild = lastBuildTime
+						? entry.LastUpdatedTimeStamp < lastBuildTime
 						: false;
 
 					// Check linked pages' timestamps
@@ -76,13 +80,13 @@ const blocksHtmlCacher = (): AstroIntegration => {
 						});
 					}
 					const linkedPageIds = Array.from(linkedPageIdsSet);
-					const linkedPostsUpdated =
-						!LAST_BUILD_TIME ||
-						(linkedPageIds.length > 0 &&
+					const linkedPostsUpdated = !lastBuildTime
+						? true
+						: linkedPageIds.length > 0 &&
 							linkedPageIds.some((pageId) => {
 								const linkedPost = allPostsMap[pageId];
-								return linkedPost && linkedPost.LastUpdatedTimeStamp > LAST_BUILD_TIME;
-							}));
+								return linkedPost && linkedPost.LastUpdatedTimeStamp > lastBuildTime;
+							});
 					const shouldUseCache = postLastUpdatedBeforeLastBuild && !linkedPostsUpdated;
 
 					// Skip caching if shouldUseCache would be false

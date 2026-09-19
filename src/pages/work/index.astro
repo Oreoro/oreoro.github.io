@@ -6,7 +6,7 @@ import "@/styles/work.css";
 
 const nextHref = products[0] ? getNavLink(`/work/${products[0].slug}/`) : getNavLink("/");
 const previousHref = products.length
-	? getNavLink(`/work/${products[products.length - 1].slug}/`)
+	? getNavLink(`/work/${products[products.length - 1]!.slug}/`)
 	: getNavLink("/");
 ---
 
@@ -30,40 +30,42 @@ const previousHref = products.length
 
 		<div class="page__content">
 			<div class="work-grid">
-				{products.map((product, index) => (
-					<a
-						class="work-card"
-						href={getNavLink(`/work/${product.slug}/`)}
-						style={`--work-index:${index}`}
-					>
-						<div class="work-card__media">
-							{product.image ? (
-								<img
-									src={product.image}
-									alt={`${product.name} preview`}
-									loading="lazy"
-									decoding="async"
-								/>
-							) : (
-								<span class="work-card__placeholder">
-									{product.name
-										.split(/\s+/)
-										.slice(0, 2)
-										.map((word) => word.charAt(0))
-										.join("")}
-								</span>
-							)}
-						</div>
-						<div class="work-card__body">
-							<div class="work-card__meta">
-								<span>{String(index + 1).padStart(2, "0")}</span>
-								<span>{product.tags.slice(0, 2).join(" · ")}</span>
+				{
+					products.map((product, index) => (
+						<a
+							class="work-card"
+							href={getNavLink(`/work/${product.slug}/`)}
+							style={`--work-index:${index}`}
+						>
+							<div class="work-card__media">
+								{product.image ? (
+									<img
+										src={product.image}
+										alt={`${product.name} preview`}
+										loading="lazy"
+										decoding="async"
+									/>
+								) : (
+									<span class="work-card__placeholder">
+										{product.name
+											.split(/\s+/)
+											.slice(0, 2)
+											.map((word) => word.charAt(0))
+											.join("")}
+									</span>
+								)}
 							</div>
-							<h2 class="work-card__title">{product.name}</h2>
-							<p class="work-card__desc">{product.tagline}</p>
-						</div>
-					</a>
-				))}
+							<div class="work-card__body">
+								<div class="work-card__meta">
+									<span>{String(index + 1).padStart(2, "0")}</span>
+									<span>{product.tags.slice(0, 2).join(" · ")}</span>
+								</div>
+								<h2 class="work-card__title">{product.name}</h2>
+								<p class="work-card__desc">{product.tagline}</p>
+							</div>
+						</a>
+					))
+				}
 			</div>
 
 			<div class="cta-panel" style="margin-top: calc(var(--line-height) * 2)">

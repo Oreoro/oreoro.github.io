@@ -2,6 +2,7 @@
 import * as interfaces from "@/lib/interfaces.ts";
 import { getCurrentHeadings } from "@/lib/blog-helpers.ts";
 import { getNotionColorToTailwindColor } from "@/utils/style-helpers";
+import type { Heading } from "@/types";
 
 export interface Props {
 	block: interfaces.Block;
@@ -15,7 +16,7 @@ let current_headings = getCurrentHeadings();
 {
 	current_headings && (
 		<div class="table-of-contents no-rss" id={setId ? block.Id : undefined}>
-			{current_headings.map((heading) => {
+			{current_headings.map((heading: Heading) => {
 				let indentClass = "";
 				if (heading.depth === 2) {
 					indentClass = "pl-6";
@@ -25,6 +26,8 @@ let current_headings = getCurrentHeadings();
 					indentClass = "pl-[4.5rem]";
 				}
 
+				const tocColor = block.TableOfContents?.Color ?? "";
+
 				return (
 					<a
 						href={`#${heading.slug}`}
@@ -32,11 +35,9 @@ let current_headings = getCurrentHeadings();
 							"table-of-contents block leading-7 hover:font-bold",
 							indentClass,
 							{
-								[`${getNotionColorToTailwindColor(block.TableOfContents.Color)} rounded-sm px-1`]:
-									block.TableOfContents.Color &&
-									!["default", "default_background", "default-background"].includes(
-										block.TableOfContents.Color,
-									),
+								[`${getNotionColorToTailwindColor(tocColor)} rounded-sm px-1`]:
+									tocColor &&
+									!["default", "default_background", "default-background"].includes(tocColor),
 							},
 						]}
 						aria-label={`Jump to section: ${heading.text}`}

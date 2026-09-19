@@ -10,23 +10,24 @@ interface Props {
 	allInterlinkedContentToPage: { entryId: string; block: Block }[];
 }
 const { post, allInterlinkedContentToPage } = Astro.props;
-const groupedInterlinkedContent = allInterlinkedContentToPage
-	? allInterlinkedContentToPage.reduce((acc, { entryId, block }) => {
+const groupedInterlinkedContent: { [key: string]: Block[] } | null = allInterlinkedContentToPage
+	? allInterlinkedContentToPage.reduce<{ [key: string]: Block[] }>((acc, { entryId, block }) => {
 			acc[entryId] = acc[entryId] || [];
 			acc[entryId].push(block);
 			return acc;
 		}, {})
 	: null;
 
-const entryIdLinksEntry = {};
-const blockIdLinks = {};
+const entryIdLinksEntry: Record<string, [string, Post]> = {};
+const blockIdLinks: Record<string, string> = {};
 
 if (groupedInterlinkedContent) {
 	for (const entryId of Object.keys(groupedInterlinkedContent)) {
-		entryIdLinksEntry[entryId] = await getInterlinkedContentLink(post.PageId, entryId);
-		for (const block of groupedInterlinkedContent[entryId]) {
+		const res_entry = await getInterlinkedContentLink(post.PageId, entryId);
+		entryIdLinksEntry[entryId] = [res_entry[0] ?? "", res_entry[1]!];
+		for (const block of groupedInterlinkedContent[entryId] ?? []) {
 			const result = await getInterlinkedContentLink(post.PageId, entryId, block);
-			blockIdLinks[block.Id] = result[0];
+			blockIdLinks[block.Id] = result[0] ?? "";
 		}
 	}
 }
@@ -40,17 +41,17 @@ if (groupedInterlinkedContent) {
 				{Object.entries(groupedInterlinkedContent).map(([entryId, blocks]) => (
 					<div class="ml-2">
 						<div class="inline-block">
-							<a href={entryIdLinksEntry[entryId][0]} class="site-page-link text-link">
-								{entryIdLinksEntry[entryId][1].Title}
+							<a href={entryIdLinksEntry[entryId]![0]} class="site-page-link text-link">
+								{entryIdLinksEntry[entryId]![1].Title}
 							</a>
 							{" at "}
 
 							{blocks.map((block, index) => (
 								<NBlocksPopover
 									block={block}
-									linkedTo={blockIdLinks[block.Id]}
+									linkedTo={blockIdLinks[block.Id]!}
 									popoverSpanText={`[${getSymbolForLinkedContent(index)}]`}
-									popoverTitle={entryIdLinksEntry[entryId][1].Title}
+									popoverTitle={entryIdLinksEntry[entryId]![1].Title}
 									isInterlinkedBack={true}
 								/>
 							))}

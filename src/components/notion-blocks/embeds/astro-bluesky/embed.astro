@@ -48,11 +48,12 @@ const { embed, postUrl, compact } = Astro.props;
 							<VideoThumbnail thumbnail={embed.thumbnail} aspectRatio={embed.aspectRatio} />
 						</a>
 					);
-				} else if (AppBskyGraphDefs.isStarterPackViewBasic(embed.record)) {
-					return <StarterPack record={embed.record} />;
-				} else if (AppBskyGraphDefs.isListView(embed.record)) {
-					return <List record={embed.record} />;
 				} else if (AppBskyEmbedRecord.isView(embed)) {
+					if (AppBskyGraphDefs.isStarterPackViewBasic(embed.record)) {
+						return <StarterPack record={embed.record} />;
+					} else if (AppBskyGraphDefs.isListView(embed.record)) {
+						return <List record={embed.record} />;
+					}
 					return <QuoteEmbed embed={embed} />;
 				} else {
 					return embed?.$type || null;

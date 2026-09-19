@@ -51,7 +51,10 @@ export const getNotionColorToTailwindColor = (s: string, isTag: boolean = false)
 	};
 
 	// Return the Tailwind color classes, defaulting to the input if no mapping is found
-	return colorMap[kebabCase];
+	if (kebabCase in colorMap) {
+		return colorMap[kebabCase as keyof typeof colorMap];
+	}
+	return undefined;
 };
 
 export const getNotionAnnotationBackgroundVars = (s: string) => {
@@ -97,7 +100,10 @@ export const getNotionAnnotationBackgroundVars = (s: string) => {
 		},
 	};
 
-	return annotationBgMap[kebabCase] ?? null;
+	if (kebabCase in annotationBgMap) {
+		return annotationBgMap[kebabCase as keyof typeof annotationBgMap];
+	}
+	return null;
 };
 
 export const getIconTailwindFilterStyle = (url: string): string => {
@@ -197,7 +203,7 @@ export const getTextToAstroIcon = (text: string) => {
 		author: "mdi:account-circle-outline",
 	};
 	if (text in textIconMap) {
-		return textIconMap[text];
+		return textIconMap[text as keyof typeof textIconMap];
 	}
 	return "";
 };
@@ -300,7 +306,7 @@ export const getTextToSVGPath = (text: string) => {
 			"M12 21v-7q0-.825.588-1.412T14 12h6q.825 0 1.413.588T22 14v7h-2v-7h-2v5h-2v-5h-2v7zm-7 0q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h4.175q.275-.875 1.075-1.437T12 1q1 0 1.788.563T14.85 3H19q.825 0 1.413.588T21 5v5h-2V5h-2v3H7V5H5v14h5v2zm7-16q.425 0 .713-.288T13 4t-.288-.712T12 3t-.712.288T11 4t.288.713T12 5",
 	};
 	if (text in textSvgMap) {
-		return textSvgMap[text];
+		return textSvgMap[text as keyof typeof textSvgMap];
 	}
 	return "";
 };

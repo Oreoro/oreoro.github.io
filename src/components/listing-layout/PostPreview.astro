@@ -8,7 +8,7 @@ interface Props {
 	as?: HTMLTag;
 }
 
-const { post, as: Tag = "div" } = Astro.props;
+const { post, as: Tag = "div" } = Astro.props as Props;
 const postLink = resolvePostHref(post);
 const external = isExternalPost(post);
 ---

@@ -14,8 +14,8 @@ export function getStaticPaths() {
 const { product } = Astro.props;
 
 const index = products.findIndex((item) => item.slug === product.slug);
-const nextProduct = products[(index + 1) % products.length];
-const previousProduct = products[(index - 1 + products.length) % products.length];
+const nextProduct = products[(index + 1) % products.length]!;
+const previousProduct = products[(index - 1 + products.length) % products.length]!;
 const nextHref = getNavLink(`/work/${nextProduct.slug}/`);
 const previousHref = getNavLink(`/work/${previousProduct.slug}/`);
 ---
@@ -33,11 +33,13 @@ const previousHref = getNavLink(`/work/${previousProduct.slug}/`);
 			<h1>{product.name}</h1>
 			<p>{product.summary}</p>
 			<div style="display:flex;flex-wrap:wrap;gap:0.5em;margin-top:0.6em">
-				{product.link && (
-					<a class="button" href={product.link} target="_blank" rel="noopener">
-						Visit site <span>&rarr;</span>
-					</a>
-				)}
+				{
+					product.link && (
+						<a class="button" href={product.link} target="_blank" rel="noopener">
+							Visit site <span>&rarr;</span>
+						</a>
+					)
+				}
 				<a class="button button--theme" href={getNavLink("/contact/")}>
 					Start a project <span>&rarr;</span>
 				</a>
@@ -45,11 +47,13 @@ const previousHref = getNavLink(`/work/${previousProduct.slug}/`);
 		</div>
 
 		<div class="page__content content">
-			{product.image && (
-				<figure class="product-hero">
-					<img src={product.image} alt={`${product.name} screenshot`} loading="eager" />
-				</figure>
-			)}
+			{
+				product.image && (
+					<figure class="product-hero">
+						<img src={product.image} alt={`${product.name} screenshot`} loading="eager" />
+					</figure>
+				)
+			}
 			<Blocks blocks={product.story} />
 		</div>
 	</div>

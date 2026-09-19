@@ -1,3 +1,19 @@
+interface FloatingUIDOM {
+	computePosition: (
+		reference: Element,
+		floating: HTMLElement,
+		options?: { middleware?: unknown[] },
+	) => Promise<{ x: number; y: number }>;
+	offset: (value: number) => unknown;
+	shift: (options?: { padding?: number }) => unknown;
+	flip: (options?: { padding?: number }) => unknown;
+	autoUpdate: (reference: Element, floating: HTMLElement, update: () => void) => () => void;
+}
+
+interface Window {
+	FloatingUIDOM: FloatingUIDOM;
+}
+
 window.addEventListener("load", function () {
 	// Load floating-ui core first, then dom
 	const coreScript = document.createElement("script");
@@ -35,11 +51,11 @@ function initPopovers() {
 		return "[data-popover-target]";
 	}
 
-	let openPopovers = [];
-	let cleanupAutoUpdate = new Map();
-	let hoverTimeouts = new Map();
+	let openPopovers: HTMLElement[] = [];
+	let cleanupAutoUpdate = new Map<HTMLElement, () => void>();
+	let hoverTimeouts = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
 
-	const getPopoverLevel = (el) => {
+	const getPopoverLevel = (el: Element | null) => {
 		let level = 0;
 		while (el && el.closest("[data-popover-target]")) {
 			level++;
@@ -56,7 +72,7 @@ function initPopovers() {
 		});
 	};
 
-	const hidePopover = (popoverEl) => {
+	const hidePopover = (popoverEl: HTMLElement) => {
 		if (popoverEl) {
 			popoverEl.style.visibility = "hidden";
 			popoverEl.classList.add("hidden");
@@ -74,7 +90,7 @@ function initPopovers() {
 		}
 	};
 
-	const addLeaveListeners = (triggerEl, popoverEl) => {
+	const addLeaveListeners = (triggerEl: HTMLElement, popoverEl: HTMLElement) => {
 		triggerEl.addEventListener("mouseleave", () => {
 			const timeoutId = setTimeout(() => {
 				hidePopover(popoverEl);
@@ -98,27 +114,30 @@ function initPopovers() {
 		});
 	};
 
-	const createPopover = (triggerEl) => {
+	const createPopover = (triggerEl: HTMLElement) => {
 		const popoverID = triggerEl.dataset.popoverTarget;
 		const template = document.getElementById(`template-${popoverID}`);
-		if (!template) return null;
-		const popoverEl = template.content.firstElementChild.cloneNode(true);
+		if (!(template instanceof HTMLTemplateElement)) return null;
+		const firstChild = template.content.firstElementChild;
+		if (!(firstChild instanceof HTMLElement)) return null;
+		const popoverEl = firstChild.cloneNode(true) as HTMLElement;
 
 		// Remove data-margin-note from footnotes inside popovers so they use popover behavior instead
 		popoverEl.querySelectorAll("[data-margin-note]").forEach((footnote) => {
 			footnote.removeAttribute("data-margin-note");
 		});
 
-		triggerEl.parentNode.insertBefore(popoverEl, triggerEl.nextSibling);
+		triggerEl.parentNode?.insertBefore(popoverEl, triggerEl.nextSibling);
 		addLeaveListeners(triggerEl, popoverEl);
 		return popoverEl;
 	};
 
-	const showPopover = (triggerEl) => {
+	const showPopover = (triggerEl: HTMLElement) => {
 		const level = getPopoverLevel(triggerEl);
 		hideAllPopovers(level);
 
-		let popoverEl = document.getElementById(triggerEl.dataset.popoverTarget);
+		const popoverID = triggerEl.dataset.popoverTarget ?? "";
+		let popoverEl = document.getElementById(popoverID);
 
 		if (!popoverEl) {
 			popoverEl = createPopover(triggerEl);
@@ -148,12 +167,15 @@ function initPopovers() {
 		cleanupAutoUpdate.set(popoverEl, autoUpdate(triggerEl, popoverEl, update));
 	};
 
-	const handleHover = (event) => {
+	const handleHover = (event: Event) => {
 		if (smBreakpointQuery.matches) return; // No hover on small screens
 
+		const target = event.target;
+		if (!(target instanceof Element)) return;
+
 		const selector = getPopoverSelector();
-		const triggerEl = event.target.closest(selector);
-		if (triggerEl) {
+		const triggerEl = target.closest(selector);
+		if (triggerEl instanceof HTMLElement) {
 			showPopover(triggerEl);
 		}
 	};
@@ -162,10 +184,13 @@ function initPopovers() {
 	document.addEventListener("focusin", handleHover);
 
 	document.addEventListener("click", (event) => {
-		const selector = getPopoverSelector();
-		const triggerEl = event.target.closest(selector);
+		const target = event.target;
+		if (!(target instanceof Element)) return;
 
-		if (triggerEl) {
+		const selector = getPopoverSelector();
+		const triggerEl = target.closest(selector);
+
+		if (triggerEl instanceof HTMLElement) {
 			const href = triggerEl.dataset.href;
 
 			if (href && !smBreakpointQuery.matches) {
@@ -180,7 +205,7 @@ function initPopovers() {
 			}
 		}
 
-		const popoverLink = event.target.closest("[data-popover-link]");
+		const popoverLink = target.closest("[data-popover-link]");
 		if (popoverLink) {
 			hideAllPopovers(-1);
 		} else if (!triggerEl) {

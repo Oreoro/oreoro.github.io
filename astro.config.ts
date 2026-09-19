@@ -17,16 +17,17 @@ const getSite = function () {
 	if (process.env.VERCEL && process.env.VERCEL_URL) {
 		return new URL(BASE_PATH, `https://${process.env.VERCEL_URL}`).toString();
 	}
-	if (process.env.CF_PAGES) {
+	const cfPagesUrl = process.env.CF_PAGES_URL;
+	if (process.env.CF_PAGES && cfPagesUrl) {
 		if (process.env.CF_PAGES_BRANCH !== "main") {
-			return new URL(BASE_PATH, process.env.CF_PAGES_URL).toString();
+			return new URL(BASE_PATH, cfPagesUrl).toString();
 		}
-		const cfUrl = new URL(process.env.CF_PAGES_URL);
+		const cfUrl = new URL(cfPagesUrl);
 		if (cfUrl.host.endsWith(".pages.dev")) {
 			const strippedHost = cfUrl.host.split(".").slice(1).join(".");
 			return new URL(BASE_PATH, `https://${strippedHost}`).toString();
 		}
-		return new URL(BASE_PATH, process.env.CF_PAGES_URL).toString();
+		return new URL(BASE_PATH, cfPagesUrl).toString();
 	}
 	if (process.env.GITHUB_PAGES) {
 		return new URL(process.env.BASE || BASE_PATH, process.env.SITE).toString();
@@ -98,9 +99,9 @@ export default defineConfig({
 		}
 
 		const fonts = [];
-		const weights = [400, 500, 600, 700];
-		const styles = ["normal", "italic"];
-		const formats = ["woff2"] as const;
+		const weights: [number, number, number, number] = [400, 500, 600, 700];
+		const styles: ["normal", "italic"] = ["normal", "italic"];
+		const formats: ["woff2"] = ["woff2"];
 		const buildGoogleFont = ({
 			name,
 			cssVariable,

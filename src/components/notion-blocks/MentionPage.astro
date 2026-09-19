@@ -8,7 +8,6 @@ import {
 	getImageComponentFormat,
 	isExternalPost,
 } from "@/lib/blog-helpers.ts";
-import { MENU_PAGES_COLLECTION } from "@/constants";
 import { getIconTailwindFilterStyle } from "@/utils/style-helpers";
 import Icon from "@/components/ui/Icon.astro";
 import { isNotionHostedIconUrl } from "@/lib/notion/client";
@@ -19,7 +18,7 @@ export interface Props {
 
 const { pageId } = Astro.props;
 
-let post: Post = null;
+let post: Post | null = null;
 if (pageId) {
 	post = await getPostByPageId(pageId);
 }
@@ -30,7 +29,7 @@ const external = isExternalPost(post);
 let downloadedIcon = null;
 let externalIconPath = null;
 
-if (!external && post?.Icon && post.Icon.Url) {
+if (!external && post?.Icon && "Url" in post.Icon) {
 	const iconUrl = post.Icon.Url;
 	const isNotionIcon = isNotionHostedIconUrl(iconUrl);
 	const canBeCachedLocally =
@@ -69,7 +68,7 @@ if (!external && post?.Icon && post.Icon.Url) {
 					</span>
 				) : (
 					<span class="mr-1 inline">
-						{post.Icon && post.Icon.Type === "emoji" ? (
+						{post.Icon && post.Icon.Type === "emoji" && "Emoji" in post.Icon ? (
 							post.Icon.Emoji
 						) : post.Icon &&
 						  (post.Icon.Type === "external" ||
@@ -79,7 +78,7 @@ if (!external && post?.Icon && post.Icon.Url) {
 							downloadedIcon ? (
 								<Image
 									src={downloadedIcon}
-									class={`no-rss inline h-4 w-4 shrink-0 align-sub ${getIconTailwindFilterStyle(post.Icon.Url)}`}
+									class={`no-rss inline h-4 w-4 shrink-0 align-sub ${getIconTailwindFilterStyle("Url" in post.Icon ? post.Icon.Url : "")}`}
 									widths={[100]}
 									sizes="40px"
 									alt=""
@@ -88,7 +87,7 @@ if (!external && post?.Icon && post.Icon.Url) {
 							) : (
 								<img
 									src={externalIconPath}
-									class={`no-rss inline h-4 w-4 shrink-0 align-sub ${getIconTailwindFilterStyle(post.Icon.Url)}`}
+									class={`no-rss inline h-4 w-4 shrink-0 align-sub ${getIconTailwindFilterStyle("Url" in post.Icon ? post.Icon.Url : "")}`}
 									alt=""
 								/>
 							)

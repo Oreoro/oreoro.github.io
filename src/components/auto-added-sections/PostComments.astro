@@ -700,8 +700,8 @@ BLUESKY_COMM && Object.keys(BLUESKY_COMM).length > 0 &&
   </section>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const tabs = document.querySelectorAll(".tab");
-      const tabPanes = document.querySelectorAll(".tab-pane");
+      const tabs = document.querySelectorAll<HTMLButtonElement>(".tab");
+      const tabPanes = document.querySelectorAll<HTMLElement>(".tab-pane");
 
       tabs.forEach((tab) => {
         tab.addEventListener("click", () => {
@@ -720,7 +720,7 @@ BLUESKY_COMM && Object.keys(BLUESKY_COMM).length > 0 &&
 
       // Activate the first tab by default
       if (tabs.length > 0) {
-        tabs[0].click();
+        tabs[0]?.click();
       }
     });
   </script>

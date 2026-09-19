@@ -33,24 +33,31 @@ export function joinPlainText(richTexts: RichText[]): string {
 export function cloneRichText(richText: RichText): RichText {
 	return {
 		...richText,
-		Text: richText.Text
-			? { ...richText.Text, Link: richText.Text.Link ? { ...richText.Text.Link } : undefined }
-			: undefined,
-		Annotation: { ...richText.Annotation },
-		Equation: richText.Equation ? { ...richText.Equation } : undefined,
-		Mention: richText.Mention
+		...(richText.Text
 			? {
-					...richText.Mention,
-					Page: richText.Mention.Page ? { ...richText.Mention.Page } : undefined,
-					LinkMention: richText.Mention.LinkMention
-						? { ...richText.Mention.LinkMention }
-						: undefined,
-					CustomEmoji: richText.Mention.CustomEmoji
-						? { ...richText.Mention.CustomEmoji }
-						: undefined,
+					Text: {
+						...richText.Text,
+						...(richText.Text.Link ? { Link: { ...richText.Text.Link } } : {}),
+					},
 				}
-			: undefined,
-		InternalHref: richText.InternalHref ? { ...richText.InternalHref } : undefined,
+			: {}),
+		Annotation: { ...richText.Annotation },
+		...(richText.Equation ? { Equation: { ...richText.Equation } } : {}),
+		...(richText.Mention
+			? {
+					Mention: {
+						...richText.Mention,
+						...(richText.Mention.Page ? { Page: { ...richText.Mention.Page } } : {}),
+						LinkMention: richText.Mention.LinkMention
+							? { ...richText.Mention.LinkMention }
+							: undefined,
+						CustomEmoji: richText.Mention.CustomEmoji
+							? { ...richText.Mention.CustomEmoji }
+							: undefined,
+					},
+				}
+			: {}),
+		...(richText.InternalHref ? { InternalHref: { ...richText.InternalHref } } : {}),
 	};
 }
 
@@ -162,12 +169,16 @@ export function extractRichTextRange(
 	// Trim whitespace from first/last elements
 	if (result.length) {
 		const first = result[0];
-		first.PlainText = first.PlainText.trimStart();
-		first.Text &&= { ...first.Text, Content: first.Text.Content.trimStart() };
+		if (first) {
+			first.PlainText = first.PlainText.trimStart();
+			first.Text &&= { ...first.Text, Content: first.Text.Content.trimStart() };
+		}
 
 		const last = result[result.length - 1];
-		last.PlainText = last.PlainText.trimEnd();
-		last.Text &&= { ...last.Text, Content: last.Text.Content.trimEnd() };
+		if (last) {
+			last.PlainText = last.PlainText.trimEnd();
+			last.Text &&= { ...last.Text, Content: last.Text.Content.trimEnd() };
+		}
 	}
 
 	return result;
@@ -294,7 +305,7 @@ export function getAllRichTextLocations(block: Block): RichTextLocation[] {
 			addLocation(
 				`Table.Rows[${rowIndex}].Cells[${cellIndex}]`,
 				cell.RichTexts,
-				(rt) => (block.Table!.Rows![rowIndex].Cells[cellIndex].RichTexts = rt),
+				(rt) => (cell.RichTexts = rt),
 			);
 		});
 	});

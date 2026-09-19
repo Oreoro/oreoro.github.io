@@ -15,7 +15,6 @@ import type {
 import type { ExternalContentDescriptor, Post } from "@/lib/interfaces";
 import type {
 	Content,
-	DefinitionContent,
 	FootnoteDefinition,
 	Heading,
 	Image,
@@ -28,9 +27,8 @@ import type {
 	TableRow,
 	TableCell as MdTableCell,
 	HTML,
-	MdxJsxFlowElement,
-	MdxJsxTextElement,
 } from "mdast";
+import type { MdxJsxFlowElement, MdxJsxTextElement } from "mdast-util-mdx-jsx";
 import { toString } from "mdast-util-to-string";
 import { isRelativePath, toPublicUrl } from "./external-content-utils";
 import { SHORTCODES, BASE_PATH, CUSTOM_DOMAIN } from "@/constants";
@@ -54,16 +52,16 @@ function createAnnotation(state?: AnnotationState): Annotation {
 function createRichText(
 	text: string,
 	state?: AnnotationState,
-	options?: { href?: string },
+	options?: { href?: string | undefined },
 ): RichText {
 	const trimmed = text.replace(/\r/g, "");
 	return {
 		PlainText: trimmed,
 		Text: {
 			Content: trimmed,
-			Link: options?.href ? { Url: options.href } : undefined,
+			...(options?.href ? { Link: { Url: options.href } } : {}),
 		},
-		Href: options?.href,
+		...(options?.href ? { Href: options.href } : {}),
 		Annotation: createAnnotation(state),
 	};
 }
@@ -72,7 +70,7 @@ type ConvertInlineOptions = {
 	footnotes: Footnote[];
 	blockId: string;
 	addBlock?: (block: Block) => void;
-	prefix?: string;
+	prefix?: string | undefined;
 };
 
 type BuilderOptions = {
@@ -108,7 +106,7 @@ export class MarkdownBlockBuilder {
 	private allowMdx: boolean;
 
 	constructor(
-		private markdown: string,
+		markdown: string,
 		private options: BuilderOptions,
 	) {
 		this.allowMdx = !!options.allowMdx;
@@ -131,7 +129,8 @@ export class MarkdownBlockBuilder {
 		const tree = processor.parse(source) as Root;
 		const filteredChildren: Content[] = [];
 		for (const node of tree.children) {
-			if (node.type === "yaml" || node.type === "toml") continue;
+			const nodeType: string = node.type;
+			if (nodeType === "yaml" || nodeType === "toml") continue;
 			if (node.type === "html" && typeof (node as any).value === "string") {
 				const raw = (node as any).value.trim();
 				if (raw.startsWith("<!--") && raw.endsWith("-->")) continue;
@@ -318,12 +317,15 @@ export class MarkdownBlockBuilder {
 			const firstText = current[0]?.PlainText?.trim() || "";
 			const calloutMatch = firstText.match(/^\[\!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/i);
 			if (calloutMatch) {
-				const key = calloutMatch[1].toUpperCase();
-				const preset = CALLOUT_PRESETS[key];
+				const calloutKey = calloutMatch[1];
+				const preset = calloutKey ? CALLOUT_PRESETS[calloutKey.toUpperCase()] : undefined;
 				if (preset) {
-					current[0].PlainText = current[0].PlainText.replace(calloutMatch[0], "").trimStart();
-					if (current[0].Text) {
-						current[0].Text.Content = current[0].PlainText;
+					const first = current[0];
+					if (first) {
+						first.PlainText = first.PlainText.replace(calloutMatch[0], "").trimStart();
+						if (first.Text) {
+							first.Text.Content = first.PlainText;
+						}
 					}
 					const callout: Block = {
 						Id: this.nextBlockId(prefix),
@@ -334,7 +336,6 @@ export class MarkdownBlockBuilder {
 							RichTexts: current,
 							Color: preset.color,
 							Icon: preset.icon,
-							Children: undefined,
 						},
 					};
 					if (footnotes.length) callout.Footnotes = footnotes;
@@ -380,10 +381,12 @@ export class MarkdownBlockBuilder {
 
 	private buildHeadingBlock(node: Heading): Block | null {
 		if (node.depth < 1 || node.depth > 4) {
-			return this.buildParagraphBlocks({
-				type: "paragraph",
-				children: node.children,
-			} as Paragraph)[0];
+			return (
+				this.buildParagraphBlocks({
+					type: "paragraph",
+					children: node.children,
+				} as Paragraph)[0] ?? null
+			);
 		}
 
 		const blockId = this.nextBlockId();
@@ -422,7 +425,7 @@ export class MarkdownBlockBuilder {
 		return blocks;
 	}
 
-	private buildListItemBlock(item: ListItem, ordered: boolean | null): Block[] {
+	private buildListItemBlock(item: ListItem, ordered: boolean | null | undefined): Block[] {
 		const paragraphChild = item.children.find((child) => child.type === "paragraph") as
 			| Paragraph
 			| undefined;
@@ -477,7 +480,11 @@ export class MarkdownBlockBuilder {
 		return blocks;
 	}
 
-	private buildCodeBlock(node: Content & { type: "code"; lang?: string; value: string }): Block {
+	private buildCodeBlock(node: {
+		type: "code";
+		lang?: string | null | undefined;
+		value: string;
+	}): Block {
 		const blockId = this.nextBlockId();
 		return {
 			Id: blockId,
@@ -584,7 +591,7 @@ export class MarkdownBlockBuilder {
 	}
 
 	private buildMediaBlock(
-		node: DefinitionContent & { url?: string; alt?: string },
+		node: { url?: string; alt?: string },
 		kind: "video" | "audio",
 		prefix?: string,
 	): Block | null {
@@ -622,6 +629,7 @@ export class MarkdownBlockBuilder {
 		if (!paragraphs.length) return [];
 
 		const firstParagraph = paragraphs[0];
+		if (!firstParagraph) return [];
 		const blockId = this.nextBlockId();
 		const footnotes: Footnote[] = [];
 		const blocksInQuote: Block[] = [];
@@ -661,15 +669,15 @@ export class MarkdownBlockBuilder {
 		const firstText = currentRichTexts[0]?.PlainText?.trim() || "";
 		const calloutMatch = firstText.match(/^\[\!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/i);
 		if (calloutMatch) {
-			const key = calloutMatch[1].toUpperCase();
-			const preset = CALLOUT_PRESETS[key];
+			const calloutKey = calloutMatch[1];
+			const preset = calloutKey ? CALLOUT_PRESETS[calloutKey.toUpperCase()] : undefined;
 			if (preset) {
-				currentRichTexts[0].PlainText = currentRichTexts[0].PlainText.replace(
-					calloutMatch[0],
-					"",
-				).trimStart();
-				if (currentRichTexts[0].Text) {
-					currentRichTexts[0].Text.Content = currentRichTexts[0].PlainText;
+				const first = currentRichTexts[0];
+				if (first) {
+					first.PlainText = first.PlainText.replace(calloutMatch[0], "").trimStart();
+					if (first.Text) {
+						first.Text.Content = first.PlainText;
+					}
 				}
 				const callout: Block = {
 					Id: blockId,
@@ -680,10 +688,9 @@ export class MarkdownBlockBuilder {
 						RichTexts: currentRichTexts,
 						Color: preset.color,
 						Icon: preset.icon,
-						Children:
-							blocksInQuote.length + childBlocks.length > 0
-								? [...blocksInQuote, ...childBlocks]
-								: undefined,
+						...(blocksInQuote.length + childBlocks.length > 0
+							? { Children: [...blocksInQuote, ...childBlocks] }
+							: {}),
 					},
 				};
 				if (footnotes.length) callout.Footnotes = footnotes;
@@ -699,10 +706,9 @@ export class MarkdownBlockBuilder {
 			Quote: {
 				RichTexts: currentRichTexts.length ? currentRichTexts : [createRichText("")],
 				Color: "default",
-				Children:
-					blocksInQuote.length + childBlocks.length > 0
-						? [...blocksInQuote, ...childBlocks]
-						: undefined,
+				...(blocksInQuote.length + childBlocks.length > 0
+					? { Children: [...blocksInQuote, ...childBlocks] }
+					: {}),
 			},
 		};
 

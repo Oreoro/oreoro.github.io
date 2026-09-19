@@ -62,10 +62,9 @@ const altText =
 const isFirstImage = getFirstImage() && setId;
 
 // Generate a mobile-friendly width (~1200px) plus the original; avoid upscaling smaller files.
-const mobileWidth = downloadedImage && downloadedImage.width > 1200 ? 1200 : downloadedImage?.width;
 const imageWidths =
 	downloadedImage && downloadedImage.width > 1200
-		? [mobileWidth, downloadedImage.width]
+		? [1200, downloadedImage.width]
 		: downloadedImage
 			? [downloadedImage.width]
 			: undefined;
@@ -75,6 +74,11 @@ const imageSizes =
 		: downloadedImage
 			? `${downloadedImage.width}px`
 			: undefined;
+const imageLoadingProp = isFirstImage ? {} : { loading: "lazy" as const };
+const imageDecodingProp = isFirstImage ? {} : { decoding: "async" as const };
+const imageQualityProp = OPTIMIZE_IMAGES ? { quality: 85 } : {};
+const imageWidthsProp = imageWidths ? { widths: imageWidths } : {};
+const imageSizesProp = imageSizes ? { sizes: imageSizes } : {};
 ---
 
 {
@@ -94,11 +98,11 @@ const imageSizes =
 								src={downloadedImage}
 								alt={altText}
 								priority={isFirstImage}
-								loading={isFirstImage ? undefined : "lazy"}
-								decoding={isFirstImage ? undefined : "async"}
-								quality={OPTIMIZE_IMAGES ? 85 : undefined}
-								widths={imageWidths}
-								sizes={imageSizes}
+								{...imageLoadingProp}
+								{...imageDecodingProp}
+								{...imageQualityProp}
+								{...imageWidthsProp}
+								{...imageSizesProp}
 								class="imagemedia notion-image"
 								format={
 									OPTIMIZE_IMAGES
@@ -124,11 +128,11 @@ const imageSizes =
 						src={downloadedImage}
 						alt={altText}
 						priority={isFirstImage}
-						loading={isFirstImage ? undefined : "lazy"}
-						decoding={isFirstImage ? undefined : "async"}
-						quality={OPTIMIZE_IMAGES ? 85 : undefined}
-						widths={imageWidths}
-						sizes={imageSizes}
+						{...imageLoadingProp}
+						{...imageDecodingProp}
+						{...imageQualityProp}
+						{...imageWidthsProp}
+						{...imageSizesProp}
 						class="imagemedia notion-image"
 						format={
 							OPTIMIZE_IMAGES ? getImageComponentFormat(downloadedImage) : downloadedImage.format
@@ -147,7 +151,7 @@ const imageSizes =
 					/>
 				)}
 			</div>
-			<Caption richTexts={block.NImage.Caption} block={block} as="figcaption" />
+			<Caption richTexts={block.NImage?.Caption ?? []} block={block} as="figcaption" />
 		</figure>
 	)
 }

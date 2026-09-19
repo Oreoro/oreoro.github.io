@@ -18,8 +18,8 @@ const sorted = [...articles].sort(
 	(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
 );
 const index = sorted.findIndex((item) => item.slug === article.slug);
-const nextArticle = sorted[(index + 1) % sorted.length];
-const previousArticle = sorted[(index - 1 + sorted.length) % sorted.length];
+const nextArticle = sorted[(index + 1) % sorted.length]!;
+const previousArticle = sorted[(index - 1 + sorted.length) % sorted.length]!;
 const nextHref = getNavLink(`/blog/${nextArticle.slug}/`);
 const previousHref = getNavLink(`/blog/${previousArticle.slug}/`);
 ---

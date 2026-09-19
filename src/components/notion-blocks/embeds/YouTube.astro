@@ -67,7 +67,7 @@ let { embedParams, thumbnailRes = "standard", title, videoId, ...attrs } = Astro
 let params: EmbedParams = { ...{ autoplay: 1, modestbranding: 1 }, ...embedParams };
 
 let thumbnailUrl = `https://img.youtube.com/vi/${videoId}/${QUALITY_PREFIXES[thumbnailRes]}default.jpg`;
-let embedQuery = Object.keys(params)
+let embedQuery = (Object.keys(params) as Array<keyof EmbedParams>)
 	.map((key) => `${key}=${params[key]}`)
 	.join("&");
 let embedUrl = `https://www.youtube.com/embed${videoId ? `/${videoId}` : ""}${embedQuery ? `?${embedQuery}` : ""}`;

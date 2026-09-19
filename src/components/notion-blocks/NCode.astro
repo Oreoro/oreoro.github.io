@@ -2,7 +2,7 @@
 import * as interfaces from "@/lib/interfaces";
 import Caption from "@/components/notion-blocks/Caption.astro";
 import { SHORTCODES, TRANSFORMER_FUNCTIONS_ARR } from "@/constants";
-import { highlightCodeToHtml } from "@/utils/shiki-highlighter";
+import { highlightCodeToHtml, type HighlightCodeOptions } from "@/utils/shiki-highlighter";
 import Icon from "@/components/ui/Icon.astro";
 import { joinPlainText } from "@/utils/richtext-utils";
 
@@ -108,7 +108,7 @@ function processCode(code: string, language: string): string {
 
 		if (match) {
 			const command = match[2];
-			const remainingContent = match[3].trim();
+			const remainingContent = (match[3] ?? "").trim();
 
 			if (command === "--" || command === "warning" || command === "error") {
 				return "";
@@ -128,13 +128,14 @@ function processCode(code: string, language: string): string {
 }
 
 // Usage
-let code = block.Code.RichTexts.map((richText: interfaces.RichText) => richText.Text.Content).join(
-	"",
-);
+const codeBlock = block.Code ?? { Caption: [], RichTexts: [], Language: "plaintext" };
+let code = codeBlock.RichTexts.map(
+	(richText: interfaces.RichText) => richText.Text?.Content ?? "",
+).join("");
 const language =
-	block.Code.Language.toLowerCase() === "plain text"
+	codeBlock.Language.toLowerCase() === "plain text"
 		? "plaintext"
-		: block.Code.Language.toLowerCase();
+		: codeBlock.Language.toLowerCase();
 
 const shiki_transform_code = SHORTCODES["shiki-transform"]
 	? code.startsWith(SHORTCODES["shiki-transform"])
@@ -195,10 +196,12 @@ const highlightedCodeHtml = shouldHighlight
 			code,
 			lang: language,
 			defaultColor: "light",
-			transformers: TRANSFORMER_FUNCTIONS_ARR,
+			transformers: TRANSFORMER_FUNCTIONS_ARR as NonNullable<
+				HighlightCodeOptions["transformers"]
+			>,
 		})
 	: null;
-const plainTextCaption = joinPlainText(block.Code?.Caption || []);
+const plainTextCaption = joinPlainText(codeBlock.Caption);
 ---
 
 {
@@ -214,7 +217,7 @@ const plainTextCaption = joinPlainText(block.Code?.Caption || []);
 	) : code_inject ? (
 		<div class="code-injected" id={setId ? block.Id : undefined}>
 			<Fragment set:html={htmlToInject} />
-			<Caption richTexts={block.Code.Caption} block={block} />
+			<Caption richTexts={codeBlock.Caption} block={block} />
 		</div>
 	) : (
 		<div
@@ -249,7 +252,7 @@ const plainTextCaption = joinPlainText(block.Code?.Caption || []);
 					highlightedCodeHtml && <Fragment set:html={highlightedCodeHtml} />
 				)}
 			</div>
-			<Caption richTexts={block.Code.Caption} block={block} />
+			<Caption richTexts={codeBlock.Caption} block={block} />
 		</div>
 	)
 }

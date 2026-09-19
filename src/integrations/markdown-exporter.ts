@@ -6,8 +6,8 @@ import { parseDocument } from "htmlparser2";
 import { DomUtils } from "htmlparser2";
 import type { AnyNode, Element as ElementNode } from "domhandler";
 import { Element as DomElement, Text as DomText } from "domhandler";
+import { createRequire } from "node:module";
 import TurndownService from "turndown";
-import { gfm } from "turndown-plugin-gfm";
 import superjson from "superjson";
 import {
 	MARKDOWN_EXPORT_ENABLED,
@@ -25,6 +25,9 @@ import type { Post, Citation, Footnote, InterlinkedContentInPage } from "../lib/
 import { getMachineDateISOString } from "../utils/date";
 import { slugify } from "../utils/slugify";
 import { PRODUCT_TYPE_VALUES } from "../lib/content/config";
+
+const nodeRequire = createRequire(import.meta.url);
+const { gfm } = nodeRequire("turndown-plugin-gfm") as { gfm: TurndownService.Plugin };
 
 type FootnoteDefinition = {
 	marker: string;
@@ -622,7 +625,7 @@ function collectFootnotes(
 		items.forEach((item, idx) => {
 			const idAttr = item.attribs?.id ?? "";
 			const match = idAttr.match(/^footnote-def-(.+)$/);
-			const marker = match ? match[1] : `${idx + 1}`;
+			const marker = match?.[1] ?? `${idx + 1}`;
 			const contentDiv = DomUtils.findOne(
 				(elem) =>
 					elem.type === "tag" &&
@@ -663,7 +666,7 @@ function collectFootnotesFromTemplates(
 	const definitions: FootnoteDefinition[] = [];
 	const processedMarkers = new Set<string>();
 
-	fallbackFootnotes.forEach((footnote, idx) => {
+	fallbackFootnotes.forEach((footnote) => {
 		const marker = footnote.Marker;
 		if (!marker || processedMarkers.has(marker)) {
 			return;
@@ -693,13 +696,15 @@ function collectFootnotesFromTemplates(
 
 function indexFootnoteTemplates(root: ElementNode): Map<string, ElementNode> {
 	const templates = DomUtils.findAll(
-		(node) =>
-			node.type === "tag" &&
-			(node as ElementNode).name === "template" &&
-			typeof (node as ElementNode).attribs?.id === "string" &&
-			(node as ElementNode).attribs.id.startsWith("template-popover-description-footnote-"),
+		(node) => {
+			const element = node as ElementNode;
+			return (
+				element.name === "template" &&
+				typeof element.attribs.id === "string" &&
+				element.attribs.id.startsWith("template-popover-description-footnote-")
+			);
+		},
 		[root],
-		true,
 	) as ElementNode[];
 
 	const templateMap = new Map<string, ElementNode>();
@@ -771,13 +776,9 @@ function sanitizeNode(
 				const index = context.footnoteIndexMap.get(marker);
 				if (index) {
 					element.attribs = {};
-					element.children = [
-						{
-							data: `[^${index}]`,
-							type: "text",
-							parent: element,
-						},
-					];
+					const footnoteText = createTextNode(`[^${index}]`);
+					footnoteText.parent = element;
+					element.children = [footnoteText];
 				}
 			}
 		}
@@ -917,7 +918,8 @@ function buildMarkdownMetadata({
 	// Get authors - use post Authors if available, otherwise fallback to site author
 	let authors: string | string[];
 	if (entry.Authors && entry.Authors.length > 0) {
-		authors = entry.Authors.length === 1 ? entry.Authors[0].name : entry.Authors.map((a) => a.name);
+		const singleAuthor = entry.Authors.length === 1 ? entry.Authors[0] : undefined;
+		authors = singleAuthor ? singleAuthor.name : entry.Authors.map((a) => a.name);
 	} else {
 		authors = AUTHOR || "Unknown Author";
 	}

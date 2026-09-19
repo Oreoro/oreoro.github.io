@@ -12,7 +12,7 @@ interface Props {
 }
 const { post, filteredInterlinkedContentInPage } = Astro.props;
 const groupedInterlinkedContent: { [key: string]: Block[] } =
-	filteredInterlinkedContentInPage.reduce((acc, ref) => {
+	filteredInterlinkedContentInPage.reduce<{ [key: string]: Block[] }>((acc, ref) => {
 		// Group by direct_nonmedia_link and collect Block objects
 		if (ref.link_to_pageid) {
 			const key = ref.link_to_pageid;
@@ -36,21 +36,22 @@ const groupedInterlinkedContent: { [key: string]: Block[] } =
 		return acc;
 	}, {});
 
-const entryIdLinksEntry = {};
-const blockIdLinks = {};
+const entryIdLinksEntry: Record<string, [string, Post]> = {};
+const blockIdLinks: Record<string, string> = {};
 const entryIdsToDel: string[] = [];
 
 if (groupedInterlinkedContent) {
 	for (const entryId of Object.keys(groupedInterlinkedContent)) {
 		const res_entry = await getInterlinkedContentLink(post.PageId, entryId);
-		if (!res_entry[1]) {
+		const linkedEntry = res_entry[1];
+		if (!linkedEntry) {
 			entryIdsToDel.push(entryId);
 			continue;
 		}
-		entryIdLinksEntry[entryId] = res_entry;
-		for (const block of groupedInterlinkedContent[entryId]) {
+		entryIdLinksEntry[entryId] = [res_entry[0] ?? "", linkedEntry];
+		for (const block of groupedInterlinkedContent[entryId] ?? []) {
 			const result = await getInterlinkedContentLink(post.PageId, undefined, block, true);
-			blockIdLinks[block.Id] = result[0];
+			blockIdLinks[block.Id] = result[0] ?? "";
 		}
 	}
 }
@@ -68,17 +69,17 @@ entryIdsToDel.forEach((entryId) => {
 					<div class="ml-2">
 						<div class="inline-block">
 							<NPagePopover
-								linkedTo={entryIdLinksEntry[entryId][0]}
-								popoverSpanText={entryIdLinksEntry[entryId][1].Title}
-								popoverTitle={entryIdLinksEntry[entryId][1].Title}
+								linkedTo={entryIdLinksEntry[entryId]![0]}
+								popoverSpanText={entryIdLinksEntry[entryId]![1].Title}
+								popoverTitle={entryIdLinksEntry[entryId]![1].Title}
 								postId={entryId}
-								excerpt={entryIdLinksEntry[entryId][1].Excerpt}
+								excerpt={entryIdLinksEntry[entryId]![1].Excerpt}
 							/>
 							{" at "}
 							{blocks.map((block, index) => (
 								<NBlocksPopover
 									block={block}
-									linkedTo={blockIdLinks[block.Id]}
+									linkedTo={blockIdLinks[block.Id]!}
 									popoverSpanText={`[${getSymbolForLinkedContent(index)}]`}
 									isInterlinkedBack={true}
 									linkText="Jump to"

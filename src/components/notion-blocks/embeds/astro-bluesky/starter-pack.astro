@@ -9,17 +9,20 @@ interface Props {
 
 const { record } = Astro.props;
 
-const pack = AppBskyGraphStarterpack.isRecord(record.record) ? record.record : null;
+const packRecord = AppBskyGraphStarterpack.isRecord(record.record) ? record.record : null;
+const packName = typeof packRecord?.name === "string" ? packRecord.name : "";
+const packDescription =
+	typeof packRecord?.description === "string" ? packRecord.description : undefined;
 ---
 
 <Card
 	href={atUriToStarterPackUri(record.uri)}
 	image={{
 		src: starterPackOgImage(record.uri),
-		alt: pack?.name || "Starter pack cover image",
+		alt: packName || "Starter pack cover image",
 	}}
 	avatarUser={record.creator}
-	title={pack?.name || ""}
+	title={packName || ""}
 	subtitle={`Starter pack by ${record.creator.displayName}`}
-	description={pack?.description}
+	description={packDescription}
 />

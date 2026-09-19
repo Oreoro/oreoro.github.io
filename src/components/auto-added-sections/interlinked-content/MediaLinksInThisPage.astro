@@ -12,28 +12,33 @@ interface Props {
 const { post, filteredInterlinkedContentInPage } = Astro.props;
 
 const groupedInterlinkedContent: { [key: string]: { block: Block; dml: string }[] } =
-	filteredInterlinkedContentInPage.reduce((acc, ref) => {
-		// Group by direct_nonmedia_link and collect Block objects
-		if (ref.direct_media_link) {
-			// const key = ref.direct_media_link;
-			let key = null;
-			key = ref.block.Video
-				? "Videos"
-				: ref.block.NImage
-					? "Images"
-					: ref.block.NAudio
-						? "Audio"
-						: "Files";
-			acc[key] = acc[key] || [];
-			acc[key].push({ block: ref.block, dml: ref.direct_media_link });
-		}
-		return acc;
-	}, {});
+	filteredInterlinkedContentInPage.reduce<{ [key: string]: { block: Block; dml: string }[] }>(
+		(acc, ref) => {
+			// Group by direct_nonmedia_link and collect Block objects
+			if (ref.direct_media_link) {
+				// const key = ref.direct_media_link;
+				const key = ref.block.Video
+					? "Videos"
+					: ref.block.NImage
+						? "Images"
+						: ref.block.NAudio
+							? "Audio"
+							: "Files";
+				const bucket = acc[key] ?? [];
+				bucket.push({ block: ref.block, dml: ref.direct_media_link });
+				acc[key] = bucket;
+			}
+			return acc;
+		},
+		{},
+	);
 
-const blockIdLinks = {};
+const blockIdLinks: Record<string, string | null> = {};
 if (groupedInterlinkedContent) {
 	for (const dmltype of Object.keys(groupedInterlinkedContent)) {
-		for (const blockdml of groupedInterlinkedContent[dmltype]) {
+		const blockdmls = groupedInterlinkedContent[dmltype];
+		if (!blockdmls) continue;
+		for (const blockdml of blockdmls) {
 			const result = await getInterlinkedContentLink(post.PageId, undefined, blockdml.block, true);
 			blockIdLinks[blockdml.block.Id] = result[0];
 		}
@@ -56,7 +61,7 @@ if (groupedInterlinkedContent) {
 								<>
 									<NBlocksPopover
 										block={blockdml.block}
-										linkedTo={blockIdLinks[blockdml.block.Id]}
+										linkedTo={blockIdLinks[blockdml.block.Id] ?? ""}
 										popoverSpanText={`[${getSymbolForLinkedContent(index)}]`}
 										isInterlinkedBack={true}
 										linkText="Jump to"

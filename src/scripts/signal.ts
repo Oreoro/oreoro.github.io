@@ -10,7 +10,7 @@
  *    signal using the controller's data-next / data-previous attributes.
  */
 
-const origin = document.querySelector<HTMLElement>(".origin");
+const originEl = document.querySelector<HTMLElement>(".origin");
 const controller = document.querySelector<HTMLElement>(".controller");
 
 let controllerActive = false;
@@ -20,19 +20,19 @@ let controllerPressed = false;
 let controllerPadding = 0;
 
 function overlap(): boolean {
-	if (!controller || !origin) return false;
+	if (!controller || !originEl) return false;
 
 	if (
-		controller.offsetTop + controller.offsetHeight < origin.offsetTop ||
-		controller.offsetTop > origin.offsetTop + origin.offsetHeight ||
-		controller.offsetLeft + controller.offsetWidth < origin.offsetLeft ||
-		controller.offsetLeft > origin.offsetLeft + origin.offsetWidth
+		controller.offsetTop + controller.offsetHeight < originEl.offsetTop ||
+		controller.offsetTop > originEl.offsetTop + originEl.offsetHeight ||
+		controller.offsetLeft + controller.offsetWidth < originEl.offsetLeft ||
+		controller.offsetLeft > originEl.offsetLeft + originEl.offsetWidth
 	) {
-		origin.classList.remove("origin--overlap");
+		originEl.classList.remove("origin--overlap");
 		return false;
 	}
 
-	if (!origin.classList.contains("origin--overlap")) origin.classList.add("origin--overlap");
+	if (!originEl.classList.contains("origin--overlap")) originEl.classList.add("origin--overlap");
 	return true;
 }
 
@@ -140,18 +140,15 @@ function resizeController() {
 	controllerPadding = parseInt(getComputedStyle(link).getPropertyValue("padding")) || 0;
 
 	if (controller.offsetLeft <= -controllerPadding) {
-		let controllerResizeRight =
-			window.innerWidth + controllerPadding - controller.offsetWidth;
+		let controllerResizeRight = window.innerWidth + controllerPadding - controller.offsetWidth;
 		if (controllerResizeRight < -controllerPadding) controllerResizeRight = -controllerPadding;
 		controller.style.right = controllerResizeRight + "px";
 		sessionStorage.setItem("controller_right", controller.style.right);
 	}
 
 	if (controller.offsetTop <= -controllerPadding) {
-		let controllerResizeBottom =
-			window.innerHeight + controllerPadding - controller.offsetHeight;
-		if (controllerResizeBottom < -controllerPadding)
-			controllerResizeBottom = -controllerPadding;
+		let controllerResizeBottom = window.innerHeight + controllerPadding - controller.offsetHeight;
+		if (controllerResizeBottom < -controllerPadding) controllerResizeBottom = -controllerPadding;
 		controller.style.bottom = controllerResizeBottom + "px";
 		sessionStorage.setItem("controller_bottom", controller.style.bottom);
 	}
@@ -164,12 +161,16 @@ function initNavigate() {
 	let touchstartTime = 0;
 
 	document.addEventListener("touchstart", (event) => {
-		touchstartX = event.touches[0].pageX;
+		const touch = event.touches[0];
+		if (!touch) return;
+		touchstartX = touch.pageX;
 		touchstartTime = new Date().getTime();
 	});
 
 	document.addEventListener("touchend", (event) => {
-		const touchendX = event.changedTouches[0].pageX;
+		const touch = event.changedTouches[0];
+		if (!touch) return;
+		const touchendX = touch.pageX;
 		const touchendTime = new Date().getTime();
 		const touchmoveX = touchendX - touchstartX;
 
@@ -183,9 +184,9 @@ function initNavigate() {
 	});
 
 	document.addEventListener("keydown", (event) => {
-		if (event.keyCode === 39) {
+		if (event.key === "ArrowRight") {
 			window.location.assign(controller.getAttribute("data-next") || "");
-		} else if (event.keyCode === 37) {
+		} else if (event.key === "ArrowLeft") {
 			window.location.assign(controller.getAttribute("data-previous") || "");
 		}
 	});
@@ -210,7 +211,8 @@ function initTheme() {
 	const themeSession = sessionStorage.getItem("theme");
 	const themeFilter = themeOptions.filter((theme) => theme !== themeSession);
 	const themeArray = themeFilter.length > 0 ? themeFilter : themeOptions;
-	const themeVariable = themeArray[Math.floor(Math.random() * themeArray.length)];
+	const themeVariable =
+		themeArray[Math.floor(Math.random() * themeArray.length)] ?? "--rgb-theme-1";
 
 	sessionStorage.setItem("theme", themeVariable);
 

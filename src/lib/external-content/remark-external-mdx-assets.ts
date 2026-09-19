@@ -1,4 +1,3 @@
-import path from "node:path";
 import { visit } from "unist-util-visit";
 import type { Root } from "mdast";
 import { isRelativePath, toPublicUrl } from "./external-content-utils";
@@ -18,7 +17,7 @@ function getFolderName(filePath: string | undefined): string | null {
 function rewriteIfRelative(value: unknown, folderName: string): unknown {
 	if (typeof value !== "string") return value;
 	if (!isRelativePath(value)) return value;
-	return toPublicUrl(value, { type: "mdx", sourceId: "external", folderName });
+	return toPublicUrl(value, { folderName });
 }
 
 function rewriteAttributes(node: MdxJsxNode, folderName: string) {

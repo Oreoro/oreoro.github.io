@@ -80,15 +80,16 @@ const postsWithCacheInfo = page.data.map((post) => {
 
 	const linkedPageIds = Array.from(linkedPageIdsSet);
 
-	const postLastUpdatedBeforeLastBuild =
-		LAST_BUILD_TIME && post?.LastUpdatedTimeStamp && post.LastUpdatedTimeStamp < LAST_BUILD_TIME;
+	const postLastUpdatedBeforeLastBuild = Boolean(
+		LAST_BUILD_TIME && post?.LastUpdatedTimeStamp && post.LastUpdatedTimeStamp < LAST_BUILD_TIME,
+	);
 
 	const linkedPostsUpdated =
 		!LAST_BUILD_TIME ||
 		(linkedPageIds.length > 0 &&
 			linkedPageIds.some((pageId) => {
 				const linkedPost = allPostsMap[pageId];
-				return linkedPost && linkedPost.LastUpdatedTimeStamp > LAST_BUILD_TIME;
+				return linkedPost && LAST_BUILD_TIME && linkedPost.LastUpdatedTimeStamp > LAST_BUILD_TIME;
 			}));
 
 	const shouldUseCache = postLastUpdatedBeforeLastBuild && !linkedPostsUpdated;

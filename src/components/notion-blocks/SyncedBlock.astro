@@ -11,4 +11,12 @@ export interface Props {
 const { block, renderChildren = true, setId = true } = Astro.props;
 ---
 
-<NotionBlocks blocks={block.SyncedBlock.Children} renderChildren={renderChildren} setId={setId} />
+{
+	block.SyncedBlock && (
+		<NotionBlocks
+			blocks={block.SyncedBlock.Children ?? []}
+			renderChildren={renderChildren}
+			setId={setId}
+		/>
+	)
+}

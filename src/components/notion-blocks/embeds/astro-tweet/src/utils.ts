@@ -216,23 +216,32 @@ export type EnrichedQuotedTweet = Omit<QuotedTweet, "entities"> & {
 /**
  * Enriches a tweet with additional data used to more easily use the tweet in a UI.
  */
-export const enrichTweet = (tweet: Tweet): EnrichedTweet => ({
-	...tweet,
-	url: getTweetUrl(tweet),
-	user: {
-		...tweet.user,
-		url: getUserUrl(tweet),
-		follow_url: getFollowUrl(tweet),
-	},
-	like_url: getLikeUrl(tweet),
-	reply_url: getReplyUrl(tweet),
-	in_reply_to_url: tweet.in_reply_to_screen_name ? getInReplyToUrl(tweet) : undefined,
-	entities: getEntities(tweet),
-	quoted_tweet: tweet.quoted_tweet
-		? {
-				...tweet.quoted_tweet,
-				url: getTweetUrl(tweet.quoted_tweet),
-				entities: getEntities(tweet.quoted_tweet),
-			}
-		: undefined,
-});
+export const enrichTweet = (tweet: Tweet): EnrichedTweet => {
+	const { entities, quoted_tweet, ...rest } = tweet;
+	const enriched: EnrichedTweet = {
+		...rest,
+		url: getTweetUrl(tweet),
+		user: {
+			...tweet.user,
+			url: getUserUrl(tweet),
+			follow_url: getFollowUrl(tweet),
+		},
+		like_url: getLikeUrl(tweet),
+		reply_url: getReplyUrl(tweet),
+		entities: getEntities(tweet),
+	};
+
+	if (tweet.in_reply_to_screen_name) {
+		enriched.in_reply_to_url = getInReplyToUrl(tweet);
+	}
+
+	if (quoted_tweet) {
+		enriched.quoted_tweet = {
+			...quoted_tweet,
+			url: getTweetUrl(quoted_tweet),
+			entities: getEntities(quoted_tweet),
+		};
+	}
+
+	return enriched;
+};

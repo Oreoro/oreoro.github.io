@@ -20,7 +20,11 @@ const { content, sourceBlockId, sourceBlock } = Astro.props;
 	content.Type === "rich_text" && content.RichTexts && (
 		<div>
 			{content.RichTexts.map((rt) => (
-				<RichText richText={rt} blockID={sourceBlockId} block={sourceBlock} />
+				<RichText
+					richText={rt}
+					{...(sourceBlockId ? { blockID: sourceBlockId } : {})}
+					{...(sourceBlock ? { block: sourceBlock } : {})}
+				/>
 			))}
 		</div>
 	)
@@ -34,7 +38,11 @@ const { content, sourceBlockId, sourceBlock } = Astro.props;
 	content.Type === "comment" && content.RichTexts && (
 		<div>
 			{content.RichTexts.map((rt) => (
-				<RichText richText={rt} blockID={sourceBlockId} block={sourceBlock} />
+				<RichText
+					richText={rt}
+					{...(sourceBlockId ? { blockID: sourceBlockId } : {})}
+					{...(sourceBlock ? { block: sourceBlock } : {})}
+				/>
 			))}
 			{content.CommentAttachments && content.CommentAttachments.length > 0 && (
 				<div class="mt-2 space-y-1">

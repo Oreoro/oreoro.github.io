@@ -15,11 +15,12 @@ const purposes: Record<AppBskyGraphDefs.ListPurpose, string> = {
 	"app.bsky.graph.defs#referencelist": "List",
 };
 const purpose = (list && purposes[list.purpose]) ?? "List";
+const { $type, ...creator } = record.creator;
 ---
 
 <Card
 	href={atUriToListUri(record.uri)}
-	avatarUser={record.creator}
+	avatarUser={creator}
 	title={list?.name || ""}
 	subtitle={`${purpose} by ${record.creator.displayName}`}
 	description={list?.description}

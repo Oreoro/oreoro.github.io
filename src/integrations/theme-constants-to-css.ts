@@ -15,12 +15,13 @@ function normalizeColor(value: string): string {
 	}
 	// Otherwise assume it's a space-separated RGB string
 	const parts = value.trim().split(/\s+/).map(Number);
-	if (parts.length >= 3) {
+	const [red, green, blue] = parts;
+	if (red !== undefined && green !== undefined && blue !== undefined) {
 		const toHex = (num: number): string => {
 			const hex = num.toString(16);
 			return hex.length === 1 ? "0" + hex : hex;
 		};
-		return `#${toHex(parts[0])}${toHex(parts[1])}${toHex(parts[2])}`;
+		return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
 	}
 	// If the format is unexpected, return the original value as a fallback
 	return value;
@@ -132,7 +133,7 @@ export default (): AstroIntegration => ({
 				}
 			}
 
-			const createCssVariables = (theme) => {
+			const createCssVariables = (theme: string) => {
 				let cssContent = "";
 				let bgHex = "#ffffff";
 

@@ -1,5 +1,5 @@
 import type { APIContext, GetStaticPaths } from "astro";
-import satori, { type SatoriOptions } from "satori";
+import satori, { type FontWeight, type SatoriOptions } from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import { getFormattedDate } from "@/utils";
 import { buildTimeFilePath } from "@/lib/blog-helpers";
@@ -86,30 +86,28 @@ const imageToDataUrl = async (filepath: string, resize?: { w: number; h: number 
 
 // Prepare Logo
 let customIconURL = "";
-const shouldUseLocalLogo =
-	siteInfo.logo &&
-	siteInfo.logo.Url &&
-	(siteInfo.logo.Type === "file" ||
-		siteInfo.logo.Type === "custom_emoji" ||
-		siteInfo.logo.Type === "icon" ||
-		isNotionHostedIconUrl(siteInfo.logo.Url));
+const logo = siteInfo.logo && "Url" in siteInfo.logo ? siteInfo.logo : null;
+const shouldUseLocalLogo = Boolean(
+	logo &&
+		logo.Url &&
+		(logo.Type === "file" ||
+			logo.Type === "custom_emoji" ||
+			logo.Type === "icon" ||
+			isNotionHostedIconUrl(logo.Url)),
+);
 
-if (shouldUseLocalLogo) {
+if (logo && shouldUseLocalLogo) {
 	try {
-		customIconURL = path.join(
-			process.cwd(),
-			"public",
-			buildTimeFilePath(new URL(siteInfo.logo.Url)),
-		);
+		customIconURL = path.join(process.cwd(), "public", buildTimeFilePath(new URL(logo.Url)));
 	} catch (err) {
 		console.log("Invalid DB custom icon URL");
 	}
 }
 
 const logo_src =
-	siteInfo.logo && siteInfo.logo.Type === "external" && !shouldUseLocalLogo
-		? siteInfo.logo.Url
-		: siteInfo.logo && customIconURL
+	logo && logo.Type === "external" && !shouldUseLocalLogo
+		? logo.Url
+		: logo && customIconURL
 			? await imageToDataUrl(customIconURL, { w: 30, h: 30 })
 			: null;
 
@@ -158,7 +156,8 @@ const isImageUrl = (url?: string) => {
 // --- Fonts ---
 
 async function getFontFromGoogle(name: string, weight: number): Promise<SatoriOptions["fonts"][0]> {
-	const validWeight = weight < 100 || weight > 900 || !Number.isFinite(weight) ? 400 : weight;
+	const validWeight: FontWeight =
+		weight < 100 || weight > 900 || !Number.isFinite(weight) ? 400 : (weight as FontWeight);
 	const css = await fetch(
 		`https://fonts.googleapis.com/css2?family=${name.replace(/ /g, "+")}:wght@${validWeight}&display=swap`,
 		{
@@ -169,8 +168,9 @@ async function getFontFromGoogle(name: string, weight: number): Promise<SatoriOp
 		},
 	).then((res) => res.text());
 	const resource = css.match(/src: url\((.+)\) format\('(opentype|truetype)'\)/);
-	if (!resource) throw new Error(`Failed to find font URL for ${name}`);
-	const data = await fetch(resource[1]).then((res) => res.arrayBuffer());
+	const fontUrl = resource?.[1];
+	if (!fontUrl) throw new Error(`Failed to find font URL for ${name}`);
+	const data = await fetch(fontUrl).then((res) => res.arrayBuffer());
 	return { name, style: "normal", weight: validWeight, data };
 }
 
@@ -485,11 +485,11 @@ export async function GET(context: APIContext) {
 	const BASE_DIR = BUILD_FOLDER_PATHS["ogImages"];
 	const imagePath = path.join(BASE_DIR, `${slug}.png`);
 
-	let keyStr = slug;
+	let keyStr: string | undefined = slug;
 	let type = "postpage";
-	if (keyStr?.includes("---")) {
+	if (slug?.includes("---")) {
 		const parts = slug.split("---");
-		type = parts[0];
+		type = parts[0]!;
 		keyStr = parts[1];
 	}
 
@@ -507,7 +507,6 @@ export async function GET(context: APIContext) {
 	let layout: "split" | "simple" | "bg" = "simple";
 	const featuredUrlStr = isPost ? post?.FeaturedImage?.Url : undefined;
 	const featuredExpiry = isPost ? post?.FeaturedImage?.ExpiryTime : undefined;
-	let featuredIsValidNow = false;
 	let needsImageNormalization = false;
 	let img: string | undefined = undefined;
 
@@ -531,7 +530,6 @@ export async function GET(context: APIContext) {
 		const hasValidImg =
 			featuredUrlStr && (!featuredExpiry || Date.parse(featuredExpiry) > Date.now());
 
-		featuredIsValidNow = !!hasValidImg;
 		if (hasValidImg) needsImageNormalization = true;
 		desc = (OG_SETUP["excerpt"] && post?.Excerpt) || "";
 
@@ -571,7 +569,7 @@ export async function GET(context: APIContext) {
 	// - Collection/tag/author pages: reuse if the *data source* wasn't edited after LAST_BUILD_TIME and image exists.
 	// - Index pages: same data source check (and file exists).
 	const canConsiderReuse = !!LAST_BUILD_TIME && fs.existsSync(imagePath);
-	if (canConsiderReuse) {
+	if (canConsiderReuse && LAST_BUILD_TIME) {
 		if (isPost) {
 			if (post?.LastUpdatedTimeStamp && post.LastUpdatedTimeStamp < LAST_BUILD_TIME) {
 				return new Response(fs.readFileSync(imagePath), {
@@ -610,14 +608,20 @@ export async function GET(context: APIContext) {
 	const ogOptions: SatoriOptions = { width: 1200, height: 630, fonts };
 
 	// Generate
-	const markup = buildOgImage({ title, date: dateStr, desc, img, author, layout });
+	const markup = buildOgImage({
+		title,
+		date: dateStr,
+		desc,
+		...(img !== undefined ? { img } : {}),
+		author,
+		layout,
+	});
 
 	// Fallback markup (always simple layout) in case of Satori failure with images
 	const fallbackMarkup = buildOgImage({
 		title,
 		date: dateStr,
 		desc,
-		img: undefined,
 		author,
 		layout: "simple",
 	});
@@ -639,7 +643,7 @@ export async function GET(context: APIContext) {
 		fs.writeFileSync(imagePath, pngBuffer);
 	}
 
-	return new Response(pngBuffer, {
+	return new Response(new Uint8Array(pngBuffer), {
 		headers: {
 			"Content-Type": "image/png",
 			"Cache-Control": "public, max-age=31536000, immutable",

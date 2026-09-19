@@ -5,7 +5,7 @@ const dateOptions = {
 			day: "numeric",
 			month: "short",
 			year: "numeric",
-		},
+		} satisfies Intl.DateTimeFormatOptions,
 	},
 };
 
@@ -19,6 +19,9 @@ function isDateOnlyString(date: unknown): date is string {
 
 function parseDateOnlyString(date: string): Date {
 	const [year, month, day] = date.split("-").map(Number);
+	if (year === undefined || month === undefined || day === undefined) {
+		return new Date(NaN);
+	}
 	return new Date(Date.UTC(year, month - 1, day));
 }
 
@@ -114,6 +117,9 @@ export function getFormattedDate(
 }
 
 export function getFormattedDateWithTime(date: string | number | Date) {
+	// Check if the date string contains a 'T' or if it's a number or Date object
+	const showTime = typeof date === "string" ? date.includes("T") : true;
+
 	if (isDateOnlyString(date)) {
 		return new Intl.DateTimeFormat("en-US", {
 			year: "numeric",
@@ -124,15 +130,6 @@ export function getFormattedDateWithTime(date: string | number | Date) {
 	}
 
 	const ObjDate = toDateObject(date);
-
-	// Check if the date string contains a 'T' or if it's a number or Date object
-	let showTime = false;
-	if (typeof date === "string") {
-		showTime = date.includes("T");
-	} else {
-		// For number or Date types, we assume time might be relevant
-		showTime = true;
-	}
 
 	const options: Intl.DateTimeFormatOptions = {
 		year: "numeric",

@@ -20,6 +20,7 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import axios from "axios";
+// @ts-expect-error @citation-js/core ships without type declarations
 import { Cite } from "@citation-js/core";
 import "@citation-js/plugin-bibtex";
 import "@citation-js/plugin-csl";
@@ -35,7 +36,6 @@ import type {
 } from "./interfaces";
 import {
 	getAllRichTextLocations,
-	cloneRichText,
 	joinPlainText,
 	getChildrenFromBlock,
 	splitRichTextsAtCharPosition,
@@ -487,8 +487,13 @@ function extractCitationsFromRichTextArray(
 			continue;
 		}
 
+		const key = match[1];
+		if (!key) {
+			continue;
+		}
+
 		matches.push({
-			key: match[1],
+			key,
 			start: match.index,
 			end: match.index + match[0].length,
 			fullMatch: match[0],
@@ -521,7 +526,7 @@ function extractCitationsFromRichTextArray(
 			FormattedEntry: formatted.bibliography,
 			Authors: formatted.authors,
 			Year: formatted.year,
-			Url: entry.url,
+			...(entry.url !== undefined ? { Url: entry.url } : {}),
 			SourceBlockIds: [], // Will be populated later
 			IsInFootnoteContent: isInFootnoteContent,
 		};

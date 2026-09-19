@@ -92,22 +92,27 @@ const baseId = `notion-tab-${block.Id}`;
 }
 
 <script>
-	function getTabList(container) {
+	type TabAwareWindow = Window & {
+		__ensureNotionTabTargetVisible?: (targetOrId: unknown) => HTMLElement | null;
+		__notionTabHashSyncReady?: string;
+	};
+
+	function getTabList(container: HTMLElement) {
 		return container.querySelector("[data-tab-list]");
 	}
 
-	function getTabs(container) {
+	function getTabs(container: HTMLElement): HTMLElement[] {
 		const list = getTabList(container);
 		return list instanceof HTMLElement
-			? Array.from(list.querySelectorAll(':scope > [role="tab"]'))
+			? Array.from(list.querySelectorAll<HTMLElement>(':scope > [role="tab"]'))
 			: [];
 	}
 
-	function getPanels(container) {
-		return Array.from(container.querySelectorAll(":scope > [data-tab-panel]"));
+	function getPanels(container: HTMLElement): HTMLElement[] {
+		return Array.from(container.querySelectorAll<HTMLElement>(":scope > [data-tab-panel]"));
 	}
 
-	function updateScrollState(container) {
+	function updateScrollState(container: HTMLElement) {
 		const header = container.querySelector("[data-tab-header]");
 		const list = getTabList(container);
 		if (!(header instanceof HTMLElement) || !(list instanceof HTMLElement)) return;
@@ -118,7 +123,7 @@ const baseId = `notion-tab-${block.Id}`;
 		header.dataset.canScrollRight = String(list.scrollLeft < maxScrollLeft - threshold);
 	}
 
-	function scrollTabIntoListView(tab, behavior = "auto") {
+	function scrollTabIntoListView(tab: HTMLElement, behavior: ScrollBehavior = "auto") {
 		const list = tab.closest("[data-tab-list]");
 		if (!(list instanceof HTMLElement)) return;
 
@@ -134,7 +139,7 @@ const baseId = `notion-tab-${block.Id}`;
 		}
 	}
 
-	function setActiveTab(container, nextIndex, shouldFocus = false) {
+	function setActiveTab(container: HTMLElement, nextIndex: number, shouldFocus = false) {
 		const tabs = getTabs(container);
 		const panels = getPanels(container);
 		if (!tabs.length) return;
@@ -152,20 +157,24 @@ const baseId = `notion-tab-${block.Id}`;
 			panel.hidden = index !== boundedIndex;
 		});
 
+		const activeTab = tabs[boundedIndex];
+
 		if (shouldFocus) {
-			tabs[boundedIndex]?.focus();
+			activeTab?.focus();
 		}
 
-		scrollTabIntoListView(tabs[boundedIndex], shouldFocus ? "smooth" : "auto");
+		if (activeTab) {
+			scrollTabIntoListView(activeTab, shouldFocus ? "smooth" : "auto");
+		}
 
 		requestAnimationFrame(() => updateScrollState(container));
 	}
 
-	function revealTargetInTabs(target) {
+	function revealTargetInTabs(target: unknown) {
 		if (!(target instanceof HTMLElement)) return null;
 
-		const activations = [];
-		let current = target.parentElement;
+		const activations: { container: HTMLElement; panel: HTMLElement }[] = [];
+		let current: HTMLElement | null = target.parentElement;
 
 		while (current) {
 			if (current.matches("[data-tab-panel]")) {
@@ -188,7 +197,7 @@ const baseId = `notion-tab-${block.Id}`;
 		return target;
 	}
 
-	function resolveTarget(targetOrId) {
+	function resolveTarget(targetOrId: unknown): HTMLElement | null {
 		if (targetOrId instanceof HTMLElement) return targetOrId;
 		if (typeof targetOrId !== "string") return null;
 
@@ -199,7 +208,7 @@ const baseId = `notion-tab-${block.Id}`;
 		return target instanceof HTMLElement ? target : null;
 	}
 
-	function initTabBlock(container) {
+	function initTabBlock(container: HTMLElement) {
 		if (container.dataset.tabsReady === "true") return;
 		container.dataset.tabsReady = "true";
 
@@ -271,18 +280,20 @@ const baseId = `notion-tab-${block.Id}`;
 	}
 
 	if (typeof window !== "undefined") {
-		if (!window["__ensureNotionTabTargetVisible"]) {
-			window["__ensureNotionTabTargetVisible"] = (targetOrId) => {
+		const tabAwareWindow = window as TabAwareWindow;
+
+		if (!tabAwareWindow.__ensureNotionTabTargetVisible) {
+			tabAwareWindow.__ensureNotionTabTargetVisible = (targetOrId: unknown) => {
 				const target = resolveTarget(targetOrId);
 				return revealTargetInTabs(target);
 			};
 		}
 
-		if (!window["__notionTabHashSyncReady"]) {
-			window["__notionTabHashSyncReady"] = "true";
+		if (!tabAwareWindow.__notionTabHashSyncReady) {
+			tabAwareWindow.__notionTabHashSyncReady = "true";
 
-			const syncHashTarget = (behavior = "auto") => {
-				const target = window["__ensureNotionTabTargetVisible"](window.location.hash);
+			const syncHashTarget = (behavior: ScrollBehavior = "auto") => {
+				const target = tabAwareWindow.__ensureNotionTabTargetVisible?.(window.location.hash);
 				if (!(target instanceof HTMLElement)) return;
 
 				requestAnimationFrame(() => {
@@ -298,7 +309,7 @@ const baseId = `notion-tab-${block.Id}`;
 		}
 	}
 
-	document.querySelectorAll("[data-notion-tab-block]").forEach((container) => {
+	document.querySelectorAll<HTMLElement>("[data-notion-tab-block]").forEach((container) => {
 		initTabBlock(container);
 	});
 </script>

@@ -5,7 +5,29 @@ import sanitizeHtml from "sanitize-html";
 import { XMLParser, XMLBuilder } from "fast-xml-parser";
 import { parseDocument } from "htmlparser2";
 import { DomUtils } from "htmlparser2";
+import type { AnyNode, ChildNode, Element } from "domhandler";
+import {
+	Document as DomDocument,
+	Element as DomElement,
+	Text as DomText,
+	hasChildren,
+} from "domhandler";
 import { LAST_BUILD_TIME, BASE_PATH, BUILD_FOLDER_PATHS } from "../constants";
+
+type RssNode = AnyNode & {
+	_leadingSpace?: string;
+	_trailingSpace?: string;
+};
+
+interface RssFeedItem {
+	title: string;
+	link: string;
+	description?: string;
+	pubDate?: string;
+	lastUpdatedTimestamp?: string;
+	category?: string | string[];
+	content?: string;
+}
 
 const rssContentEnhancer = (): AstroIntegration => {
 	return {
@@ -218,11 +240,11 @@ const rssContentEnhancer = (): AstroIntegration => {
 										);
 									},
 									transformTags: {
-										details: (tagName, attribs) => ({
+										details: (_tagName, attribs) => ({
 											tagName: "div",
 											attribs: attribs,
 										}),
-										summary: (tagName, attribs) => ({
+										summary: (_tagName, attribs) => ({
 											tagName: "div",
 											attribs: attribs,
 										}),
@@ -255,9 +277,6 @@ const rssContentEnhancer = (): AstroIntegration => {
 											return { tagName, attribs };
 										},
 										img: (tagName, attribs) => {
-											if (attribs.class?.includes("no-rss")) {
-												return false;
-											}
 											if (attribs.src?.startsWith("/")) {
 												return {
 													tagName,
@@ -275,7 +294,7 @@ const rssContentEnhancer = (): AstroIntegration => {
 								// Parse the cleaned content
 								const cleanContentDom = parseDocument(cleanContent);
 
-								const root = { type: "root", children: cleanContentDom.children };
+								const root = new DomDocument(cleanContentDom.children);
 
 								// Perform cleanup on interlinked content
 								cleanupInterlinkedContentDom(root);
@@ -346,7 +365,7 @@ const rssContentEnhancer = (): AstroIntegration => {
 							link: rssData.rss.channel.link,
 							lastBuildDate: rssData.rss.channel.lastBuildDate,
 							...(rssData.rss.channel.author && { author: rssData.rss.channel.author }),
-							item: items.map((item) => ({
+							item: items.map((item: RssFeedItem) => ({
 								title: item.title,
 								link: item.link,
 								guid: {
@@ -394,7 +413,7 @@ export default rssContentEnhancer;
 
 // Helper functions
 
-function removeEmptyElementsFromDom(node) {
+function removeEmptyElementsFromDom(node: RssNode): boolean {
 	// Remove empty text nodes
 	if (node.type === "text") {
 		if (node.data.trim() === "") {
@@ -404,7 +423,7 @@ function removeEmptyElementsFromDom(node) {
 	}
 
 	// Process child nodes first
-	if (node.children && node.children.length > 0) {
+	if (hasChildren(node) && node.children.length > 0) {
 		node.children = node.children.filter(removeEmptyElementsFromDom);
 	}
 
@@ -417,12 +436,12 @@ function removeEmptyElementsFromDom(node) {
 		const hasAttributes = node.attribs && Object.keys(node.attribs).length > 0;
 
 		// Check if the node has any remaining children
-		const hasChildren = node.children && node.children.length > 0;
+		const hasChildrenNodes = hasChildren(node) && node.children.length > 0;
 
 		// Get the trimmed text content
 		const textContent = DomUtils.textContent(node).trim();
 
-		if (isEmptyTag && !hasAttributes && !hasChildren && textContent === "") {
+		if (isEmptyTag && !hasAttributes && !hasChildrenNodes && textContent === "") {
 			return false; // Remove this node
 		}
 	}
@@ -435,14 +454,14 @@ function removeEmptyElementsFromDom(node) {
 	return true; // Keep the node
 }
 
-function cleanupInterlinkedContentDom(node) {
+function cleanupInterlinkedContentDom(node: RssNode) {
 	if (node.type === "tag" && node.name === "aside") {
 		// Process the 'Pages That Mention This Page' section
 		const sections = DomUtils.findAll(
 			(elem) =>
 				elem.type === "tag" &&
 				elem.name === "div" &&
-				DomUtils.findOne(
+				!!DomUtils.findOne(
 					(child) =>
 						child.type === "tag" &&
 						child.name === "span" &&
@@ -458,7 +477,6 @@ function cleanupInterlinkedContentDom(node) {
 			const childDivs = DomUtils.findAll(
 				(child) => child.type === "tag" && child.name === "div",
 				section.children,
-				false,
 			);
 
 			childDivs.forEach((div) => {
@@ -501,12 +519,12 @@ function cleanupInterlinkedContentDom(node) {
 	}
 
 	// Recurse into child nodes
-	if (node.children) {
+	if (hasChildren(node)) {
 		node.children.forEach(cleanupInterlinkedContentDom);
 	}
 }
 
-function fixFootnotesForRss(node) {
+function fixFootnotesForRss(node: RssNode) {
 	// Strip footnote marker prefixes like [^ft_marker]:
 	stripFootnoteMarkers(node);
 
@@ -525,19 +543,19 @@ function fixFootnotesForRss(node) {
 	return node;
 }
 
-function stripFootnoteMarkers(node) {
+function stripFootnoteMarkers(node: RssNode) {
 	if (node.type === "text") {
 		// Remove patterns like [^ft_marker]: from the start of text
 		node.data = node.data.replace(/^\[\^ft_[^\]]+\]:\s*/, "");
 		return;
 	}
 
-	if (node.children) {
+	if (hasChildren(node)) {
 		node.children.forEach(stripFootnoteMarkers);
 	}
 }
 
-function removeFootnoteBackLinks(node) {
+function removeFootnoteBackLinks(node: RssNode) {
 	// Find sections with footnotes by looking for <section><hr><h2>Footnotes</h2><ol>
 	if (node.type === "tag" && node.name === "section" && node.children) {
 		// Check if this section contains the "Footnotes" heading
@@ -582,12 +600,12 @@ function removeFootnoteBackLinks(node) {
 	}
 
 	// Recurse into children
-	if (node.children) {
+	if (hasChildren(node)) {
 		node.children.forEach(removeFootnoteBackLinks);
 	}
 }
 
-function trimLinksAndMoveSpacesOutside(node) {
+function trimLinksAndMoveSpacesOutside(node: RssNode) {
 	if (node.type === "tag" && node.name === "a" && node.children) {
 		// For <a> tags, trim leading/trailing whitespace from text content
 		const firstChild = node.children[0];
@@ -601,7 +619,7 @@ function trimLinksAndMoveSpacesOutside(node) {
 		if (firstChild && firstChild.type === "text") {
 			const match = firstChild.data.match(/^(\s+)/);
 			if (match) {
-				leadingSpace = match[1];
+				leadingSpace = match[1] ?? "";
 				firstChild.data = firstChild.data.slice(leadingSpace.length);
 			}
 		}
@@ -610,7 +628,7 @@ function trimLinksAndMoveSpacesOutside(node) {
 		if (lastChild && lastChild.type === "text") {
 			const match = lastChild.data.match(/(\s+)$/);
 			if (match) {
-				trailingSpace = match[1];
+				trailingSpace = match[1] ?? "";
 				lastChild.data = lastChild.data.slice(0, -trailingSpace.length);
 			}
 		}
@@ -621,21 +639,26 @@ function trimLinksAndMoveSpacesOutside(node) {
 	}
 
 	// Recurse into children first
-	if (node.children) {
+	if (hasChildren(node)) {
 		node.children.forEach(trimLinksAndMoveSpacesOutside);
 
 		// After processing children, move spaces outside links
-		const newChildren = [];
+		const newChildren: ChildNode[] = [];
 		for (const child of node.children) {
 			if (child.type === "tag" && child.name === "a") {
-				if (child._leadingSpace) {
-					newChildren.push({ type: "text", data: child._leadingSpace, parent: node });
-					delete child._leadingSpace;
+				const linkChild: RssNode = child;
+				if (linkChild._leadingSpace) {
+					const leadingNode = new DomText(linkChild._leadingSpace);
+					leadingNode.parent = node;
+					newChildren.push(leadingNode);
+					delete linkChild._leadingSpace;
 				}
 				newChildren.push(child);
-				if (child._trailingSpace) {
-					newChildren.push({ type: "text", data: child._trailingSpace, parent: node });
-					delete child._trailingSpace;
+				if (linkChild._trailingSpace) {
+					const trailingNode = new DomText(linkChild._trailingSpace);
+					trailingNode.parent = node;
+					newChildren.push(trailingNode);
+					delete linkChild._trailingSpace;
 				}
 			} else {
 				newChildren.push(child);
@@ -645,16 +668,20 @@ function trimLinksAndMoveSpacesOutside(node) {
 	}
 }
 
-function consolidateAdjacentSpans(node) {
-	if (!node.children || node.children.length === 0) {
+function consolidateAdjacentSpans(node: RssNode) {
+	if (!hasChildren(node) || node.children.length === 0) {
 		return;
 	}
 
-	const newChildren = [];
+	const newChildren: ChildNode[] = [];
 	let i = 0;
 
 	while (i < node.children.length) {
 		const child = node.children[i];
+		if (!child) {
+			i++;
+			continue;
+		}
 
 		// If this is a span with only text content and no attributes, try to merge with adjacent spans
 		if (
@@ -663,12 +690,13 @@ function consolidateAdjacentSpans(node) {
 			(!child.attribs || Object.keys(child.attribs).length === 0)
 		) {
 			// Collect all adjacent spans with no attributes
-			const spansToMerge = [child];
+			const spansToMerge: Element[] = [child];
 			let j = i + 1;
 
 			while (j < node.children.length) {
 				const nextChild = node.children[j];
 				if (
+					nextChild &&
 					nextChild.type === "tag" &&
 					nextChild.name === "span" &&
 					(!nextChild.attribs || Object.keys(nextChild.attribs).length === 0)
@@ -682,13 +710,9 @@ function consolidateAdjacentSpans(node) {
 
 			// If we found adjacent spans, merge them
 			if (spansToMerge.length > 1) {
-				const mergedSpan = {
-					type: "tag",
-					name: "span",
-					attribs: {},
-					children: [],
-					parent: node,
-				};
+				const mergedSpan = new DomElement("span", {});
+				mergedSpan.parent = node;
+				mergedSpan.children = [];
 
 				// Combine all children from the spans
 				for (const span of spansToMerge) {
@@ -719,17 +743,20 @@ function consolidateAdjacentSpans(node) {
 	});
 }
 
-function normalizeSpacing(node) {
-	if (!node.children || node.children.length === 0) {
+function normalizeSpacing(node: RssNode) {
+	if (!hasChildren(node) || node.children.length === 0) {
 		return;
 	}
 
 	const inlineElements = ["span", "a", "strong", "em", "b", "i", "code", "u", "s", "sup", "sub"];
-	const newChildren = [];
+	const newChildren: ChildNode[] = [];
 
 	for (let i = 0; i < node.children.length; i++) {
 		const child = node.children[i];
 		const nextChild = node.children[i + 1];
+		if (!child) {
+			continue;
+		}
 
 		// Add current child to newChildren
 		newChildren.push(child);
@@ -747,11 +774,8 @@ function normalizeSpacing(node) {
 
 				// If neither has a space at the boundary, insert a space
 				if (!childEndsWithSpace && !nextStartsWithSpace && childText && nextText) {
-					const spaceNode = {
-						type: "text",
-						data: " ",
-						parent: node,
-					};
+					const spaceNode = new DomText(" ");
+					spaceNode.parent = node;
 					newChildren.push(spaceNode);
 				}
 			}

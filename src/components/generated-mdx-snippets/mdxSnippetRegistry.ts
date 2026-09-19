@@ -33,8 +33,10 @@ export async function mdxSnippetLookup(
 ): Promise<{ Component: AstroComponentFactory | null }> {
 	const key = Object.keys(snippetModules).find((k) => k.endsWith(`/${slug}.mdx`));
 	if (!key) return { Component: null };
+	const loader = snippetModules[key];
+	if (!loader) return { Component: null };
 	try {
-		const mod = await snippetModules[key]();
+		const mod = await loader();
 		return { Component: mod.default || null };
 	} catch (error) {
 		console.warn(`[mdx-snippet] Failed to load snippet ${slug}`, error);

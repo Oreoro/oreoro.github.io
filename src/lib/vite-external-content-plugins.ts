@@ -7,7 +7,7 @@ function ensureBlankLineAfterImports(source: string): string {
 	let sawImport = false;
 
 	while (idx < lines.length) {
-		const trimmed = lines[idx].trim();
+		const trimmed = lines[idx]?.trim() ?? "";
 		if (!trimmed) {
 			if (!sawImport) {
 				idx += 1;
@@ -25,7 +25,7 @@ function ensureBlankLineAfterImports(source: string): string {
 
 	if (!sawImport) return source;
 	if (idx >= lines.length) return source;
-	if (lines[idx].trim() === "") return source;
+	if ((lines[idx] ?? "").trim() === "") return source;
 
 	lines.splice(idx, 0, "");
 	return lines.join("\n");
@@ -35,7 +35,7 @@ export function externalContentVitePlugins() {
 	return [
 		{
 			name: "external-custom-components-fallback",
-			enforce: "pre",
+			enforce: "pre" as const,
 			load(id: string) {
 				const target = `${path.sep}src${path.sep}components${path.sep}custom-components${path.sep}`;
 				if (!id.includes(target)) return null;
@@ -46,7 +46,7 @@ export function externalContentVitePlugins() {
 		},
 		{
 			name: "external-mdx-prep",
-			enforce: "pre",
+			enforce: "pre" as const,
 			transform(code: string, id: string) {
 				if (
 					!id.endsWith(".mdx") ||
@@ -60,7 +60,7 @@ export function externalContentVitePlugins() {
 		},
 		{
 			name: "custom-components-asset-rewrite",
-			enforce: "pre",
+			enforce: "pre" as const,
 			transform(code: string, id: string) {
 				if (!id.endsWith(".astro")) return null;
 				const parts = id.split(path.sep);

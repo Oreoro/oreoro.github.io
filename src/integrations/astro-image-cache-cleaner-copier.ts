@@ -70,7 +70,10 @@ export default function astroImageCacheCleanerCopier(): AstroIntegration {
 								continue;
 							}
 
-							usedImagesSet.add(match[1]);
+							const imageName = match[1];
+							if (imageName) {
+								usedImagesSet.add(imageName);
+							}
 						}
 					}),
 				);

@@ -91,7 +91,7 @@ interface Props {
 	bio?: string;
 }
 
-const { page, authorName, description, color, count, url, photo, bio } = Astro.props as Props;
+const { page, authorName, color, count, url, photo, bio } = Astro.props as Props;
 
 // Use default photo/URL ONLY if author name matches the site's author
 const isSiteAuthor = authorName === siteInfo.author;
@@ -179,7 +179,7 @@ const paginationProps = {
 				<ul class="space-y-4">
 					{page.data.map((p) => (
 						<li class="flex max-w-full flex-col flex-wrap gap-1.5 [&_q]:basis-full">
-							<PostPreview post={p} as="h2" withDesc />
+							<PostPreview post={p} as="h2" />
 						</li>
 					))}
 				</ul>

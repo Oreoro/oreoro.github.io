@@ -77,15 +77,22 @@ function findAllFootnoteMarkers(
 			const charStart = match.index;
 			const charEnd = charStart + fullMarker.length;
 
+			if (!marker) {
+				continue;
+			}
+
 			// Find which RichText element this marker is in
 			let currentPos = 0;
 			let richTextIndex = -1;
 			let shouldSkip = false;
 			for (let i = 0; i < location.richTexts.length; i++) {
-				const len = location.richTexts[i].PlainText.length;
+				const richText = location.richTexts[i];
+				if (!richText) {
+					continue;
+				}
+				const len = richText.PlainText.length;
 				if (currentPos <= charStart && charStart < currentPos + len) {
 					richTextIndex = i;
-					const richText = location.richTexts[i];
 					// Skip if in code, equation, or mention
 					if (richText.Annotation.Code || richText.Equation || richText.Mention) {
 						shouldSkip = true;
@@ -217,8 +224,12 @@ function parseFootnoteDefinitionsFromRichText(
 
 	// Find all definition starts
 	while ((match = pattern.exec(definitionsText)) !== null) {
+		const marker = match[1];
+		if (!marker) {
+			continue;
+		}
 		matches.push({
-			marker: match[1],
+			marker,
 			start: match.index + match[0].length, // After the "[^ft_a]: " part
 			matchIndex: match.index, // Start of "\n\n[^ft_a]:"
 			end: -1, // Will be set later
@@ -227,11 +238,16 @@ function parseFootnoteDefinitionsFromRichText(
 
 	// Set end positions (before the next "\n\n[^" starts)
 	for (let i = 0; i < matches.length; i++) {
-		if (i < matches.length - 1) {
+		const current = matches[i];
+		const next = matches[i + 1];
+		if (!current) {
+			continue;
+		}
+		if (next) {
 			// End at the position where next footnote marker starts (before the \n\n)
-			matches[i].end = matches[i + 1].matchIndex;
+			current.end = next.matchIndex;
 		} else {
-			matches[i].end = definitionsText.length;
+			current.end = definitionsText.length;
 		}
 	}
 
@@ -368,6 +384,9 @@ function removeMarkerPrefix(richTexts: RichText[], prefixLength: number): RichTe
 
 	for (let i = 0; i < result.length && remaining > 0; i++) {
 		const richText = result[i];
+		if (!richText) {
+			continue;
+		}
 		const length = richText.PlainText.length;
 
 		if (length <= remaining) {
@@ -440,7 +459,13 @@ function extractStartOfChildBlocksFootnotes(
 			return;
 		}
 
-		const blockText = joinPlainText(blockLocations[0].richTexts);
+		const firstLocation = blockLocations[0];
+		if (!firstLocation) {
+			remainingChildren.push(child);
+			return;
+		}
+
+		const blockText = joinPlainText(firstLocation.richTexts);
 
 		// Reset regex state before each exec
 		contentPattern.lastIndex = 0;
@@ -452,10 +477,14 @@ function extractStartOfChildBlocksFootnotes(
 		}
 
 		const marker = match[1];
+		if (!marker) {
+			remainingChildren.push(child);
+			return;
+		}
 
 		// Remove the [^marker]: prefix from the block
-		const cleanedRichTexts = removeMarkerPrefix(blockLocations[0].richTexts, match[0].length);
-		blockLocations[0].setter(cleanedRichTexts);
+		const cleanedRichTexts = removeMarkerPrefix(firstLocation.richTexts, match[0].length);
+		firstLocation.setter(cleanedRichTexts);
 
 		// Create footnote with the entire block (and its descendants) as content
 		footnotes.push({
@@ -560,6 +589,9 @@ async function extractBlockCommentsFootnotes(
 			}
 
 			const marker = match[1];
+			if (!marker) {
+				continue;
+			}
 
 			// Convert Notion comment rich_text to our RichText format
 			const contentRichTexts = await Promise.all(richTextArray.map(_buildRichText));
@@ -603,7 +635,7 @@ async function extractBlockCommentsFootnotes(
 				Content: {
 					Type: "comment",
 					RichTexts: cleanedRichTexts,
-					CommentAttachments: attachments.length > 0 ? attachments : undefined,
+					...(attachments.length > 0 ? { CommentAttachments: attachments } : {}),
 				},
 				SourceLocation: "comment",
 			});
@@ -684,7 +716,7 @@ function findMatchingClosingBrace(text: string, startPos: number): number {
  */
 function extractInlineLatexFootnotes(
 	block: Block,
-	config: FootnotesConfig,
+	_config: FootnotesConfig,
 ): FootnoteExtractionResult {
 	const locations = getAllRichTextLocations(block);
 	const footnotes: Footnote[] = [];
@@ -786,7 +818,7 @@ function extractInlineLatexFootnotes(
 				}
 				const unescaped = cloneRichText(rt);
 				unescaped.PlainText = rt.PlainText.replaceAll("\\{", "{").replaceAll("\\}", "}");
-				if (unescaped.Text) {
+				if (unescaped.Text && rt.Text) {
 					unescaped.Text.Content = rt.Text.Content.replaceAll("\\{", "{").replaceAll("\\}", "}");
 				}
 				return unescaped;

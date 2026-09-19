@@ -30,7 +30,7 @@ const { richText, blockID, block } = Astro.props;
 	) : richText.IsCitationMarker && richText.CitationRef && block && blockID ? (
 		<CitationMarker richText={richText} blockID={blockID} block={block} />
 	) : (
-		<Anchor richText={richText} blockID={blockID}>
+		<Anchor richText={richText} {...(blockID ? { blockID } : {})}>
 			{
 				<Code richText={richText}>
 					{

@@ -2,7 +2,8 @@
 import type { HTMLTag } from "astro/types";
 import FormattedDate from "@/components/ui/FormattedDate.astro";
 import AuthorByline from "@/components/layout/AuthorByline.astro";
-import type { Post } from "@/lib/interfaces";
+import type { Block, Post } from "@/lib/interfaces";
+import type { Heading } from "@/types";
 import { getPostContentByPostId } from "@/lib/notion/client";
 import {
 	getNavLink,
@@ -14,11 +15,7 @@ import {
 } from "@/lib/blog-helpers";
 import NotionBlocks from "@/components/NotionBlocks.astro";
 import { getNotionColorToTailwindColor } from "@/utils/style-helpers";
-import {
-	MENU_PAGES_COLLECTION,
-	BUILD_FOLDER_PATHS,
-	COVER_AS_HERO_BACKGROUND_ENABLED,
-} from "@/constants";
+import { BUILD_FOLDER_PATHS, COVER_AS_HERO_BACKGROUND_ENABLED } from "@/constants";
 import Icon from "@/components/ui/Icon.astro";
 import { buildHeadings, slugify } from "@/utils";
 import fs from "fs/promises";
@@ -41,29 +38,23 @@ const {
 	postLastUpdatedBeforeLastBuild,
 	as: Tag = "div",
 	withDesc = false,
-} = Astro.props;
+} = Astro.props as Props;
 const external = isExternalPost(post_full_preview);
 
-let blocks = null;
-let interlinkedContentInPage = null;
-let footnotesInPage = null;
-let citationsInPage = null;
+let blocks: Block[] | null = null;
 
 if (!external) {
 	const result = await getPostContentByPostId(post_full_preview);
 	blocks = result.blocks;
-	interlinkedContentInPage = result.interlinkedContentInPage;
-	footnotesInPage = result.footnotesInPage;
-	citationsInPage = result.citationsInPage;
 }
 
 // --- Headings Cache Handling ---
-let headings = null;
+let headings: Heading[] | null = null;
 const headingsCacheDir = BUILD_FOLDER_PATHS["headingsCache"];
 const headingsCacheFile = path.join(headingsCacheDir, `${post_full_preview.Slug}.json`);
 
 if (!external) {
-	let cachedHeadings = null;
+	let cachedHeadings: Heading[] | null = null;
 	if (postLastUpdatedBeforeLastBuild) {
 		try {
 			const headingsData = await fs.readFile(headingsCacheFile, "utf-8");
@@ -211,7 +202,7 @@ if (showHeroBackground && post_full_preview.Cover?.Url) {
 					aria-hidden="true"
 					focusable="false"
 				/>
-				{post_full_preview.Tags.map((tag, i) => (
+				{post_full_preview.Tags.map((tag) => (
 					<>
 						<a
 							class={`inline-block rounded-md px-1 text-sm ${getNotionColorToTailwindColor(
@@ -244,7 +235,7 @@ if (showHeroBackground && post_full_preview.Cover?.Url) {
 			{shouldUseCache && cachedHtml ? (
 				<div set:html={cachedHtml} />
 			) : (
-				<NotionBlocks blocks={blocks} />
+				<NotionBlocks blocks={blocks ?? []} />
 			)}
 		</section>
 	)

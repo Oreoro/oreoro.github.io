@@ -11,7 +11,7 @@ interface Props {
 const { user, className } = Astro.props;
 const verified = user.verified || user.is_blue_verified || user.verified_type;
 let Icon = Verified;
-let iconClassName: string | null = styles.verifiedBlue;
+let iconClassName: string | null | undefined = styles.verifiedBlue;
 
 if (verified) {
 	if (!user.is_blue_verified) {

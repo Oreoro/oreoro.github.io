@@ -4,7 +4,6 @@ import path from "path";
 import { parseDocument } from "htmlparser2";
 import { DomUtils } from "htmlparser2";
 import { getAllPosts } from "../lib/notion/client";
-import { EXTERNAL_CONTENT_PATHS } from "../constants";
 import {
 	extractHeadingsFromHtml,
 	readExternalFolderVersion,

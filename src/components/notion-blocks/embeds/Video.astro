@@ -16,17 +16,19 @@ export interface Props {
 
 const { block, setId = true } = Astro.props;
 
+const video = block.Video;
 let url: URL | null = null;
 let videoUrl = "";
-if (block.Video.External) {
-	videoUrl = block.Video.External?.Url;
-	url = new URL(block.Video.External?.Url);
-} else if (block.Video.File) {
-	videoUrl = filePath(new URL(block.Video.File.Url));
+if (video?.External) {
+	videoUrl = video.External.Url;
+	url = new URL(video.External.Url);
+} else if (video?.File) {
+	videoUrl = filePath(new URL(video.File.Url));
 }
-const plainTextCaption = joinPlainText(block.Video?.Caption || []);
+const plainTextCaption = joinPlainText(video?.Caption || []);
 const isThisYoutubeURL = url ? isYouTubeURL(url) : false;
-const youtubeVidIdTitle = isThisYoutubeURL ? await parseYouTubeVideoIdTitle(url) : ["", ""];
+const youtubeVidIdTitle: [string, string] =
+	isThisYoutubeURL && url ? await parseYouTubeVideoIdTitle(url) : ["", ""];
 ---
 
 <div class="video relative" id={setId ? block.Id : undefined}>
@@ -62,5 +64,5 @@ const youtubeVidIdTitle = isThisYoutubeURL ? await parseYouTubeVideoIdTitle(url)
 				</>
 			))
 	}
-	<Caption richTexts={block.Video.Caption} block={block} />
+	<Caption richTexts={video?.Caption ?? []} block={block} />
 </div>

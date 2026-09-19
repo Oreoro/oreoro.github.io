@@ -33,11 +33,13 @@ export interface Props {
 	setId?: boolean;
 }
 const { block, urlMap, setId = true } = Astro.props;
-let url: URL;
-try {
-	url = new URL(block.Embed.Url);
-} catch (err) {
-	console.log(err);
+let url: URL | null = null;
+if (block.Embed) {
+	try {
+		url = new URL(block.Embed.Url);
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 // Helper function to transform known URLs to their embeddable versions.
@@ -88,7 +90,7 @@ const plainTextCaption = joinPlainText(block.Embed?.Caption || []);
 			)
 		) : null
 	}
-	<Caption richTexts={block.Embed?.Caption} block={block} />
+	<Caption richTexts={block.Embed?.Caption ?? []} block={block} />
 </div>
 
 <style>

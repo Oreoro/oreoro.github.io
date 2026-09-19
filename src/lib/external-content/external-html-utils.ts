@@ -27,7 +27,7 @@ function rewriteSrcset(value: string, descriptor: ExternalContentDescriptor): st
 		.map((entry) => {
 			const trimmed = entry.trim();
 			if (!trimmed) return trimmed;
-			const [url, descriptorPart] = trimmed.split(/\s+/, 2);
+			const [url = "", descriptorPart] = trimmed.split(/\s+/, 2);
 			const rewritten = isRelativePath(url) ? toPublicUrl(url, descriptor) : url;
 			return descriptorPart ? `${rewritten} ${descriptorPart}` : rewritten;
 		})
@@ -38,7 +38,6 @@ function rewriteAssets(root: Document | Element, descriptor: ExternalContentDesc
 	const elements = DomUtils.findAll(
 		(elem) => elem.type === "tag" && !!ASSET_ATTRS[elem.name],
 		(root as Document).children || [root as Element],
-		true,
 	);
 
 	for (const elem of elements) {
