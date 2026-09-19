@@ -1,0 +1,48 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { getNavLink } from "@/lib/blog-helpers";
+import { policies } from "@/data/policies";
+
+export function getStaticPaths() {
+	return policies.map((policy) => ({
+		params: { slug: policy.slug },
+		props: { policy },
+	}));
+}
+
+const { policy } = Astro.props;
+---
+
+<PageLayout
+	meta={{
+		title: policy.title,
+		description: policy.intro,
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h1>{policy.title}</h1>
+			<p>{policy.intro}</p>
+		</div>
+
+		<div class="page__body">
+			<div class="page__content content content--policies">
+				{
+					policy.sections.map((section) => (
+						<>
+							<h2 id={section.id}>{section.heading}</h2>
+							{section.body.map((paragraph) => (
+								<p>{paragraph}</p>
+							))}
+						</>
+					))
+				}
+				<hr />
+				<p>
+					<a href={getNavLink("/policies/")}>All policies</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</PageLayout>

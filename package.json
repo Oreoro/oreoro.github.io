@@ -27,7 +27,11 @@
 		"format": "prettier -w --cache .",
 		"check": "astro check",
 		"notion:setup": "node --env-file=.env scripts/notion-setup.mjs",
-		"build:cached": "npm run cache:fetch && astro build"
+		"build:cached": "npm run cache:fetch && astro build",
+		"context:scrape": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/context-scrape.mts",
+		"context": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/context.mts",
+		"reference:clone": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/context-clone.mts",
+		"test:context": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test scripts/context-dev.test.mts"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^5.0.4",

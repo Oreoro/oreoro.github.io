@@ -2,21 +2,27 @@
 import { getNavLink } from "@/lib/blog-helpers";
 
 const primary: Array<[string, string]> = [
-	["Work", "/work/"],
-	["Capabilities", "/capabilities/"],
-	["Stack", "/stack/"],
-	["Blocks", "/blocks/"],
-	["Blog", "/blog/"],
-	["Contact", "/contact/"],
+	["Signals", "/"],
+	["Basecamp", "https://basecamp.com"],
+	["HEY", "https://www.hey.com"],
+	["Fizzy", "https://www.fizzy.do"],
+	["ONCE", "https://once.com"],
 ];
 
 const secondary: Array<[string, string]> = [
-	["Writing", "/blog/"],
-	["Blocks", "/blocks/"],
-	["Tags", "/tags/"],
-	["RSS", "/rss.xml"],
-	["Contact", "/contact/"],
+	["1999", "https://1999.37signals.com"],
+	["Books", "/books"],
+	["Thoughts", "/thoughts"],
+	["Jobs", "/jobs"],
+	["Updates", "https://updates.37signals.com"],
+	["Podcast", "/podcast"],
+	["Supply", "https://supply.37signals.com"],
+	["Dev", "https://dev.37signals.com"],
+	["Policies", "/policies"],
 ];
+
+const isExternal = (href: string) => href.startsWith("http");
+const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 ---
 
 <input class="nav-active" id="nav-active" type="checkbox" />
@@ -36,18 +42,36 @@ const secondary: Array<[string, string]> = [
 	</div>
 	<div class="nav__options">
 		<ul>
-			{primary.map(([label, href]) => (
-				<li>
-					<a href={getNavLink(href)} aria-label={label}>{label}</a>
-				</li>
-			))}
+			{
+				primary.map(([label, href]) => (
+					<li>
+						<a
+							href={link(href)}
+							aria-label={label}
+							target={isExternal(href) ? "_blank" : undefined}
+							rel={isExternal(href) ? "noopener" : undefined}
+						>
+							{label}
+						</a>
+					</li>
+				))
+			}
 		</ul>
 		<ul>
-			{secondary.map(([label, href]) => (
-				<li>
-					<a href={getNavLink(href)} aria-label={label}>{label}</a>
-				</li>
-			))}
+			{
+				secondary.map(([label, href]) => (
+					<li>
+						<a
+							href={link(href)}
+							aria-label={label}
+							target={isExternal(href) ? "_blank" : undefined}
+							rel={isExternal(href) ? "noopener" : undefined}
+						>
+							{label}
+						</a>
+					</li>
+				))
+			}
 		</ul>
 	</div>
 </nav>
@@ -59,10 +83,19 @@ const secondary: Array<[string, string]> = [
 		</a>
 	</h1>
 	<ul>
-		{primary.map(([label, href]) => (
-			<li>
-				<a href={getNavLink(href)} aria-label={label}>{label}</a>
-			</li>
-		))}
+		{
+			primary.map(([label, href]) => (
+				<li>
+					<a
+						href={link(href)}
+						aria-label={label}
+						target={isExternal(href) ? "_blank" : undefined}
+						rel={isExternal(href) ? "noopener" : undefined}
+					>
+						{label}
+					</a>
+				</li>
+			))
+		}
 	</ul>
 </header>

@@ -1,0 +1,90 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+
+const placeholder =
+	"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='560'%3E%3Crect width='420' height='560' fill='%23e7e5e2'/%3E%3C/svg%3E";
+
+// Placeholder entries — replace titles, copy and links with your own.
+const books = [
+	{
+		id: "book-one",
+		title: "Book One",
+		desc: "Placeholder description. Replace with your own copy.",
+		links: [
+			{ label: "Buy the book", href: "#" },
+			{ label: "Read online", href: "#" },
+		],
+	},
+	{
+		id: "book-two",
+		title: "Book Two",
+		desc: "Placeholder description. Replace with your own copy.",
+		links: [
+			{ label: "Buy the book", href: "#" },
+			{ label: "Read online", href: "#" },
+		],
+	},
+	{
+		id: "book-three",
+		title: "Book Three",
+		desc: "Placeholder description. Replace with your own copy.",
+		links: [{ label: "Buy the book", href: "#" }],
+	},
+	{
+		id: "book-four",
+		title: "Book Four",
+		desc: "Placeholder description. Replace with your own copy.",
+		links: [{ label: "Buy the book", href: "#" }],
+	},
+];
+---
+
+<PageLayout
+	meta={{
+		title: "Books",
+		description: "Books we've written and recommend.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h1>Books</h1>
+			<p>Placeholder intro. Replace with your own copy.</p>
+		</div>
+
+		<div class="books">
+			<div class="books__container">
+				{
+					books.map((book) => (
+						<div class="books__book" id={book.id}>
+							<div class="books__wrap">
+								<figure>
+									<a href="#" target="_blank" rel="noopener">
+										<img src={placeholder} alt={book.title} />
+									</a>
+								</figure>
+								<div class="books__content">
+									<h3>
+										<a href="#" target="_blank" rel="noopener">
+											{book.title}
+										</a>
+									</h3>
+									<p>{book.desc}</p>
+									<ul>
+										{book.links.map((link) => (
+											<li>
+												<a href={link.href} target="_blank" rel="noopener">
+													{link.label}
+												</a>
+											</li>
+										))}
+									</ul>
+								</div>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</PageLayout>

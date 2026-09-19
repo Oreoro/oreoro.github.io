@@ -1,0 +1,40 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { getNavLink } from "@/lib/blog-helpers";
+import { policyLinks } from "@/data/policies";
+---
+
+<PageLayout
+	meta={{
+		title: "Policies",
+		description: "Our policies.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h1>Policies</h1>
+			<p>Placeholder intro. Replace with your own copy.</p>
+		</div>
+
+		<div class="page__body">
+			<div class="page__content content content--policies">
+				<ul>
+					{
+						policyLinks.map((policy) => (
+							<li>
+								<a href={getNavLink(policy.href)}>{policy.label}</a>
+							</li>
+						))
+					}
+				</ul>
+				<hr />
+				<p>
+					Placeholder note. Replace with your own copy. <a href={getNavLink("/policies/updates")}
+						>Updates</a
+					>.
+				</p>
+			</div>
+		</div>
+	</div>
+</PageLayout>

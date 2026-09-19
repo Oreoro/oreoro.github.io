@@ -1,0 +1,82 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import Blocks from "@/components/blocks/Blocks.astro";
+import FormattedDate from "@/components/ui/FormattedDate.astro";
+import { articles } from "@/data/focuslab";
+import { getNavLink } from "@/lib/blog-helpers";
+
+export function getStaticPaths() {
+	return articles.map((article) => ({
+		params: { slug: article.slug },
+		props: { article },
+	}));
+}
+
+const { article } = Astro.props;
+
+const sorted = [...articles].sort(
+	(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+);
+const index = sorted.findIndex((item) => item.slug === article.slug);
+const nextArticle = sorted[(index + 1) % sorted.length];
+const previousArticle = sorted[(index - 1 + sorted.length) % sorted.length];
+const nextHref = getNavLink(`/blog/${nextArticle.slug}/`);
+const previousHref = getNavLink(`/blog/${previousArticle.slug}/`);
+---
+
+<PageLayout
+	meta={{
+		title: article.title,
+		description: article.summary,
+		articleDate: article.date,
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__content">
+			<article class="thought" data-pagefind-body>
+				<div class="thought__content content">
+					<div class="post-hero">
+						<h1 class="title">{article.title}</h1>
+						<div class="post-meta">
+							<FormattedDate date={article.date} />
+							{article.tags.length > 0 && <span>{article.tags.join(" · ")}</span>}
+						</div>
+					</div>
+					<hr class="divider" />
+					<Blocks blocks={article.body} />
+				</div>
+			</article>
+		</div>
+	</div>
+
+	<div class="boundary"></div>
+
+	<div
+		class="controller controller--origin"
+		data-next={nextHref}
+		data-previous={previousHref}
+		role="navigation"
+	>
+		<a href={nextHref} aria-label="Next article" tabindex="-1"></a>
+	</div>
+
+	<div class="origin"></div>
+</PageLayout>
+
+<style>
+	.post-hero {
+		margin-bottom: 0.4em;
+	}
+
+	.post-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6em;
+		color: rgba(255, 255, 255, 0.7);
+		font-size: 0.85em;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		text-transform: uppercase;
+	}
+</style>

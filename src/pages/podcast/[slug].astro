@@ -1,0 +1,44 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { getNavLink } from "@/lib/blog-helpers";
+import { episodes } from "@/data/podcast";
+
+export function getStaticPaths() {
+	return episodes.map((episode) => ({
+		params: { slug: episode.slug },
+		props: { episode },
+	}));
+}
+
+const { episode } = Astro.props;
+---
+
+<PageLayout
+	meta={{
+		title: episode.title,
+		description: episode.summary,
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h1>{episode.title}</h1>
+			<p>{episode.summary}</p>
+		</div>
+
+		<div class="thought">
+			<div class="thought__content content">
+				<p class="font-size-small">{episode.date}</p>
+				{
+					episode.body.map((paragraph) => (
+						<p>{paragraph}</p>
+					))
+				}
+				<hr />
+				<p>
+					<a href={getNavLink("/podcast/")}>All episodes</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</PageLayout>

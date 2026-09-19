@@ -1,39 +1,7 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import { capabilities } from "@/data/focuslab";
 import { getNavLink } from "@/lib/blog-helpers";
-
-const capabilities: Array<{ id: string; title: string; body: string }> = [
-	{
-		id: "ai-product-engineering",
-		title: "AI product engineering",
-		body: "Models are easy now. Products aren't. We ship AI that survives real users — evals, latency budgets, guardrails, and an interface people trust.",
-	},
-	{
-		id: "saas-platform-engineering",
-		title: "SaaS platform engineering",
-		body: "Multi-tenant, billed, permissioned, observable. The unglamorous parts decide whether a product survives year two. We do those properly.",
-	},
-	{
-		id: "mobile-app-development",
-		title: "Mobile app development",
-		body: "One codebase, native feel. Offline, push, deep links, and store submission — finished when it's in someone's hand, not in a demo.",
-	},
-	{
-		id: "web-app-development",
-		title: "Web app development",
-		body: "Fast, accessible, and built to outlast the team that wrote it. Performance budgets over promises.",
-	},
-	{
-		id: "ecommerce-engineering",
-		title: "Ecommerce engineering",
-		body: "Faster storefronts convert better, and most of the win is removing weight — not adding features. Like warp-n-woof.com.",
-	},
-	{
-		id: "framer-cms-sites",
-		title: "Framer & CMS sites",
-		body: "Sites your team edits without breaking the design. Real components, real performance, no ticket to change a headline.",
-	},
-];
 
 const nextHref = getNavLink("/stack/");
 const previousHref = getNavLink("/work/");
@@ -59,9 +27,14 @@ const previousHref = getNavLink("/work/");
 
 		<div class="page__content content">
 			{capabilities.map((capability) => (
-				<section id={capability.id}>
+				<section id={capability.id} class="capability">
 					<h2>{capability.title}</h2>
 					<p>{capability.body}</p>
+					<ul class="capability__points">
+						{capability.points.map((point) => (
+							<li>{point}</li>
+						))}
+					</ul>
 				</section>
 			))}
 
@@ -93,3 +66,41 @@ const previousHref = getNavLink("/work/");
 
 	<div class="origin"></div>
 </PageLayout>
+
+<style>
+	.capability {
+		margin-bottom: 2.4em;
+	}
+
+	.capability:last-of-type {
+		margin-bottom: 0;
+	}
+
+	.capability__points {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(11em, 1fr));
+		gap: 0.5em 1em;
+		margin: 0.9em 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.capability__points li {
+		position: relative;
+		padding-left: 1.1em;
+		color: rgba(255, 255, 255, 0.8);
+		font-size: 0.92em;
+		line-height: 1.45;
+	}
+
+	.capability__points li::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0.55em;
+		width: 0.45em;
+		height: 0.45em;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.6);
+	}
+</style>

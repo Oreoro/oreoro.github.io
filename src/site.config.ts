@@ -1,20 +1,10 @@
-import { getDataSource } from "@/lib/notion/client";
 import type { SiteConfig } from "@/types";
 import { AUTHOR, WEBMENTION_LINK, HOME_PAGE_SLUG } from "@/constants";
-
-const tl = "Focus Lab",
-	ds = "A product company in Islamabad. We build and run our own software — AI, SaaS, mobile, ecommerce — and we build it for a few others, too.",
-	path = "/",
-	oim = "";
-const database = await getDataSource();
-
-// Explicit site identity wins over the Notion database title/description.
-const siteTitle = tl || database.Title;
-const siteDescription = ds || database.Description;
+import { site } from "@/data/focuslab";
 
 export const siteInfo: SiteConfig = {
-	title: siteTitle,
-	description: siteDescription,
+	title: site.name,
+	description: site.description,
 	author: AUTHOR,
 	lang: "en",
 	homePageSlug: HOME_PAGE_SLUG,
@@ -31,8 +21,6 @@ export const siteInfo: SiteConfig = {
 	},
 	webmentions: {
 		link: WEBMENTION_LINK,
-		// link: "https://webmention.io/astro-cactus.chriswilliams.dev/webmention",
-		// site: "https://astro-cactus.chriswilliams.dev/",
 	},
-	logo: database.Icon || null,
+	logo: null,
 };

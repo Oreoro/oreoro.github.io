@@ -1,60 +1,25 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { getAllPosts } from "@/lib/notion/client";
-import { siteInfo } from "@/siteInfo";
+import { site } from "@/data/focuslab";
+import { signals } from "@/data/signals";
 import { getNavLink } from "@/lib/blog-helpers";
 
-const entries = await getAllPosts();
-
-const products = entries
-	.filter((entry) => entry.Collection === "Product")
-	.sort((a, b) => (a.Rank ?? 99) - (b.Rank ?? 99));
-
-const articles = entries
-	.filter((entry) => entry.Collection === "Article")
-	.sort((a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime())
-	.slice(0, 3);
-
-const capabilities: Array<[string, string]> = [
-	["AI products that hold up", "/capabilities/#ai-product-engineering"],
-	["SaaS platforms done properly", "/capabilities/#saas-platform-engineering"],
-	["Mobile that feels native", "/capabilities/#mobile-app-development"],
-	["Web apps built to last", "/capabilities/#web-app-development"],
-	["Ecommerce that converts", "/capabilities/#ecommerce-engineering"],
-	["Sites your team can edit", "/capabilities/#framer-cms-sites"],
-];
-
-type Signal = { num: string; label: string; href: string };
-
-const signals: Signal[] = [];
-const push = (label: string, href: string) => {
-	signals.push({ num: String(signals.length).padStart(2, "0"), label, href: getNavLink(href) });
-};
-
-push("Start here", "/capabilities/");
-push("The stack we reach for", "/stack/");
-push("Native Notion, exported static", "/blocks/");
-for (const product of products) push(product.Title, `/work/${product.Slug}/`);
-for (const [name, href] of capabilities) push(name, href);
-for (const article of articles) push(article.Title, `/posts/${article.Slug}/`);
-push("Talk to us", "/contact/");
-
-const nextHref = signals[0].href;
-const previousHref = signals[signals.length - 1].href;
+const nextHref = getNavLink(`/${signals[0]!.num}`);
+const previousHref = getNavLink(`/${signals[signals.length - 1]!.num}`);
 ---
 
 <PageLayout
 	meta={{
-		title: siteInfo.title,
-		description: siteInfo.description,
-		ogImage: `/og-image/${siteInfo.homePageSlug}.png`,
+		title: site.name,
+		description: site.description,
+		ogImage: "/og-image/home.png",
 	}}
 >
 	<div class="cluster cluster--index">
 		{signals.map((signal) => (
 			<section class="signal">
 				<header class="signal__header">
-					<a href={signal.href} aria-label={`Signal ${signal.num}. ${signal.label}`}>
+					<a href={getNavLink(`/${signal.num}`)} aria-label={`Signal ${signal.num}. ${signal.label}`}>
 						<dl>
 							<dt>{signal.num}.</dt>
 							<dd>{signal.label}</dd>
@@ -73,7 +38,7 @@ const previousHref = signals[signals.length - 1].href;
 		data-previous={previousHref}
 		role="navigation"
 	>
-		<a href={nextHref} aria-label={`Next Signal: ${signals[0].label}`} tabindex="-1"></a>
+		<a href={nextHref} aria-label={`Next Signal: ${signals[0]!.label}`} tabindex="-1"></a>
 	</div>
 
 	<div class="origin"></div>

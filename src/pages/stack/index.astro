@@ -1,79 +1,8 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import { stackGroups, principles } from "@/data/focuslab";
 import { getNavLink } from "@/lib/blog-helpers";
 import "@/styles/stack.css";
-
-type StackItem = { name: string; note: string };
-type StackGroup = { title: string; note: string; items: StackItem[] };
-
-const groups: StackGroup[] = [
-	{
-		title: "Languages",
-		note: "Typed first, boring on purpose.",
-		items: [
-			{ name: "TypeScript", note: "Frontend, backend, workers, tooling." },
-			{ name: "Go", note: "Small, fast services and CLIs." },
-			{ name: "Python", note: "AI pipelines, evals, and data." },
-			{ name: "SQL", note: "Postgres and SQLite, queried properly." },
-		],
-	},
-	{
-		title: "Frontend",
-		note: "Fast by default, accessible always.",
-		items: [
-			{ name: "Astro", note: "Content and marketing that stay fast." },
-			{ name: "React", note: "Interactive product surfaces." },
-			{ name: "Tailwind CSS", note: "Design systems without drift." },
-			{ name: "Framer", note: "Sites teams can edit themselves." },
-		],
-	},
-	{
-		title: "Backend & data",
-		note: "Edge-first, multi-tenant, observable.",
-		items: [
-			{ name: "Node.js", note: "The default runtime for product APIs." },
-			{ name: "Hono", note: "Tiny routers for edge runtimes." },
-			{ name: "Postgres / D1", note: "Relational data in the core and at the edge." },
-			{ name: "Vectorize / pgvector", note: "Retrieval that scales with the corpus." },
-		],
-	},
-	{
-		title: "AI",
-		note: "Models in production, not in demos.",
-		items: [
-			{ name: "OpenAI", note: "Frontier models behind real features." },
-			{ name: "Anthropic", note: "Long-context reasoning and safe tool use." },
-			{ name: "Workers AI", note: "Inference at the edge, next to the data." },
-			{ name: "MCP", note: "Tools and context for agents, standardized." },
-		],
-	},
-	{
-		title: "Infrastructure",
-		note: "Global, cheap, reproducible.",
-		items: [
-			{ name: "Cloudflare Workers", note: "Edge compute, zero cold starts." },
-			{ name: "R2 / KV", note: "Object storage and low-latency config." },
-			{ name: "Durable Objects", note: "Coordination and state where it matters." },
-			{ name: "GitHub Actions", note: "Every change built, tested, shipped." },
-		],
-	},
-	{
-		title: "Commerce & CMS",
-		note: "Content and checkout that convert.",
-		items: [
-			{ name: "Shopify", note: "Storefronts engineered for conversion." },
-			{ name: "Notion API", note: "The CMS behind this site." },
-			{ name: "Stripe", note: "Billing, subscriptions, metering." },
-			{ name: "Sanity / Webflow", note: "Structured content for marketing teams." },
-		],
-	},
-];
-
-const principles: Array<[string, string]> = [
-	["Boring where it counts", "Proven tools for the parts you can't debug at 3am."],
-	["Typed end to end", "If it crosses a boundary, it has a type."],
-	["Own the whole path", "From data model to deploy — no hand-offs."],
-];
 
 const nextHref = getNavLink("/work/");
 const previousHref = getNavLink("/capabilities/");
@@ -98,7 +27,7 @@ const previousHref = getNavLink("/capabilities/");
 
 		<div class="page__content">
 			<div class="stack">
-				{groups.map((group, groupIndex) => (
+				{stackGroups.map((group, groupIndex) => (
 					<section
 						class="stack__group"
 						id={group.title.toLowerCase().replace(/[^a-z]+/g, "-")}
@@ -122,10 +51,10 @@ const previousHref = getNavLink("/capabilities/");
 				<section class="stack__principles" id="principles">
 					<h2 class="stack__title">Principles</h2>
 					<dl class="stack__principles-list">
-						{principles.map(([title, body]) => (
+						{principles.map((principle) => (
 							<div class="stack__principle">
-								<dt>{title}</dt>
-								<dd>{body}</dd>
+								<dt>{principle.title}</dt>
+								<dd>{principle.body}</dd>
 							</div>
 						))}
 					</dl>

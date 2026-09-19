@@ -10,14 +10,22 @@
  * win over the Notion content theme (minimal.css) without `!important` wars.
  */
 
-/* ---------- fonts.css ---------- */
+/* ---------- fonts.css (exact 37signals.com font set) ---------- */
 
 @font-face {
 	font-family: "Lab Grotesque";
 	font-style: normal;
 	font-weight: 300;
 	font-display: swap;
-	src: url("/fonts/lab-grotesque/labgrotesque-300.woff2") format("woff2");
+	src: url("/assets/fonts/LabGrotesque-Light.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque";
+	font-style: italic;
+	font-weight: 300;
+	font-display: swap;
+	src: url("/assets/fonts/LabGrotesque-LightItalic.woff2") format("woff2");
 }
 
 @font-face {
@@ -25,7 +33,15 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-	src: url("/fonts/lab-grotesque/labgrotesque-400.woff2") format("woff2");
+	src: url("/assets/fonts/LabGrotesque-Regular.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque";
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	src: url("/assets/fonts/LabGrotesque-Italic.woff2") format("woff2");
 }
 
 @font-face {
@@ -33,7 +49,15 @@
 	font-style: normal;
 	font-weight: 500;
 	font-display: swap;
-	src: url("/fonts/lab-grotesque/labgrotesque-500.woff2") format("woff2");
+	src: url("/assets/fonts/LabGrotesque-Medium.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque";
+	font-style: italic;
+	font-weight: 500;
+	font-display: swap;
+	src: url("/assets/fonts/LabGrotesque-MediumItalic.woff2") format("woff2");
 }
 
 @font-face {
@@ -41,7 +65,15 @@
 	font-style: normal;
 	font-weight: 700;
 	font-display: swap;
-	src: url("/fonts/lab-grotesque/labgrotesque-700.woff2") format("woff2");
+	src: url("/assets/fonts/LabGrotesque-Bold.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque";
+	font-style: italic;
+	font-weight: 700;
+	font-display: swap;
+	src: url("/assets/fonts/LabGrotesque-BoldItalic.woff2") format("woff2");
 }
 
 @font-face {
@@ -49,7 +81,31 @@
 	font-style: normal;
 	font-weight: 800;
 	font-display: swap;
-	src: url("/fonts/lab-grotesque/labgrotesque-800.woff2") format("woff2");
+	src: url("/assets/fonts/LabGrotesque-Black.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque";
+	font-style: italic;
+	font-weight: 800;
+	font-display: swap;
+	src: url("/assets/fonts/LabGrotesque-BlackItalic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque Mono";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("/assets/fonts/LabGrotesqueMono-Regular.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Lab Grotesque Mono";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("/assets/fonts/LabGrotesqueMono-Bold.woff2") format("woff2");
 }
 
 /* ---------- root.css ---------- */
@@ -93,7 +149,7 @@
 	--color-theme-12: rgb(var(--rgb-theme-12));
 
 	--font-family: "Lab Grotesque", Sans-Serif;
-	--font-family-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+	--font-family-mono: "Lab Grotesque Mono", Monospace;
 	--font-size: calc(1em + 1vw);
 	--font-size-x-small: 60%;
 	--font-size-small: 80%;
@@ -1528,83 +1584,6 @@ html body.signals-shell .cta-panel p {
 	font-size: var(--font-size-large);
 	font-weight: 700;
 	letter-spacing: -0.01em;
-}
-
-/* ---------- Focus Lab polish ---------- */
-
-/* Align the capabilities content column with its indented headline. */
-html body.signals-shell .page__content.content {
-	max-width: 60ch;
-}
-
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .page__content.content {
-		margin-left: 2.8ch;
-		margin-right: 2.8ch;
-	}
-}
-
-/* Visible, consistent keyboard focus everywhere. */
-html body.signals-shell a:focus-visible,
-html body.signals-shell button:focus-visible,
-html body.signals-shell summary:focus-visible,
-html body.signals-shell input:focus-visible {
-	outline: 2px solid var(--color-white);
-	outline-offset: 0.18em;
-	border-radius: 0.15em;
-}
-
-/* Buttons: a touch more life than a flat swap. */
-html body.signals-shell .button {
-	font-size: 0.95rem;
-	transition:
-		background-color var(--transition) !important,
-		color var(--transition) !important,
-		transform var(--transition) !important;
-}
-
-html body.signals-shell .button:hover {
-	transform: translateY(-1px);
-}
-
-html body.signals-shell .button:active {
-	transform: translateY(0);
-}
-
-html body.signals-shell .button--theme:hover {
-	background: var(--color-white);
-	color: var(--color-theme) !important;
-}
-
-/* Content media sits in soft, consistent frames. */
-html body.signals-shell .content img,
-html body.signals-shell .post-body img,
-html body.signals-shell .notion-image {
-	border-radius: 0.35em;
-}
-
-/* Body links get the 37signals underline on hover, not always. */
-html body.signals-shell .content p a {
-	text-decoration: none;
-}
-
-html body.signals-shell .content p a:hover,
-html body.signals-shell .content p a:focus {
-	text-decoration: underline;
-}
-
-/* Smooth, unobtrusive image reveal once the shell is ready. */
-@keyframes shell-fade {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-
-html body.signals-shell.is-ready main {
-	animation: shell-fade 0.4s ease both !important;
 }
 
 /* ---------- Listing & index pages (tags, collections, authors, posts) ---------- */

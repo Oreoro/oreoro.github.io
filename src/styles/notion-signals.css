@@ -3,52 +3,11 @@
  * Applies on the themed shell; overrides the blog theme with `html body`.
  */
 
-/* Lab Grotesque — 37signals' typeface, extracted with the Context.dev
- * Styleguide API. Commercial font: license or replace before shipping. */
-@font-face {
-	font-family: "Lab Grotesque";
-	font-style: normal;
-	font-weight: 300;
-	font-display: swap;
-	src: url("/fonts/lab-grotesque/labgrotesque-300.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Lab Grotesque";
-	font-style: normal;
-	font-weight: 400;
-	font-display: swap;
-	src: url("/fonts/lab-grotesque/labgrotesque-400.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Lab Grotesque";
-	font-style: normal;
-	font-weight: 500;
-	font-display: swap;
-	src: url("/fonts/lab-grotesque/labgrotesque-500.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Lab Grotesque";
-	font-style: normal;
-	font-weight: 700;
-	font-display: swap;
-	src: url("/fonts/lab-grotesque/labgrotesque-700.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Lab Grotesque";
-	font-style: normal;
-	font-weight: 800;
-	font-display: swap;
-	src: url("/fonts/lab-grotesque/labgrotesque-800.woff2") format("woff2");
-}
+/* Fonts are declared once in signals-shell.css (the exact 37signals set). */
 
 html body.signals-shell {
-	--font-sans: "Lab Grotesque", "Hanken Grotesk", ui-sans-serif, system-ui, -apple-system,
+	--font-sans: "Lab Grotesque", ui-sans-serif, system-ui, -apple-system,
 		"Helvetica Neue", Arial, sans-serif;
-	font-family: var(--font-sans);
 	--ns-fg: rgba(255, 255, 255, 0.85);
 	--ns-white: #ffffff;
 	--ns-line: rgba(255, 255, 255, 0.22);

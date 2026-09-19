@@ -1,0 +1,35 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { getNavLink } from "@/lib/blog-helpers";
+import { thoughts } from "@/data/thoughts";
+---
+
+<PageLayout
+	meta={{
+		title: "Thoughts",
+		description: "Longer notes on how we work.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h1>Thoughts</h1>
+			<p>Placeholder intro. Replace with your own copy.</p>
+		</div>
+
+		<div class="thoughts">
+			<div class="thoughts__container">
+				{
+					thoughts.map((thought) => (
+						<div class="thoughts__thought">
+							<h3>
+								<a href={getNavLink(`/thoughts/${thought.slug}/`)}>{thought.title}</a>
+							</h3>
+							<p>{thought.intro}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</PageLayout>

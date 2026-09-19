@@ -1,65 +1,40 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import NotionBlocks from "@/components/NotionBlocks.astro";
-import { getProducts, getPostContentByPostId } from "@/lib/notion/client";
-import {
-	getNavLink,
-	resetCurrentHeadings,
-	resetFirstImage,
-	setTrackCurrentPageId,
-} from "@/lib/blog-helpers";
-import { siteInfo } from "@/siteInfo";
-import { buildHeadings } from "@/utils";
+import Blocks from "@/components/blocks/Blocks.astro";
+import { products } from "@/data/focuslab";
+import { getNavLink } from "@/lib/blog-helpers";
 
-export async function getStaticPaths() {
-	const products = await getProducts();
+export function getStaticPaths() {
 	return products.map((product) => ({
-		params: { slug: product.Slug },
+		params: { slug: product.slug },
 		props: { product },
 	}));
 }
 
 const { product } = Astro.props;
 
-resetCurrentHeadings();
-resetFirstImage();
-setTrackCurrentPageId(product.PageId);
-
-const { blocks } = await getPostContentByPostId(product);
-const headings = buildHeadings(blocks);
-
-const externalLink =
-	typeof product.Fields?.Link === "string" && product.Fields.Link.length > 0
-		? product.Fields.Link
-		: "";
-
-const allProducts = await getProducts();
-const index = allProducts.findIndex((item) => item.Slug === product.Slug);
-const nextProduct = allProducts[(index + 1) % allProducts.length];
-const previousProduct = allProducts[(index - 1 + allProducts.length) % allProducts.length];
-const nextHref = nextProduct ? getNavLink(`/work/${nextProduct.Slug}/`) : getNavLink("/work/");
-const previousHref = previousProduct
-	? getNavLink(`/work/${previousProduct.Slug}/`)
-	: getNavLink("/work/");
+const index = products.findIndex((item) => item.slug === product.slug);
+const nextProduct = products[(index + 1) % products.length];
+const previousProduct = products[(index - 1 + products.length) % products.length];
+const nextHref = getNavLink(`/work/${nextProduct.slug}/`);
+const previousHref = getNavLink(`/work/${previousProduct.slug}/`);
 ---
 
 <PageLayout
 	meta={{
-		title: product.Title,
-		description: product.Excerpt || siteInfo.description,
-		ogImage: `/og-image/${product.Slug}.png`,
+		title: product.name,
+		description: product.summary,
+		ogImage: "/og-image/home.png",
 	}}
 >
 	<div class="page">
 		<div class="page__headline">
-			<h6>
-				{product.Tags.length ? product.Tags.map((tag) => tag.name).join(" · ") : "Product"}
-			</h6>
-			<h1>{product.Title}</h1>
-			{product.Excerpt && <p>{product.Excerpt}</p>}
+			<h6>{product.tags.join(" · ")}</h6>
+			<h1>{product.name}</h1>
+			<p>{product.summary}</p>
 			<div style="display:flex;flex-wrap:wrap;gap:0.5em;margin-top:0.6em">
-				{externalLink && (
-					<a class="button" href={externalLink} target="_blank" rel="noopener">
+				{product.link && (
+					<a class="button" href={product.link} target="_blank" rel="noopener">
 						Visit site <span>&rarr;</span>
 					</a>
 				)}
@@ -70,7 +45,12 @@ const previousHref = previousProduct
 		</div>
 
 		<div class="page__content content">
-			<NotionBlocks blocks={blocks} />
+			{product.image && (
+				<figure class="product-hero">
+					<img src={product.image} alt={`${product.name} screenshot`} loading="eager" />
+				</figure>
+			)}
+			<Blocks blocks={product.story} />
 		</div>
 	</div>
 
@@ -87,3 +67,15 @@ const previousHref = previousProduct
 
 	<div class="origin"></div>
 </PageLayout>
+
+<style>
+	.product-hero {
+		margin: 0 0 1.6em;
+	}
+
+	.product-hero img {
+		width: 100%;
+		border: 1px solid rgba(255, 255, 255, 0.25);
+		border-radius: 0.5em;
+	}
+</style>

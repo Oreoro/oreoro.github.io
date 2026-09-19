@@ -1,0 +1,36 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { getNavLink } from "@/lib/blog-helpers";
+import { episodes } from "@/data/podcast";
+---
+
+<PageLayout
+	meta={{
+		title: "Podcast",
+		description: "Conversations about building and running products.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h1>Podcast</h1>
+			<p>Placeholder intro. Replace with your own copy.</p>
+		</div>
+
+		<div class="thoughts">
+			<div class="thoughts__container">
+				{
+					episodes.map((episode) => (
+						<div class="thoughts__thought">
+							<h3>
+								<a href={getNavLink(`/podcast/${episode.slug}/`)}>{episode.title}</a>
+							</h3>
+							<p class="font-size-small">{episode.date}</p>
+							<p>{episode.summary}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</PageLayout>

@@ -1,0 +1,87 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { contact } from "@/data/focuslab";
+import { getNavLink } from "@/lib/blog-helpers";
+---
+
+<PageLayout
+	meta={{
+		title: "Contact",
+		description: "Start a project with Focus Lab — or just ask us a question.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>Contact</h6>
+			<h1>Tell us what you're building.</h1>
+			<p>{contact.note}</p>
+		</div>
+
+		<div class="page__content content">
+			<dl class="contact-list">
+				<div>
+					<dt>Email</dt>
+					<dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd>
+				</div>
+				<div>
+					<dt>Phone</dt>
+					<dd><a href={`tel:${contact.phone.replace(/\s+/g, "")}`}>{contact.phone}</a></dd>
+				</div>
+				<div>
+					<dt>Studio</dt>
+					<dd>{contact.location}</dd>
+				</div>
+			</dl>
+
+			<div style="margin-top: 2em">
+				<a class="button" href={`mailto:${contact.email}`}>
+					Email us <span>&rarr;</span>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="boundary"></div>
+
+	<div
+		class="controller controller--origin"
+		data-next={getNavLink("/")}
+		data-previous={getNavLink("/work/")}
+		role="navigation"
+	>
+		<a href={getNavLink("/")} aria-label="Next: Home" tabindex="-1"></a>
+	</div>
+
+	<div class="origin"></div>
+</PageLayout>
+
+<style>
+	.contact-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1.4em;
+		margin: 0;
+	}
+
+	.contact-list div {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25em;
+	}
+
+	.contact-list dt {
+		color: rgba(255, 255, 255, 0.6);
+		font-size: 0.8em;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.contact-list dd {
+		margin: 0;
+		color: var(--color-white);
+		font-size: 1.2em;
+		font-weight: 500;
+	}
+</style>

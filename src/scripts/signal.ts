@@ -233,8 +233,50 @@ function load() {
 	}
 }
 
+/**
+ * scroll.js — signal detail pages. Moves the expanded `.signal--clone`
+ * content into the matching `.signal` in the cluster and scrolls to it.
+ */
+function initScroll() {
+	const clone = document.querySelector<HTMLElement>(".signal--clone");
+	if (!clone) return;
+
+	const cluster = document.querySelector<HTMLElement>(".cluster");
+	if (!cluster) return;
+
+	const signalIndex = parseInt(clone.getAttribute("data-signal") || "0", 10);
+	const signalElement = cluster.querySelectorAll<HTMLElement>(".signal").item(signalIndex);
+	if (!signalElement) return;
+
+	signalElement.replaceChildren(...Array.from(clone.children));
+	signalElement.classList.add("signal--select");
+
+	if (window.innerWidth >= 1024) {
+		const boundary = document.querySelector<HTMLElement>(".boundary");
+		const boundaryHeight = boundary
+			? parseInt(getComputedStyle(boundary, ":before").getPropertyValue("height")) || 0
+			: 0;
+		const clusterHeight = cluster.offsetHeight;
+		const clusterOffset = cluster.offsetTop;
+		const clusterArea = window.innerHeight - clusterOffset;
+
+		const signalOffset = signalElement.offsetTop - clusterOffset;
+		const signalSpace = clusterHeight - signalOffset;
+		const signalPadding = clusterArea - signalSpace - boundaryHeight;
+
+		if (signalPadding > 0) cluster.style.paddingBottom = signalPadding + "px";
+
+		window.scrollTo(0, signalOffset);
+	}
+
+	if (!cluster.classList.contains("cluster--loaded")) cluster.classList.add("cluster--loaded");
+}
+
 window.addEventListener("resize", resizeController);
-window.addEventListener("load", load);
+window.addEventListener("load", () => {
+	load();
+	initScroll();
+});
 
 if (document.readyState === "loading") {
 	document.addEventListener("DOMContentLoaded", ready);

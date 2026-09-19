@@ -1,0 +1,48 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+
+const placeholder =
+	"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='260'%3E%3Crect width='420' height='260' fill='%23e7e5e2'/%3E%3C/svg%3E";
+
+// Placeholder assets — replace labels and links with your own.
+const assets = [
+	{ label: "Focus Lab Symbol", type: "SVG", href: "#" },
+	{ label: "Focus Lab Logo", type: "SVG", href: "#" },
+	{ label: "Focus Lab Wordmark", type: "SVG", href: "#" },
+	{ label: "Focus Lab Icon", type: "PNG", href: "#" },
+];
+---
+
+<PageLayout
+	meta={{
+		title: "Downloads",
+		description: "Logos, symbols and brand assets.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h1>Downloads</h1>
+		</div>
+
+		<div class="downloads">
+			<div class="downloads__container">
+				<div class="downloads__group">
+					{
+						assets.map((asset) => (
+							<a download href={asset.href}>
+								<figure>
+									<img src={placeholder} alt={asset.label} />
+									<figcaption>
+										{asset.label}
+										<span>{asset.type}</span>
+									</figcaption>
+								</figure>
+							</a>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</PageLayout>

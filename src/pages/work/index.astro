@@ -1,49 +1,12 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { getProducts, getPostContentByPostId } from "@/lib/notion/client";
+import { products } from "@/data/focuslab";
 import { getNavLink } from "@/lib/blog-helpers";
 import "@/styles/work.css";
 
-const products = await getProducts();
-
-type Card = {
-	slug: string;
-	title: string;
-	excerpt: string;
-	tags: string[];
-	imageUrl: string;
-	external: string;
-};
-
-const cards: Card[] = await Promise.all(
-	products.map(async (product) => {
-		let imageUrl = "";
-		try {
-			const { blocks } = await getPostContentByPostId(product);
-			const imageBlock = blocks.find(
-				(block) =>
-					block.Type === "image" && (block.NImage?.External?.Url || block.NImage?.File?.Url),
-			);
-			imageUrl =
-				imageBlock?.NImage?.External?.Url || imageBlock?.NImage?.File?.Url || "";
-		} catch {
-			imageUrl = "";
-		}
-
-		return {
-			slug: product.Slug,
-			title: product.Title,
-			excerpt: product.Excerpt,
-			tags: product.Tags.map((tag) => tag.name),
-			imageUrl,
-			external: typeof product.Fields?.Link === "string" ? product.Fields.Link : "",
-		};
-	}),
-);
-
-const nextHref = cards[0] ? getNavLink(`/work/${cards[0].slug}/`) : getNavLink("/");
-const previousHref = cards.length
-	? getNavLink(`/work/${cards[cards.length - 1].slug}/`)
+const nextHref = products[0] ? getNavLink(`/work/${products[0].slug}/`) : getNavLink("/");
+const previousHref = products.length
+	? getNavLink(`/work/${products[products.length - 1].slug}/`)
 	: getNavLink("/");
 ---
 
@@ -67,23 +30,23 @@ const previousHref = cards.length
 
 		<div class="page__content">
 			<div class="work-grid">
-				{cards.map((card, index) => (
+				{products.map((product, index) => (
 					<a
 						class="work-card"
-						href={getNavLink(`/work/${card.slug}/`)}
+						href={getNavLink(`/work/${product.slug}/`)}
 						style={`--work-index:${index}`}
 					>
 						<div class="work-card__media">
-							{card.imageUrl ? (
+							{product.image ? (
 								<img
-									src={card.imageUrl}
-									alt={`${card.title} preview`}
+									src={product.image}
+									alt={`${product.name} preview`}
 									loading="lazy"
 									decoding="async"
 								/>
 							) : (
 								<span class="work-card__placeholder">
-									{card.title
+									{product.name
 										.split(/\s+/)
 										.slice(0, 2)
 										.map((word) => word.charAt(0))
@@ -94,10 +57,10 @@ const previousHref = cards.length
 						<div class="work-card__body">
 							<div class="work-card__meta">
 								<span>{String(index + 1).padStart(2, "0")}</span>
-								{card.tags.length > 0 && <span>{card.tags.slice(0, 2).join(" · ")}</span>}
+								<span>{product.tags.slice(0, 2).join(" · ")}</span>
 							</div>
-							<h2 class="work-card__title">{card.title}</h2>
-							{card.excerpt && <p class="work-card__desc">{card.excerpt}</p>}
+							<h2 class="work-card__title">{product.name}</h2>
+							<p class="work-card__desc">{product.tagline}</p>
 						</div>
 					</a>
 				))}

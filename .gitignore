@@ -41,6 +41,9 @@ buildcache/
 .playwright-cli/
 output/
 
+# Context.dev scrape output (reference only, never shipped)
+reference/
+
 #agent conversation copies
 .agents/**/conversation.md
 

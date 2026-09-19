@@ -1,0 +1,66 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { site } from "@/data/focuslab";
+import { signals } from "@/data/signals";
+import { getNavLink } from "@/lib/blog-helpers";
+
+export function getStaticPaths() {
+	return signals.map((signal, index) => ({
+		params: { num: signal.num },
+		props: { signal, index },
+	}));
+}
+
+const { signal, index } = Astro.props;
+const nextSignal = signals[(index + 1) % signals.length]!;
+const previousSignal = signals[(index - 1 + signals.length) % signals.length]!;
+---
+
+<PageLayout
+	meta={{
+		title: `${signal.num}. ${signal.label}`,
+		description: site.description,
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<section class="signal signal--clone" data-signal={signal.num}>
+		<header class="signal__header" tabindex="-1" autofocus>
+			<h2 aria-label={`Signal ${signal.num}. ${signal.label}`}>
+				<span>{signal.num}.</span>
+				<strong>{signal.label}</strong>
+			</h2>
+		</header>
+		<div class="signal__content" set:html={signal.content} />
+	</section>
+
+	<div class="cluster cluster--signal">
+		{signals.map((item) => (
+			<section class="signal">
+				<header class="signal__header">
+					<a href={getNavLink(`/${item.num}`)} aria-label={`Signal ${item.num}. ${item.label}`}>
+						<dl>
+							<dt>{item.num}.</dt>
+							<dd>{item.label}</dd>
+						</dl>
+					</a>
+				</header>
+			</section>
+		))}
+	</div>
+
+	<div class="boundary"></div>
+
+	<div
+		class="controller controller--origin"
+		data-next={getNavLink(`/${nextSignal.num}`)}
+		data-previous={getNavLink(`/${previousSignal.num}`)}
+		role="navigation"
+	>
+		<a
+			href={getNavLink(`/${nextSignal.num}`)}
+			aria-label={`Next Signal: ${nextSignal.label}`}
+			tabindex="-1"></a>
+	</div>
+
+	<div class="origin"></div>
+</PageLayout>

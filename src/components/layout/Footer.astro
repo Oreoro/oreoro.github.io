@@ -2,29 +2,36 @@
 import { getNavLink } from "@/lib/blog-helpers";
 
 const links: Array<[string, string]> = [
-	["Work", "/work/"],
-	["Capabilities", "/capabilities/"],
-	["Stack", "/stack/"],
-	["Blocks", "/blocks/"],
-	["Blog", "/blog/"],
-	["Tags", "/tags/"],
-	["RSS", "/rss.xml"],
-	["Contact", "/contact/"],
+	["1999", "https://1999.37signals.com"],
+	["Books", "/books"],
+	["Thoughts", "/thoughts"],
+	["Jobs", "/jobs"],
+	["Updates", "https://updates.37signals.com"],
+	["Podcast", "/podcast"],
+	["Supply", "https://supply.37signals.com"],
+	["Dev", "https://dev.37signals.com"],
+	["Policies", "/policies"],
 ];
 
-const nextHref = getNavLink("/work/");
+const isExternal = (href: string) => href.startsWith("http");
+const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 ---
 
 <footer class="footer">
 	<ul>
-		{links.map(([label, href]) => (
-			<li>
-				<a href={getNavLink(href)} aria-label={label}>{label}</a>
-			</li>
-		))}
+		{
+			links.map(([label, href]) => (
+				<li>
+					<a
+						href={link(href)}
+						aria-label={label}
+						target={isExternal(href) ? "_blank" : undefined}
+						rel={isExternal(href) ? "noopener" : undefined}
+					>
+						{label}
+					</a>
+				</li>
+			))
+		}
 	</ul>
-
-	<div class="footer__next">
-		<a href={nextHref} aria-label="Next: Work" tabindex="-1"></a>
-	</div>
 </footer>
