@@ -40,7 +40,7 @@ export const policies: Policy[] = [
 				heading: "Changes and liability",
 				body: [
 					"We may modify or discontinue any part of the Services at any time. We provide the Services on an “as is” and “as available” basis, and we are not liable for damages resulting from their use.",
-					"If you have a question about these Terms, email hello@focuslab.pk.",
+					"If you have a question about these Terms, email bilal@focuslab.pk.",
 				],
 			},
 		],

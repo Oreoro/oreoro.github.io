@@ -164,7 +164,7 @@ export const thoughts: Thought[] = [
 				id: "how-to-start",
 				heading: "How to start",
 				body: [
-					"Send a short note to hello@focuslab.pk. Tell us what you are building and what is in the way. If we are a fit, we will say so. If we are not, we will say that too.",
+					"Send a short note to bilal@focuslab.pk. Tell us what you are building and what is in the way. If we are a fit, we will say so. If we are not, we will say that too.",
 				],
 			},
 		],

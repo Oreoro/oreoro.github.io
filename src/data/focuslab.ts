@@ -10,7 +10,7 @@ export const site = {
 	tagline: "A product-led studio.",
 	description:
 		"Focus Lab is a product-led studio. We design, build, and run our own software — and partner with a small number of teams to do the same.",
-	email: "hello@focuslab.pk",
+	email: "bilal@focuslab.pk",
 	phone: "+92 333 5507394",
 	location: "Islamabad, PK",
 };
