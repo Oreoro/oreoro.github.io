@@ -1,45 +1,71 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { site } from "@/data/focuslab";
-import { signals } from "@/data/signals";
-import { getNavLink } from "@/lib/blog-helpers";
 
-const nextHref = getNavLink(`/${signals[0]!.num}`);
-const previousHref = getNavLink(`/${signals[signals.length - 1]!.num}`);
+const email = "hello@focuslab.pk";
 ---
 
 <PageLayout
 	meta={{
-		title: site.name,
-		description: site.description,
+		title: "Focus Lab",
+		description:
+			"Focus Lab is a product-led studio. We design, build, and run our own software — and partner with a small number of teams to do the same.",
 		ogImage: "/og-image/home.png",
 	}}
 >
-	<div class="cluster cluster--index">
-		{signals.map((signal) => (
-			<section class="signal">
-				<header class="signal__header">
-					<a href={getNavLink(`/${signal.num}`)} aria-label={`Signal ${signal.num}. ${signal.label}`}>
-						<dl>
-							<dt>{signal.num}.</dt>
-							<dd>{signal.label}</dd>
-						</dl>
-					</a>
-				</header>
-			</section>
-		))}
+	<div class="page">
+		<div class="page__headline">
+			<h6>Focus Lab</h6>
+			<h1>We build products.<br /> Then we help you build yours.</h1>
+			<p>
+				Focus Lab is a product-led studio. We design, build, and run our own software — and partner
+				with a small number of teams to do the same.
+			</p>
+		</div>
+
+		<div class="page__content content">
+			<h2>Product first</h2>
+			<p>
+				We don't start with a deck. We start with the product. Everything we know about shipping
+				comes from owning what we ship.
+			</p>
+			<ol class="list-spaced">
+				<li>
+					<strong>Product.</strong> Find the smallest thing worth building, then build it.
+				</li>
+				<li>
+					<strong>Design.</strong> Interfaces that feel obvious, on a system that holds up.
+				</li>
+				<li>
+					<strong>Engineering.</strong> Small teams, short cycles, working software over promises.
+				</li>
+				<li>
+					<strong>Operations.</strong> We stay for support, metrics, and the second year.
+				</li>
+			</ol>
+
+			<hr class="ornament" />
+
+			<h2>What we take on</h2>
+			<p>
+				A few partnerships a year, where we can be the product team — not an agency on the side.
+			</p>
+			<ul class="list-spaced">
+				<li>New products, from first sketch to first customer.</li>
+				<li>Products that need to ship faster or feel better.</li>
+				<li>AI features that have to survive real users, not just demos.</li>
+			</ul>
+
+			<hr class="ornament" />
+
+			<h2>Have something in mind?</h2>
+			<p>
+				Tell us what you're building and what done looks like. We'll reply with a straight answer.
+			</p>
+			<p>
+				<a class="button button--theme" href={`mailto:${email}`}>
+					Start a conversation <span>&rarr;</span>
+				</a>
+			</p>
+		</div>
 	</div>
-
-	<div class="boundary"></div>
-
-	<div
-		class="controller controller--origin"
-		data-next={nextHref}
-		data-previous={previousHref}
-		role="navigation"
-	>
-		<a href={nextHref} aria-label={`Next Signal: ${signals[0]!.label}`} tabindex="-1"></a>
-	</div>
-
-	<div class="origin"></div>
 </PageLayout>
