@@ -31,56 +31,23 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 		},
 	}}
 >
-	<h1 class="visually-hidden">{entry.label}</h1>
+	<div class="page">
+		<div class="page__headline">
+			<h1>{entry.label}</h1>
+		</div>
 
-	<section class="signal signal--clone" data-signal={index}>
-		<header class="signal__header" tabindex="-1">
-			<h2 aria-label={entry.label}>
-				<strong>{entry.label}</strong>
-			</h2>
-		</header>
-		<div class="signal__content">
+		<div class="page__content content">
 			<Fragment set:html={entry.content} />
+
 			<hr />
+
 			<p class="font-size-small">
 				<a href={getNavLink("/")}>All entries</a>
+				{" · "}
+				Previous: <a href={getNavLink(`/${previousEntry.num}`)}>{previousEntry.label}</a>
 				{" · "}
 				Next: <a href={getNavLink(`/${nextEntry.num}`)}>{nextEntry.label}</a>
 			</p>
 		</div>
-	</section>
-
-	<div class="cluster cluster--signal">
-		{
-			stream.map((item) => (
-				<section class="signal">
-					<header class="signal__header">
-						<a
-							href={getNavLink(`/${item.num}`)}
-							aria-label={item.label}
-							target="_blank"
-							rel="noopener"
-						>
-							<span class="signal__label">{item.label}</span>
-						</a>
-					</header>
-				</section>
-			))
-		}
 	</div>
-
-	<div class="boundary"></div>
-
-	<div
-		class="controller controller--origin"
-		data-next={getNavLink(`/${nextEntry.num}`)}
-		data-previous={getNavLink(`/${previousEntry.num}`)}
-		role="navigation"
-		aria-label="Entry navigation"
-	>
-		<a href={getNavLink(`/${nextEntry.num}`)} aria-label={`Next: ${nextEntry.label}`} tabindex="-1"
-		></a>
-	</div>
-
-	<div class="origin"></div>
 </PageLayout>
