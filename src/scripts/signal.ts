@@ -208,13 +208,19 @@ function initTheme() {
 		"--rgb-theme-12",
 	];
 
-	const themeSession = sessionStorage.getItem("theme");
-	const themeFilter = themeOptions.filter((theme) => theme !== themeSession);
-	const themeArray = themeFilter.length > 0 ? themeFilter : themeOptions;
-	const themeVariable =
-		themeArray[Math.floor(Math.random() * themeArray.length)] ?? "--rgb-theme-1";
+	const themed = document.querySelector<HTMLElement>("[data-theme-index]");
+	const themedIndex = themed ? parseInt(themed.dataset.themeIndex || "", 10) : Number.NaN;
 
-	sessionStorage.setItem("theme", themeVariable);
+	let themeVariable: string;
+	if (!Number.isNaN(themedIndex)) {
+		themeVariable = `--rgb-theme-${(themedIndex % themeOptions.length) + 1}`;
+	} else {
+		const themeSession = sessionStorage.getItem("theme");
+		const themeFilter = themeOptions.filter((theme) => theme !== themeSession);
+		const themeArray = themeFilter.length > 0 ? themeFilter : themeOptions;
+		themeVariable = themeArray[Math.floor(Math.random() * themeArray.length)] ?? "--rgb-theme-1";
+		sessionStorage.setItem("theme", themeVariable);
+	}
 
 	const themeRgb = getComputedStyle(document.documentElement)
 		.getPropertyValue(themeVariable)

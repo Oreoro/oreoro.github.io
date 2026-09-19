@@ -31,7 +31,7 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 		},
 	}}
 >
-	<div class="page">
+	<div class="page" data-theme-index={index % 12}>
 		<div class="page__headline">
 			<h1>{entry.label}</h1>
 		</div>

@@ -18,10 +18,6 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 ---
 
 <footer class="footer">
-	<div class="footer__brand">
-		<span class="footer__name">Focus Lab</span>
-		<span class="footer__note">A product-led studio. &copy; 2026</span>
-	</div>
 	<ul>
 		{
 			links.map(([label, href]) => (

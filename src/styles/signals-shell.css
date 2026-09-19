@@ -563,44 +563,42 @@ html body.signals-shell .header .header__brand {
 }
 
 html body.signals-shell .header .header__brand a {
-	display: block;
+	align-items: center;
+	display: flex;
 	height: var(--line-height);
 	margin-right: var(--spacing);
 	margin-top: var(--spacing);
 	text-decoration: none;
 }
 
-html body.signals-shell .header .header__brand a .wordmark,
-html body.signals-shell .nav__logo a .wordmark {
+html body.signals-shell .brand {
 	align-items: center;
 	display: flex;
+	gap: 0.45em;
+	text-decoration: none;
+}
+
+html body.signals-shell .brand__mark {
+	display: block;
+	flex: none;
+	height: 1.25em;
+	width: 1.25em;
+}
+
+html body.signals-shell .brand__word {
 	font-size: 1.15rem;
 	font-weight: 700;
-	height: 100%;
 	letter-spacing: -0.03em;
 	line-height: 1;
-	text-decoration: none;
 	white-space: nowrap;
 }
 
-html body.signals-shell .header .header__brand a .wordmark {
+html body.signals-shell .header .header__brand .brand {
 	color: var(--color-white);
 }
 
-html body.signals-shell .nav__logo a .wordmark {
+html body.signals-shell .nav__logo .brand {
 	color: var(--color-black);
-}
-
-html body.signals-shell .header .header__brand a,
-html body.signals-shell .nav__logo a {
-	display: flex;
-	align-items: center;
-}
-
-html body.signals-shell .header .header__brand a img {
-	height: 100%;
-	max-height: 100%;
-	width: auto;
 }
 
 html body.signals-shell .header ul {
@@ -723,7 +721,8 @@ html body.signals-shell .nav__logo {
 }
 
 html body.signals-shell .nav__logo a {
-	display: block;
+	align-items: center;
+	display: flex;
 	height: var(--line-height);
 	margin-right: var(--spacing);
 	margin-top: var(--spacing);
@@ -801,11 +800,10 @@ html body.signals-shell .nav__options ul:last-child li {
 /* ---------- footer.css ---------- */
 
 html body.signals-shell .footer {
-	align-items: flex-end;
 	background: linear-gradient(0deg, rgba(var(--rgb-theme), 1) 0, rgba(var(--rgb-theme), 0) 100%);
 	bottom: 0;
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 	left: 0;
 	pointer-events: none;
 	position: fixed;
@@ -813,30 +811,9 @@ html body.signals-shell .footer {
 	z-index: 104;
 }
 
-html body.signals-shell .footer__brand {
-	color: var(--color-white);
-	display: flex;
-	flex-direction: column;
-	font-size: var(--font-size-small);
-	letter-spacing: normal;
-	line-height: 1.4;
-	padding-bottom: var(--spacing);
-	padding-left: var(--spacing);
-	pointer-events: auto;
-}
-
-html body.signals-shell .footer__name {
-	font-weight: 700;
-}
-
-html body.signals-shell .footer__note {
-	opacity: 0.85;
-}
-
 html body.signals-shell .footer ul {
 	display: none;
 	flex: 1;
-	justify-content: flex-end;
 	line-height: var(--line-height);
 	padding-bottom: var(--spacing);
 	padding-left: var(--spacing);

@@ -1,5 +1,6 @@
 ---
 import { getNavLink } from "@/lib/blog-helpers";
+import Brand from "@/components/layout/Brand.astro";
 
 const primary: Array<[string, string]> = [
 	["Focus Lab", "/"],
@@ -29,9 +30,7 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 
 <nav class="nav" aria-label="Mobile navigation">
 	<div class="nav__logo">
-		<a href={getNavLink("/")} aria-label="Focus Lab">
-			<span class="wordmark">Focus Lab</span>
-		</a>
+		<Brand />
 	</div>
 	<div class="nav__toggle">
 		<label for="nav-active">
@@ -76,9 +75,7 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 
 <header class="header">
 	<div class="header__brand">
-		<a href={getNavLink("/")} aria-label="Focus Lab">
-			<span class="wordmark">Focus Lab</span>
-		</a>
+		<Brand />
 	</div>
 	<ul>
 		{
