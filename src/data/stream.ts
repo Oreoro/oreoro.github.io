@@ -1,7 +1,7 @@
 /**
  * Focus Lab stream — the numbered catalog that drives the home page and the
- * detail pages. It reuses the 37signals `.cluster--index` / `.cluster--signal`
- * layout: newest first, numbered, one entry per launch or note.
+ * detail pages. It uses the numbered `.cluster--index` / `.cluster--signal`
+ * layout: newest first, one entry per launch or note.
  */
 
 export interface StreamEntry {

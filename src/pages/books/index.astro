@@ -3,96 +3,34 @@ import PageLayout from "@/layouts/Base.astro";
 
 const books = [
 	{
-		id: "shape-up",
-		title: "Shape Up",
-		href: "https://basecamp.com/books/shapeup",
-		image: "/assets/books/shape-up.webp",
-		desc: "Shape Up is for product development teams who struggle to ship. Written by the innovators behind Basecamp, the book gives teams the tools to address the risks and unknowns at each stage of the product development process. Full of eye-opening insights, Shape Up will help you break free of “best practices” that aren’t really working and start shipping meaningful projects your team can celebrate.",
-		links: [
-			{ label: "Buy the print edition", href: "https://basecamp-goods.com/products/shapeup" },
-			{ label: "Read it online", href: "https://basecamp.com/shapeup" },
-			{ label: "Download a PDF", href: "https://basecamp.com/shapeup/shape-up.pdf" },
-		],
+		title: "Inspired",
+		author: "Marty Cagan",
+		desc: "How the best product teams decide what to build and why. The clearest argument we know for putting product before process.",
+		href: "https://www.svpg.com/inspired-how-to-create-products-customers-love/",
 	},
 	{
-		id: "it-doesnt-have-to-be-crazy-at-work",
-		title: "It Doesn’t Have to Be Crazy at Work",
-		href: "https://basecamp.com/books/calm",
-		image: "/assets/books/calm.webp",
-		desc: "Chaos shouldn’t be the natural state at work. Anxiety isn’t a prerequisite for progress. Sitting in meetings all day isn’t required for success. This book treats the patient, calls out false cures, and pushes back against the ritualistic time-sucks that have infected the way people work.",
-		links: [
-			{ label: "Amazon", href: "https://www.amazon.com/Doesnt-Have-Be-Crazy-Work/dp/0062874780" },
-			{
-				label: "Apple Books",
-				href: "https://books.apple.com/us/book/it-doesnt-have-to-be-crazy-at-work/id1350572012",
-			},
-			{
-				label: "Barnes & Noble",
-				href: "https://www.barnesandnoble.com/w/it-doesnt-have-to-be-crazy-at-work-jason-fried/1128018111",
-			},
-			{ label: "Indiebound", href: "https://www.indiebound.org/book/9780062874788" },
-			{
-				label: "Porchlight",
-				href: "https://www.porchlightbooks.com/product/it-doesnt-have-to-be-crazy-at-work--jason-fried",
-			},
-		],
+		title: "The Lean Startup",
+		author: "Eric Ries",
+		desc: "Build, measure, learn. The loop behind every product we ship — and the reason we keep scope small enough to test.",
+		href: "https://theleanstartup.com/",
 	},
 	{
-		id: "rework",
-		title: "REWORK",
-		href: "https://basecamp.com/books/rework",
-		image: "/assets/books/rework.webp",
-		desc: "Most business books give you the same old advice: write a business plan, study the competition, seek investors, yadda yadda. If you’re looking for a book like that, put this one back on the shelf. REWORK is the perfect playbook for anyone who’s ever dreamed of doing it on their own. Entrepreneurs, small-business owners, and artists who don’t want to starve will all find valuable guidance in these pages.",
-		links: [
-			{ label: "Amazon", href: "https://www.amazon.com/Rework-Jason-Fried/dp/0307463745" },
-			{ label: "Apple Books", href: "https://books.apple.com/us/book/rework/id421026168" },
-			{
-				label: "Barnes & Noble",
-				href: "https://www.barnesandnoble.com/w/rework-jason-fried/1102048884",
-			},
-			{ label: "Indiebound", href: "https://www.indiebound.org/book/9780307463746" },
-			{ label: "Porchlight", href: "https://www.porchlightbooks.com/product/rework--jason-fried" },
-		],
+		title: "The Design of Everyday Things",
+		author: "Don Norman",
+		desc: "Why some interfaces feel obvious and others fight you. Required reading before we design anything.",
+		href: "https://www.nngroup.com/books/design-everyday-things-revised/",
 	},
 	{
-		id: "remote",
-		title: "REMOTE",
-		href: "https://basecamp.com/books/remote",
-		image: "/assets/books/remote.webp",
-		desc: "Office not required. As an employer, restricting hiring to your local region means you’re not getting the best people you can. As an employee, restricting your job search to companies within a reasonable commute means you’re not working for the best company you can. REMOTE shows both employers and employees how they can work together, remotely, from any desk, in any space, in any place, anytime, anywhere.",
-		links: [
-			{ label: "Amazon", href: "https://www.amazon.com/Remote-Office-Not-Required/dp/0804137501" },
-			{ label: "Apple Books", href: "https://books.apple.com/us/book/remote/id625981856" },
-			{
-				label: "Barnes & Noble",
-				href: "https://www.barnesandnoble.com/w/remote-jason-fried/1114307851",
-			},
-			{ label: "Indiebound", href: "https://www.indiebound.org/book/9780804137508" },
-			{
-				label: "Porchlight",
-				href: "https://www.porchlightbooks.com/product/remote-office-not-required--jason-fried",
-			},
-		],
+		title: "Refactoring UI",
+		author: "Adam Wathan & Steve Schoger",
+		desc: "Practical interface design for people who build. Tactics we reach for on every screen.",
+		href: "https://www.refactoringui.com/",
 	},
 	{
-		id: "getting-real",
-		title: "Getting Real",
-		href: "https://basecamp.com/books/getting-real",
-		image: "/assets/books/getting-real.webp",
-		desc: "The smarter, faster, easier way to build a successful web application. Getting Real is packed with keep-it-simple insights, contrarian points of view, and unconventional approaches to software design. This isn’t a technical book or a design tutorial, it’s a book of ideas. Anyone working on a web app — including entrepreneurs, designers, programmers, executives, or marketers — will find value and inspiration in this book.",
-		links: [
-			{ label: "Read it online", href: "https://basecamp.com/gettingreal" },
-			{ label: "Download a PDF", href: "https://basecamp.com/gettingreal/getting-real.pdf" },
-			{
-				label: "Amazon",
-				href: "https://www.amazon.com/Getting-Real-Smarter-Successful-Application/dp/0578012812",
-			},
-			{ label: "Apple Books", href: "https://books.apple.com/us/book/getting-real/id365490630" },
-			{
-				label: "Barnes & Noble",
-				href: "https://www.barnesandnoble.com/w/getting-real-37signals/1113544045",
-			},
-		],
+		title: "Continuous Discovery Habits",
+		author: "Teresa Torres",
+		desc: "How to stay close to customers every week instead of every quarter. Keeps us honest about what people actually need.",
+		href: "https://www.producttalk.org/continuous-discovery-habits/",
 	},
 ];
 ---
@@ -100,52 +38,31 @@ const books = [
 <PageLayout
 	meta={{
 		title: "Books",
-		description: "Books we've written and recommend.",
+		description: "The books that shaped how Focus Lab builds products.",
 		ogImage: "/og-image/home.png",
 	}}
 >
 	<div class="page">
 		<div class="page__headline">
-			<h1>Books</h1>
-			<p>
-				On top of making Basecamp and HEY, we write books about what we've learned running our own
-				business. They're filled with practical advice you won't find elsewhere.
-			</p>
+			<h6>Books</h6>
+			<h1>Books that shaped how we build.</h1>
+			<p>A short shelf. Every one of these changed how we work, not just what we know.</p>
 		</div>
 
-		<div class="books">
-			<div class="books__container">
-				{
-					books.map((book) => (
-						<div class="books__book" id={book.id}>
-							<div class="books__wrap">
-								<figure>
-									<a href={book.href} target="_blank" rel="noopener">
-										<img src={book.image} alt={book.title} />
-									</a>
-								</figure>
-								<div class="books__content">
-									<h3>
-										<a href={book.href} target="_blank" rel="noopener">
-											{book.title}
-										</a>
-									</h3>
-									<p>{book.desc}</p>
-									<ul>
-										{book.links.map((link) => (
-											<li>
-												<a href={link.href} target="_blank" rel="noopener">
-													{link.label}
-												</a>
-											</li>
-										))}
-									</ul>
-								</div>
-							</div>
-						</div>
-					))
-				}
-			</div>
+		<div class="page__content content">
+			{
+				books.map((book) => (
+					<>
+						<h2>
+							<a href={book.href} target="_blank" rel="noopener">
+								{book.title}
+							</a>
+						</h2>
+						<p class="font-size-small">{book.author}</p>
+						<p>{book.desc}</p>
+					</>
+				))
+			}
 		</div>
 	</div>
 </PageLayout>

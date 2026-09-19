@@ -8,75 +8,75 @@ export interface Episode {
 
 export const episodes: Episode[] = [
 	{
-		slug: "one-way-doors",
-		title: "One-way Doors",
-		date: "2026-08-26",
+		slug: "why-product-led",
+		title: "Why product-led",
+		date: "2026-09-16",
 		summary:
-			"Not every decision deserves a long deliberation. In this episode, co-founders Jason Fried and David Heinemeier Hansson look back on 25 years of running 37signals, the handful of decisions that were truly irreversible, and why keeping a loose grip on most business calls has served them better than any spreadsheet ever could.",
+			"Focus Lab is a product-led studio. We design, build, and run our own software, then partner with a small number of teams to do the same. In this episode we explain what that means and why we chose it.",
 		body: [
-			"Most business decisions are two-way doors: walk through, and if you don't like what's on the other side, walk back. Jason and David argue that treating nearly every call this way is what lets 37signals move quickly and try more things, while reserving real deliberation for the rare one-way doors that can't be undone.",
-			"Looking back over 25 years, they single out selling a small piece of the company to Jeff Bezos in 2006 as one of the few truly irreversible calls they've made. Even then, the decision came together quickly because it preserved independence rather than trading it away.",
-			"The bigger lesson is that the sum of many small, reversible choices matters far more than any single one. Keep the stakes low, let reality tell you whether you were right, and don't linger on the calls that didn't pan out.",
+			"Being product-led means we own the outcome. We ship software, watch how people use it, and fix what does not work. We are not a body shop that bills hours and walks away.",
+			"That changes how we work. We keep the studio small, we run the products ourselves, and we only take on a handful of partners at a time. Urbanevents, Workproof, and Muxo are proof of the approach, not side projects.",
+			"The constraint is deliberate. Fewer partners means more attention per partner, and running our own products keeps us honest about what shipping actually takes.",
 		],
 	},
 	{
-		slug: "competing-with-giants",
-		title: "Competing with giants, the end of SaaS & other listener questions",
+		slug: "building-urbanevents",
+		title: "Building Urbanevents",
+		date: "2026-09-02",
+		summary:
+			"Urbanevents handles events and ticketing end to end. We talk through the parts that were harder than expected and the parts we deliberately left out.",
+		body: [
+			"Ticketing looks simple until you deal with inventory, holds, refunds, and the moment a popular event sells out in seconds. We spent most of the early work on the booking path and the database underneath it.",
+			"We run Urbanevents on Cloudflare, Node.js, and PostgreSQL, with Stripe for payments. Keeping the stack boring lets us move quickly and sleep at night.",
+			"The harder call was what not to build. We skipped a dozen features that other platforms have. Every one we left out made the core product clearer.",
+		],
+	},
+	{
+		slug: "shipping-muxo",
+		title: "Shipping Muxo",
 		date: "2026-08-19",
 		summary:
-			"Fresh listener questions are on the table this week. Jason Fried and David Heinemeier Hansson tackle whether small builders can realistically compete with industry heavyweights, what the AI agent wave actually means for the future of SaaS, and whether mixing your personal social presence with your business is a smart move or a mistake.",
+			"Muxo is one key for the whole stack: web search, scraping, LLM calls, storage, and email behind a single API. This episode is about the design decisions behind it.",
 		body: [
-			"You don't beat Google or Apple at their own game. Instead, Jason and David say, find the customers you can serve distinctively and build something tight and just right for them. Differentiate, carve out your own distribution, and lean into everything a small company can do that a giant can't.",
-			"On AI and the future of SaaS, they're skeptical of the hype but not dismissive. Replacing entrenched, unloved enterprise software is plausible; replacing a $50-a-month tool that people don't want to build or maintain themselves is a much harder sell. Great software is still about a cohesive idea, not just compiled code.",
-			"On personal versus corporate social accounts, both recoil at the idea of a manufactured \"personal brand.\" Just talk about what you're interested in, the way you'd talk to a friend, and skip the engagement formulas.",
+			"Muxo started as an internal tool. We were wiring the same few capabilities into every project, so we built one key that covers all of them. Then we realized other teams had the same problem.",
+			"We kept the interface small. One key, a short manifest, and a set of named capabilities. The work goes into reliability, not into a long list of options.",
+			"Running an AI product means being plain about limits. Models fail, providers change, and costs move. We design for retries and clear errors instead of pretending the stack is stable.",
 		],
 	},
 	{
-		slug: "rapid-fire-q-and-a",
-		title: "Rapid Fire Q&A",
-		date: "2026-08-12",
-		summary:
-			"No prep, no filters, just questions. Host Kimberly Rhodes puts Jason Fried and David Heinemeier Hansson on the spot with a fresh round of rapid fire questions covering everything from recent reads and AI discoveries to memorable customer service moments and what they've started or stopped doing to make work better.",
-		body: [
-			"Jason and David answer off the cuff on the books they're reading, the AI tools that keep surprising them, and the customer service moments that stuck with them. A recurring theme: the best interactions are simple, human, and free of unnecessary friction.",
-			"Asked what they've started or stopped doing to improve work, they land on the value of protecting focus and ending the day with a clear head. Their favorite part of a typical week is the final stretch before something ships, when the problems get small and the fixes come fast.",
-			"It's a looser, more personal episode, but the through-line is the same one that runs through everything 37signals does: stay curious, keep things simple, and don't overcomplicate the work.",
-		],
-	},
-	{
-		slug: "do-it-live",
-		title: "We'll do it live",
+		slug: "workproof-in-the-open",
+		title: "Workproof in the open",
 		date: "2026-08-05",
 		summary:
-			"Showing off your product in real time, with real customers, changes everything. In this episode, Jason Fried and David Heinemeier Hansson walk through why 37signals has been hosting live demos and Q&A sessions since the Basecamp 5 launch, what makes the format work, and why being accessible and unafraid of your customers is underrated.",
+			"Workproof is our work and proof tooling. We build it in the open with a small set of partners, and we share what that loop looks like.",
 		body: [
-			"Since launching Basecamp 5, 37signals has been running live Zoom demos where Jason opens up a real company account and lets customers drive the conversation. There's no script and no recording shared afterward, which keeps the sessions spontaneous and the feedback honest.",
-			"David compares it to the idea that you can either out-teach or out-spend your competition. Live demos reveal the tacit knowledge behind how a product is used, and the negative space of everything you deliberately don't do, in a way no marketing page or polished video can.",
-			"Underneath it all is a simple stance: don't be afraid of your customers. Show the work, take the hard questions, and let people see the humans behind the product.",
+			"Workproof came from a simple frustration: it is hard to show what actually happened on a project. We wanted a tool that records the work as it happens, not a report written after the fact.",
+			"We build it alongside partners. They use early versions, tell us what is missing, and we ship the next cut. It is a tight loop, and it keeps the product honest.",
+			"Building in the open also means saying no in public. Partners see the roadmap and see the tradeoffs. That trust is worth more than a polished launch.",
 		],
 	},
 	{
-		slug: "whats-the-worst-that-could-happen",
-		title: "What's the worst that could happen?",
-		date: "2026-07-29",
-		summary:
-			"Many entrepreneurs spend more time worrying about what could go wrong than actually finding out. In this episode, Jason Fried and David Heinemeier Hansson detail how 37signals approaches experimentation, why lowering the stakes on most decisions leads to better ones, and how letting go of outcomes is both a mental discipline and a business strategy.",
-		body: [
-			"Instead of trying to pre-validate every idea, 37signals ships something low-fidelity as quickly as it can and lets reality do the judging. Most decisions are reversible, so the goal is to lower the stakes until the choice stops feeling like a big deal.",
-			"Founder privilege plays a role: Jason and David answer to customers and each other, not to a board or a boss, so they can act on a hunch without building a defensive case first. They also resist the urge to run postmortems on every little thing, since the lessons are often invented after the fact.",
-			"Experiments don't always pan out, and that's fine. Products like Basecamp Breeze didn't last, but the work rolled forward into HEY. The point is to keep moving, make peace with the full range of outcomes, and keep playing.",
-		],
-	},
-	{
-		slug: "start-here-onboarding",
-		title: "Start Here: Building a better onboarding experience",
+		slug: "the-stack-we-chose",
+		title: "The stack we chose",
 		date: "2026-07-22",
 		summary:
-			"Getting a new customer through the door is one thing, but making sure they understand how things work is another. In this episode, Jason Fried and David Heinemeier Hansson break down how (and why) 37signals redesigned the onboarding experience with their latest version of Basecamp, why onboarding is one of the easiest things to overlook, and what it looks like when founders stay personally connected to that first impression.",
+			"We use Shopify, Cloudflare, Framer, Astro, React, TypeScript, Node.js, PostgreSQL, Stripe, and OpenAI and Anthropic. This episode explains why.",
 		body: [
-			"Onboarding is one of the easiest parts of a product to neglect, because the people who built it rarely see it again. With Basecamp 5, 37signals reworked the experience into a guided, picture-in-picture tour that has new customers play inside a real project before they make their own.",
-			"The ideal, Jason says, is to recreate what it would be like to sit next to someone and walk them through the product. The new flow also introduces the people behind Basecamp, with a personal letter from Jason and messages from real team members.",
-			"David notes that onboarding is reciprocal: it's one of the few chances to watch customers receive the product and learn what actually lands. That direct exposure to reality is something founders should protect rather than delegate away.",
+			"Every tool in our stack earns its place. Shopify for commerce, Cloudflare for hosting and edge work, Astro and React for the front end, Node.js and PostgreSQL for the back end.",
+			"We pick tools that are stable, well documented, and easy to hand over. A stack you can explain to a partner in an afternoon is worth more than a clever one.",
+			"For AI we use OpenAI and Anthropic behind our own interfaces. We keep providers swappable so a model change is a config change, not a rewrite.",
+		],
+	},
+	{
+		slug: "working-with-a-small-studio",
+		title: "Working with a small studio",
+		date: "2026-07-08",
+		summary:
+			"What does it look like to partner with Focus Lab? We walk through how engagements start, how we scope, and what we expect from each other.",
+		body: [
+			"Most engagements start with a short conversation about the problem, not the feature list. We want to know what the product has to do and how we will know it works.",
+			"We scope in small pieces. Each piece ships, gets used, and informs the next. You see progress early instead of waiting for a big reveal.",
+			"We ask partners to stay close. Fast decisions come from direct access to the people who own the outcome, not from layers of handoffs.",
 		],
 	},
 ];

@@ -15,7 +15,6 @@ export const GET = () => {
 		...episodes.map((episode) => `/podcast/${episode.slug}/`),
 		"/policies/",
 		...policies.map((policy) => `/policies/${policy.slug}/`),
-		"/downloads/",
 		"/signup/",
 		...stream.map((entry) => `/${entry.num}/`),
 	];
