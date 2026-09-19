@@ -15,7 +15,7 @@ const { episode } = Astro.props;
 
 <PageLayout
 	meta={{
-		title: episode.title,
+		title: `${episode.title} (Podcast)`,
 		description: episode.summary,
 		articleDate: episode.date,
 		jsonLd: {
@@ -24,6 +24,7 @@ const { episode } = Astro.props;
 			name: episode.title,
 			datePublished: episode.date,
 			description: episode.summary,
+			url: Astro.url.href,
 			partOfSeries: { "@type": "PodcastSeries", name: "The Focus Lab Podcast" },
 		},
 	}}

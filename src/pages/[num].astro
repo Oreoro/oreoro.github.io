@@ -25,13 +25,16 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 			"@type": "Article",
 			headline: entry.label,
 			datePublished: entry.date,
+			url: Astro.url.href,
 			author: { "@type": "Organization", name: "Focus Lab" },
 			publisher: { "@type": "Organization", name: "Focus Lab" },
 		},
 	}}
 >
+	<h1 class="visually-hidden">{entry.num}. {entry.label}</h1>
+
 	<section class="signal signal--clone" data-signal={index}>
-		<header class="signal__header" tabindex="-1" autofocus>
+		<header class="signal__header" tabindex="-1">
 			<h2 aria-label={`${entry.num}. ${entry.label}`}>
 				<span>{entry.num}.</span>
 				<strong>{entry.label}</strong>
@@ -76,6 +79,7 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 		data-next={getNavLink(`/${nextEntry.num}`)}
 		data-previous={getNavLink(`/${previousEntry.num}`)}
 		role="navigation"
+		aria-label="Entry navigation"
 	>
 		<a href={getNavLink(`/${nextEntry.num}`)} aria-label={`Next: ${nextEntry.label}`} tabindex="-1"
 		></a>

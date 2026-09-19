@@ -21,9 +21,9 @@ import { thoughts } from "@/data/thoughts";
 				{
 					thoughts.map((thought) => (
 						<div class="thoughts__thought">
-							<h3>
+							<h2>
 								<a href={getNavLink(`/thoughts/${thought.slug}/`)}>{thought.title}</a>
-							</h3>
+							</h2>
 							<p>{thought.intro}</p>
 						</div>
 					))

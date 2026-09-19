@@ -14,6 +14,8 @@ const previousHref = getNavLink(`/${stream[stream.length - 1]!.num}`);
 			"Focus Lab is a product-led studio. We design, build, and run our own software — and partner with a small number of teams to do the same.",
 	}}
 >
+	<h1 class="visually-hidden">Focus Lab — a product-led studio</h1>
+
 	<div class="cluster cluster--index">
 		{
 			stream.map((entry) => (
@@ -41,6 +43,7 @@ const previousHref = getNavLink(`/${stream[stream.length - 1]!.num}`);
 		data-next={nextHref}
 		data-previous={previousHref}
 		role="navigation"
+		aria-label="Entry navigation"
 	>
 		<a href={nextHref} aria-label={`Next: ${stream[0]!.label}`} tabindex="-1"></a>
 	</div>

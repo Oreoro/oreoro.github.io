@@ -431,7 +431,7 @@ html body.signals-shell .page__headline h2 {
 	line-height: 1.2;
 }
 
-html body.signals-shell .page__headline h6 {
+html body.signals-shell .page__headline .page__kicker {
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	line-height: 1.2;
@@ -557,12 +557,12 @@ html body.signals-shell .header {
 	z-index: 104;
 }
 
-html body.signals-shell .header h1 {
+html body.signals-shell .header .header__brand {
 	order: 2;
 	pointer-events: auto;
 }
 
-html body.signals-shell .header h1 a {
+html body.signals-shell .header .header__brand a {
 	display: block;
 	height: var(--line-height);
 	margin-right: var(--spacing);
@@ -570,7 +570,7 @@ html body.signals-shell .header h1 a {
 	text-decoration: none;
 }
 
-html body.signals-shell .header h1 a .wordmark,
+html body.signals-shell .header .header__brand a .wordmark,
 html body.signals-shell .nav__logo a .wordmark {
 	align-items: center;
 	display: flex;
@@ -583,7 +583,7 @@ html body.signals-shell .nav__logo a .wordmark {
 	white-space: nowrap;
 }
 
-html body.signals-shell .header h1 a .wordmark {
+html body.signals-shell .header .header__brand a .wordmark {
 	color: var(--color-white);
 }
 
@@ -591,13 +591,13 @@ html body.signals-shell .nav__logo a .wordmark {
 	color: var(--color-black);
 }
 
-html body.signals-shell .header h1 a,
+html body.signals-shell .header .header__brand a,
 html body.signals-shell .nav__logo a {
 	display: flex;
 	align-items: center;
 }
 
-html body.signals-shell .header h1 a img {
+html body.signals-shell .header .header__brand a img {
 	height: 100%;
 	max-height: 100%;
 	width: auto;
@@ -1338,6 +1338,7 @@ html body.signals-shell .thoughts__thought {
 	gap: 0.6em;
 }
 
+html body.signals-shell .thoughts__thought h2,
 html body.signals-shell .thoughts__thought h3 {
 	font-size: var(--font-size-xxx-large);
 	font-weight: 700;
@@ -1852,4 +1853,14 @@ html body.signals-shell input:focus-visible {
 	border-radius: 2px;
 	outline: 2px solid var(--color-white);
 	outline-offset: 2px;
+}
+
+html body.signals-shell .visually-hidden {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
 }

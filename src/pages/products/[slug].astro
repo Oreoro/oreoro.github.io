@@ -22,13 +22,14 @@ const { product } = Astro.props;
 			"@type": "Product",
 			name: product.name,
 			description: product.summary,
+			url: Astro.url.href,
 			brand: { "@type": "Organization", name: "Focus Lab" },
 		},
 	}}
 >
 	<div class="page">
 		<div class="page__headline">
-			<h6>Product</h6>
+			<p class="page__kicker">Product</p>
 			<h1>{product.name}</h1>
 			<p>{product.tagline}</p>
 		</div>

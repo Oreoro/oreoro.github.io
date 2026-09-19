@@ -25,9 +25,9 @@ import { episodes } from "@/data/podcast";
 				{
 					episodes.map((episode) => (
 						<div class="thoughts__thought">
-							<h3>
+							<h2>
 								<a href={getNavLink(`/podcast/${episode.slug}/`)}>{episode.title}</a>
-							</h3>
+							</h2>
 							<p class="font-size-small">{episode.date}</p>
 							<p>{episode.summary}</p>
 						</div>

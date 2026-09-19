@@ -21,6 +21,7 @@ const { thought } = Astro.props;
 			"@type": "Article",
 			headline: thought.title,
 			description: thought.intro,
+			url: Astro.url.href,
 			author: { "@type": "Organization", name: "Focus Lab" },
 			publisher: { "@type": "Organization", name: "Focus Lab" },
 		},

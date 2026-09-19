@@ -216,10 +216,14 @@ function initTheme() {
 
 	sessionStorage.setItem("theme", themeVariable);
 
-	document.documentElement.style.setProperty(
-		"--rgb-theme",
-		getComputedStyle(document.documentElement).getPropertyValue(themeVariable).trim(),
-	);
+	const themeRgb = getComputedStyle(document.documentElement)
+		.getPropertyValue(themeVariable)
+		.trim();
+	document.documentElement.style.setProperty("--rgb-theme", themeRgb);
+
+	const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+	if (themeColorMeta) themeColorMeta.setAttribute("content", `rgb(${themeRgb})`);
+
 	document.body.classList.add("is-ready");
 }
 
