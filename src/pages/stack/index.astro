@@ -32,6 +32,21 @@ const groups = [
 		note: "Systems, not one-off screens.",
 		items: ["Figma", "Framer"],
 	},
+	{
+		title: "Testing & quality",
+		note: "Ship with confidence.",
+		items: ["Vitest", "Playwright", "TypeScript", "GitHub Actions"],
+	},
+	{
+		title: "Observability",
+		note: "Know when something breaks.",
+		items: ["Cloudflare Analytics", "Sentry", "Logpush"],
+	},
+	{
+		title: "Payments & email",
+		note: "The parts customers feel.",
+		items: ["Stripe", "Shopify Payments", "Resend", "Cloudflare Email"],
+	},
 ];
 ---
 
@@ -39,7 +54,7 @@ const groups = [
 	meta={{
 		title: "Stack",
 		description:
-			"The tools Focus Lab builds with — Shopify, Cloudflare, Framer, Astro, TypeScript, and a small typed core around them.",
+			"The tools Focus Lab builds with — Astro, Cloudflare, TypeScript, Stripe, and a small proven core around them.",
 		ogImage: "/og-image/home.png",
 	}}
 >
@@ -67,6 +82,22 @@ const groups = [
 					</>
 				))
 			}
+
+			<hr class="ornament" />
+
+			<h2>How we choose</h2>
+			<p>
+				We pick boring, proven tools. The ones with years of docs, real failure modes, and people
+				who know them. Novelty is a cost, not a feature.
+			</p>
+			<p>
+				Every layer has to earn its place. If a dependency does not remove more work than it adds,
+				we write the small version ourselves.
+			</p>
+			<p>
+				We own the whole path — from the first commit to the last deploy. That is the only way to
+				keep it fast, cheap, and ours to fix.
+			</p>
 		</div>
 	</div>
 </PageLayout>

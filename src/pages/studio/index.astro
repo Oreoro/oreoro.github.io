@@ -1,0 +1,77 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { products } from "@/data/products";
+import { getNavLink } from "@/lib/blog-helpers";
+---
+
+<PageLayout
+	meta={{
+		title: "Studio",
+		description:
+			"Focus Lab is a product-led studio. We design, build, and run our own software — and partner with a small number of teams to do the same.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>Studio</h6>
+			<h1>We build products.<br /> Then we help you build yours.</h1>
+			<p>
+				Focus Lab is a product-led studio. We design, build, and run our own software — and partner
+				with a small number of teams to do the same.
+			</p>
+		</div>
+
+		<div class="page__content content">
+			<h2>What we believe</h2>
+			<ul class="list-spaced">
+				<li>
+					<strong>Product first.</strong> We don't start with a deck. We start with the smallest thing
+					worth building.
+				</li>
+				<li>
+					<strong>Ship to learn.</strong> Working software tells the truth. Everything else is a guess.
+				</li>
+				<li>
+					<strong>Small on purpose.</strong> Small teams move faster, decide better, and stay accountable.
+				</li>
+				<li>
+					<strong>Own the outcome.</strong> We stay for support, metrics, and the second year.
+				</li>
+			</ul>
+
+			<h2>How we work</h2>
+			<ol class="list-spaced">
+				<li>A short, paid discovery to frame the problem and the scope.</li>
+				<li>A working slice early, so decisions are made against something real.</li>
+				<li>Short cycles with honest scope, shipping as we go.</li>
+				<li>Handover you can actually run — or we keep running it with you.</li>
+			</ol>
+
+			<h2>What we've built</h2>
+			<ul class="list-spaced">
+				{
+					products.map((product) => (
+						<li>
+							<a href={getNavLink(`/products/${product.slug}/`)}>{product.name}</a> —{" "}
+							{product.tagline}
+						</li>
+					))
+				}
+			</ul>
+
+			<hr class="ornament" />
+
+			<h2>Work with us</h2>
+			<p>
+				We take on a few partnerships a year, where we can be the product team — not an agency on
+				the side.
+			</p>
+			<p>
+				<a class="button button--theme" href={getNavLink("/contact/")}>
+					Start a conversation <span>&rarr;</span>
+				</a>
+			</p>
+		</div>
+	</div>
+</PageLayout>

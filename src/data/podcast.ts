@@ -79,4 +79,52 @@ export const episodes: Episode[] = [
 			"We ask partners to stay close. Fast decisions come from direct access to the people who own the outcome, not from layers of handoffs.",
 		],
 	},
+	{
+		slug: "designing-for-year-two",
+		title: "Designing for the Second Year",
+		date: "2026-06-24",
+		summary:
+			"Launch is the easy part. This episode is about designing for the second year, when the novelty is gone and the product has to hold up.",
+		body: [
+			"Most products are designed for the first day: the empty state, the onboarding, the demo. The second year is different. Data has piled up, the edge cases are real, and the people using it are no longer patient.",
+			"We plan for that early. Naming, permissions, search, and export all matter more after a year of use than they do on launch day. Skipping them is a loan you pay back with interest.",
+			"Designing for year two is a constraint, not a feature list. It keeps us from shipping things that only look good in a screenshot.",
+		],
+	},
+	{
+		slug: "the-boring-stack",
+		title: "The Boring Stack",
+		date: "2026-06-10",
+		summary:
+			"We like boring tools. This episode makes the case for choosing technology you can hand over, debug, and still understand in five years.",
+		body: [
+			"Boring does not mean outdated. It means proven. A relational database, a typed language, and a host you trust will outlast most of what is trending this year.",
+			"Boring tools are easier to hire for, easier to document, and easier to walk away from. When a partner takes over, they inherit something they can read.",
+			"We spend our novelty budget on the product, not the plumbing. The interesting part should be what we build, not how obscure the stack is.",
+		],
+	},
+	{
+		slug: "working-with-clients",
+		title: "Working With Clients",
+		date: "2026-05-27",
+		summary:
+			"Partnership is a two-way deal. We talk about what we need from clients and what they should expect from us, in plain terms.",
+		body: [
+			"The best work comes from clients who own the outcome. That means one decision maker, direct access, and a willingness to cut scope when the evidence says so.",
+			"We are honest about what we will not do. We do not pad timelines, we do not sell hours, and we do not take work we cannot stand behind.",
+			"The relationship is small on purpose. A handful of partners at a time means we know the product, the constraints, and the people we are building it for.",
+		],
+	},
+	{
+		slug: "pricing-products",
+		title: "Pricing Products",
+		date: "2026-05-13",
+		summary:
+			"Pricing is a product decision, not a spreadsheet exercise. This episode covers how we think about it for the software we run.",
+		body: [
+			"Price is a signal. It tells people who the product is for and what it is worth. Getting it wrong is worse than getting a feature wrong, because it is harder to undo.",
+			"We start from the value, not the cost. What does this save or earn for the person paying? Then we pick the simplest model that captures a fair share of that.",
+			"We keep pricing legible: few tiers, clear limits, no traps. If a customer cannot explain the bill to themselves, the model is too clever.",
+		],
+	},
 ];

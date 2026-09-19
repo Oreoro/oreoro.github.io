@@ -68,4 +68,32 @@ export const stream: StreamEntry[] = [
 		content:
 			"<p>We write down what we're building and what we got wrong. It keeps us honest, and it's the fastest way for the people we work with to know how we think.</p>",
 	},
+	{
+		num: "09",
+		label: "Picking the boring stack",
+		date: "2026-07-28",
+		content:
+			"<p>We choose tools that will still be here in five years: TypeScript, Postgres, Cloudflare, Shopify, Framer. Boring is a feature — it means we spend our attention on the product, not the plumbing.</p>",
+	},
+	{
+		num: "10",
+		label: "What we ship first",
+		date: "2026-07-20",
+		content:
+			"<p>The first release is never the whole idea. It's the one slice that proves the idea is worth the rest. We'd rather ship that slice in weeks than the full plan in a year.</p>",
+	},
+	{
+		num: "11",
+		label: "The client work we say yes to",
+		date: "2026-07-12",
+		content:
+			"<p>We only take on work where we can be the product team. If we'd be an extra pair of hands on someone else's plan, we're probably not the right fit — and we'll tell you so.</p>",
+	},
+	{
+		num: "12",
+		label: "Notes on pricing",
+		date: "2026-07-04",
+		content:
+			"<p>We price the work, not the hours. You get a scope, a number, and a date before we start. If the scope changes, we say so before it becomes a surprise.</p>",
+	},
 ];

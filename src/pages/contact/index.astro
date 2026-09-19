@@ -1,0 +1,71 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { site } from "@/data/focuslab";
+---
+
+<PageLayout
+	meta={{
+		title: "Contact",
+		description: "Tell us what you're building and what done looks like.",
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>Contact</h6>
+			<h1>Tell us what you're building.</h1>
+			<p>
+				Tell us what you're building and what done looks like. We'll reply with a straight answer.
+			</p>
+		</div>
+
+		<div class="page__content content">
+			<dl class="contact-list">
+				<div>
+					<dt>Email</dt>
+					<dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+				</div>
+				<div>
+					<dt>Studio</dt>
+					<dd>{site.location}</dd>
+				</div>
+			</dl>
+
+			<p>
+				<a class="button button--theme" href={`mailto:${site.email}`}>
+					Email us <span>&rarr;</span>
+				</a>
+			</p>
+		</div>
+	</div>
+</PageLayout>
+
+<style>
+	.contact-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1.4em;
+		margin: 0;
+	}
+
+	.contact-list div {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25em;
+	}
+
+	.contact-list dt {
+		color: rgba(255, 255, 255, 0.6);
+		font-size: 0.8em;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.contact-list dd {
+		margin: 0;
+		color: var(--color-white);
+		font-size: 1.2em;
+		font-weight: 500;
+	}
+</style>

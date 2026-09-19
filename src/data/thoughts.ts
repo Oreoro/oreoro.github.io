@@ -200,4 +200,128 @@ export const thoughts: Thought[] = [
 			},
 		],
 	},
+	{
+		slug: "pricing-the-work",
+		title: "Pricing the Work",
+		intro: "We price the work, not the hours it takes to do it.",
+		sections: [
+			{
+				id: "a-price-for-the-outcome",
+				heading: "A price for the outcome",
+				body: [
+					"Hours are an input. The outcome is what you are buying. We quote a fixed price for a defined piece of work, so the risk of a slow week sits with us, not you.",
+					"That forces both sides to be clear about scope before anyone starts. Clarity up front is cheaper than renegotiation later.",
+				],
+			},
+			{
+				id: "scope-is-the-real-variable",
+				heading: "Scope is the real variable",
+				body: [
+					"When the work changes, the price changes. We do not pretend otherwise. We will show you what a change costs before we make it.",
+					"A fixed price is not a promise to do everything. It is a promise to do what we agreed, well.",
+				],
+			},
+			{
+				id: "no-surprise-invoices",
+				heading: "No surprise invoices",
+				body: [
+					"You should never open a bill and wonder where it came from. We invoice against the plan you already approved.",
+					"If something is going to cost more, you hear it from us first. Every time.",
+				],
+			},
+		],
+	},
+	{
+		slug: "why-we-say-no",
+		title: "Why We Say No",
+		intro: "Saying no is how we keep the work good.",
+		sections: [
+			{
+				id: "no-is-a-filter",
+				heading: "No is a filter",
+				body: [
+					"We turn down most of what comes to us. Not because it is bad, but because we can only run a small number of things at once.",
+					"Every yes spends the same attention. We would rather spend it on work we can stand behind.",
+				],
+			},
+			{
+				id: "when-we-are-not-a-fit",
+				heading: "When we are not a fit",
+				body: [
+					"If the problem is not one we understand, we say so. If the timeline is not real, we say so. If the budget and the ambition do not match, we say so.",
+					"That conversation is faster and kinder than a project that was never going to work.",
+				],
+			},
+			{
+				id: "the-cost-of-a-bad-yes",
+				heading: "The cost of a bad yes",
+				body: [
+					"A wrong yes costs everyone: you pay for work that stalls, and we lose the time we could have spent on something better.",
+					"A clear no leaves you free to find the right team. That is a real outcome too.",
+				],
+			},
+		],
+	},
+	{
+		slug: "the-boring-stack",
+		title: "The Boring Stack",
+		intro: "We pick tools that will still be here when the product is.",
+		sections: [
+			{
+				id: "chosen-for-the-long-run",
+				heading: "Chosen for the long run",
+				body: [
+					"Our stack is deliberately unremarkable. TypeScript, React, Node.js, PostgreSQL, Stripe. Shopify, Cloudflare, Framer, and Astro where they fit.",
+					"None of it is exciting. All of it is documented, hireable, and understood by a lot of people. That is the point.",
+				],
+			},
+			{
+				id: "novelty-has-a-price",
+				heading: "Novelty has a price",
+				body: [
+					"New tools can be faster to start and slower to own. The cost shows up in maintenance, onboarding, and the day the maintainer moves on.",
+					"We pay that price only when it buys something real, like a genuine step change in what the product can do.",
+				],
+			},
+			{
+				id: "boring-is-a-feature",
+				heading: "Boring is a feature",
+				body: [
+					"A stack nobody has to think about is one less thing between you and your users. Reliability is not glamorous, but it compounds.",
+					"We would rather be interesting in the product than in the plumbing.",
+				],
+			},
+		],
+	},
+	{
+		slug: "writing-things-down",
+		title: "Writing Things Down",
+		intro: "If it is not written down, it did not happen.",
+		sections: [
+			{
+				id: "memory-is-not-a-system",
+				heading: "Memory is not a system",
+				body: [
+					"Teams forget. People leave. A decision that lives only in someone's head dies when they walk out the door.",
+					"Writing it down is the cheapest way to keep a project from depending on any one person.",
+				],
+			},
+			{
+				id: "short-notes-beat-long-docs",
+				heading: "Short notes beat long docs",
+				body: [
+					"We write short notes, not manuals. A paragraph on why we chose something is worth more than a page that nobody reads.",
+					"The goal is a future reader who has none of our context. If the note works for them, it works.",
+				],
+			},
+			{
+				id: "writing-forces-clarity",
+				heading: "Writing forces clarity",
+				body: [
+					"You cannot write a fuzzy idea down without noticing it is fuzzy. The act of writing finds the gaps.",
+					"So we write early and often. It is how we think, not just how we record.",
+				],
+			},
+		],
+	},
 ];

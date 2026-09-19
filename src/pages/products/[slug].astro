@@ -1,0 +1,55 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { products } from "@/data/products";
+import { getNavLink } from "@/lib/blog-helpers";
+
+export function getStaticPaths() {
+	return products.map((product) => ({
+		params: { slug: product.slug },
+		props: { product },
+	}));
+}
+
+const { product } = Astro.props;
+---
+
+<PageLayout
+	meta={{
+		title: product.name,
+		description: product.summary,
+		ogImage: "/og-image/home.png",
+	}}
+>
+	<div class="page">
+		<div class="page__headline">
+			<h6>Product</h6>
+			<h1>{product.name}</h1>
+			<p>{product.tagline}</p>
+		</div>
+
+		<div class="page__content content">
+			<p>{product.summary}</p>
+
+			<h2>What it does</h2>
+			{
+				product.features.map((feature) => (
+					<>
+						<h3>{feature.title}</h3>
+						<p>{feature.body}</p>
+					</>
+				))
+			}
+
+			<h2>Built with</h2>
+			<ul class="list-spaced">
+				{product.stack.map((item) => <li>{item}</li>)}
+			</ul>
+
+			<hr class="ornament" />
+
+			<p>
+				Building something similar? <a href={getNavLink("/contact/")}>Start a conversation</a>.
+			</p>
+		</div>
+	</div>
+</PageLayout>
