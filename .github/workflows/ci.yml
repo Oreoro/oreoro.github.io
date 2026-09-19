@@ -31,16 +31,11 @@ jobs:
       - name: Install dependencies
         run: npm ci --ignore-scripts
 
-      - name: Build site
-        env:
-          # Available to same-repo PRs; forks fall back to local demo content.
-          NOTION_API_SECRET: ${{ secrets.NOTION_API_SECRET }}
-          DATA_SOURCE_ID: ${{ secrets.DATA_SOURCE_ID }}
-          DATABASE_ID: ${{ secrets.DATABASE_ID }}
-        run: npx --no-install astro build
+      - name: Typecheck
+        run: npx --no-install astro check
 
-      - name: Build search index
-        run: npx --no-install pagefind --site dist
+      - name: Build site
+        run: npx --no-install astro build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4

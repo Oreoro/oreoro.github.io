@@ -3,12 +3,6 @@ name: Deploy to Cloudflare
 on:
   push:
     branches: [main]
-  # The Notion CMS worker triggers this when content is published.
-  repository_dispatch:
-    types: [notion-content-updated, content-publish]
-  # Nightly refresh so scheduled/published Notion content stays current.
-  schedule:
-    - cron: "0 3 * * *"
   workflow_dispatch:
     inputs:
       reason:
@@ -46,30 +40,11 @@ jobs:
       - name: Install dependencies
         run: npm ci --ignore-scripts
 
-      # Notion content caches make rebuilds fast. Keyed per run so a build can
-      # always read the previous cache; content changes are detected by the
-      # build's own timestamps.
-      - name: Restore build caches
-        uses: actions/cache@v4
-        with:
-          path: |
-            tmp
-            public/notion
-            src/assets/notion
-          key: focuslab-cms-${{ github.run_id }}
-          restore-keys: |
-            focuslab-cms-
+      - name: Typecheck
+        run: npx --no-install astro check
 
       - name: Build site
-        env:
-          NOTION_API_SECRET: ${{ secrets.NOTION_API_SECRET }}
-          DATA_SOURCE_ID: ${{ secrets.DATA_SOURCE_ID }}
-          DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          CONTEXT_DEV_API_KEY: ${{ secrets.CONTEXT_DEV_API_KEY }}
         run: npx --no-install astro build
-
-      - name: Build search index
-        run: npx --no-install pagefind --site dist
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3

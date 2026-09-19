@@ -34,22 +34,13 @@ const getSite = function () {
 	}
 	return new URL(BASE_PATH, "http://localhost:4321").toString();
 };
-import CustomIconDownloader from "./src/integrations/custom-icon-downloader";
-import EntryCacheEr from "./src/integrations/entry-cache-er";
-import PublicNotionCopier from "./src/integrations/public-notion-copier";
-import blocksHtmlCacher from "./src/integrations/block-html-cache-er";
-import DeleteBuildCache from "./src/integrations/delete-build-cache";
-import buildTimestampRecorder from "./src/integrations/build-timestamp-recorder";
-import rssContentEnhancer from "./src/integrations/rss-content-enhancer";
-import markdownExporter from "./src/integrations/markdown-exporter";
-import externalRenderCacher from "./src/integrations/external-render-cacheer";
-import CSSWriter from "./src/integrations/theme-constants-to-css";
 import createFoldersIfMissing from "./src/integrations/create-folders-if-missing";
-import citationsInitializer from "./src/integrations/citations-initializer";
+import buildTimestampRecorder from "./src/integrations/build-timestamp-recorder";
+import CSSWriter from "./src/integrations/theme-constants-to-css";
 import astroImageCacheCleanerCopier from "./src/integrations/astro-image-cache-cleaner-copier";
+import DeleteBuildCache from "./src/integrations/delete-build-cache";
 import externalContentDownloader from "./src/integrations/external-content-downloader";
 import robotsTxt from "astro-robots-txt";
-import partytown from "@astrojs/partytown";
 
 const configContent = fs.readFileSync("./constants-config.json5", "utf8");
 const config = JSON5.parse(configContent);
@@ -172,24 +163,10 @@ export default defineConfig({
 		}),
 		EXTERNAL_CONTENT_CONFIG.enabled ? externalContentDownloader() : undefined,
 		buildTimestampRecorder(),
-		citationsInitializer(), // Initialize BibTeX cache after timestamp is recorded
-		EntryCacheEr(),
-		CustomIconDownloader(),
 		CSSWriter(),
-		partytown({
-			// Adds dataLayer.push as a forwarding-event.
-			config: {
-				forward: ["dataLayer.push"],
-			},
-		}),
 		robotsTxt({
 			sitemapBaseFileName: "sitemap",
 		}),
-		rssContentEnhancer(),
-		markdownExporter(),
-		blocksHtmlCacher(),
-		externalRenderCacher(),
-		PublicNotionCopier(),
 		astroImageCacheCleanerCopier(),
 		DeleteBuildCache(),
 	],
