@@ -7,6 +7,10 @@ import SkipLink from "@/components/ui/SkipLink.astro";
 import { siteInfo } from "@/siteInfo";
 interface Props {
 	meta: SiteMeta;
+	/** Deterministic palette index (0-11) for this page. Omit for a random theme. */
+	themeIndex?: number;
+	/** The "next signal" dot shown bottom-right on small screens. */
+	footerNext?: { href: string; label: string };
 }
 const {
 	meta: {
@@ -17,10 +21,16 @@ const {
 		hasMarkdownAlternate,
 		jsonLd,
 	},
+	themeIndex,
+	footerNext,
 } = Astro.props;
 ---
 
-<html lang={siteInfo.lang} class="dark">
+<html
+	lang={siteInfo.lang}
+	class="dark"
+	data-theme-index={themeIndex === undefined ? undefined : String(themeIndex)}
+>
 	<head>
 		<BaseHead
 			title={title}
@@ -37,7 +47,7 @@ const {
 		<main id="main">
 			<slot />
 		</main>
-		<Footer />
+		<Footer next={footerNext} />
 		<script src="../scripts/signal.ts"></script>
 	</body>
 </html>

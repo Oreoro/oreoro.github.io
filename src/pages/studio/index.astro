@@ -8,16 +8,16 @@ import { getNavLink } from "@/lib/blog-helpers";
 	meta={{
 		title: "Studio",
 		description:
-			"Focus Lab is a product-led studio. We design, build, and run our own software — and partner with a small number of teams to do the same.",
+			"Focus Lab is a product studio in Islamabad. We design, build, and run our own software — and occasionally partner with a team when the fit is right.",
 	}}
 >
 	<div class="page">
 		<div class="page__headline">
 			<p class="page__kicker">Studio</p>
-			<h1>We build products.<br /> Then we help you build yours.</h1>
+			<h1>We build products.<br /> That is the work.</h1>
 			<p>
-				Focus Lab is a product-led studio. We design, build, and run our own software — and partner
-				with a small number of teams to do the same.
+				Focus Lab is a product studio based in Islamabad. We design, build, and run our own
+				software. Once in a while, when there is a mutual fit, we partner with a team on theirs.
 			</p>
 		</div>
 
@@ -39,21 +39,19 @@ import { getNavLink } from "@/lib/blog-helpers";
 				</li>
 			</ul>
 
-			<h2>How we work</h2>
-			<ol class="list-spaced">
-				<li>A short, paid discovery to frame the problem and the scope.</li>
-				<li>A working slice early, so decisions are made against something real.</li>
-				<li>Short cycles with honest scope, shipping as we go.</li>
-				<li>Handover you can actually run — or we keep running it with you.</li>
-			</ol>
-
 			<h2>What we've built</h2>
 			<ul class="list-spaced">
 				{
 					products.map((product) => (
 						<li>
-							<a href={getNavLink(`/products/${product.slug}/`)}>{product.name}</a> —{" "}
-							{product.tagline}
+							{product.url ? (
+								<a href={product.url} target="_blank" rel="noopener">
+									{product.name}
+								</a>
+							) : (
+								<a href={getNavLink(`/products/${product.slug}/`)}>{product.name}</a>
+							)}{" "}
+							— {product.tagline}
 						</li>
 					))
 				}
@@ -61,10 +59,11 @@ import { getNavLink } from "@/lib/blog-helpers";
 
 			<hr class="ornament" />
 
-			<h2>Work with us</h2>
+			<h2>Working with us</h2>
 			<p>
-				We take on a few partnerships a year, where we can be the product team — not an agency on
-				the side.
+				We are products first. We take on partner work only when there is a mutual fit: a real
+				problem, a clear owner, and room to decide how to solve it. If we are not the right fit, we
+				will say so early.
 			</p>
 			<p>
 				<a class="button button--theme" href={getNavLink("/contact/")}>

@@ -1,6 +1,4 @@
 import { stream } from "@/data/stream";
-import { thoughts } from "@/data/thoughts";
-import { episodes } from "@/data/podcast";
 import { policies } from "@/data/policies";
 import { products } from "@/data/products";
 
@@ -12,14 +10,11 @@ export const GET = () => {
 		"/stack/",
 		...products.map((product) => `/products/${product.slug}/`),
 		"/thoughts/",
-		...thoughts.map((thought) => `/thoughts/${thought.slug}/`),
 		"/jobs/",
 		"/podcast/",
-		...episodes.map((episode) => `/podcast/${episode.slug}/`),
 		"/policies/",
 		...policies.map((policy) => `/policies/${policy.slug}/`),
 		"/contact/",
-		"/signup/",
 		...stream.map((entry) => `/${entry.num}/`),
 	];
 

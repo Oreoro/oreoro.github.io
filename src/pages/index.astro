@@ -1,20 +1,33 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { stream } from "@/data/stream";
+import { stream, type StreamKind } from "@/data/stream";
 import { getNavLink } from "@/lib/blog-helpers";
 
-const nextHref = getNavLink(`/${stream[0]!.num}`);
-const previousHref = getNavLink(`/${stream[stream.length - 1]!.num}`);
+const firstEntry = stream[0]!;
+const lastEntry = stream[stream.length - 1]!;
+const nextHref = getNavLink(`/${firstEntry.num}`);
+const previousHref = getNavLink(`/${lastEntry.num}`);
+
+const kindLabel: Record<StreamKind, string> = {
+	note: "Note",
+	launch: "Launch",
+	essay: "Essay",
+	quote: "Quote",
+	link: "Link",
+};
+
+const metaFor = (entry: (typeof stream)[number]) => entry.source ?? kindLabel[entry.kind];
 ---
 
 <PageLayout
 	meta={{
 		title: "Focus Lab",
 		description:
-			"Focus Lab is a product-led studio. We design, build, and run our own software — and partner with a small number of teams to do the same.",
+			"The Focus Lab stream — a feed of what we are building, reading, and thinking about. A product studio in Islamabad: Urban Events, WorkProof, and Fixer.",
 	}}
+	footerNext={{ href: `/${firstEntry.num}`, label: `${firstEntry.num}. ${firstEntry.label}` }}
 >
-	<h1 class="visually-hidden">Focus Lab — a product-led studio</h1>
+	<h1 class="visually-hidden">Focus Lab — a product studio</h1>
 
 	<div class="cluster cluster--index">
 		{
@@ -23,11 +36,15 @@ const previousHref = getNavLink(`/${stream[stream.length - 1]!.num}`);
 					<header class="signal__header">
 						<a
 							href={getNavLink(`/${entry.num}`)}
-							aria-label={entry.label}
-							target="_blank"
-							rel="noopener"
+							aria-label={`${kindLabel[entry.kind]}: ${entry.label}`}
 						>
-							<span class="signal__label">{entry.label}</span>
+							<dl>
+								<dt>{entry.num}.</dt>
+								<dd>
+									{entry.label}
+									<span class="signal__meta">{metaFor(entry)}</span>
+								</dd>
+							</dl>
 						</a>
 					</header>
 				</section>
@@ -42,27 +59,10 @@ const previousHref = getNavLink(`/${stream[stream.length - 1]!.num}`);
 		data-next={nextHref}
 		data-previous={previousHref}
 		role="navigation"
-		aria-label="Entry navigation"
+		aria-label="Stream navigation"
 	>
-		<a href={nextHref} aria-label={`Next: ${stream[0]!.label}`} tabindex="-1"></a>
+		<a href={nextHref} aria-label={`Next: ${firstEntry.label}`} tabindex="-1"></a>
 	</div>
 
 	<div class="origin"></div>
-
-	<script is:inline>
-		(function () {
-			var cluster = document.querySelector(".cluster--index");
-			if (!cluster) return;
-			var items = Array.prototype.slice.call(cluster.children);
-			for (var i = items.length - 1; i > 0; i--) {
-				var j = Math.floor(Math.random() * (i + 1));
-				var swap = items[i];
-				items[i] = items[j];
-				items[j] = swap;
-			}
-			items.forEach(function (el) {
-				cluster.appendChild(el);
-			});
-		})();
-	</script>
 </PageLayout>

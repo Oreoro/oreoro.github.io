@@ -1,6 +1,12 @@
 ---
 import { getNavLink } from "@/lib/blog-helpers";
 
+interface Props {
+	next?: { href: string; label: string } | undefined;
+}
+
+const { next } = Astro.props;
+
 const links: Array<[string, string]> = [
 	["Studio", "/studio"],
 	["Stack", "/stack"],
@@ -8,9 +14,9 @@ const links: Array<[string, string]> = [
 	["Podcast", "/podcast"],
 	["Books", "/books"],
 	["Jobs", "/jobs"],
-	["Newsletter", "/signup"],
 	["Policies", "/policies"],
 	["Contact", "/contact"],
+	["LinkedIn", "https://www.linkedin.com/company/110646093/"],
 ];
 
 const isExternal = (href: string) => href.startsWith("http");
@@ -34,4 +40,11 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 			))
 		}
 	</ul>
+	{
+		next && (
+			<div class="footer__next">
+				<a href={getNavLink(next.href)} aria-label={`Next signal: ${next.label}`} tabindex="-1" />
+			</div>
+		)
+	}
 </footer>

@@ -1,39 +1,69 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { getNavLink } from "@/lib/blog-helpers";
-import { episodes } from "@/data/podcast";
+import { podcasts } from "@/data/podcast";
+import PodcastSidebar from "@/components/podcast/PodcastSidebar.astro";
+
+const bars = Array.from({ length: 96 }, (_, i) => {
+	const wave = Math.sin(i * 0.6) * 0.5 + 0.5;
+	const jitter = ((i * 37) % 11) / 22;
+	return Math.round(8 + (wave + jitter) * 84);
+});
 ---
 
 <PageLayout
 	meta={{
 		title: "Podcast",
 		description:
-			"The Focus Lab Podcast is about building and running products at a small studio — from Urbanevents and Workproof to Muxo.",
+			"Podcasts we find useful — shows on building, shipping, and running software at a small studio.",
 	}}
 >
-	<div class="page">
-		<div class="page__headline">
-			<h1>Podcast</h1>
-			<p>
-				The Focus Lab Podcast is about building and running products at a small studio — from
-				Urbanevents and Workproof to Muxo.
-			</p>
-		</div>
+	<div class="broadsheet">
+		<PodcastSidebar />
 
-		<div class="thoughts">
-			<div class="thoughts__container">
+		<section class="broadsheet__content" aria-label="Podcasts">
+			<div class="waveform" aria-hidden="true">
+				{bars.map((height) => <div style={`height:${height}%`} />)}
+			</div>
+
+			<div class="broadsheet__episodes">
 				{
-					episodes.map((episode) => (
-						<div class="thoughts__thought">
-							<h2>
-								<a href={getNavLink(`/podcast/${episode.slug}/`)}>{episode.title}</a>
-							</h2>
-							<p class="font-size-small">{episode.date}</p>
-							<p>{episode.summary}</p>
-						</div>
-					))
+					podcasts.map((podcast, index) => {
+						const featured = index === 0;
+						return (
+							<article class={`episode${featured ? " --featured" : ""}`}>
+								{featured && (
+									<p class="episode__preface">
+										<span>Start here</span>
+									</p>
+								)}
+								<div class="episode__mast">
+									{featured && (
+										<a
+											class="episode__play"
+											href={podcast.url}
+											target="_blank"
+											rel="noopener"
+											aria-label={`Listen to ${podcast.title}`}
+										/>
+									)}
+									<small class="episode__number">{podcast.show}</small>
+									<h2 class="episode__title">
+										<a href={podcast.url} target="_blank" rel="noopener">
+											{podcast.title}
+										</a>
+									</h2>
+									<p class="episode__summary">{podcast.note}</p>
+									<p class="episode__permalink">
+										<a href={podcast.url} target="_blank" rel="noopener">
+											Listen &rarr;
+										</a>
+									</p>
+								</div>
+							</article>
+						);
+					})
 				}
 			</div>
-		</div>
+		</section>
 	</div>
 </PageLayout>

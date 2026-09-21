@@ -2,6 +2,7 @@
 import PageLayout from "@/layouts/Base.astro";
 import { products } from "@/data/products";
 import { getNavLink } from "@/lib/blog-helpers";
+import { site } from "@/data/focuslab";
 
 export function getStaticPaths() {
 	return products.map((product) => ({
@@ -19,10 +20,12 @@ const { product } = Astro.props;
 		description: product.summary,
 		jsonLd: {
 			"@context": "https://schema.org",
-			"@type": "Product",
+			"@type": "SoftwareApplication",
 			name: product.name,
 			description: product.summary,
-			url: Astro.url.href,
+			url: product.url ?? Astro.url.href,
+			applicationCategory: "BusinessApplication",
+			operatingSystem: product.selfHosted ? "Self-hosted" : "Web",
 			brand: { "@type": "Organization", name: "Focus Lab" },
 		},
 	}}
@@ -37,6 +40,33 @@ const { product } = Astro.props;
 		<div class="page__content content">
 			<p>{product.summary}</p>
 
+			{
+				product.pricing && (
+					<p class="font-size-small">
+						<em>{product.pricing}</em>
+					</p>
+				)
+			}
+
+			{
+				product.url ? (
+					<p>
+						<a class="button button--theme" href={product.url} target="_blank" rel="noopener">
+							Visit {product.name} <span>&rarr;</span>
+						</a>
+					</p>
+				) : (
+					<p>
+						<a
+							class="button button--theme"
+							href={`mailto:${site.email}?subject=${encodeURIComponent(`Access to ${product.name}`)}`}
+						>
+							Request access or a demo <span>&rarr;</span>
+						</a>
+					</p>
+				)
+			}
+
 			<h2>What it does</h2>
 			{
 				product.features.map((feature) => (
@@ -47,10 +77,18 @@ const { product } = Astro.props;
 				))
 			}
 
-			<h2>Built with</h2>
-			<ul class="list-spaced">
-				{product.stack.map((item) => <li>{item}</li>)}
-			</ul>
+			{
+				product.stack && product.stack.length > 0 && (
+					<>
+						<h2>Built with</h2>
+						<ul class="list-spaced">
+							{product.stack.map((item) => (
+								<li>{item}</li>
+							))}
+						</ul>
+					</>
+				)
+			}
 
 			<hr class="ornament" />
 

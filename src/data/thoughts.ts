@@ -1,451 +1,88 @@
+/**
+ * Thoughts — writing we find useful, not our own.
+ *
+ * A curated reading list. Every entry links out to the original. Swap or add
+ * as our taste changes.
+ */
+
 export interface Thought {
-	slug: string;
 	title: string;
-	intro: string;
-	sections: { id: string; heading: string; body: string[] }[];
+	source: string;
+	url: string;
+	note: string;
 }
 
 export const thoughts: Thought[] = [
 	{
-		slug: "why-we-are-product-led",
-		title: "Why We're Product-Led",
-		intro: "We build and run our own software, and that changes how we work with everyone else.",
-		sections: [
-			{
-				id: "we-run-what-we-build",
-				heading: "We run what we build",
-				body: [
-					"Focus Lab is a product-led studio. We design, build, and operate our own software. Urbanevents handles events and ticketing. Workproof handles work and proof. Muxo gives teams one key for the whole stack.",
-					"Running our own products is not a side project. It is the core of the studio. Every decision we make for a partner is informed by decisions we have to live with ourselves.",
-				],
-			},
-			{
-				id: "the-work-has-to-survive-contact",
-				heading: "The work has to survive contact",
-				body: [
-					"A product in production teaches you things a prototype never will. Real users, real load, real support tickets. We carry those lessons into every engagement.",
-					"We do not hand over a deck and leave. We stay close to the systems we build, because we know what happens after launch.",
-				],
-			},
-			{
-				id: "a-few-partners-not-many-clients",
-				heading: "A few partners, not many clients",
-				body: [
-					"We partner with a small number of teams. That is deliberate. It keeps senior people on the work and keeps the feedback loop short.",
-					"When we say we can do something, it is because we have already done it for ourselves.",
-				],
-			},
-		],
+		title: "Do Things That Don't Scale",
+		source: "Paul Graham",
+		url: "https://paulgraham.com/ds.html",
+		note: "The case for doing the unscalable, manual work early. We still reread it before every launch.",
 	},
 	{
-		slug: "shipping-is-the-point",
-		title: "Shipping Is the Whole Point",
-		intro: "Ideas are cheap. Shipping is the whole point.",
-		sections: [
-			{
-				id: "working-software-over-perfect-plans",
-				heading: "Working software over perfect plans",
-				body: [
-					"We plan enough to start and no more. The plan is a hypothesis. The release is the test.",
-					"A long specification is a way of delaying the moment when the work meets reality. We prefer to meet it early.",
-				],
-			},
-			{
-				id: "small-releases-compound",
-				heading: "Small releases compound",
-				body: [
-					"We ship in small pieces, often. Each release is a chance to learn something and correct course.",
-					"Momentum matters. A team that ships weekly makes better calls than a team that ships quarterly, because it has more data.",
-				],
-			},
-			{
-				id: "done-means-in-production",
-				heading: "Done means in production",
-				body: [
-					"Done is not a branch, a demo, or a ticket marked complete. Done means running in production for real users.",
-					"We own what we ship. If it breaks, we fix it. That is the deal.",
-				],
-			},
-		],
+		title: "Maker's Schedule, Manager's Schedule",
+		source: "Paul Graham",
+		url: "https://paulgraham.com/makersschedule.html",
+		note: "Why a single meeting can wreck a day of building — and how to protect long blocks of time.",
 	},
 	{
-		slug: "small-teams-short-cycles",
-		title: "Small Teams, Short Cycles",
-		intro: "Small teams move faster, talk less, and make better calls.",
-		sections: [
-			{
-				id: "two-to-five-people",
-				heading: "Two to five people",
-				body: [
-					"Our teams are small on purpose. A small team can hold the whole problem in its head. It does not need status meetings to stay aligned.",
-					"We staff with senior people who can work across design, front end, back end, and infrastructure. Fewer handoffs, fewer gaps.",
-				],
-			},
-			{
-				id: "six-week-cycles",
-				heading: "Six-week cycles",
-				body: [
-					"We work in short cycles. Six weeks is enough to ship something meaningful and short enough to stay honest about scope.",
-					"At the end of a cycle, the work goes out. There is no carrying it over. The deadline forces the trade-offs that keep quality high.",
-				],
-			},
-			{
-				id: "no-death-marches",
-				heading: "No death marches",
-				body: [
-					"Short cycles protect the team. Nobody works nights for a quarter. A sustainable pace is not a perk, it is how good work gets made.",
-					"If something cannot fit the cycle, we cut scope, not sleep.",
-				],
-			},
-		],
+		title: "An Obligation to Independence",
+		source: "37signals",
+		url: "https://37signals.com/01",
+		note: "No investors, no board, no exit. The clearest argument we know for staying independent.",
 	},
 	{
-		slug: "designing-for-year-two",
-		title: "Designing for the Second Year",
-		intro:
-			"The first year is easy to design for. The second year is where products are won or lost.",
-		sections: [
-			{
-				id: "the-cost-of-the-first-draft",
-				heading: "The cost of the first draft",
-				body: [
-					"Anyone can make a product look good on launch day. The hard part is the second year, when the feature list is long, the data has grown, and the original team has moved on.",
-					"We design for that version of the product from the start. Clean data models, boring technology, and clear boundaries.",
-				],
-			},
-			{
-				id: "boring-technology-ages-well",
-				heading: "Boring technology ages well",
-				body: [
-					"We choose tools we can still hire for in three years. PostgreSQL, TypeScript, React, Node.js, Stripe. Proven, documented, and widely understood.",
-					"Novelty has a maintenance cost that shows up later. We spend it only when it buys something real.",
-				],
-			},
-			{
-				id: "leave-the-codebase-readable",
-				heading: "Leave the codebase readable",
-				body: [
-					"Every change should make the next change easier. We write for the person who inherits the work, because that person is often us.",
-					"A codebase is a long relationship. We treat it that way.",
-				],
-			},
-		],
+		title: "Work Isn't War",
+		source: "37signals",
+		url: "https://37signals.com/02",
+		note: "The language we use about work shapes the work. A reminder to drop the battlefield metaphors.",
 	},
 	{
-		slug: "how-we-work-with-clients",
-		title: "How We Work With Clients",
-		intro: "We take on a small number of partners and work with them directly.",
-		sections: [
-			{
-				id: "direct-access-to-seniors",
-				heading: "Direct access to the people doing the work",
-				body: [
-					"There is no account layer between you and the people building your product. You talk to the designers and engineers doing the work.",
-					"That keeps feedback fast and decisions grounded. It also means fewer surprises.",
-				],
-			},
-			{
-				id: "one-team-one-backlog",
-				heading: "One team, one backlog",
-				body: [
-					"We work in the open with a shared backlog and a shared board. You can see what is in progress and what is next at any time.",
-					"We plan in short cycles and review the work together. Priorities can change between cycles, not in the middle of one.",
-				],
-			},
-			{
-				id: "what-we-need-from-you",
-				heading: "What we need from you",
-				body: [
-					"A decision maker who is available. Clear priorities. Access to real users where it helps. That is usually enough.",
-					"If something is not working, tell us early. We would rather fix it than defend it.",
-				],
-			},
-			{
-				id: "how-to-start",
-				heading: "How to start",
-				body: [
-					"Send a short note to bilal@focuslab.pk. Tell us what you are building and what is in the way. If we are a fit, we will say so. If we are not, we will say that too.",
-				],
-			},
-		],
+		title: "Shape Up",
+		source: "Ryan Singer / Basecamp",
+		url: "https://basecamp.com/shapeup",
+		note: "Fixed time, variable scope, and a real appetite for the work. The method behind our cycles.",
 	},
 	{
-		slug: "working-in-the-open",
-		title: "Working in the Open",
-		intro: "We default to sharing: our code, our decisions, and our reasoning.",
-		sections: [
-			{
-				id: "open-by-default",
-				heading: "Open by default",
-				body: [
-					"Most of what we do is visible to the people we work with. Repositories, boards, and notes are shared unless there is a reason not to.",
-					"Openness is a practical way to catch mistakes early and keep trust. It is not a posture, it is a habit.",
-				],
-			},
-			{
-				id: "decisions-come-with-reasons",
-				heading: "Decisions come with reasons",
-				body: [
-					"When we make a call, we write down why. A decision without context becomes a mystery six months later.",
-					"Writing it down also forces clarity. If we cannot explain it plainly, we probably do not understand it yet.",
-				],
-			},
-			{
-				id: "the-work-speaks",
-				heading: "The work speaks for itself",
-				body: [
-					"We publish what we build. Our own products are the clearest statement of how we think.",
-					"You can judge the studio by the software it runs. That is the point of working in the open.",
-				],
-			},
-		],
+		title: "Choose Boring Technology",
+		source: "Dan McKinley",
+		url: "https://mcfunley.com/choose-boring-technology",
+		note: "Innovation tokens are finite. Spend them on the product, not the plumbing.",
 	},
 	{
-		slug: "pricing-the-work",
-		title: "Pricing the Work",
-		intro: "We price the work, not the hours it takes to do it.",
-		sections: [
-			{
-				id: "a-price-for-the-outcome",
-				heading: "A price for the outcome",
-				body: [
-					"Hours are an input. The outcome is what you are buying. We quote a fixed price for a defined piece of work, so the risk of a slow week sits with us, not you.",
-					"That forces both sides to be clear about scope before anyone starts. Clarity up front is cheaper than renegotiation later.",
-				],
-			},
-			{
-				id: "scope-is-the-real-variable",
-				heading: "Scope is the real variable",
-				body: [
-					"When the work changes, the price changes. We do not pretend otherwise. We will show you what a change costs before we make it.",
-					"A fixed price is not a promise to do everything. It is a promise to do what we agreed, well.",
-				],
-			},
-			{
-				id: "no-surprise-invoices",
-				heading: "No surprise invoices",
-				body: [
-					"You should never open a bill and wonder where it came from. We invoice against the plan you already approved.",
-					"If something is going to cost more, you hear it from us first. Every time.",
-				],
-			},
-		],
+		title: "YAGNI",
+		source: "Martin Fowler",
+		url: "https://martinfowler.com/bliki/Yagni.html",
+		note: "You aren't gonna need it. The shortest argument for cutting scope until it fits.",
 	},
 	{
-		slug: "why-we-say-no",
-		title: "Why We Say No",
-		intro: "Saying no is how we keep the work good.",
-		sections: [
-			{
-				id: "no-is-a-filter",
-				heading: "No is a filter",
-				body: [
-					"We turn down most of what comes to us. Not because it is bad, but because we can only run a small number of things at once.",
-					"Every yes spends the same attention. We would rather spend it on work we can stand behind.",
-				],
-			},
-			{
-				id: "when-we-are-not-a-fit",
-				heading: "When we are not a fit",
-				body: [
-					"If the problem is not one we understand, we say so. If the timeline is not real, we say so. If the budget and the ambition do not match, we say so.",
-					"That conversation is faster and kinder than a project that was never going to work.",
-				],
-			},
-			{
-				id: "the-cost-of-a-bad-yes",
-				heading: "The cost of a bad yes",
-				body: [
-					"A wrong yes costs everyone: you pay for work that stalls, and we lose the time we could have spent on something better.",
-					"A clear no leaves you free to find the right team. That is a real outcome too.",
-				],
-			},
-		],
+		title: "Things You Should Never Do, Part I",
+		source: "Joel Spolsky",
+		url: "https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/",
+		note: "Rewriting from scratch is the single worst strategic mistake. Read it before you propose one.",
 	},
 	{
-		slug: "the-boring-stack",
-		title: "The Boring Stack",
-		intro: "We pick tools that will still be here when the product is.",
-		sections: [
-			{
-				id: "chosen-for-the-long-run",
-				heading: "Chosen for the long run",
-				body: [
-					"Our stack is deliberately unremarkable. TypeScript, React, Node.js, PostgreSQL, Stripe. Shopify, Cloudflare, Framer, and Astro where they fit.",
-					"None of it is exciting. All of it is documented, hireable, and understood by a lot of people. That is the point.",
-				],
-			},
-			{
-				id: "novelty-has-a-price",
-				heading: "Novelty has a price",
-				body: [
-					"New tools can be faster to start and slower to own. The cost shows up in maintenance, onboarding, and the day the maintainer moves on.",
-					"We pay that price only when it buys something real, like a genuine step change in what the product can do.",
-				],
-			},
-			{
-				id: "boring-is-a-feature",
-				heading: "Boring is a feature",
-				body: [
-					"A stack nobody has to think about is one less thing between you and your users. Reliability is not glamorous, but it compounds.",
-					"We would rather be interesting in the product than in the plumbing.",
-				],
-			},
-		],
+		title: "Don't Call Yourself A Programmer",
+		source: "Patrick McKenzie",
+		url: "https://www.kalzumeus.com/2011/10/28/dont-call-yourself-a-programmer/",
+		note: "On the business of software: value, pricing, and why the work is not the point.",
 	},
 	{
-		slug: "writing-things-down",
-		title: "Writing Things Down",
-		intro: "If it is not written down, it did not happen.",
-		sections: [
-			{
-				id: "memory-is-not-a-system",
-				heading: "Memory is not a system",
-				body: [
-					"Teams forget. People leave. A decision that lives only in someone's head dies when they walk out the door.",
-					"Writing it down is the cheapest way to keep a project from depending on any one person.",
-				],
-			},
-			{
-				id: "short-notes-beat-long-docs",
-				heading: "Short notes beat long docs",
-				body: [
-					"We write short notes, not manuals. A paragraph on why we chose something is worth more than a page that nobody reads.",
-					"The goal is a future reader who has none of our context. If the note works for them, it works.",
-				],
-			},
-			{
-				id: "writing-forces-clarity",
-				heading: "Writing forces clarity",
-				body: [
-					"You cannot write a fuzzy idea down without noticing it is fuzzy. The act of writing finds the gaps.",
-					"So we write early and often. It is how we think, not just how we record.",
-				],
-			},
-		],
+		title: "The Majestic Monolith",
+		source: "David Heinemeier Hansson",
+		url: "https://m.signalvnoise.com/the-majestic-monolith/",
+		note: "Most teams do not need microservices. A well-kept monolith is a competitive advantage.",
 	},
 	{
-		slug: "owning-the-outcome",
-		title: "Owning the Outcome",
-		intro: "We do not sell effort. We own the result.",
-		sections: [
-			{
-				id: "the-result-is-the-product",
-				heading: "The result is the product",
-				body: [
-					"No one buys a backlog. They buy a working thing that solves a problem. That is what we hold ourselves to.",
-					"Owning the outcome means we cannot hide behind activity. If the thing does not work, the work is not done, no matter how many hours went in.",
-				],
-			},
-			{
-				id: "skin-in-the-game",
-				heading: "Skin in the game",
-				body: [
-					"We run our own products, so we carry the same weight a founder does. Support tickets, downtime, churn. We know what it costs when software fails.",
-					"That experience keeps us honest. We do not recommend anything we would not run ourselves.",
-				],
-			},
-			{
-				id: "the-buck-stops-here",
-				heading: "The buck stops here",
-				body: [
-					"When something breaks in production, we fix it. There is no vendor to blame and no ticket to escalate. We are the last line.",
-					"Ownership is not a slogan. It is who gets the call at the wrong hour.",
-				],
-			},
-		],
+		title: "The Twelve-Factor App",
+		source: "Heroku",
+		url: "https://12factor.net",
+		note: "The checklist we run against every service before it goes to production.",
 	},
 	{
-		slug: "why-we-ship-early",
-		title: "Why We Ship Early",
-		intro: "The fastest way to learn is to put the work in front of real users.",
-		sections: [
-			{
-				id: "feedback-beats-speculation",
-				heading: "Feedback beats speculation",
-				body: [
-					"A debate about what users want is just guessing with confidence. A release turns that guess into evidence.",
-					"So we ship early and let the reaction tell us what to do next. The product answers questions a meeting cannot.",
-				],
-			},
-			{
-				id: "early-does-not-mean-sloppy",
-				heading: "Early does not mean sloppy",
-				body: [
-					"Shipping early is not an excuse to cut corners. The core has to be solid: data, security, the paths people use most.",
-					"We hold back the polish that depends on knowing what users actually do. We do not hold back the foundation.",
-				],
-			},
-			{
-				id: "momentum-is-a-feature",
-				heading: "Momentum is a feature",
-				body: [
-					"A team that sees its work live stays engaged. Shipping creates its own energy and attracts better decisions.",
-					"Waiting for perfect is the slowest way to get there. We would rather move, learn, and correct.",
-				],
-			},
-		],
-	},
-	{
-		slug: "the-second-year",
-		title: "The Second Year",
-		intro: "Launch is the easy part. The second year is the real test.",
-		sections: [
-			{
-				id: "what-the-first-year-hides",
-				heading: "What the first year hides",
-				body: [
-					"On launch day, the product is small and the team still remembers everything. The second year brings more data, more users, and a longer list of promises.",
-					"That is when shortcuts come due. The shortcuts you took at the start are the work you inherit now.",
-				],
-			},
-			{
-				id: "build-for-the-inheritor",
-				heading: "Build for the inheritor",
-				body: [
-					"The person who maintains this will not have the context you have today. We write and structure the code so they can move without fear.",
-					"Clear boundaries and plain names are not polish. They are the difference between a system that ages and one that rots.",
-				],
-			},
-			{
-				id: "the-compound-of-small-calls",
-				heading: "The compound of small calls",
-				body: [
-					"Products are won by a hundred small, unglamorous decisions: how data is shaped, how errors are handled, how a feature is named.",
-					"None of them matter on their own. Together they decide whether the second year is calm or a rewrite.",
-				],
-			},
-		],
-	},
-	{
-		slug: "small-studio-big-ambition",
-		title: "Small Studio, Big Ambition",
-		intro: "We stay small on purpose, and we aim far.",
-		sections: [
-			{
-				id: "small-is-a-choice",
-				heading: "Small is a choice",
-				body: [
-					"We could hire faster and take on more. We choose not to. A small studio keeps senior people close to the work and decisions close to the people affected.",
-					"Growth is not the goal. Good products, run well, are the goal.",
-				],
-			},
-			{
-				id: "ambition-without-noise",
-				heading: "Ambition without noise",
-				body: [
-					"We want our products to be used by many people and to last. That ambition does not require a big team or a loud one.",
-					"It requires picking hard problems, staying with them, and refusing to ship things we cannot stand behind.",
-				],
-			},
-			{
-				id: "the-long-view",
-				heading: "The long view",
-				body: [
-					"We are building a studio that is still here in ten years, still running its own software, still working with a few good partners.",
-					"Everything we do now is in service of that. Slow, steady, and deliberate beats fast and forgotten.",
-				],
-			},
-		],
+		title: "Why We Choose Profit",
+		source: "37signals",
+		url: "https://37signals.com/04",
+		note: "Profit is not a dirty word. It is what lets you say no and stay in control.",
 	},
 ];

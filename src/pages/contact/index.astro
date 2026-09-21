@@ -25,8 +25,20 @@ import { site } from "@/data/focuslab";
 					<dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
 				</div>
 				<div>
+					<dt>Phone</dt>
+					<dd><a href={`tel:${site.phone.replace(/\s+/g, "")}`}>{site.phone}</a></dd>
+				</div>
+				<div>
 					<dt>Studio</dt>
 					<dd>{site.location}</dd>
+				</div>
+				<div>
+					<dt>LinkedIn</dt>
+					<dd>
+						<a href="https://www.linkedin.com/company/110646093/" target="_blank" rel="noopener">
+							focuslab
+						</a>
+					</dd>
 				</div>
 			</dl>
 

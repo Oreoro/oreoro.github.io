@@ -192,50 +192,44 @@ function initNavigate() {
 	});
 }
 
+/**
+ * The theme is chosen and applied by the inline script in BaseHead, before the
+ * first paint. All that is left here is to reveal the shell once the fonts and
+ * the controller are in place, so the page fades in already wearing its colour.
+ */
 function initTheme() {
-	const themeOptions = [
-		"--rgb-theme-1",
-		"--rgb-theme-2",
-		"--rgb-theme-3",
-		"--rgb-theme-4",
-		"--rgb-theme-5",
-		"--rgb-theme-6",
-		"--rgb-theme-7",
-		"--rgb-theme-8",
-		"--rgb-theme-9",
-		"--rgb-theme-10",
-		"--rgb-theme-11",
-		"--rgb-theme-12",
-	];
-
-	const themed = document.querySelector<HTMLElement>("[data-theme-index]");
-	const themedIndex = themed ? parseInt(themed.dataset.themeIndex || "", 10) : Number.NaN;
-
-	let themeVariable: string;
-	if (!Number.isNaN(themedIndex)) {
-		themeVariable = `--rgb-theme-${(themedIndex % themeOptions.length) + 1}`;
-	} else {
-		const themeSession = sessionStorage.getItem("theme");
-		const themeFilter = themeOptions.filter((theme) => theme !== themeSession);
-		const themeArray = themeFilter.length > 0 ? themeFilter : themeOptions;
-		themeVariable = themeArray[Math.floor(Math.random() * themeArray.length)] ?? "--rgb-theme-1";
-		sessionStorage.setItem("theme", themeVariable);
-	}
-
-	const themeRgb = getComputedStyle(document.documentElement)
-		.getPropertyValue(themeVariable)
-		.trim();
-	document.documentElement.style.setProperty("--rgb-theme", themeRgb);
-
-	const themeColorMeta = document.querySelector('meta[name="theme-color"]');
-	if (themeColorMeta) themeColorMeta.setAttribute("content", `rgb(${themeRgb})`);
-
 	document.body.classList.add("is-ready");
+}
+
+/**
+ * signup.js — the email forms have no backend. Rather than post nowhere, they
+ * compose a mailto with the address so a signup always does something useful
+ * until a real endpoint is wired up.
+ */
+function initSignup() {
+	document.querySelectorAll<HTMLFormElement>("form[data-signup]").forEach((form) => {
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+
+			const input = form.querySelector<HTMLInputElement>('input[type="email"]');
+			const address = input?.value?.trim() ?? "";
+			if (input && !address) {
+				input.focus();
+				return;
+			}
+
+			const to = form.dataset.mailto || "";
+			const subject = form.dataset.subject || "Focus Lab";
+			const body = `Email: ${address}`;
+			window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+		});
+	});
 }
 
 function ready() {
 	initController();
 	initNavigate();
+	initSignup();
 	initTheme();
 }
 

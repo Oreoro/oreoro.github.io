@@ -7,6 +7,28 @@ export interface Policy {
 
 export const policies: Policy[] = [
 	{
+		slug: "trust",
+		title: "Trust Center",
+		intro:
+			"Security, privacy, and compliance information for Focus Lab products, in one place. Ask us for anything that is missing.",
+		sections: [
+			{
+				id: "overview",
+				heading: "Overview",
+				body: [
+					"Our products run on Cloudflare and managed PostgreSQL, with encryption in transit and at rest. We follow the practices described in our Security Overview and Privacy Policy.",
+				],
+			},
+			{
+				id: "questions",
+				heading: "Questions",
+				body: [
+					"For security questionnaires, data processing agreements, or a copy of our subprocessors list, email security@focuslab.pk.",
+				],
+			},
+		],
+	},
+	{
 		slug: "terms",
 		title: "Terms of Service",
 		intro:
@@ -16,7 +38,7 @@ export const policies: Policy[] = [
 				id: "definitions",
 				heading: "Definitions",
 				body: [
-					"“Focus Lab”, “we”, “our”, and “us” refer to Focus Lab. “Services” refers to our products — Urbanevents, Workproof, and Muxo — and to focuslab.pk.",
+					"“Focus Lab”, “we”, “our”, and “us” refer to Focus Lab. “Services” refers to our products — Urbanevents, Workproof, and Fixer — and to focuslab.pk.",
 					"“You” and “your” refer to the person or organization that owns an account with one or more of our Services.",
 				],
 			},
@@ -81,6 +103,49 @@ export const policies: Policy[] = [
 				body: [
 					"We keep your data while your account is active and delete it within 60 days of cancellation. Data is encrypted in transit and our backups are encrypted.",
 				],
+			},
+		],
+	},
+	{
+		slug: "ccpa",
+		title: "California Resident Notice at Collection",
+		intro:
+			"This notice describes the categories of personal information we collect from California residents and how we use it.",
+		sections: [
+			{
+				id: "what-we-collect",
+				heading: "What we collect",
+				body: [
+					"We collect identifiers (name, email, company), commercial information (billing history), and internet activity (log data) as described in our Privacy Policy.",
+					"We do not sell personal information, and we do not share it for cross-context behavioral advertising.",
+				],
+			},
+			{
+				id: "your-rights",
+				heading: "Your California rights",
+				body: [
+					"You may request access to, correction of, or deletion of your personal information, and you may ask us to limit the use of sensitive information. Email privacy@focuslab.pk.",
+				],
+			},
+		],
+	},
+	{
+		slug: "ferpa",
+		title: "FERPA (US Schools)",
+		intro:
+			"For US schools and districts, this describes how we handle education records under FERPA.",
+		sections: [
+			{
+				id: "our-role",
+				heading: "Our role",
+				body: [
+					"Where we process education records on behalf of a school, we act as a school official with a legitimate educational interest and handle the data only as directed by the school.",
+				],
+			},
+			{
+				id: "questions",
+				heading: "Questions",
+				body: ["Email privacy@focuslab.pk with any FERPA questions or requests."],
 			},
 		],
 	},
@@ -202,6 +267,22 @@ export const policies: Policy[] = [
 		],
 	},
 	{
+		slug: "until-the-end-of-the-internet",
+		title: "Until the End of the Internet",
+		intro:
+			"A commitment we make to every customer: we will keep your data available to you, and keep our promises, for as long as the internet lasts.",
+		sections: [
+			{
+				id: "our-commitment",
+				heading: "Our commitment",
+				body: [
+					"We do not hold your data hostage. You can export everything you put into our products at any time, in an open format.",
+					"If we ever shut a product down, we will give you notice and a way to take your data with you.",
+				],
+			},
+		],
+	},
+	{
 		slug: "taxes",
 		title: "Taxes on Services",
 		intro:
@@ -268,8 +349,10 @@ export const policies: Policy[] = [
 	},
 ];
 
-export const policyLinks = policies.map((policy) => ({
-	slug: policy.slug,
-	label: policy.title,
-	href: `/policies/${policy.slug}`,
-}));
+export const policyLinks = policies
+	.filter((policy) => policy.slug !== "updates")
+	.map((policy) => ({
+		slug: policy.slug,
+		label: policy.title,
+		href: `/policies/${policy.slug}`,
+	}));

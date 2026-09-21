@@ -1,0 +1,353 @@
+/*
+ * Focus Lab Podcast — the 37signals "broadsheet" layout, adapted to the
+ * signals shell. A sticky sidebar (masthead, subscribe, archive tags, about)
+ * next to a grid of episodes with a featured first entry.
+ *
+ * Class names mirror 37signals' podcast app so the structure stays familiar:
+ * broadsheet, broadsheet__sidebar, broadsheet__content, broadsheet__episodes,
+ * episode, podcast__masthead, podcast__subscribe, podcast__tags, waveform.
+ */
+
+html body.signals-shell .broadsheet {
+	--podcast-border: rgba(var(--rgb-white), 0.16);
+	--podcast-muted: rgba(var(--rgb-white), 0.68);
+	--podcast-surface: rgba(var(--rgb-white), 0.08);
+	display: grid;
+	gap: var(--line-height);
+	grid-template-columns: minmax(0, 1fr);
+	margin: 7.4em var(--spacing) 7.4em var(--spacing);
+}
+
+html body.signals-shell .broadsheet__sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: var(--line-height);
+	min-width: 0;
+}
+
+html body.signals-shell .broadsheet__content {
+	min-width: 0;
+}
+
+/* ---------- sidebar ---------- */
+
+html body.signals-shell .podcast__masthead {
+	font-size: var(--font-size-xx-large);
+	font-weight: 700;
+	line-height: 1;
+	margin: 0;
+	text-transform: uppercase;
+}
+
+html body.signals-shell .podcast__masthead a {
+	text-decoration: none;
+}
+
+html body.signals-shell .masthead__mark {
+	color: var(--color-white);
+}
+
+html body.signals-shell .masthead__sub {
+	color: var(--podcast-muted);
+	font-weight: 300;
+}
+
+html body.signals-shell .podcast__summary {
+	color: var(--podcast-muted);
+	font-size: var(--font-size-small);
+	margin: 0;
+}
+
+html body.signals-shell .podcast__section {
+	border-top: 1px solid var(--podcast-border);
+	padding-top: var(--spacing);
+}
+
+html body.signals-shell .podcast__section:last-child {
+	border-bottom: 1px solid var(--podcast-border);
+	padding-bottom: var(--spacing);
+}
+
+html body.signals-shell .podcast__section-title {
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	gap: 0.4em;
+	list-style: none;
+	margin: 0;
+}
+
+html body.signals-shell .podcast__section-title::-webkit-details-marker {
+	display: none;
+}
+
+html body.signals-shell .podcast__section-title::before {
+	color: var(--podcast-muted);
+	content: "+";
+	font-family: var(--font-family-mono);
+	font-weight: 400;
+	width: 1em;
+}
+
+html body.signals-shell .podcast__section[open] .podcast__section-title::before {
+	content: "\2212";
+}
+
+html body.signals-shell .podcast__section > p,
+html body.signals-shell .podcast__subscribe,
+html body.signals-shell .podcast__tags {
+	margin: var(--spacing) 0 0 0;
+}
+
+html body.signals-shell .podcast__section > p {
+	color: var(--podcast-muted);
+	font-size: var(--font-size-small);
+}
+
+html body.signals-shell .podcast__subscribe {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4em;
+	list-style: none;
+	padding: 0;
+}
+
+html body.signals-shell .podcast__subscribe a {
+	background: var(--podcast-surface);
+	border: 1px solid var(--podcast-border);
+	border-radius: 1em;
+	font-size: var(--font-size-x-small);
+	font-weight: 500;
+	letter-spacing: normal;
+	padding: 0.3em 0.85em;
+	text-decoration: none;
+}
+
+html body.signals-shell .podcast__subscribe a:hover,
+html body.signals-shell .podcast__subscribe a:focus-visible {
+	background: rgba(var(--rgb-white), 0.18);
+}
+
+html body.signals-shell .podcast__tags {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: var(--font-size-x-small);
+	gap: 0.4em;
+}
+
+html body.signals-shell .podcast__tags a,
+html body.signals-shell .podcast__tags span {
+	background: var(--podcast-surface);
+	border: 1px solid var(--podcast-border);
+	border-radius: 1em;
+	font-weight: 400;
+	letter-spacing: normal;
+	padding: 0.15em 0.7em;
+	text-decoration: none;
+}
+
+html body.signals-shell .podcast__tags a:hover,
+html body.signals-shell .podcast__tags a:focus-visible {
+	background: rgba(var(--rgb-white), 0.18);
+}
+
+/* ---------- waveform ---------- */
+
+html body.signals-shell .waveform {
+	align-items: flex-end;
+	display: flex;
+	gap: 2px;
+	height: 4.5em;
+	margin-bottom: calc(var(--line-height) * 1.5);
+	opacity: 0.45;
+	overflow: hidden;
+}
+
+html body.signals-shell .waveform div {
+	background: currentColor;
+	border-radius: 1px;
+	color: var(--color-white);
+	flex: 1;
+	min-height: 4%;
+}
+
+/* ---------- episodes ---------- */
+
+html body.signals-shell .broadsheet__episodes {
+	align-items: start;
+	display: grid;
+	gap: 1.5em;
+	grid-template-columns: repeat(auto-fill, minmax(16em, 1fr));
+}
+
+html body.signals-shell .episode {
+	border-top: 1px solid var(--podcast-border);
+	padding-top: var(--spacing);
+}
+
+html body.signals-shell .episode.--featured {
+	grid-column: 1 / -1;
+	padding-top: 0;
+}
+
+html body.signals-shell .episode__preface {
+	color: var(--podcast-muted);
+	font-size: var(--font-size-x-small);
+	font-weight: 700;
+	letter-spacing: normal;
+	margin: 0 0 var(--spacing) 0;
+	text-transform: uppercase;
+}
+
+html body.signals-shell .episode__mast {
+	min-width: 0;
+}
+
+html body.signals-shell .episode__number {
+	color: var(--podcast-muted);
+	display: block;
+	font-size: var(--font-size-x-small);
+	font-weight: 400;
+	letter-spacing: normal;
+	margin-bottom: 0.5em;
+	text-transform: uppercase;
+}
+
+html body.signals-shell .episode__title {
+	font-size: var(--font-size-x-large);
+	line-height: 1.2;
+	margin: 0 0 0.4em 0;
+}
+
+html body.signals-shell .episode__title a {
+	text-decoration: none;
+}
+
+html body.signals-shell .episode__title a:hover,
+html body.signals-shell .episode__title a:focus-visible {
+	text-decoration: underline;
+}
+
+html body.signals-shell .--featured .episode__title {
+	font-size: var(--font-size-xxx-large);
+}
+
+html body.signals-shell .episode__summary {
+	color: rgba(var(--rgb-white), 0.85);
+	font-size: var(--font-size-small);
+	margin: 0 0 0.6em 0;
+	max-width: 46ch;
+}
+
+html body.signals-shell .--featured .episode__summary {
+	font-size: var(--font-size-large);
+}
+
+html body.signals-shell .episode__permalink {
+	font-size: var(--font-size-small);
+	margin: 0;
+}
+
+html body.signals-shell .episode__permalink a {
+	font-weight: 700;
+	text-decoration: none;
+}
+
+html body.signals-shell .episode__permalink a:hover,
+html body.signals-shell .episode__permalink a:focus-visible {
+	text-decoration: underline;
+}
+
+/* Play affordance — decorative for now, links to the episode page. */
+html body.signals-shell .episode__play {
+	align-items: center;
+	background: var(--color-white);
+	border-radius: 100%;
+	color: var(--color-theme);
+	display: inline-flex;
+	height: 3em;
+	justify-content: center;
+	margin-bottom: var(--spacing);
+	text-decoration: none;
+	width: 3em;
+}
+
+html body.signals-shell .episode__play::after {
+	border-bottom: 0.4em solid transparent;
+	border-left: 0.65em solid currentColor;
+	border-top: 0.4em solid transparent;
+	content: "";
+	margin-left: 0.15em;
+}
+
+html body.signals-shell .--featured .episode__mast {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	column-gap: var(--line-height);
+	align-items: start;
+}
+
+html body.signals-shell .--featured .episode__play {
+	grid-row: 1 / span 4;
+	margin-bottom: 0;
+}
+
+html body.signals-shell .--featured .episode__number,
+html body.signals-shell .--featured .episode__title,
+html body.signals-shell .--featured .episode__summary,
+html body.signals-shell .--featured .episode__permalink {
+	grid-column: 2;
+}
+
+/* ---------- episode permalink page ---------- */
+
+html body.signals-shell .episode.--perma {
+	border-top: 0;
+	padding-top: 0;
+}
+
+html body.signals-shell .episode.--perma .episode__title {
+	font-size: var(--font-size-xxx-large);
+	margin-bottom: var(--spacing);
+}
+
+html body.signals-shell .episode__content {
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+	max-width: 46ch;
+}
+
+html body.signals-shell .episode__content > * + * {
+	margin-top: var(--line-height);
+}
+
+html body.signals-shell .episode__content > p:first-of-type {
+	font-size: var(--font-size-large);
+}
+
+html body.signals-shell .episode__tags {
+	color: var(--podcast-muted);
+	font-size: var(--font-size-x-small);
+	font-style: italic;
+	margin-top: var(--line-height);
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .broadsheet {
+		gap: calc(var(--line-height) * 2.5);
+		grid-template-columns: 16em minmax(0, 1fr);
+		margin-left: 2.8ch;
+		margin-right: 2.8ch;
+	}
+
+	html body.signals-shell .broadsheet__sidebar {
+		align-self: start;
+		max-height: calc(100vh - 9em);
+		overflow-y: auto;
+		padding-right: var(--spacing);
+		position: sticky;
+		top: 7.4em;
+	}
+}

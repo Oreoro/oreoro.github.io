@@ -1,0 +1,70 @@
+---
+import { getNavLink } from "@/lib/blog-helpers";
+import { site } from "@/data/focuslab";
+
+const listen: Array<[string, string]> = [
+	["Apple Podcasts", "https://podcasts.apple.com/"],
+	["Spotify", "https://open.spotify.com/"],
+	["Overcast", "https://overcast.fm/"],
+	["Pocket Casts", "https://pocketcasts.com/"],
+	["RSS", getNavLink("/rss.xml")],
+];
+
+const topics = ["Product", "Engineering", "Design", "Business", "Craft"];
+---
+
+<nav class="broadsheet__sidebar" aria-label="Podcast">
+	<h1 class="podcast__masthead">
+		<a href={getNavLink("/podcast/")}>
+			<span class="masthead__mark">Podcasts</span>{" "}
+			<span class="masthead__sub">we find useful</span>
+		</a>
+	</h1>
+
+	<p class="podcast__summary">
+		Shows we actually listen to — on building, shipping, and running software at a small studio.
+		None of them are ours.
+	</p>
+
+	<details class="podcast__section" open>
+		<summary class="podcast__section-title">Where to listen</summary>
+		<ul class="podcast__subscribe">
+			{
+				listen.map(([label, href]) => (
+					<li>
+						<a
+							href={href}
+							target={href.startsWith("http") ? "_blank" : undefined}
+							rel={href.startsWith("http") ? "noopener" : undefined}
+						>
+							{label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</details>
+
+	<details class="podcast__section">
+		<summary class="podcast__section-title">Topics</summary>
+		<div class="podcast__tags">
+			{topics.map((topic) => <span>{topic}</span>)}
+		</div>
+	</details>
+
+	<details class="podcast__section">
+		<summary class="podcast__section-title">About this list</summary>
+		<p>
+			We keep a short list of shows that stay worth the time. It is not a directory — just the ones
+			that have changed how we work.
+		</p>
+	</details>
+
+	<details class="podcast__section">
+		<summary class="podcast__section-title">Get in touch</summary>
+		<p>
+			Have a show we should listen to? Email us at <a href={`mailto:${site.email}`}>{site.email}</a
+			>. We listen to every message.
+		</p>
+	</details>
+</nav>

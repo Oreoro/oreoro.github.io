@@ -1,19 +1,22 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { getNavLink } from "@/lib/blog-helpers";
 import { thoughts } from "@/data/thoughts";
 ---
 
 <PageLayout
 	meta={{
 		title: "Thoughts",
-		description: "Longer notes on how we build and run products.",
+		description:
+			"Writing we find useful — a curated list of essays and guides that shaped how Focus Lab builds.",
 	}}
 >
 	<div class="page">
 		<div class="page__headline">
-			<h1>Thoughts</h1>
-			<p>Longer notes on how we build and run products.</p>
+			<h1>Writing we find useful</h1>
+			<p>
+				A running list of essays and guides that shaped how we build and run products. Every link
+				goes to the original author — none of this is ours.
+			</p>
 		</div>
 
 		<div class="thoughts">
@@ -21,10 +24,13 @@ import { thoughts } from "@/data/thoughts";
 				{
 					thoughts.map((thought) => (
 						<div class="thoughts__thought">
-							<h2>
-								<a href={getNavLink(`/thoughts/${thought.slug}/`)}>{thought.title}</a>
-							</h2>
-							<p>{thought.intro}</p>
+							<h3>
+								<a href={thought.url} target="_blank" rel="noopener">
+									{thought.title}
+								</a>
+							</h3>
+							<p class="font-size-small">{thought.source}</p>
+							<p>{thought.note}</p>
 						</div>
 					))
 				}

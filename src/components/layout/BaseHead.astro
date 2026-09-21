@@ -3,6 +3,7 @@ import type { SiteMeta } from "@/types";
 import "@/styles/global.css";
 import "@/styles/minimal.css";
 import "@/styles/signals-shell.css";
+import "@/styles/podcast.css";
 import "@/styles/notion-signals.css";
 import { siteInfo } from "@/siteInfo";
 import {
@@ -151,6 +152,54 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 {/* Theme Colour */}
 <meta name="color-scheme" content="dark light" />
 <meta name="theme-color" content={themeColor} />
+
+{/* Apply the page theme before first paint so there is no flash. */}
+<script is:inline>
+	(function () {
+		var el = document.documentElement;
+		var options = [
+			"193, 53, 72",
+			"184, 74, 24",
+			"138, 102, 20",
+			"100, 114, 31",
+			"44, 122, 82",
+			"30, 122, 115",
+			"35, 104, 160",
+			"64, 83, 180",
+			"106, 74, 184",
+			"140, 55, 128",
+			"185, 58, 112",
+			"74, 85, 104"
+		];
+		var idx = el.getAttribute("data-theme-index");
+		var rgb;
+		var parsed = idx === null ? NaN : parseInt(idx, 10);
+
+		if (!isNaN(parsed)) {
+			rgb = options[((parsed % options.length) + options.length) % options.length];
+		} else {
+			var previous = null;
+			try {
+				previous = sessionStorage.getItem("theme");
+			} catch (e) {}
+			var pool = options.filter(function (value) {
+				return value !== previous;
+			});
+			if (pool.length === 0) pool = options;
+			rgb = pool[Math.floor(Math.random() * pool.length)];
+			try {
+				sessionStorage.setItem("theme", rgb);
+			} catch (e) {}
+		}
+
+		if (rgb) {
+			el.style.setProperty("--rgb-theme", rgb);
+			el.setAttribute("data-theme", rgb);
+			var meta = document.querySelector('meta[name="theme-color"]');
+			if (meta) meta.setAttribute("content", "rgb(" + rgb + ")");
+		}
+	})();
+</script>
 
 {/* Open Graph / Facebook */}
 <meta property="og:type" content={articleDate ? "article" : "website"} />

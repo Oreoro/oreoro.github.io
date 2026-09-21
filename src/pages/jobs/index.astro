@@ -1,19 +1,21 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import { getNavLink } from "@/lib/blog-helpers";
+import { site } from "@/data/focuslab";
 ---
 
 <PageLayout
 	meta={{
 		title: "Jobs",
-		description: "Working at Focus Lab, a product-led studio in Islamabad.",
+		description: "Working at Focus Lab, a product studio in Islamabad.",
 	}}
 >
 	<div class="page">
 		<div class="page__headline">
 			<h1>Working at Focus Lab</h1>
 			<p>
-				We're a small product-led studio. We design, build, and run our own software, and partner
-				with a few teams to do the same.
+				Take a look at our current openings, sign up to be notified about future ones, and learn
+				what it's like to work here.
 			</p>
 		</div>
 
@@ -25,16 +27,23 @@ import PageLayout from "@/layouts/Base.astro";
 			</div>
 
 			<div class="signup signup--jobs content">
-				<h2>Get notified</h2>
+				<h5>Sign up to be notified</h5>
 				<p>
-					When we do hire, we post it here. We will never share your email, or use it for any other
-					purpose.
+					If you'd like to be notified about job openings, sign up below, or <a
+						href={getNavLink("/feed/jobs.xml")}>grab the RSS feed</a
+					>. We will never share your email, or use it for any other purpose.
 				</p>
-				<p>
-					<a class="button button--theme" href="mailto:bilal@focuslab.pk?subject=Focus%20Lab%20jobs">
-						Email us to be notified <span>&rarr;</span>
-					</a>
-				</p>
+				<form data-signup data-mailto={site.email} data-subject="Focus Lab jobs" novalidate>
+					<input
+						type="email"
+						name="email"
+						placeholder="you@example.com"
+						spellcheck="false"
+						autocomplete="email"
+						required
+					/>
+					<button class="button button--theme" type="submit">Sign up</button>
+				</form>
 			</div>
 
 			<div class="jobs__content content content--jobs">
@@ -43,10 +52,10 @@ import PageLayout from "@/layouts/Base.astro";
 					A small studio that builds its own products and answers to the people who use them.
 				</p>
 				<p>
-					Focus Lab is a product-led studio based in Islamabad. We design, build, and run our own
-					software: Urbanevents for events and ticketing, Workproof for work and proof tooling, and
-					Muxo, one key for the whole stack. We also partner with a small number of teams to help
-					them ship products of their own.
+					Focus Lab is a product studio based in Islamabad. We design, build, and run our own
+					software: Urbanevents for events and ticketing, Workproof for a calm record of the work,
+					and Fixer, which triages production errors and opens draft pull requests. Once in a while
+					we partner with a team when the fit is right.
 				</p>
 				<p>
 					We work with Shopify, Cloudflare, Framer, Astro, React, TypeScript, Node.js, PostgreSQL,
@@ -90,8 +99,7 @@ import PageLayout from "@/layouts/Base.astro";
 				</p>
 				<p>
 					We keep a calm company and a steady pace. We ship, we maintain what we ship, and we learn
-					in public. If that sounds like you, we'd like to hear from you. Reach us at
-					bilal@focuslab.pk.
+					in public. If that sounds like you, we'd like to hear from you.
 				</p>
 			</div>
 		</div>

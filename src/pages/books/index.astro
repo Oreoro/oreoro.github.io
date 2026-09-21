@@ -1,38 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-
-const books = [
-	{
-		title: "Inspired",
-		author: "Marty Cagan",
-		desc: "How the best product teams decide what to build and why. The clearest argument we know for putting product before process.",
-		href: "https://www.svpg.com/inspired-how-to-create-products-customers-love/",
-	},
-	{
-		title: "The Lean Startup",
-		author: "Eric Ries",
-		desc: "Build, measure, learn. The loop behind every product we ship — and the reason we keep scope small enough to test.",
-		href: "https://theleanstartup.com/",
-	},
-	{
-		title: "The Design of Everyday Things",
-		author: "Don Norman",
-		desc: "Why some interfaces feel obvious and others fight you. Required reading before we design anything.",
-		href: "https://www.nngroup.com/books/design-everyday-things-revised/",
-	},
-	{
-		title: "Refactoring UI",
-		author: "Adam Wathan & Steve Schoger",
-		desc: "Practical interface design for people who build. Tactics we reach for on every screen.",
-		href: "https://www.refactoringui.com/",
-	},
-	{
-		title: "Continuous Discovery Habits",
-		author: "Teresa Torres",
-		desc: "How to stay close to customers every week instead of every quarter. Keeps us honest about what people actually need.",
-		href: "https://www.producttalk.org/continuous-discovery-habits/",
-	},
-];
+import { books } from "@/data/books";
 ---
 
 <PageLayout
@@ -43,25 +11,52 @@ const books = [
 >
 	<div class="page">
 		<div class="page__headline">
-			<p class="page__kicker">Books</p>
 			<h1>Books that shaped how we build.</h1>
-			<p>A short shelf. Every one of these changed how we work, not just what we know.</p>
+			<p>
+				On top of running our own products, we read about the craft. This is the short shelf that
+				changed how we work — not just what we know.
+			</p>
 		</div>
 
-		<div class="page__content content">
-			{
-				books.map((book) => (
-					<>
-						<h2>
-							<a href={book.href} target="_blank" rel="noopener">
-								{book.title}
-							</a>
-						</h2>
-						<p class="font-size-small">{book.author}</p>
-						<p>{book.desc}</p>
-					</>
-				))
-			}
+		<div class="books">
+			<div class="books__container">
+				{
+					books.map((book) => (
+						<div class="books__book">
+							<div class="books__wrap">
+								<figure>
+									<a
+										href={book.links[0]?.href ?? "#"}
+										target="_blank"
+										rel="noopener"
+										aria-label={book.title}
+									>
+										<span class="book-cover" style={`--book-tint: var(--rgb-theme-${book.tint})`}>
+											<span class="book-cover__mark">{book.mark}</span>
+											<span class="book-cover__title">{book.title}</span>
+										</span>
+									</a>
+								</figure>
+
+								<div class="books__content">
+									<h3>{book.title}</h3>
+									<p class="font-size-small">{book.author}</p>
+									<p>{book.description}</p>
+									<ul>
+										{book.links.map((item) => (
+											<li>
+												<a href={item.href} target="_blank" rel="noopener">
+													{item.label}
+												</a>
+											</li>
+										))}
+									</ul>
+								</div>
+							</div>
+						</div>
+					))
+				}
+			</div>
 		</div>
 	</div>
 </PageLayout>

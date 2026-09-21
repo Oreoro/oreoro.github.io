@@ -1,51 +1,74 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 
-const groups = [
+interface StackItem {
+	name: string;
+	logo?: string;
+}
+
+const groups: { title: string; note: string; items: StackItem[] }[] = [
 	{
 		title: "Frontend",
 		note: "Fast by default, accessible always.",
-		items: ["Astro", "React", "TypeScript", "Tailwind CSS", "Framer"],
+		items: [
+			{ name: "Astro", logo: "astro" },
+			{ name: "React", logo: "react" },
+			{ name: "TypeScript", logo: "typescript" },
+			{ name: "Tailwind CSS", logo: "tailwindcss" },
+			{ name: "Vite", logo: "vite" },
+		],
 	},
 	{
 		title: "Backend & data",
 		note: "Small, typed services.",
-		items: ["Node.js", "Hono", "PostgreSQL", "Cloudflare D1", "Durable Objects"],
+		items: [
+			{ name: "Node.js", logo: "nodedotjs" },
+			{ name: "Go", logo: "go" },
+			{ name: "Hono", logo: "hono" },
+			{ name: "PostgreSQL", logo: "postgresql" },
+			{ name: "Drizzle ORM", logo: "drizzle" },
+		],
 	},
 	{
 		title: "Infrastructure",
 		note: "Global, cheap, reproducible.",
-		items: ["Cloudflare Workers", "Cloudflare R2", "Cloudflare KV", "GitHub Actions"],
-	},
-	{
-		title: "Commerce & CMS",
-		note: "Content and checkout that convert.",
-		items: ["Shopify", "Stripe", "Framer", "Headless CMS"],
+		items: [
+			{ name: "Cloudflare", logo: "cloudflare" },
+			{ name: "Cloudflare Workers", logo: "cloudflareworkers" },
+			{ name: "GitHub Actions", logo: "githubactions" },
+			{ name: "GitHub", logo: "github" },
+		],
 	},
 	{
 		title: "AI",
 		note: "Models in production, not in demos.",
-		items: ["OpenAI", "Anthropic", "Cloudflare Workers AI", "MCP"],
+		items: [
+			{ name: "Anthropic", logo: "anthropic" },
+			{ name: "Claude", logo: "claude" },
+			{ name: "Google Gemini", logo: "googlegemini" },
+			{ name: "Hugging Face", logo: "huggingface" },
+			{ name: "Ollama", logo: "ollama" },
+			{ name: "LangChain", logo: "langchain" },
+			{ name: "Mistral", logo: "mistralai" },
+		],
+	},
+	{
+		title: "Payments",
+		note: "Checkout people actually finish.",
+		items: [{ name: "Stripe", logo: "stripe" }],
 	},
 	{
 		title: "Design",
 		note: "Systems, not one-off screens.",
-		items: ["Figma", "Framer"],
+		items: [{ name: "Figma", logo: "figma" }],
 	},
 	{
-		title: "Testing & quality",
-		note: "Ship with confidence.",
-		items: ["Vitest", "Playwright", "TypeScript", "GitHub Actions"],
-	},
-	{
-		title: "Observability",
+		title: "Quality & observability",
 		note: "Know when something breaks.",
-		items: ["Cloudflare Analytics", "Sentry", "Logpush"],
-	},
-	{
-		title: "Payments & email",
-		note: "The parts customers feel.",
-		items: ["Stripe", "Shopify Payments", "Resend", "Cloudflare Email"],
+		items: [
+			{ name: "Zod", logo: "zod" },
+			{ name: "Sentry", logo: "sentry" },
+		],
 	},
 ];
 ---
@@ -54,7 +77,7 @@ const groups = [
 	meta={{
 		title: "Stack",
 		description:
-			"The tools Focus Lab builds with — Astro, Cloudflare, TypeScript, Stripe, and a small proven core around them.",
+			"The tools Focus Lab builds with — Astro, Cloudflare, TypeScript, Postgres, and AI models in production.",
 	}}
 >
 	<div class="page">
@@ -62,26 +85,41 @@ const groups = [
 			<p class="page__kicker">Stack</p>
 			<h1>The tools we build with.</h1>
 			<p>
-				We pick boring, proven technology and push it hard. Shopify, Cloudflare, and Framer for the
-				edges — a small typed core for everything that matters.
+				We pick boring, proven technology and push it hard — a small typed core for everything that
+				matters, and AI models where they earn their place.
 			</p>
 		</div>
 
-		<div class="page__content content">
+		<div class="stack">
 			{
 				groups.map((group) => (
-					<>
+					<section class="stack__group">
 						<h2>{group.title}</h2>
-						<p>{group.note}</p>
-						<ul class="list-spaced">
+						<p class="stack__note">{group.note}</p>
+						<ul class="stack__items">
 							{group.items.map((item) => (
-								<li>{item}</li>
+								<li class="stack__item">
+									{item.logo && (
+										<img
+											class="stack__logo"
+											src={`/assets/stack/${item.logo}.svg`}
+											alt=""
+											width="24"
+											height="24"
+											loading="lazy"
+											decoding="async"
+										/>
+									)}
+									<span class="stack__name">{item.name}</span>
+								</li>
 							))}
 						</ul>
-					</>
+					</section>
 				))
 			}
+		</div>
 
+		<div class="page__content content">
 			<hr class="ornament" />
 
 			<h2>How we choose</h2>
