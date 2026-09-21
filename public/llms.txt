@@ -1,0 +1,60 @@
+# Focus Lab
+
+> Focus Lab is a product studio based in Islamabad, Pakistan. We design, build,
+> and run our own software — Urban Events, WorkProof, and Fixer — and
+> occasionally partner with a team when the fit is right.
+
+Contact: bilal@focuslab.pk · +92 333 5507394 · Islamabad, Pakistan
+LinkedIn: https://www.linkedin.com/company/110646093/
+
+## Products
+
+- [Urban Events](https://urbanevents.pk): Ticketing for Pakistan. Publish an event page, sell tickets in PKR via JazzCash, Easypaisa, and bank transfer, and check guests in by QR. Free for free events; 5% per paid ticket.
+- [WorkProof](https://workproof.focuslab.pk): Self-hosted workforce activity analytics with real privacy. Active vs. idle, focus ratio, and per-person rollups; no keystroke or content capture. Pricing on request.
+- [Fixer](/products/fixer/): Self-hosted. Watches production logs, reduces them to the exceptions worth a human's time, and opens draft pull requests with a root cause, the evidence, and a proposed fix. A human always reviews and merges — the GitHub App can never merge. Available on request.
+
+## Pages
+
+- [Home / stream](https://focuslab.pk/): a numbered feed of what we are building, reading, and thinking about.
+- [Studio](https://focuslab.pk/studio/): who we are and how we work.
+- [Stack](https://focuslab.pk/stack/): the tools we build with, including AI.
+- [Thoughts](https://focuslab.pk/thoughts/): writing we find useful (curated, external).
+- [Podcast](https://focuslab.pk/podcast/): podcasts we find useful (curated, external).
+- [Books](https://focuslab.pk/books/): the shelf that shaped how we build.
+- [Jobs](https://focuslab.pk/jobs/): working at Focus Lab.
+- [Policies](https://focuslab.pk/policies/): terms, privacy, and the rest.
+- [Contact](https://focuslab.pk/contact/): start a conversation.
+
+## The stream
+
+The home page is a numbered feed served at `/00`, `/01`, `/02`, … Each entry is
+self-contained and is one of five kinds:
+
+- `note` — a short thought or update from the studio
+- `launch` — something we shipped
+- `link` — a link worth sharing
+- `quote` — a line worth keeping
+- `essay` — a piece of writing we found useful (curated, with a source + link)
+
+Curated entries (`essay`, `quote`, `link`) always carry a `source` and a `url`
+to the original. Nothing curated is presented as ours.
+
+## Adding content (for LLMs and agents)
+
+All content lives in typed data files under `src/data/`. To add content, edit
+the relevant file and follow its exported TypeScript interface:
+
+- New stream entry → append to `stream` in `src/data/stream.ts`
+- New product → add to `products` in `src/data/products.ts`
+- New book → add to `books` in `src/data/books.ts`
+- New curated essay → add to `thoughts` in `src/data/thoughts.ts`
+- New curated show → add to `podcasts` in `src/data/podcast.ts`
+- New policy → add to `policies` in `src/data/policies.ts`
+
+Full schema, conventions, and examples: see `docs/CONTENT.md` in the repository.
+
+## Notes
+
+- Background colour is a random shade of green per page load; `/NN` pages use a
+  deterministic shade per entry.
+- External curated links are always attributed to their source.

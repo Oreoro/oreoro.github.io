@@ -369,6 +369,7 @@ html body.signals-shell .font-size-xxx-large {
 html body.signals-shell .button {
 	align-self: flex-start;
 	background: var(--color-white);
+	border: 1px solid transparent;
 	border-radius: 1.3em;
 	color: var(--color-theme) !important;
 	cursor: pointer;
@@ -379,6 +380,10 @@ html body.signals-shell .button {
 	letter-spacing: normal;
 	padding: 0.6em 1.1em 0.55em 1.1em;
 	text-decoration: none;
+	transition:
+		background-color var(--transition),
+		box-shadow var(--transition),
+		transform var(--transition);
 	white-space: nowrap;
 }
 
@@ -386,9 +391,30 @@ html body.signals-shell .button span {
 	display: inline-flex;
 }
 
+html body.signals-shell .button:hover,
+html body.signals-shell .button:focus-visible {
+	box-shadow: 0 0.5em 1.4em -0.5em rgba(var(--rgb-black), 0.45);
+	transform: translateY(-1px);
+}
+
+/* Theme-coloured button, for use on light surfaces (e.g. the white signup form). */
 html body.signals-shell .button--theme {
 	background: var(--color-theme);
 	color: var(--color-white) !important;
+}
+
+/* Ghost button — a native-feeling secondary action on a coloured background. */
+html body.signals-shell .button--ghost {
+	background: transparent;
+	border-color: rgba(var(--rgb-white), 0.55);
+	color: var(--color-white) !important;
+}
+
+html body.signals-shell .button--ghost:hover,
+html body.signals-shell .button--ghost:focus-visible {
+	background: rgba(var(--rgb-white), 0.12);
+	border-color: var(--color-white);
+	box-shadow: none;
 }
 
 /* ---------- page.css ---------- */
@@ -1817,6 +1843,105 @@ html body.signals-shell .stack__logo {
 
 html body.signals-shell .stack__name {
 	font-weight: 700;
+}
+
+/* ---------- product.css ---------- */
+
+html body.signals-shell .product__hero {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	margin-bottom: 3.7em;
+}
+
+html body.signals-shell .product__kicker {
+	color: rgba(var(--rgb-white), 0.72);
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+html body.signals-shell .product__hero h1 {
+	font-size: var(--font-size-xxxx-large);
+	letter-spacing: -0.02em;
+	line-height: 1.02;
+}
+
+html body.signals-shell .product__tagline {
+	font-size: var(--font-size-xxx-large);
+	font-weight: 700;
+	line-height: 1.1;
+}
+
+html body.signals-shell .product__summary {
+	font-size: var(--font-size-large);
+	max-width: 52ch;
+}
+
+html body.signals-shell .product__pricing {
+	color: rgba(var(--rgb-white), 0.75);
+	font-size: var(--font-size-small);
+}
+
+html body.signals-shell .product__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.8em;
+	margin-top: 0.8em;
+}
+
+html body.signals-shell .product__section {
+	margin-bottom: 3.7em;
+}
+
+html body.signals-shell .product__section > h2 {
+	margin-bottom: var(--line-height);
+}
+
+html body.signals-shell .product__grid {
+	display: grid;
+	gap: 1em;
+	grid-template-columns: minmax(0, 1fr);
+}
+
+html body.signals-shell .product__feature {
+	background: rgba(var(--rgb-white), 0.06);
+	border: 1px solid rgba(var(--rgb-white), 0.14);
+	border-radius: 0.4em;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4em;
+	padding: 1.1em 1.2em;
+}
+
+html body.signals-shell .product__feature h3 {
+	font-size: var(--font-size-large);
+	line-height: 1.2;
+}
+
+html body.signals-shell .product__feature p {
+	font-size: var(--font-size-small);
+	margin: 0;
+}
+
+html body.signals-shell .product__nav {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	list-style: none;
+	padding: 0;
+}
+
+html body.signals-shell .product__nav a {
+	font-weight: 700;
+}
+
+@media (min-width: 48em) {
+	html body.signals-shell .product__grid {
+		gap: 1.2em;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 }
 
 /* Shared call-to-action panel used by index pages. */

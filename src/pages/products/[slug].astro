@@ -12,6 +12,8 @@ export function getStaticPaths() {
 }
 
 const { product } = Astro.props;
+const others = products.filter((item) => item.slug !== product.slug);
+const accessHref = `mailto:${site.email}?subject=${encodeURIComponent(`Access to ${product.name}`)}`;
 ---
 
 <PageLayout
@@ -30,71 +32,74 @@ const { product } = Astro.props;
 		},
 	}}
 >
-	<div class="page">
-		<div class="page__headline">
-			<p class="page__kicker">Product</p>
+	<div class="page product">
+		<header class="product__hero">
+			<p class="product__kicker">
+				Product{product.selfHosted ? " · Self-hosted" : ""}
+			</p>
 			<h1>{product.name}</h1>
-			<p>{product.tagline}</p>
-		</div>
+			<p class="product__tagline">{product.tagline}</p>
+			<p class="product__summary">{product.summary}</p>
+			{product.pricing && <p class="product__pricing">{product.pricing}</p>}
 
-		<div class="page__content content">
-			<p>{product.summary}</p>
-
-			{
-				product.pricing && (
-					<p class="font-size-small">
-						<em>{product.pricing}</em>
-					</p>
-				)
-			}
-
-			{
-				product.url ? (
-					<p>
-						<a class="button button--theme" href={product.url} target="_blank" rel="noopener">
+			<div class="product__actions">
+				{
+					product.url ? (
+						<a class="button" href={product.url} target="_blank" rel="noopener">
 							Visit {product.name} <span>&rarr;</span>
 						</a>
-					</p>
-				) : (
-					<p>
-						<a
-							class="button button--theme"
-							href={`mailto:${site.email}?subject=${encodeURIComponent(`Access to ${product.name}`)}`}
-						>
+					) : (
+						<a class="button" href={accessHref}>
 							Request access or a demo <span>&rarr;</span>
 						</a>
-					</p>
-				)
-			}
+					)
+				}
+				<a class="button button--ghost" href={getNavLink("/contact/")}>Talk to us</a>
+			</div>
+		</header>
 
+		<section class="product__section">
 			<h2>What it does</h2>
-			{
-				product.features.map((feature) => (
-					<>
-						<h3>{feature.title}</h3>
-						<p>{feature.body}</p>
-					</>
-				))
-			}
+			<div class="product__grid">
+				{
+					product.features.map((feature) => (
+						<article class="product__feature">
+							<h3>{feature.title}</h3>
+							<p>{feature.body}</p>
+						</article>
+					))
+				}
+			</div>
+		</section>
 
-			{
-				product.stack && product.stack.length > 0 && (
-					<>
-						<h2>Built with</h2>
-						<ul class="list-spaced">
-							{product.stack.map((item) => (
-								<li>{item}</li>
-							))}
-						</ul>
-					</>
-				)
-			}
+		{
+			product.stack && product.stack.length > 0 && (
+				<section class="product__section">
+					<h2>Built with</h2>
+					<ul class="list-spaced">
+						{product.stack.map((item) => (
+							<li>{item}</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
 
-			<hr class="ornament" />
+		<hr class="ornament" />
 
-			<p>
-				Building something similar? <a href={getNavLink("/contact/")}>Start a conversation</a>.
-			</p>
-		</div>
+		<section class="product__section">
+			<h2>More from Focus Lab</h2>
+			<ul class="product__nav">
+				{
+					others.map((item) => (
+						<li>
+							<a href={getNavLink(`/products/${item.slug}/`)}>{item.name}</a>
+							{" — "}
+							{item.tagline}
+						</li>
+					))
+				}
+			</ul>
+		</section>
 	</div>
 </PageLayout>
