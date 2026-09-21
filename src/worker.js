@@ -88,18 +88,48 @@ async function handleContextApi(request, env) {
 	} catch (error) {
 		if (error instanceof ContextDevError) {
 			const status = error.status >= 400 && error.status < 600 ? error.status : 502;
-			return json({ error: error.message, code: error.code ?? null, requestId: error.requestId ?? null }, status);
+			return json(
+				{ error: error.message, code: error.code ?? null, requestId: error.requestId ?? null },
+				status,
+			);
 		}
 		return json({ error: "Unexpected error handling Context.dev request." }, 500);
 	}
 }
 
+/**
+ * Baseline security headers. HSTS is deliberately *not* includeSubDomains:
+ * focuslab.pk has DNS-only subdomains (mail, sip, lyncdiscover) that must not
+ * be forced onto HTTPS.
+ */
+function withSecurityHeaders(response) {
+	const headers = new Headers(response.headers);
+	headers.set("Strict-Transport-Security", "max-age=31536000");
+	headers.set("X-Content-Type-Options", "nosniff");
+	headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+	headers.set("X-Frame-Options", "SAMEORIGIN");
+	headers.set("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
+	return new Response(response.body, {
+		status: response.status,
+		statusText: response.statusText,
+		headers,
+	});
+}
+
 export default {
 	async fetch(request, env) {
 		const url = new URL(request.url);
+
+		// Canonical host: send www.focuslab.pk to the apex.
+		if (url.hostname.startsWith("www.")) {
+			url.hostname = url.hostname.slice(4);
+			return Response.redirect(url.toString(), 301);
+		}
+
 		if (url.pathname === "/api/context" || url.pathname.startsWith("/api/context/")) {
 			return handleContextApi(request, env);
 		}
-		return env.ASSETS.fetch(request);
+
+		return withSecurityHeaders(await env.ASSETS.fetch(request));
 	},
 };
