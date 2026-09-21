@@ -122,17 +122,14 @@
 	 * the inline script in BaseHead.astro, which applies the theme before paint.
 	 */
 	--rgb-theme-1: 244, 103, 199; /* pink */
-	--rgb-theme-2: 190, 82, 255; /* purple */
-	--rgb-theme-3: 139, 119, 255; /* indigo */
-	--rgb-theme-4: 0, 170, 194; /* cyan */
-	--rgb-theme-5: 154, 162, 0; /* olive */
-	--rgb-theme-6: 248, 121, 23; /* orange */
-	--rgb-theme-7: 240, 177, 3; /* yellow */
-	--rgb-theme-8: 204, 61, 51; /* red */
-	--rgb-theme-9: 41, 152, 80; /* green */
-	--rgb-theme-10: 0, 100, 230; /* blue */
-	--rgb-theme-11: 236, 67, 67; /* signal red */
-	--rgb-theme-12: 207, 111, 182; /* rose */
+	--rgb-theme-2: 139, 119, 255; /* indigo */
+	--rgb-theme-3: 0, 170, 194; /* cyan */
+	--rgb-theme-4: 154, 162, 0; /* olive */
+	--rgb-theme-5: 204, 61, 51; /* red */
+	--rgb-theme-6: 41, 152, 80; /* green */
+	--rgb-theme-7: 0, 100, 230; /* blue */
+	--rgb-theme-8: 236, 67, 67; /* signal red */
+	--rgb-theme-9: 207, 111, 182; /* rose */
 
 	--color-black: rgb(var(--rgb-black));
 	--color-error: rgb(var(--rgb-error));
@@ -148,9 +145,6 @@
 	--color-theme-7: rgb(var(--rgb-theme-7));
 	--color-theme-8: rgb(var(--rgb-theme-8));
 	--color-theme-9: rgb(var(--rgb-theme-9));
-	--color-theme-10: rgb(var(--rgb-theme-10));
-	--color-theme-11: rgb(var(--rgb-theme-11));
-	--color-theme-12: rgb(var(--rgb-theme-12));
 
 	--font-family: "Lab Grotesque", Sans-Serif;
 	--font-family-mono: "Lab Grotesque Mono", Monospace;
