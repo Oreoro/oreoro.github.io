@@ -117,23 +117,22 @@
 
 	--rgb-theme: var(--rgb-black);
 	/*
-	 * Focus Lab palette — green. Twelve shades of one brand green, picked at
-	 * random per page load (and per entry on `/NN` pages), so the background
-	 * is always green but never quite the same twice. Kept in sync with the
-	 * inline script in BaseHead.astro, which applies the theme before paint.
+	 * Focus Lab palette — the 37signals multi-colour set. One colour is picked
+	 * at random per page load (and per entry on `/NN` pages). Kept in sync with
+	 * the inline script in BaseHead.astro, which applies the theme before paint.
 	 */
-	--rgb-theme-1: 41, 152, 80; /* signal green */
-	--rgb-theme-2: 34, 130, 70; /* forest */
-	--rgb-theme-3: 46, 160, 92; /* leaf */
-	--rgb-theme-4: 28, 112, 64; /* pine */
-	--rgb-theme-5: 36, 140, 96; /* emerald */
-	--rgb-theme-6: 52, 150, 70; /* grass */
-	--rgb-theme-7: 30, 120, 88; /* juniper */
-	--rgb-theme-8: 58, 140, 78; /* moss */
-	--rgb-theme-9: 44, 130, 60; /* clover */
-	--rgb-theme-10: 24, 104, 74; /* evergreen */
-	--rgb-theme-11: 60, 150, 100; /* sage */
-	--rgb-theme-12: 38, 120, 92; /* viridian */
+	--rgb-theme-1: 244, 103, 199; /* pink */
+	--rgb-theme-2: 190, 82, 255; /* purple */
+	--rgb-theme-3: 139, 119, 255; /* indigo */
+	--rgb-theme-4: 0, 170, 194; /* cyan */
+	--rgb-theme-5: 154, 162, 0; /* olive */
+	--rgb-theme-6: 248, 121, 23; /* orange */
+	--rgb-theme-7: 240, 177, 3; /* yellow */
+	--rgb-theme-8: 204, 61, 51; /* red */
+	--rgb-theme-9: 41, 152, 80; /* green */
+	--rgb-theme-10: 0, 100, 230; /* blue */
+	--rgb-theme-11: 236, 67, 67; /* signal red */
+	--rgb-theme-12: 207, 111, 182; /* rose */
 
 	--color-black: rgb(var(--rgb-black));
 	--color-error: rgb(var(--rgb-error));

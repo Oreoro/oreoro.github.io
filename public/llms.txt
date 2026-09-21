@@ -55,6 +55,6 @@ Full schema, conventions, and examples: see `docs/CONTENT.md` in the repository.
 
 ## Notes
 
-- Background colour is a random shade of green per page load; `/NN` pages use a
-  deterministic shade per entry.
+- Background colour is a random colour from the 37signals palette per page load;
+  `/NN` pages use a deterministic colour per entry.
 - External curated links are always attributed to their source.
