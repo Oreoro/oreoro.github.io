@@ -23,7 +23,6 @@ const titleSeparator = "•";
 const siteTitle =
 	title && title !== siteInfo.title ? `${title} ${titleSeparator} ${siteInfo.title}` : siteInfo.title;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL(getNavLink("/og.png"), Astro.site).href;
 const markdownAlternateUrl = new URL("./index.html.md", Astro.url).href;
 const faviconLink = getNavLink("/favicon.ico");
 
@@ -198,24 +197,6 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 		}
 	})();
 </script>
-
-{/* Open Graph / Facebook */}
-<meta property="og:type" content={articleDate ? "article" : "website"} />
-<meta property="og:title" content={siteTitle} />
-<meta property="og:description" content={description} />
-<meta property="og:url" content={canonicalURL} />
-<meta property="og:site_name" content={siteInfo.title} />
-<meta property="og:locale" content={siteInfo.ogLocale} />
-<meta property="og:image" content={ogImage} />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content={siteInfo.description} />
-
-{/* Twitter */}
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={siteTitle} />
-<meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={ogImage} />
 
 {
 	articleDate && (

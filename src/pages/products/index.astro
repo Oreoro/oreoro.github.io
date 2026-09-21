@@ -1,0 +1,42 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import { products } from "@/data/products";
+import { getNavLink } from "@/lib/blog-helpers";
+---
+
+<PageLayout
+	meta={{
+		title: "Products",
+		description:
+			"Software Focus Lab designs, builds, and runs: Urban Events, WorkProof, and Fixer.",
+	}}
+>
+	<div class="page page--wide">
+		<div class="page__headline">
+			<p class="page__kicker">Products</p>
+			<h1>Software we build and run.</h1>
+			<p>
+				We design, ship, and operate our own products — and carry the pager for them. Two run in the
+				open, and one runs on your infrastructure.
+			</p>
+		</div>
+
+		<div class="product-cards">
+			{
+				products.map((product) => (
+					<a class="product-card" href={getNavLink(`/products/${product.slug}/`)}>
+						<div class="product-card__head">
+							<h2>{product.name}</h2>
+							<span class="product-card__status">{product.url ? "Live" : "Self-hosted"}</span>
+						</div>
+						<p class="product-card__tagline">{product.tagline}</p>
+						<p class="product-card__summary">{product.summary}</p>
+						<span class="product-card__cta">
+							{product.url ? "Visit site" : "Request access"} <span>&rarr;</span>
+						</span>
+					</a>
+				))
+			}
+		</div>
+	</div>
+</PageLayout>

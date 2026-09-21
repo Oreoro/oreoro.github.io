@@ -8,6 +8,7 @@ export const GET = () => {
 		"/studio/",
 		"/books/",
 		"/stack/",
+		"/products/",
 		...products.map((product) => `/products/${product.slug}/`),
 		"/thoughts/",
 		"/jobs/",

@@ -1930,6 +1930,97 @@ html body.signals-shell .product__nav a {
 	font-weight: 700;
 }
 
+/* Products index cards */
+html body.signals-shell .product-cards {
+	display: grid;
+	gap: 1.2em;
+	grid-template-columns: minmax(0, 1fr);
+}
+
+html body.signals-shell .product-card {
+	background: rgba(var(--rgb-white), 0.06);
+	border: 1px solid rgba(var(--rgb-white), 0.14);
+	border-radius: 0.5em;
+	color: var(--color-white);
+	display: flex;
+	flex-direction: column;
+	gap: 0.6em;
+	padding: 1.4em 1.5em;
+	text-decoration: none;
+	transition:
+		background-color var(--transition),
+		border-color var(--transition),
+		transform var(--transition);
+}
+
+html body.signals-shell .product-card:hover,
+html body.signals-shell .product-card:focus-visible {
+	background: rgba(var(--rgb-white), 0.1);
+	border-color: rgba(var(--rgb-white), 0.35);
+	transform: translateY(-2px);
+}
+
+html body.signals-shell .product-card__head {
+	align-items: baseline;
+	display: flex;
+	gap: 0.8em;
+	justify-content: space-between;
+}
+
+html body.signals-shell .product-card__head h2 {
+	font-size: var(--font-size-x-large);
+	line-height: 1.1;
+}
+
+html body.signals-shell .product-card__status {
+	border: 1px solid rgba(var(--rgb-white), 0.25);
+	border-radius: 1em;
+	font-size: var(--font-size-x-small);
+	font-weight: 700;
+	letter-spacing: normal;
+	padding: 0.15em 0.7em;
+	white-space: nowrap;
+}
+
+html body.signals-shell .product-card__tagline {
+	font-size: var(--font-size-large);
+	font-weight: 700;
+}
+
+html body.signals-shell .product-card__summary {
+	color: rgba(var(--rgb-white), 0.85);
+	font-size: var(--font-size-small);
+	margin: 0;
+}
+
+html body.signals-shell .product-card__cta {
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	margin-top: auto;
+	padding-top: 0.4em;
+}
+
+html body.signals-shell .product-card__cta span {
+	display: inline-flex;
+}
+
+/* Wider column for card-grid pages */
+@media (min-width: 64em) {
+	html body.signals-shell .page.page--wide {
+		max-width: 66rem;
+	}
+
+	html body.signals-shell .product-cards {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 40em) and (max-width: 63.99em) {
+	html body.signals-shell .product-cards {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
 @media (min-width: 48em) {
 	html body.signals-shell .product__grid {
 		gap: 1.2em;

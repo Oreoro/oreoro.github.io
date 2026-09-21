@@ -16,6 +16,7 @@ LinkedIn: https://www.linkedin.com/company/110646093/
 ## Pages
 
 - [Home / stream](https://focuslab.pk/): a numbered feed of what we are building, reading, and thinking about.
+- [Products](https://focuslab.pk/products/): the software we build and run.
 - [Studio](https://focuslab.pk/studio/): who we are and how we work.
 - [Stack](https://focuslab.pk/stack/): the tools we build with, including AI.
 - [Thoughts](https://focuslab.pk/thoughts/): writing we find useful (curated, external).
