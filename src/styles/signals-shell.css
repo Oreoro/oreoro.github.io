@@ -117,23 +117,23 @@
 
 	--rgb-theme: var(--rgb-black);
 	/*
-	 * Focus Lab palette — one deep, deliberate colour per page load. Twelve
-	 * rich hues chosen to sit together as a set and to hold white text at
-	 * AA contrast (all >= 4.4:1). Kept in sync with the inline script in
-	 * BaseHead.astro, which applies the theme before first paint.
+	 * Focus Lab palette — green. Twelve shades of one brand green, picked at
+	 * random per page load (and per entry on `/NN` pages), so the background
+	 * is always green but never quite the same twice. Kept in sync with the
+	 * inline script in BaseHead.astro, which applies the theme before paint.
 	 */
-	--rgb-theme-1: 193, 53, 72; /* crimson */
-	--rgb-theme-2: 184, 74, 24; /* ember */
-	--rgb-theme-3: 138, 102, 20; /* amber */
-	--rgb-theme-4: 100, 114, 31; /* olive */
-	--rgb-theme-5: 44, 122, 82; /* forest */
-	--rgb-theme-6: 30, 122, 115; /* teal */
-	--rgb-theme-7: 35, 104, 160; /* ocean */
-	--rgb-theme-8: 64, 83, 180; /* indigo */
-	--rgb-theme-9: 106, 74, 184; /* violet */
-	--rgb-theme-10: 140, 55, 128; /* plum */
-	--rgb-theme-11: 185, 58, 112; /* rose */
-	--rgb-theme-12: 74, 85, 104; /* slate */
+	--rgb-theme-1: 41, 152, 80; /* signal green */
+	--rgb-theme-2: 34, 130, 70; /* forest */
+	--rgb-theme-3: 46, 160, 92; /* leaf */
+	--rgb-theme-4: 28, 112, 64; /* pine */
+	--rgb-theme-5: 36, 140, 96; /* emerald */
+	--rgb-theme-6: 52, 150, 70; /* grass */
+	--rgb-theme-7: 30, 120, 88; /* juniper */
+	--rgb-theme-8: 58, 140, 78; /* moss */
+	--rgb-theme-9: 44, 130, 60; /* clover */
+	--rgb-theme-10: 24, 104, 74; /* evergreen */
+	--rgb-theme-11: 60, 150, 100; /* sage */
+	--rgb-theme-12: 38, 120, 92; /* viridian */
 
 	--color-black: rgb(var(--rgb-black));
 	--color-error: rgb(var(--rgb-error));
@@ -895,6 +895,7 @@ html body.signals-shell .footer__next a:after {
 html body.signals-shell .cluster {
 	margin: 7.4em var(--spacing) 4.5em var(--spacing);
 	opacity: 0;
+	transition: opacity var(--transition);
 }
 
 html body.signals-shell .cluster--index {
@@ -1087,6 +1088,7 @@ html body.signals-shell .controller {
 	opacity: 0;
 	pointer-events: none;
 	position: fixed;
+	transition: opacity var(--transition);
 	touch-action: none;
 	user-select: none;
 	-ms-user-select: none;
@@ -2050,10 +2052,30 @@ html body.signals-shell .thought__content.content {
 	}
 }
 
+/*
+ * Kill the brief highlight that appears on click/tap. Browsers paint a focus
+ * ring (Safari) or a tap-highlight box (mobile) around the link for a frame
+ * before navigation. We keep the ring for keyboard users via :focus-visible.
+ */
+html body.signals-shell a,
+html body.signals-shell button,
+html body.signals-shell input,
+html body.signals-shell summary {
+	-webkit-tap-highlight-color: transparent;
+}
+
+html body.signals-shell a:focus:not(:focus-visible),
+html body.signals-shell button:focus:not(:focus-visible),
+html body.signals-shell input:focus:not(:focus-visible),
+html body.signals-shell summary:focus:not(:focus-visible) {
+	outline: none;
+}
+
 /* Visible keyboard focus */
 html body.signals-shell a:focus-visible,
 html body.signals-shell button:focus-visible,
-html body.signals-shell input:focus-visible {
+html body.signals-shell input:focus-visible,
+html body.signals-shell summary:focus-visible {
 	border-radius: 2px;
 	outline: 2px solid var(--color-white);
 	outline-offset: 2px;
