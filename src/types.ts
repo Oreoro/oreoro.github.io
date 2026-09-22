@@ -37,6 +37,7 @@ export type SiteMeta = {
 	articleDate?: string | undefined;
 	author?: string | undefined;
 	hasMarkdownAlternate?: boolean | undefined;
+	robots?: string | undefined;
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[] | undefined;
 };
 

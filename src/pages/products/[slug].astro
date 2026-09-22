@@ -14,6 +14,7 @@ export function getStaticPaths() {
 const { product } = Astro.props;
 const others = products.filter((item) => item.slug !== product.slug);
 const accessHref = `mailto:${site.email}?subject=${encodeURIComponent(`Access to ${product.name}`)}`;
+const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 ---
 
 <PageLayout
@@ -28,7 +29,8 @@ const accessHref = `mailto:${site.email}?subject=${encodeURIComponent(`Access to
 			url: product.url ?? Astro.url.href,
 			applicationCategory: "BusinessApplication",
 			operatingSystem: product.selfHosted ? "Self-hosted" : "Web",
-			brand: { "@type": "Organization", name: "Focus Lab" },
+			publisher: { "@id": `${siteOrigin}/#organization` },
+			brand: { "@id": `${siteOrigin}/#organization` },
 		},
 	}}
 >

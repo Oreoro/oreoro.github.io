@@ -12,6 +12,7 @@
 		"purge": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/purge-cache.mts",
 		"cf:dev": "wrangler dev",
 		"format": "prettier -w --cache .",
+		"icons": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/make-icons.mts",
 		"check": "astro check",
 		"context:scrape": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/context-scrape.mts",
 		"context": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/context.mts",

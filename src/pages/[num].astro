@@ -26,6 +26,8 @@ const kindLabel: Record<StreamKind, string> = {
 
 const ctaLabel =
 	entry.kind === "essay" || entry.kind === "quote" ? "Read the original" : "Open link";
+
+const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 ---
 
 <PageLayout
@@ -39,10 +41,11 @@ const ctaLabel =
 			headline: entry.label,
 			datePublished: entry.date,
 			url: Astro.url.href,
+			mainEntityOfPage: Astro.url.href,
 			author: entry.source
 				? { "@type": "Person", name: entry.source }
-				: { "@type": "Organization", name: "Focus Lab" },
-			publisher: { "@type": "Organization", name: "Focus Lab" },
+				: { "@id": `${siteOrigin}/#organization` },
+			publisher: { "@id": `${siteOrigin}/#organization` },
 		},
 	}}
 	themeIndex={index}

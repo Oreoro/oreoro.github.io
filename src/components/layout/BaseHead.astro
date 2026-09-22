@@ -6,6 +6,7 @@ import "@/styles/signals-shell.css";
 import "@/styles/podcast.css";
 import "@/styles/notion-signals.css";
 import { siteInfo } from "@/siteInfo";
+import { site } from "@/data/focuslab";
 import {
 	ENABLE_LIGHTBOX,
 	TRACKING,
@@ -17,29 +18,51 @@ import { getNavLink } from "@/lib/blog-helpers";
 
 type Props = SiteMeta;
 
-const { title, description, articleDate, author, hasMarkdownAlternate, jsonLd } = Astro.props;
+const { title, description, articleDate, author, hasMarkdownAlternate, jsonLd, robots } =
+	Astro.props;
 
 const titleSeparator = "•";
 const siteTitle =
 	title && title !== siteInfo.title ? `${title} ${titleSeparator} ${siteInfo.title}` : siteInfo.title;
+const metaDescription = description || siteInfo.description;
+const metaRobots = robots || "index, follow, max-image-preview:large";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const markdownAlternateUrl = new URL("./index.html.md", Astro.url).href;
 const faviconLink = getNavLink("/favicon.ico");
 
 const siteUrl = import.meta.env.SITE?.toString().replace(/\/$/, "") ?? canonicalURL.origin;
+const organizationId = `${siteUrl}/#organization`;
 const structuredData = [
 	{
 		"@context": "https://schema.org",
 		"@type": "Organization",
+		"@id": organizationId,
 		name: siteInfo.title,
 		url: siteUrl,
 		description: siteInfo.description,
+		logo: {
+			"@type": "ImageObject",
+			url: new URL(getNavLink("/icon-512.png"), siteUrl).href,
+			width: 512,
+			height: 512,
+		},
+		email: site.email,
+		telephone: site.phone,
+		address: {
+			"@type": "PostalAddress",
+			addressLocality: "Islamabad",
+			addressCountry: "PK",
+		},
 	},
 	{
 		"@context": "https://schema.org",
 		"@type": "WebSite",
+		"@id": `${siteUrl}/#website`,
 		name: siteInfo.title,
 		url: siteUrl,
+		description: siteInfo.description,
+		inLanguage: siteInfo.lang,
+		publisher: { "@id": organizationId },
 	},
 	...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
 ];
@@ -138,7 +161,8 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 {/* Icons / Favicon */}
 <link rel="icon" href={getNavLink("/favicon.svg")} type="image/svg+xml" />
 <link rel="icon" href={faviconLink} sizes="any" />
-<link rel="apple-touch-icon" href={getNavLink("/favicon.svg")} />
+<link rel="apple-touch-icon" href={getNavLink("/apple-touch-icon.png")} />
+<link rel="manifest" href={getNavLink("/site.webmanifest")} />
 <link rel="canonical" href={canonicalURL} />
 {hasMarkdownAlternate && (
 	<link rel="alternate" type="text/markdown" href={markdownAlternateUrl} />
@@ -146,8 +170,11 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 
 {/* Primary Meta Tags */}
 <meta name="title" content={siteTitle} />
-<meta name="description" content={description} />
+<meta name="description" content={metaDescription} />
 <meta name="author" content={metaAuthor} />
+<meta name="robots" content={metaRobots} />
+<meta name="application-name" content={siteInfo.title} />
+<meta name="apple-mobile-web-app-title" content={siteInfo.title} />
 
 {/* Theme Colour */}
 <meta name="color-scheme" content="dark light" />
