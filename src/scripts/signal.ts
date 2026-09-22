@@ -202,6 +202,40 @@ function initTheme() {
 }
 
 /**
+ * Track the last input modality on <html>. Some browsers treat a clicked
+ * <summary> as :focus-visible and paint the focus ring, so the stylesheet uses
+ * this class to keep the ring for keyboard users and hide it after a pointer
+ * click. Only navigation keys count as keyboard input, so typing or holding a
+ * modifier does not flash the ring back on.
+ */
+const KEYBOARD_NAV_KEYS = new Set([
+	"Tab",
+	"ArrowUp",
+	"ArrowDown",
+	"ArrowLeft",
+	"ArrowRight",
+	"Home",
+	"End",
+	"PageUp",
+	"PageDown",
+]);
+
+function initInputModality() {
+	const root = document.documentElement;
+	const usePointer = () => root.classList.add("pointer-focus");
+
+	usePointer();
+	document.addEventListener("pointerdown", usePointer, true);
+	document.addEventListener(
+		"keydown",
+		(event) => {
+			if (KEYBOARD_NAV_KEYS.has(event.key)) root.classList.remove("pointer-focus");
+		},
+		true,
+	);
+}
+
+/**
  * signup.js — the email forms have no backend. Rather than post nowhere, they
  * compose a mailto with the address so a signup always does something useful
  * until a real endpoint is wired up.
@@ -230,6 +264,7 @@ function ready() {
 	initController();
 	initNavigate();
 	initSignup();
+	initInputModality();
 	initTheme();
 }
 

@@ -198,6 +198,11 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 	})();
 </script>
 
+{/* Default to pointer input before first paint so click focus rings stay off. */}
+<script is:inline>
+	document.documentElement.classList.add("pointer-focus");
+</script>
+
 {
 	articleDate && (
 		<>

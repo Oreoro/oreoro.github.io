@@ -126,7 +126,7 @@ html body.signals-shell .podcast__subscribe a {
 }
 
 html body.signals-shell .podcast__subscribe a:hover,
-html body.signals-shell .podcast__subscribe a:focus-visible {
+html:not(.pointer-focus) body.signals-shell .podcast__subscribe a:focus-visible {
 	background: rgba(var(--rgb-white), 0.18);
 }
 
@@ -149,7 +149,7 @@ html body.signals-shell .podcast__tags span {
 }
 
 html body.signals-shell .podcast__tags a:hover,
-html body.signals-shell .podcast__tags a:focus-visible {
+html:not(.pointer-focus) body.signals-shell .podcast__tags a:focus-visible {
 	background: rgba(var(--rgb-white), 0.18);
 }
 
@@ -226,7 +226,7 @@ html body.signals-shell .episode__title a {
 }
 
 html body.signals-shell .episode__title a:hover,
-html body.signals-shell .episode__title a:focus-visible {
+html:not(.pointer-focus) body.signals-shell .episode__title a:focus-visible {
 	text-decoration: underline;
 }
 
@@ -256,7 +256,7 @@ html body.signals-shell .episode__permalink a {
 }
 
 html body.signals-shell .episode__permalink a:hover,
-html body.signals-shell .episode__permalink a:focus-visible {
+html:not(.pointer-focus) body.signals-shell .episode__permalink a:focus-visible {
 	text-decoration: underline;
 }
 
