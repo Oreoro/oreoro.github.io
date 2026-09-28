@@ -142,6 +142,11 @@
 	 * 7.64:1; at 70% the worst drops to 3.94:1 and at 62% to 3.30:1, both under
 	 * AA for normal text. Large text only needs 3:1, so a heading may go lower
 	 * — nothing in the shell currently does.
+	 *
+	 * Anything muted, anywhere, reads these two. A literal alpha in a page
+	 * stylesheet is how the podcast page ended up at 3.77:1: `--podcast-muted`
+	 * had its own 0.68 and nothing in the shell was watching it. Check every
+	 * new muted colour against all fifteen grounds before shipping it.
 	 */
 	--ink-muted: 78%;
 	--ink-faint: 88%;
@@ -580,8 +585,14 @@ html body.signals-shell .page__anchors dd {
 	position: relative;
 }
 
+/* The jump links were 18px tall — a comfortable mouse target and a bad one for
+   a thumb. inline-block plus vertical padding takes them to a 24px minimum
+   without moving the type, which is what the surrounding list is set in. */
 html body.signals-shell .page__anchors dd a {
 	color: var(--color-ink);
+	display: inline-block;
+	line-height: 1.5;
+	padding: 0.25em 0;
 	text-decoration: none;
 }
 
@@ -782,6 +793,17 @@ html body.signals-shell .header ul li a {
 	text-decoration: none;
 }
 
+/* The primary links in the header and the footer are the only navigation on a
+   phone, and they were 14px tall. Vertical padding takes each to the 24px
+   minimum without moving the type; the fixed header grows by 10px to suit. */
+@media not all and (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .header ul li a,
+	html body.signals-shell .footer ul li a {
+		padding-bottom: 0.4em;
+		padding-top: 0.4em;
+	}
+}
+
 html body.signals-shell .header ul li:first-child {
 	margin-left: -0.5em;
 }
@@ -797,8 +819,42 @@ html body.signals-shell .header ul li:first-child {
 	}
 }
 
+/* The skip link. Tailwind's sr-only clipped it to a 1px box, and on focus the
+   utilities reset the clip but supplied no background, so the label landed
+   transparent on top of the fixed header's nav — dark text over the logo, with
+   only the inherited outline to separate them. It is given the page ground as
+   its own surface and lifted above the header. */
+html body.signals-shell .skip-link {
+	background: var(--color-theme);
+	color: var(--color-ink);
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	font-weight: 700;
+	height: 1px;
+	overflow: hidden;
+	padding: 0.6em 1em;
+	pointer-events: none;
+	position: absolute;
+	text-decoration: none;
+	white-space: nowrap;
+	width: 1px;
+	z-index: 200;
+}
+
+html:not(.pointer-focus) body.signals-shell .skip-link:focus-visible {
+	clip: auto;
+	clip-path: none;
+	height: auto;
+	left: var(--spacing);
+	pointer-events: auto;
+	top: var(--spacing);
+	width: auto;
+}
+
 /* ---------- nav.css ---------- */
 
+/* Visually hidden but still a real focus stop and a real AT control. Its
+   focus ring is projected onto the visible "Menu" label below. */
 html body.signals-shell .nav-active {
 	clip: rect(0 0 0 0);
 	clip-path: inset(50%);
@@ -809,7 +865,16 @@ html body.signals-shell .nav-active {
 	width: 1px;
 }
 
-html:not(.pointer-focus) body.signals-shell .nav-active:focus-visible ~ .nav .nav__toggle label {
+/* The sheet is a modal surface: lock the page behind it so a touch drag or a
+   wheel tick over the backdrop cannot scroll the content out from under the
+   menu. On <html> rather than <body>, because the sheet and the underlay are
+   both `position: fixed`; hiding overflow on <body> would take them out of the
+   viewport containing block. */
+html:has(body.signals-shell .nav-active:checked) {
+	overflow: hidden;
+}
+
+html:not(.pointer-focus) body.signals-shell .nav-active:focus-visible ~ .nav__toggle label {
 	outline: 2px solid var(--color-ink);
 	outline-offset: 2px;
 }
@@ -818,27 +883,34 @@ html body.signals-shell .nav-active:checked ~ .nav-underlay {
 	display: block;
 }
 
-html body.signals-shell .nav-active:checked ~ .nav {
+/* The checkbox is inside the <nav> now, so nothing may be styled with a
+   `~ .nav ...` combinator any more: `.nav` is the checkbox's parent, not its
+   sibling, and every such rule silently stopped matching. The sheet's own
+   surface uses `:has()`; the logo, toggle and options are still siblings of
+   the checkbox, so they keep a plain `~`. This is worth a screenshot on any
+   future change here — axe and the contrast sweep both pass with a sheet that
+   has lost its background. */
+html body.signals-shell .nav:has(.nav-active:checked) {
 	background: var(--color-sheet);
 	border-radius: 0 0 var(--spacing) var(--spacing);
 	pointer-events: auto;
 }
 
-html body.signals-shell .nav-active:checked ~ .nav .nav__logo {
+html body.signals-shell .nav-active:checked ~ .nav__logo {
 	display: block;
 }
 
-html body.signals-shell .nav-active:checked ~ .nav .nav__toggle label span {
+html body.signals-shell .nav-active:checked ~ .nav__toggle label span {
 	color: var(--color-sheet-ink);
 }
 
-html body.signals-shell .nav-active:checked ~ .nav .nav__options {
+html body.signals-shell .nav-active:checked ~ .nav__options {
 	display: flex;
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	html body.signals-shell .nav-active:checked ~ .nav-underlay,
-	html body.signals-shell .nav-active:checked ~ .nav {
+	html body.signals-shell .nav:has(.nav-active:checked) {
 		display: none;
 	}
 }
@@ -931,8 +1003,11 @@ html body.signals-shell .nav__options > ul li {
 	font-weight: 700;
 }
 
+/* Same problem in the sheet: 14px tall, one per row, and the only way out of
+   the menu on a phone. 0.5em either side of the line puts each row at 24px. */
 html body.signals-shell .nav__options > ul li a {
 	color: var(--color-sheet-ink);
+	padding: 0.3em 0;
 	text-decoration: none;
 }
 
@@ -1619,6 +1694,18 @@ html body.signals-shell .ledger td {
 	vertical-align: top;
 }
 
+/* A link sitting in a table cell is only as tall as its text — 14px here, with
+   the cell's padding doing nothing for the hit area. Vertical padding on an
+   *inline* element extends the border box, so the tap area grows without
+   touching the line box. `inline-block` would have done the same job but
+   stopped a long link wrapping mid-link, which is how a URL overflows a cell. */
+html body.signals-shell .ledger th a,
+html body.signals-shell .ledger td a,
+html body.signals-shell .panel__body p a {
+	padding-bottom: 0.45em;
+	padding-top: 0.45em;
+}
+
 html body.signals-shell .ledger th {
 	font-weight: 700;
 	width: 34%;
@@ -1771,8 +1858,7 @@ html body.signals-shell .thoughts__thought {
 	gap: 0.6em;
 }
 
-html body.signals-shell .thoughts__thought h2,
-html body.signals-shell .thoughts__thought h3 {
+html body.signals-shell .thoughts__thought h2 {
 	font-size: var(--font-size-x-large);
 	font-weight: 700;
 	line-height: 1.2;
@@ -1857,9 +1943,14 @@ html body.signals-shell .jobs__content {
 
 html body.signals-shell .jobs .signup {
 	margin-bottom: 3.7em;
-}
-
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	/* `.signup` is `align-self: flex-start`, so as a flex item in a column it
+	   hugs its content rather than the column. That is the look everywhere
+	   else, but on a 320px viewport the form plus the panel's own padding is
+	   wider than the page, and it pushed the whole document into a horizontal
+	   scroll. Capping at the column width keeps the hug on wider phones and
+	   lets the form inside shrink (min-width: 0 on its input). */
+	max-width: 100%;
+	min-width: 0;
 }
 
 /* ---------- downloads.css ---------- */
@@ -1986,7 +2077,7 @@ html body.signals-shell .books__content {
 	gap: 0.6em;
 }
 
-html body.signals-shell .books__content h3 {
+html body.signals-shell .books__content h2 {
 	font-size: var(--font-size-x-large);
 	font-weight: 700;
 	line-height: 1.2;
@@ -1998,6 +2089,15 @@ html body.signals-shell .books__content ul {
 	gap: 0.4em;
 	list-style: disc;
 	padding-left: 1.85ch;
+}
+
+/* The buy-links and the thought titles are 18–20px tall, and on /books and
+   /thoughts they are the entire content. Padding lifts them to 24px without
+   changing the type size or the list rhythm. */
+html body.signals-shell .books__content ul li a,
+html body.signals-shell .thoughts__thought h2 a {
+	padding-bottom: 0.25em;
+	padding-top: 0.25em;
 }
 
 /* Placeholder cover — a tinted panel until real cover art is dropped in. */
@@ -2076,8 +2176,14 @@ html body.signals-shell .signup form {
 	background: var(--color-ink);
 	border-radius: 2em;
 	display: flex;
-	max-width: 20em;
+	/* max-width alone will not stop the pill overflowing a 320px viewport: the
+	   input's default `size=20` gives it an intrinsic min-content width, and a
+	   flex item will not shrink below that without min-width: 0. Both are
+	   needed for the form to stay inside the gutter on the narrowest phones. */
+	max-width: min(20em, 100%);
+	min-width: 0;
 	padding: 0.25em;
+	width: 100%;
 }
 
 html body.signals-shell .signup form input[type="email"] {
@@ -2089,6 +2195,7 @@ html body.signals-shell .signup form input[type="email"] {
 	font-size: var(--font-size-small);
 	line-height: 1;
 	margin-right: 0.25em;
+	min-width: 0;
 	padding: 0.15em 0 0.15em 1.2em;
 	vertical-align: middle;
 }

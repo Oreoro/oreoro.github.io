@@ -241,10 +241,22 @@ function initSignup() {
 
 			const input = form.querySelector<HTMLInputElement>('input[type="email"]');
 			const address = input?.value?.trim() ?? "";
-			if (input && !address) {
+
+			form.classList.remove("error");
+			input?.removeAttribute("aria-invalid");
+
+			// An empty or malformed address used to be silently dropped: the input
+			// was focused and nothing else happened, so a keyboard user got no
+			// reason for the failure and a mail client still opened for "abc".
+			// Mark the field and say why.
+			if (input && !input.checkValidity()) {
+				form.classList.add("error");
+				input.setAttribute("aria-invalid", "true");
 				input.focus();
 				return;
 			}
+
+			if (input && !address) return;
 
 			const to = form.dataset.mailto || "";
 			const subject = form.dataset.subject || "Focus Lab";
@@ -299,11 +311,90 @@ function initTheme() {
 	document.body.classList.add("is-ready");
 }
 
+/**
+ * The mobile sheet is a checkbox, so CSS opens it but nothing owns it. That
+ * left three gaps worth closing here: aria-expanded had to be kept in step by
+ * hand, Escape did nothing, and a keyboard user who opened the sheet had no
+ * way back to the control that opened it. Also stops the page behind from
+ * scrolling, which `overflow: hidden` alone does not do for touch on iOS.
+ */
+function initMobileNav() {
+	const toggle = document.querySelector<HTMLInputElement>(".nav-active");
+	if (!toggle) return;
+
+	const open = () => toggle.checked;
+	const sync = () => toggle.setAttribute("aria-expanded", String(open()));
+
+	const close = () => {
+		if (!toggle.checked) return;
+		toggle.checked = false;
+		// Assigning .checked does not fire `change`, so aria-expanded would
+		// otherwise still read "true" on a closed sheet.
+		sync();
+		toggle.focus();
+	};
+
+	toggle.addEventListener("change", sync);
+	sync();
+
+	document.addEventListener("keydown", (event) => {
+		if (!open()) return;
+
+		if (event.key === "Escape") {
+			event.preventDefault();
+			close();
+			return;
+		}
+
+		// The sheet is a modal surface, so Tab has to stay inside it. Without
+		// this, tabbing walks off the last link and into the page behind, which
+		// is hidden behind the backdrop and cannot be read.
+		if (event.key === "Tab") {
+			const focusable = Array.from(
+				document.querySelectorAll<HTMLElement>(".nav a[href], .nav__toggle label"),
+			).filter((el) => el.getClientRects().length > 0);
+			const first = focusable[0];
+			const last = focusable[focusable.length - 1];
+			if (!first || !last) return;
+
+			const active = document.activeElement;
+
+			if (!focusable.includes(active as HTMLElement)) {
+				event.preventDefault();
+				first.focus();
+			} else if (event.shiftKey && active === first) {
+				event.preventDefault();
+				last.focus();
+			} else if (!event.shiftKey && active === last) {
+				event.preventDefault();
+				first.focus();
+			}
+		}
+	});
+
+	// Following a link out of the sheet, or a resize up to the desktop layout
+	// where the sheet is display:none, must not strand the page scroll-locked.
+	document.addEventListener("click", (event) => {
+		if (open() && (event.target as HTMLElement)?.closest(".nav a[href]")) {
+			toggle.checked = false;
+			sync();
+		}
+	});
+
+	window.matchMedia("(min-width: 64em)").addEventListener("change", (query) => {
+		if (query.matches) {
+			toggle.checked = false;
+			sync();
+		}
+	});
+}
+
 function ready() {
 	initController();
 	initNavigate();
 	initSignup();
 	initInputModality();
+	initMobileNav();
 	initTheme();
 }
 

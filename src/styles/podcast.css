@@ -10,7 +10,10 @@
 
 html body.signals-shell .broadsheet {
 	--podcast-border: rgba(var(--rgb-ink), 0.16);
-	--podcast-muted: rgba(var(--rgb-ink), 0.68);
+	/* Was a literal 0.68, which measured 3.77:1 on #d4a373 and #99c1de —
+	   under AA for the episode numbers, the summaries and the masthead strap.
+	   Muted text reads the shell's floor; see signals-shell.css. */
+	--podcast-muted: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 	--podcast-surface: rgba(var(--rgb-ink), 0.08);
 	display: grid;
 	gap: var(--line-height);

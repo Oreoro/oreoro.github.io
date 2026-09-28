@@ -117,11 +117,18 @@ import { site } from "@/data/focuslab";
 	}
 
 	.contact-list dt {
-		color: color-mix(in srgb, var(--color-ink) 65%, transparent);
+		color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 		font-size: 0.8em;
 		font-weight: 700;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
+	}
+
+	/* The address links are 22px tall and are the whole point of the page.
+	   Vertical padding on an inline element extends the tap area without
+	   changing the line box, so the address keeps its own wrapping. */
+	.contact-list dd a {
+		padding: 0.2em 0;
 	}
 
 	.contact-list dd {

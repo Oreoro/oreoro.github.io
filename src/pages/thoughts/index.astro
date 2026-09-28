@@ -25,11 +25,11 @@ import { thoughts } from "@/data/thoughts";
 				{
 					thoughts.map((thought) => (
 						<div class="thoughts__thought">
-							<h3>
+							<h2>
 								<a href={thought.url} target="_blank" rel="noopener">
 									{thought.title}
 								</a>
-							</h3>
+							</h2>
 							<p class="font-size-small">{thought.source}</p>
 							<p>{thought.note}</p>
 						</div>

@@ -23,11 +23,18 @@ const isExternal = (href: string) => href.startsWith("http");
 const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 ---
 
-<input class="nav-active" id="nav-active" type="checkbox" />
-
-<label class="nav-underlay" for="nav-active"></label>
-
 <nav class="nav" aria-label="Mobile navigation">
+	<input
+		class="nav-active"
+		id="nav-active"
+		type="checkbox"
+		aria-label="Menu"
+		aria-expanded="false"
+		aria-controls="nav-options"
+	/>
+
+	<label class="nav-underlay" for="nav-active" aria-hidden="true"></label>
+
 	<div class="nav__logo">
 		<Brand />
 	</div>
@@ -36,7 +43,7 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 			<span>Menu</span>
 		</label>
 	</div>
-	<div class="nav__options">
+	<div class="nav__options" id="nav-options">
 		<ul>
 			{
 				primary.map(([label, href]) => (
