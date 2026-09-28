@@ -1,0 +1,299 @@
+/*
+ * Focus Lab palettes and the on-site theme picker.
+ *
+ * signals-shell.css expresses the whole site through four role tokens:
+ *
+ *   --rgb-theme    the page background, rotated per page load
+ *   --rgb-ink      type, rules and surface washes
+ *   --rgb-paper    the inverse of ink, for surfaces that flip
+ *   --rgb-shadow   what an elevation shadow is cast in
+ *
+ * A palette is therefore just a table of those values. The inline script in
+ * BaseHead.astro sets `data-palette` on <html> before first paint and picks a
+ * `--rgb-theme-N` from the active palette, so switching palettes is one
+ * attribute and one custom property.
+ *
+ * Rules here are deliberately unlayered so they win over Tailwind's cascade
+ * layers, the same trick minimal.css uses.
+ */
+
+/* ---------- Pastel — the default ---------- */
+/* Warm, chalky, low-contrast grounds that all take the same near-black ink. */
+:root,
+:root[data-palette="pastel"] {
+	color-scheme: light;
+
+	--rgb-theme-1: 204, 213, 174; /* tea-green   #ccd5ae */
+	--rgb-theme-2: 233, 237, 201; /* beige       #e9edc9 */
+	--rgb-theme-3: 254, 250, 224; /* cornsilk    #fefae0 */
+	--rgb-theme-4: 250, 237, 205; /* papaya-whip #faedcd */
+	--rgb-theme-5: 212, 163, 115; /* light-bronze #d4a373 */
+	--rgb-theme-6: 237, 220, 210; /* powder-petal #eddcd2 */
+	--rgb-theme-7: 255, 241, 230; /* linen       #fff1e6 */
+	--rgb-theme-8: 253, 226, 228; /* soft-blush  #fde2e4 */
+	--rgb-theme-9: 250, 210, 225; /* petal-frost #fad2e1 */
+	--rgb-theme-10: 197, 222, 221; /* light-cyan  #c5dedd */
+	--rgb-theme-11: 219, 231, 228; /* mint-cream  #dbe7e4 */
+	--rgb-theme-12: 240, 239, 235; /* parchment   #f0efeb */
+	--rgb-theme-13: 214, 226, 233; /* alice-blue  #d6e2e9 */
+	--rgb-theme-14: 188, 212, 230; /* pale-sky    #bcd4e6 */
+	--rgb-theme-15: 153, 193, 222; /* powder-blue #99c1de */
+
+	--rgb-ink: 35, 31, 26;
+	--rgb-paper: 255, 255, 255;
+	--rgb-accent: 176, 118, 58;
+	--rgb-shadow: 35, 31, 26;
+
+	/* The inverted full-bleed surface — the open mobile menu. */
+	--rgb-sheet: 35, 31, 26;
+	--rgb-sheet-ink: 250, 247, 240;
+}
+
+/* ---------- Notion — paper, warm grey, one blue ---------- */
+:root[data-palette="notion"] {
+	color-scheme: light;
+
+	--rgb-theme-1: 255, 255, 255;
+	--rgb-theme-2: 251, 251, 250;
+	--rgb-theme-3: 247, 246, 243;
+	--rgb-theme-4: 241, 241, 239;
+	--rgb-theme-5: 231, 243, 248;
+	--rgb-theme-6: 253, 236, 236;
+	--rgb-theme-7: 242, 240, 253;
+	--rgb-theme-8: 232, 243, 239;
+	--rgb-theme-9: 251, 245, 235;
+
+	--rgb-ink: 55, 53, 47; /* Notion's #37352f */
+	--rgb-paper: 255, 255, 255;
+	--rgb-accent: 35, 131, 226; /* Notion blue #2383e2 */
+	--rgb-shadow: 55, 53, 47;
+
+	--rgb-sheet: 55, 53, 47;
+	--rgb-sheet-ink: 255, 255, 255;
+}
+
+/* ---------- Signal — the 37signals set, deepened ---------- */
+/*
+ * Same family as the original 37signals palette, but darkened. The published
+ * grounds are too light for white type — cyan on #00aac2 lands near 2.8:1, well
+ * under AA. These hold the same hues and stay vivid, while keeping body text
+ * above 4.5:1. The old values, for reference, were 244,103,199 / 139,119,255 /
+ * 0,170,194 / 154,162,0 / 204,61,51 / 41,152,80 / 0,100,230 / 236,67,67 /
+ * 207,111,182.
+ */
+:root[data-palette="signal"] {
+	color-scheme: dark;
+
+	--rgb-theme-1: 196, 42, 150; /* pink */
+	--rgb-theme-2: 92, 71, 200; /* indigo */
+	--rgb-theme-3: 0, 118, 140; /* cyan */
+	--rgb-theme-4: 104, 112, 0; /* olive */
+	--rgb-theme-5: 204, 61, 51; /* red */
+	--rgb-theme-6: 22, 110, 56; /* green */
+	--rgb-theme-7: 0, 100, 230; /* blue */
+	--rgb-theme-8: 198, 40, 40; /* signal red */
+	--rgb-theme-9: 166, 62, 141; /* rose */
+
+	--rgb-ink: 255, 255, 255;
+	--rgb-paper: 0, 0, 0;
+	--rgb-accent: 255, 255, 255;
+	--rgb-shadow: 0, 0, 0;
+
+	--rgb-sheet: 255, 255, 255;
+	--rgb-sheet-ink: 0, 0, 0;
+}
+
+/* ---------- Ink — quiet, near-black, one warm accent ---------- */
+:root[data-palette="ink"] {
+	color-scheme: dark;
+
+	--rgb-theme-1: 24, 23, 21;
+	--rgb-theme-2: 33, 30, 27;
+	--rgb-theme-3: 44, 39, 34;
+	--rgb-theme-4: 61, 48, 37;
+
+	--rgb-ink: 244, 241, 234;
+	--rgb-paper: 12, 11, 10;
+	--rgb-accent: 212, 163, 115; /* light-bronze */
+	--rgb-shadow: 0, 0, 0;
+
+	--rgb-sheet: 244, 241, 234;
+	--rgb-sheet-ink: 12, 11, 10;
+}
+
+/* Accent is only used for the few places a second colour earns its keep. */
+html body.signals-shell .content hr.ornament:before {
+	color: var(--color-accent);
+}
+
+html body.signals-shell ::selection {
+	background: color-mix(in srgb, var(--color-accent) 26%, transparent);
+}
+
+/* ---------- The picker ---------- */
+
+html body.signals-shell .theme-picker {
+	align-items: center;
+	border: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.55em 0.8em;
+	margin: 0;
+	padding: 0;
+	pointer-events: auto;
+}
+
+html body.signals-shell .theme-picker__legend {
+	color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+	flex: none;
+	font-size: var(--font-size-x-small);
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	padding: 0;
+	text-transform: uppercase;
+}
+
+html body.signals-shell .theme-picker__options {
+	display: flex;
+	flex: none;
+	gap: 0.35em;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+html body.signals-shell .theme-picker__option {
+	cursor: pointer;
+	display: block;
+	position: relative;
+}
+
+html body.signals-shell .theme-picker__option input {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+html body.signals-shell .theme-picker__swatch {
+	border: 1px solid color-mix(in srgb, var(--color-ink) 22%, transparent);
+	border-radius: 999px;
+	display: block;
+	height: 1.15em;
+	transition:
+		box-shadow var(--transition),
+		transform var(--transition);
+	width: 2.4em;
+}
+
+html body.signals-shell .theme-picker__option:hover .theme-picker__swatch,
+html:not(.pointer-focus) body.signals-shell .theme-picker__option:hover .theme-picker__swatch {
+	transform: scale(1.08);
+}
+
+/* Selection is driven by the root attribute, so it is correct before the
+   script that syncs the radio buttons has had a chance to run. */
+html[data-palette="pastel"] .theme-picker__option--pastel .theme-picker__swatch,
+html[data-palette="notion"] .theme-picker__option--notion .theme-picker__swatch,
+html[data-palette="signal"] .theme-picker__option--signal .theme-picker__swatch,
+html[data-palette="ink"] .theme-picker__option--ink .theme-picker__swatch,
+html body.signals-shell .theme-picker__option input:checked + .theme-picker__swatch {
+	box-shadow:
+		0 0 0 2px var(--color-paper),
+		0 0 0 3.5px var(--color-ink);
+}
+
+html:not(.pointer-focus)
+	body.signals-shell
+	.theme-picker__option
+	input:focus-visible
+	+ .theme-picker__swatch {
+	outline: 2px solid var(--color-ink);
+	outline-offset: 3px;
+}
+
+/*
+ * The swatch previews. Each is the palette in miniature: the grounds it picks
+ * from, plus a mark for its ink so a light option reads as light.
+ */
+html body.signals-shell .theme-picker__swatch--pastel {
+	background: linear-gradient(115deg, #ccd5ae 0 33%, #faedcd 33% 66%, #bcd4e6 66% 100%);
+}
+
+html body.signals-shell .theme-picker__swatch--notion {
+	background: linear-gradient(115deg, #ffffff 0 33%, #f1f1ef 33% 66%, #e7f3f8 66% 100%);
+}
+
+html body.signals-shell .theme-picker__swatch--signal {
+	background: linear-gradient(115deg, #f467c7 0 33%, #00aac2 33% 66%, #299850 66% 100%);
+}
+
+html body.signals-shell .theme-picker__swatch--ink {
+	background: linear-gradient(115deg, #181715 0 55%, #d4a373 55% 100%);
+}
+
+html body.signals-shell .theme-picker__shuffle {
+	background: none;
+	border: 1px solid color-mix(in srgb, var(--color-ink) 24%, transparent);
+	border-radius: 999px;
+	color: var(--color-ink);
+	cursor: pointer;
+	flex: none;
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-x-small);
+	font-weight: 700;
+	letter-spacing: normal;
+	line-height: 1;
+	margin-left: auto;
+	padding: 0.45em 0.8em;
+	transition:
+		border-color var(--transition),
+		background-color var(--transition);
+	white-space: nowrap;
+}
+
+html body.signals-shell .theme-picker__shuffle:hover,
+html:not(.pointer-focus) body.signals-shell .theme-picker__shuffle:focus-visible {
+	background: color-mix(in srgb, var(--color-ink) 10%, transparent);
+	border-color: var(--color-ink);
+}
+
+html body.signals-shell .theme-picker__name {
+	color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+	font-size: var(--font-size-x-small);
+	font-weight: 700;
+	letter-spacing: normal;
+}
+
+/* Desktop: sit in the header, hard against the left edge. */
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .header__themes {
+		order: 0;
+		padding: var(--spacing) 0 var(--spacing) var(--spacing);
+	}
+}
+
+/* Mobile: the end of the open menu. */
+html body.signals-shell .nav__themes {
+	/*
+	 * The menu sheet is an inverted surface, so anything inside it has to read
+	 * against sheet-ink rather than the page ink. The role tokens are redeclared
+	 * here on the same element that uses them — inheriting --color-ink from :root
+	 * would already have been resolved against the page palette.
+	 */
+	--rgb-ink: var(--rgb-sheet-ink);
+	--rgb-paper: var(--rgb-sheet);
+	--color-ink: rgb(var(--rgb-ink));
+	--color-paper: rgb(var(--rgb-paper));
+	--color-theme: rgb(var(--rgb-sheet-ink));
+	--color-accent: rgb(var(--rgb-sheet-ink));
+	--color-shadow: rgb(var(--rgb-sheet-ink));
+
+	border-top: 1px solid rgba(var(--rgb-sheet-ink), 0.12);
+	margin-top: calc(var(--spacing) * 1.5);
+	padding-bottom: calc(var(--spacing) * 1.5);
+	padding-top: calc(var(--spacing) * 1.5);
+}

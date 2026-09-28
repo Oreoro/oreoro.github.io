@@ -56,6 +56,11 @@ Full schema, conventions, and examples: see `docs/CONTENT.md` in the repository.
 
 ## Notes
 
-- Background colour is a random colour from the 37signals palette per page load;
-  `/NN` pages use a deterministic colour per entry.
+- The page background is a colour picked at random from the active palette on
+  every load; `/NN` pages pin a colour per entry so they stay stable. Four
+  palettes ship — Pastel (the default), Notion, Signal, and Ink — and a visitor
+  can switch or re-roll from the control in the header. None of this carries
+  meaning; the text and structure are identical across all four.
+- sitemap.xml is generated from the build output and lists exactly the pages
+  that are not marked noindex, so it cannot fall behind the routes.
 - External curated links are always attributed to their source.

@@ -5,12 +5,13 @@ import "@/styles/minimal.css";
 import "@/styles/signals-shell.css";
 import "@/styles/podcast.css";
 import "@/styles/notion-signals.css";
+import "@/styles/theme-picker.css";
 import { siteInfo } from "@/siteInfo";
 import { site } from "@/data/focuslab";
+import { palettes, DEFAULT_PALETTE, PALETTE_STORAGE_KEY } from "@/data/palettes";
 import {
 	ENABLE_LIGHTBOX,
 	TRACKING,
-	THEME,
 	GOOGLE_SEARCH_CONSOLE_META_TAG,
 	GISCUS,
 } from "@/constants";
@@ -32,6 +33,32 @@ const faviconLink = getNavLink("/favicon.ico");
 
 const siteUrl = import.meta.env.SITE?.toString().replace(/\/$/, "") ?? canonicalURL.origin;
 const organizationId = `${siteUrl}/#organization`;
+const websiteId = `${siteUrl}/#website`;
+
+/**
+ * Where this page sits in the site, as a breadcrumb trail: the path segments
+ * between the apex and this page, so /policies/privacy/ reads
+ * Home › Policies › Privacy Policy.
+ */
+const breadcrumbTrail = (() => {
+	const segments = Astro.url.pathname.split("/").filter(Boolean);
+	if (segments.length === 0) return [];
+
+	const nodes = [{ name: "Home", path: "/" }];
+	segments.forEach((segment, i) => {
+		nodes.push({
+			name: segment.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+			path: `/${segments.slice(0, i + 1).join("/")}/`,
+		});
+	});
+
+	// Label the leaf with the real page title rather than a prettified slug.
+	const leaf = nodes[nodes.length - 1];
+	if (leaf) leaf.name = title || siteInfo.title;
+
+	return nodes;
+})();
+
 const structuredData = [
 	{
 		"@context": "https://schema.org",
@@ -57,13 +84,48 @@ const structuredData = [
 	{
 		"@context": "https://schema.org",
 		"@type": "WebSite",
-		"@id": `${siteUrl}/#website`,
+		"@id": websiteId,
 		name: siteInfo.title,
 		url: siteUrl,
 		description: siteInfo.description,
 		inLanguage: siteInfo.lang,
 		publisher: { "@id": organizationId },
 	},
+	// The page itself. Without this, every page in the site describes itself as
+	// nothing but the generic WebSite above.
+	...(Astro.url.pathname === "/" || /\bnoindex\b/i.test(metaRobots)
+		? []
+		: [
+				{
+					"@context": "https://schema.org",
+					"@type": "WebPage",
+					"@id": `${canonicalURL.href}#webpage`,
+					url: canonicalURL.href,
+					name: siteTitle,
+					description: metaDescription,
+					inLanguage: siteInfo.lang,
+					isPartOf: { "@id": websiteId },
+					about: { "@id": organizationId },
+					...(breadcrumbTrail.length > 1
+						? { breadcrumb: { "@id": `${canonicalURL.href}#breadcrumb` } }
+						: {}),
+				},
+				...(breadcrumbTrail.length > 1
+					? [
+							{
+								"@context": "https://schema.org",
+								"@type": "BreadcrumbList",
+								"@id": `${canonicalURL.href}#breadcrumb`,
+								itemListElement: breadcrumbTrail.map((crumb, i) => ({
+									"@type": "ListItem",
+									position: i + 1,
+									name: crumb.name,
+									item: new URL(crumb.path, siteUrl).href,
+								})),
+							},
+						]
+					: []),
+			]),
 	...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
 ];
 const isBuildOrPreviewMode = import.meta.env.MODE === "production";
@@ -102,25 +164,22 @@ const useGiscus =
 	GISCUS["data-category"] &&
 	GISCUS["data-category-id"];
 
-const rgbStringToHex = (value?: string): string | null => {
-	if (!value) return null;
-	if (value.startsWith("#")) return value;
+/*
+ * The static value a crawler (or anything without JS) sees. The default palette
+ * is Pastel, so its first ground is the honest answer; signal.ts replaces this
+ * with the ground actually in play as soon as the stylesheet is available.
+ */
+const themeColor = "#ccd5ae";
 
-	const channels = value
-		.trim()
-		.split(/\s+/)
-		.map((channel) => Number(channel));
-
-	if (channels.length < 3 || channels.some((channel) => Number.isNaN(channel))) {
-		return null;
-	}
-
-	return `#${channels
-		.slice(0, 3)
-		.map((channel) => Math.max(0, Math.min(255, channel)).toString(16).padStart(2, "0"))
-		.join("")}`;
-};
-const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
+/*
+ * Social card. Currently the square brand mark, so `summary` rather than
+ * `summary_large_image` — declaring a large card over a 512 square image is how
+ * you get a thumbnail letterboxed inside a wide grey box.
+ */
+const socialCardType = "summary";
+const socialImageWidth = "512";
+const socialImageHeight = "512";
+const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 ---
 
 <meta charset="utf-8" />
@@ -177,51 +236,94 @@ const themeColor = rgbStringToHex(THEME?.colors?.bg?.dark) || "#0c0e0f";
 <meta name="apple-mobile-web-app-title" content={siteInfo.title} />
 
 {/* Theme Colour */}
-<meta name="color-scheme" content="dark light" />
+<meta name="color-scheme" content="light dark" />
 <meta name="theme-color" content={themeColor} />
 
-{/* Apply the page theme before first paint so there is no flash. */}
-<script is:inline>
+{/*
+	Social metadata. The Open Graph *text* tags are back; 061cb14 removed the
+	whole set along with og.png. A 1200x630 card would need a real text-bearing
+	image, and the site's only typeface is woff2 — which neither satori nor
+	resvg can rasterise — so rather than point at a file that does not exist,
+	this uses the 512 brand mark with a `summary` card, which is a valid and
+	honest representation. Swap in a 1200x630 card and change the two constants
+	below to switch to a large image.
+*/}
+<meta property="og:type" content={articleDate ? "article" : "website"} />
+<meta property="og:title" content={siteTitle} />
+<meta property="og:description" content={metaDescription} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:site_name" content={siteInfo.title} />
+<meta property="og:locale" content={siteInfo.ogLocale} />
+<meta property="og:image" content={socialImage} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content={socialImageWidth} />
+<meta property="og:image:height" content={socialImageHeight} />
+<meta property="og:image:alt" content={`${siteInfo.title} — ${siteInfo.description}`} />
+<meta name="twitter:card" content={socialCardType} />
+<meta name="twitter:title" content={siteTitle} />
+<meta name="twitter:description" content={metaDescription} />
+<meta name="twitter:image" content={socialImage} />
+
+{/*
+	Apply the palette and the page ground before first paint so there is no flash.
+
+	This runs while the document is still being parsed, which is earlier than
+	Astro's `<link rel="stylesheet">` — so it reads nothing from CSS. It names a
+	palette and points `--rgb-theme` at one of that palette's `--rgb-theme-N`
+	entries; the cascade resolves the reference. That is the whole trick, and it
+	is why the colour values only ever have to be written down in theme-picker.css.
+*/}
+<script is:inline define:vars={{ registry: palettes, defaultPalette: DEFAULT_PALETTE, storageKey: PALETTE_STORAGE_KEY }}>
 	(function () {
 		var el = document.documentElement;
-		var options = [
-			"244, 103, 199",
-			"139, 119, 255",
-			"0, 170, 194",
-			"154, 162, 0",
-			"204, 61, 51",
-			"41, 152, 80",
-			"0, 100, 230",
-			"236, 67, 67",
-			"207, 111, 182"
-		];
-		var idx = el.getAttribute("data-theme-index");
-		var rgb;
-		var parsed = idx === null ? NaN : parseInt(idx, 10);
+		var GROUND = "fl-ground";
 
-		if (!isNaN(parsed)) {
-			rgb = options[((parsed % options.length) + options.length) % options.length];
+		var byId = {};
+		registry.forEach(function (palette) {
+			byId[palette.id] = palette;
+		});
+
+		var stored = null;
+		try {
+			stored = localStorage.getItem(storageKey);
+		} catch (e) {}
+		var chosen = byId[stored] || byId[defaultPalette];
+		if (!chosen) return;
+
+		el.setAttribute("data-palette", chosen.id);
+		el.style.colorScheme = chosen.scheme;
+
+		var size = chosen.size;
+		var previous = 0;
+		try {
+			previous = parseInt(sessionStorage.getItem(GROUND), 10) || 0;
+		} catch (e) {}
+
+		/*
+		 * `data-theme-index` pins the ground for pages that have to look the same
+		 * on every build (the /NN entries). Everything else rolls a new ground,
+		 * stepping away from the last one this session showed.
+		 */
+		var pinned = parseInt(el.getAttribute("data-theme-index"), 10);
+		var index;
+		if (!isNaN(pinned)) {
+			index = ((pinned % size) + size) % size;
 		} else {
-			var previous = null;
+			index = Math.floor(Math.random() * size);
+			if (size > 1 && index === previous) index = (index + 1) % size;
 			try {
-				previous = sessionStorage.getItem("theme");
-			} catch (e) {}
-			var pool = options.filter(function (value) {
-				return value !== previous;
-			});
-			if (pool.length === 0) pool = options;
-			rgb = pool[Math.floor(Math.random() * pool.length)];
-			try {
-				sessionStorage.setItem("theme", rgb);
+				sessionStorage.setItem(GROUND, String(index));
 			} catch (e) {}
 		}
 
-		if (rgb) {
-			el.style.setProperty("--rgb-theme", rgb);
-			el.setAttribute("data-theme", rgb);
-			var meta = document.querySelector('meta[name="theme-color"]');
-			if (meta) meta.setAttribute("content", "rgb(" + rgb + ")");
-		}
+		el.style.setProperty("--rgb-theme", "var(--rgb-theme-" + (index + 1) + ")");
+		/*
+		 * `data-ground` is which ground of the active palette is showing, so
+		 * signal.ts can hold on to it across a palette switch. `data-theme` is
+		 * the colour it resolves to, which is only knowable once the stylesheet
+		 * has loaded.
+		 */
+		el.setAttribute("data-ground", String(index));
 	})();
 </script>
 

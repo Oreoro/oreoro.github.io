@@ -38,6 +38,7 @@ import createFoldersIfMissing from "./src/integrations/create-folders-if-missing
 import buildTimestampRecorder from "./src/integrations/build-timestamp-recorder";
 import CSSWriter from "./src/integrations/theme-constants-to-css";
 import astroImageCacheCleanerCopier from "./src/integrations/astro-image-cache-cleaner-copier";
+import sitemapFromBuildOutput from "./src/integrations/sitemap-from-build-output";
 import DeleteBuildCache from "./src/integrations/delete-build-cache";
 import externalContentDownloader from "./src/integrations/external-content-downloader";
 import robotsTxt from "astro-robots-txt";
@@ -79,6 +80,10 @@ export default defineConfig({
 	site: getSite(),
 	base: process.env.BASE || BASE_PATH,
 	cacheDir: "./tmp/.astro",
+	// The dev toolbar is an overlay bar pinned to the bottom of every dev page.
+	// It covers the footer's left-hand links and the bottom of the mobile menu,
+	// so it is off; `npm run dev` is still the same server.
+	devToolbar: { enabled: false },
 	redirects: key_value_from_json?.redirects
 		? modifyRedirectPaths(key_value_from_json.redirects, process.env.BASE || BASE_PATH)
 		: {},
@@ -169,6 +174,7 @@ export default defineConfig({
 		}),
 		astroImageCacheCleanerCopier(),
 		DeleteBuildCache(),
+		sitemapFromBuildOutput(),
 	],
 	image: {
 		remotePatterns: [{}],

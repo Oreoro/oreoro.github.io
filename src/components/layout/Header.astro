@@ -1,6 +1,7 @@
 ---
 import { getNavLink } from "@/lib/blog-helpers";
 import Brand from "@/components/layout/Brand.astro";
+import ThemePicker from "@/components/layout/ThemePicker.astro";
 
 const primary: Array<[string, string]> = [
 	["Urban Events", "/products/urbanevents"],
@@ -69,6 +70,9 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 				))
 			}
 		</ul>
+		<div class="nav__themes">
+			<ThemePicker idPrefix="theme-menu" />
+		</div>
 	</div>
 </nav>
 
@@ -92,4 +96,7 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 			))
 		}
 	</ul>
+	<div class="header__themes">
+		<ThemePicker idPrefix="theme-bar" />
+	</div>
 </header>

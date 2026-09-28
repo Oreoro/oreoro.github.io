@@ -98,18 +98,11 @@ const groups: { title: string; note: string; items: StackItem[] }[] = [
 						<p class="stack__note">{group.note}</p>
 						<ul class="stack__items">
 							{group.items.map((item) => (
-								<li class="stack__item">
-									{item.logo && (
-										<img
-											class="stack__logo"
-											src={`/assets/stack/${item.logo}.svg`}
-											alt=""
-											width="24"
-											height="24"
-											loading="lazy"
-											decoding="async"
-										/>
-									)}
+								<li
+									class="stack__item"
+									style={item.logo ? `--logo: url(/assets/stack/${item.logo}.svg)` : undefined}
+								>
+									{item.logo && <span class="stack__logo" aria-hidden="true" />}
 									<span class="stack__name">{item.name}</span>
 								</li>
 							))}

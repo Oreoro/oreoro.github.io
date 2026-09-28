@@ -1,0 +1,51 @@
+---
+/**
+ * The on-site theme picker.
+ *
+ * Rendered twice: once in the desktop header and once at the foot of the mobile
+ * menu, since the two shells are never on screen together. Both copies are real
+ * radio inputs sharing one `name`, so the browser keeps them in sync on its own
+ * and either one works with the keyboard. signal.ts applies the choice.
+ *
+ * The colours a swatch shows are gradients declared in theme-picker.css, so this
+ * markup never mentions a colour value — see src/data/palettes.ts.
+ */
+import { palettes } from "@/data/palettes";
+
+interface Props {
+	/** Distinguishes the two instances for labelling. */
+	idPrefix?: string;
+}
+
+const { idPrefix = "theme" } = Astro.props;
+---
+
+<fieldset class="theme-picker" data-theme-picker>
+	<legend class="theme-picker__legend">Theme</legend>
+	<ul class="theme-picker__options">
+		{
+			palettes.map((palette) => (
+				<li>
+					<label class={`theme-picker__option theme-picker__option--${palette.id}`}>
+						<input
+							type="radio"
+							name="fl-palette"
+							value={palette.id}
+							id={`${idPrefix}-${palette.id}`}
+							data-theme-option
+						/>
+						<span
+							class={`theme-picker__swatch theme-picker__swatch--${palette.id}`}
+							aria-hidden="true"
+						/>
+						<span class="visually-hidden">{palette.label}</span>
+					</label>
+				</li>
+			))
+		}
+	</ul>
+	<button type="button" class="theme-picker__shuffle" data-theme-shuffle>
+		Shuffle
+		<span class="visually-hidden"> the page colour</span>
+	</button>
+</fieldset>

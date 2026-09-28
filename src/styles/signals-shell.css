@@ -111,29 +111,34 @@
 /* ---------- root.css ---------- */
 
 :root {
-	--rgb-black: 0, 0, 0;
 	--rgb-error: 255, 1, 1;
-	--rgb-white: 255, 255, 255;
 
-	--rgb-theme: var(--rgb-black);
 	/*
-	 * Focus Lab palette — the 37signals multi-colour set. One colour is picked
-	 * at random per page load (and per entry on `/NN` pages). Kept in sync with
-	 * the inline script in BaseHead.astro, which applies the theme before paint.
+	 * Role tokens. Every colour in the shell is expressed as one of two roles so
+	 * a palette can flip the whole page between light and dark with two values:
+	 *
+	 *   ink    — every piece of type, every rule, every surface wash
+	 *   paper  — the opposite of ink; used where a surface has to invert
+	 *   theme  — the page background itself, picked per load from the palette
+	 *
+	 * The palettes live in theme-picker.css (`[data-palette]`); the defaults here
+	 * are the warm pastel set.
 	 */
-	--rgb-theme-1: 244, 103, 199; /* pink */
-	--rgb-theme-2: 139, 119, 255; /* indigo */
-	--rgb-theme-3: 0, 170, 194; /* cyan */
-	--rgb-theme-4: 154, 162, 0; /* olive */
-	--rgb-theme-5: 204, 61, 51; /* red */
-	--rgb-theme-6: 41, 152, 80; /* green */
-	--rgb-theme-7: 0, 100, 230; /* blue */
-	--rgb-theme-8: 236, 67, 67; /* signal red */
-	--rgb-theme-9: 207, 111, 182; /* rose */
+	--rgb-theme: var(--rgb-theme-1);
+	--rgb-ink: 35, 31, 26;
+	--rgb-paper: 255, 255, 255;
+	--rgb-accent: var(--rgb-theme-5);
+	--rgb-shadow: 35, 31, 26;
+	--rgb-sheet: 35, 31, 26;
+	--rgb-sheet-ink: 250, 247, 240;
 
-	--color-black: rgb(var(--rgb-black));
 	--color-error: rgb(var(--rgb-error));
-	--color-white: rgb(var(--rgb-white));
+
+	--color-ink: rgb(var(--rgb-ink));
+	--color-paper: rgb(var(--rgb-paper));
+	--color-accent: rgb(var(--rgb-accent));
+	--color-sheet: rgb(var(--rgb-sheet));
+	--color-sheet-ink: rgb(var(--rgb-sheet-ink));
 
 	--color-theme: rgb(var(--rgb-theme));
 	--color-theme-1: rgb(var(--rgb-theme-1));
@@ -145,34 +150,41 @@
 	--color-theme-7: rgb(var(--rgb-theme-7));
 	--color-theme-8: rgb(var(--rgb-theme-8));
 	--color-theme-9: rgb(var(--rgb-theme-9));
+	--color-theme-10: rgb(var(--rgb-theme-10));
+	--color-theme-11: rgb(var(--rgb-theme-11));
+	--color-theme-12: rgb(var(--rgb-theme-12));
+	--color-theme-13: rgb(var(--rgb-theme-13));
+	--color-theme-14: rgb(var(--rgb-theme-14));
+	--color-theme-15: rgb(var(--rgb-theme-15));
 
 	--font-family: "Lab Grotesque", Sans-Serif;
 	--font-family-mono: "Lab Grotesque Mono", Monospace;
-	--font-size: calc(1em + 1vw);
-	--font-size-x-small: 60%;
-	--font-size-small: 80%;
-	--font-size-large: 105%;
-	--font-size-x-large: 110%;
-	--font-size-xx-large: 115%;
-	--font-size-xxx-large: 125%;
-	--font-size-xxxx-large: 140%;
 
-	--line-height: calc(1.3em + 1vw);
-	--spacing: 0.75em;
+	/*
+	 * One fluid size for every breakpoint. The old scale jumped from `1em + 1vw`
+	 * to `1.25em + 1vw` on desktop and multiplied it by up to 180% for a hero,
+	 * which is where the "everything is huge" feeling came from. This tops out
+	 * at 19px with a 178% ceiling — a 34px page title, not a 70px one.
+	 */
+	--font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+	--font-size-x-small: 78%;
+	--font-size-small: 89%;
+	--font-size-large: 105%;
+	--font-size-x-large: 113%;
+	--font-size-xx-large: 124%;
+	--font-size-xxx-large: 146%;
+	--font-size-xxxx-large: 178%;
+
+	--line-height: calc(1.35em + 0.4vw);
+	/* Target reading measure. `ch` resolves against the body size of the element. */
+	--measure: 66ch;
+	--spacing: 1em;
 	--transition: 0.2s ease;
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	:root {
-		--font-size: calc(1.25em + 1vw);
-		--font-size-x-small: 50%;
-		--font-size-small: 65%;
-		--font-size-large: 110%;
-		--font-size-x-large: 120%;
-		--font-size-xx-large: 130%;
-		--font-size-xxx-large: 150%;
-		--font-size-xxxx-large: 180%;
-		--line-height: 1.3em;
+		--line-height: 1.35em;
 	}
 }
 
@@ -198,7 +210,7 @@ html body.signals-shell {
 	align-items: stretch;
 	background: var(--color-theme) !important;
 	background-image: none !important;
-	color: rgba(var(--rgb-white), 0.95) !important;
+	color: rgba(var(--rgb-ink), 0.95) !important;
 	display: flex;
 	flex-direction: column;
 	font-family: var(--font-family) !important;
@@ -221,7 +233,7 @@ html body.signals-shell {
 		background-color 0.4s ease,
 		opacity 0.4s ease !important;
 	width: 100% !important;
-	-webkit-tap-highlight-color: rgba(var(--rgb-white), 0);
+	-webkit-tap-highlight-color: rgba(var(--rgb-ink), 0);
 	text-rendering: optimizeLegibility;
 }
 
@@ -241,7 +253,7 @@ html body.signals-shell:not(.is-ready) {
 }
 
 html body.signals-shell ::selection {
-	background: rgba(var(--rgb-white), 0.15);
+	background: rgba(var(--rgb-ink), 0.15);
 }
 
 html body.signals-shell main {
@@ -255,12 +267,14 @@ html body.signals-shell h3,
 html body.signals-shell h4,
 html body.signals-shell h5,
 html body.signals-shell h6 {
-	color: var(--color-white) !important;
+	color: var(--color-ink) !important;
 	font-weight: 700;
+	/* Stop a lone word ("Products.") owning a line of its own. */
+	text-wrap: balance;
 }
 
 html body.signals-shell a {
-	color: var(--color-white);
+	color: var(--color-ink);
 	font-weight: 700;
 	letter-spacing: normal;
 	text-decoration: underline;
@@ -275,7 +289,7 @@ html body.signals-shell i {
 
 html body.signals-shell strong,
 html body.signals-shell b {
-	color: var(--color-white);
+	color: var(--color-ink);
 	font-weight: 700;
 }
 
@@ -306,7 +320,7 @@ html body.signals-shell blockquote:before {
 }
 
 html body.signals-shell table {
-	background: rgba(var(--rgb-white), 0.08);
+	background: rgba(var(--rgb-ink), 0.08);
 	border-collapse: collapse;
 	table-layout: fixed;
 	width: 100%;
@@ -317,7 +331,7 @@ html body.signals-shell table thead tr {
 }
 
 html body.signals-shell table tbody tr:nth-of-type(odd) {
-	background: rgba(var(--rgb-white), 0.06);
+	background: rgba(var(--rgb-ink), 0.06);
 }
 
 html body.signals-shell table th,
@@ -343,17 +357,17 @@ html body.signals-shell .font-size-large {
 }
 
 html body.signals-shell .font-size-x-large {
-	color: var(--color-white);
+	color: var(--color-ink);
 	font-size: var(--font-size-x-large);
 }
 
 html body.signals-shell .font-size-xx-large {
-	color: var(--color-white);
+	color: var(--color-ink);
 	font-size: var(--font-size-xx-large);
 }
 
 html body.signals-shell .font-size-xxx-large {
-	color: var(--color-white);
+	color: var(--color-ink);
 	font-size: var(--font-size-xxx-large);
 }
 
@@ -361,7 +375,7 @@ html body.signals-shell .font-size-xxx-large {
 
 html body.signals-shell .button {
 	align-self: flex-start;
-	background: var(--color-white);
+	background: var(--color-ink);
 	border: 1px solid transparent;
 	border-radius: 1.3em;
 	color: var(--color-theme) !important;
@@ -386,27 +400,27 @@ html body.signals-shell .button span {
 
 html body.signals-shell .button:hover,
 html:not(.pointer-focus) body.signals-shell .button:focus-visible {
-	box-shadow: 0 0.5em 1.4em -0.5em rgba(var(--rgb-black), 0.45);
+	box-shadow: 0 0.5em 1.4em -0.5em rgba(var(--rgb-shadow), 0.45);
 	transform: translateY(-1px);
 }
 
 /* Theme-coloured button, for use on light surfaces (e.g. the white signup form). */
 html body.signals-shell .button--theme {
 	background: var(--color-theme);
-	color: var(--color-white) !important;
+	color: var(--color-ink) !important;
 }
 
 /* Ghost button — a native-feeling secondary action on a coloured background. */
 html body.signals-shell .button--ghost {
 	background: transparent;
-	border-color: rgba(var(--rgb-white), 0.55);
-	color: var(--color-white) !important;
+	border-color: rgba(var(--rgb-ink), 0.55);
+	color: var(--color-ink) !important;
 }
 
 html body.signals-shell .button--ghost:hover,
 html:not(.pointer-focus) body.signals-shell .button--ghost:focus-visible {
-	background: rgba(var(--rgb-white), 0.12);
-	border-color: var(--color-white);
+	background: rgba(var(--rgb-ink), 0.12);
+	border-color: var(--color-ink);
 	box-shadow: none;
 }
 
@@ -446,11 +460,11 @@ html body.signals-shell .page__anchors,
 html body.signals-shell .page__body {
 	display: flex;
 	flex-direction: column;
-	max-width: 49ch;
+	max-width: var(--measure);
 }
 
 html body.signals-shell .page__headline {
-	color: var(--color-white);
+	color: var(--color-ink);
 	gap: 0.6em;
 	position: relative;
 	z-index: 1;
@@ -458,15 +472,26 @@ html body.signals-shell .page__headline {
 
 html body.signals-shell .page__headline h1,
 html body.signals-shell .page__headline h2 {
-	font-size: var(--font-size-xxx-large);
+	font-size: var(--font-size-xxxx-large);
 	font-weight: 700;
-	line-height: 1.2;
+	letter-spacing: -0.025em;
+	line-height: 1.05;
 }
 
 html body.signals-shell .page__headline .page__kicker {
-	font-size: var(--font-size-small);
+	color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+	font-size: var(--font-size-x-small);
 	font-weight: 700;
+	letter-spacing: 0.1em;
 	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+/* The standfirst under the page title. */
+html body.signals-shell .page__headline > p:not(.page__kicker) {
+	color: color-mix(in srgb, var(--color-ink) 82%, transparent);
+	font-size: var(--font-size-large);
+	line-height: 1.45;
 }
 
 html body.signals-shell .page__headline small {
@@ -474,12 +499,8 @@ html body.signals-shell .page__headline small {
 	font-weight: 700;
 }
 
-html body.signals-shell .page__headline br {
-	display: none;
-}
-
 html body.signals-shell .page__anchors {
-	color: var(--color-white);
+	color: var(--color-ink);
 }
 
 html body.signals-shell .page__anchors dl {
@@ -513,9 +534,27 @@ html body.signals-shell .page__back {
 	--flow-space: calc(var(--line-height) * 2);
 }
 
+html body.signals-shell .page__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6em;
+	margin: 0;
+}
+
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	html body.signals-shell .page {
+		/*
+		 * Sub-pages read as two columns on a wide screen: the title and its
+		 * standfirst hold the left edge, the body fills the space to their right.
+		 * This is what stops the copy floating in the middle of the viewport, and
+		 * it is the layout the narrow centred column replaced.
+		 */
+		column-gap: clamp(2.5rem, 4vw, 5rem);
+		display: grid;
+		grid-template-columns: minmax(13em, 19em) minmax(0, 1fr);
+		margin-right: var(--spacing);
 		margin-top: max(22.2vh, 5.4em);
+		max-width: 94rem;
 	}
 
 	html body.signals-shell .page:after {
@@ -526,19 +565,35 @@ html body.signals-shell .page__back {
 		height: calc(3.7em + var(--spacing));
 	}
 
-	html body.signals-shell .page__headline,
-	html body.signals-shell .page__anchors,
-	html body.signals-shell .page__body {
-		margin-left: 2.8ch;
-		margin-right: 2.8ch;
+	/* The title block stays with the page as the body scrolls past it. */
+	html body.signals-shell .page__headline {
+		grid-column: 1;
+		grid-row: 1;
+		position: sticky;
+		top: max(22.2vh, 5.4em);
 	}
 
-	html body.signals-shell .page__headline br {
-		display: inline;
+	html body.signals-shell .page > :not(.page__headline) {
+		grid-column: 2;
+		max-width: var(--measure);
 	}
 
-	html body.signals-shell .page__body {
-		max-width: 39ch;
+	html body.signals-shell .page__anchors {
+		grid-column: 1;
+		grid-row: 2;
+	}
+
+	/* Card grids and other full-bleed blocks opt out of the reading measure. */
+	html body.signals-shell .page > .product-cards,
+	html body.signals-shell .page > .stack__items {
+		max-width: none;
+	}
+
+	html body.signals-shell .page.page--wide {
+		display: flex;
+		grid-template-columns: none;
+		margin-right: auto;
+		max-width: 72rem;
 	}
 }
 
@@ -626,11 +681,11 @@ html body.signals-shell .brand__word {
 }
 
 html body.signals-shell .header .header__brand .brand {
-	color: var(--color-white);
+	color: var(--color-ink);
 }
 
 html body.signals-shell .nav__logo .brand {
-	color: var(--color-black);
+	color: var(--color-sheet-ink);
 }
 
 html body.signals-shell .header ul {
@@ -684,7 +739,7 @@ html body.signals-shell .nav-active {
 }
 
 html:not(.pointer-focus) body.signals-shell .nav-active:focus-visible ~ .nav .nav__toggle label {
-	outline: 2px solid var(--color-white);
+	outline: 2px solid var(--color-ink);
 	outline-offset: 2px;
 }
 
@@ -693,7 +748,7 @@ html body.signals-shell .nav-active:checked ~ .nav-underlay {
 }
 
 html body.signals-shell .nav-active:checked ~ .nav {
-	background: var(--color-white);
+	background: var(--color-sheet);
 	border-radius: 0 0 var(--spacing) var(--spacing);
 	pointer-events: auto;
 }
@@ -703,7 +758,7 @@ html body.signals-shell .nav-active:checked ~ .nav .nav__logo {
 }
 
 html body.signals-shell .nav-active:checked ~ .nav .nav__toggle label span {
-	color: var(--color-black);
+	color: var(--color-sheet-ink);
 }
 
 html body.signals-shell .nav-active:checked ~ .nav .nav__options {
@@ -781,7 +836,7 @@ html body.signals-shell .nav__toggle label {
 }
 
 html body.signals-shell .nav__toggle label span {
-	color: var(--color-white);
+	color: var(--color-ink);
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	letter-spacing: normal;
@@ -794,30 +849,30 @@ html body.signals-shell .nav__options {
 	padding-right: var(--spacing);
 }
 
-html body.signals-shell .nav__options ul {
+html body.signals-shell .nav__options > ul {
 	display: flex;
 	flex: 1;
 	flex-direction: column;
 	line-height: var(--line-height);
 }
 
-html body.signals-shell .nav__options ul li {
+html body.signals-shell .nav__options > ul li {
 	font-weight: 700;
 }
 
-html body.signals-shell .nav__options ul li a {
-	color: var(--color-black);
+html body.signals-shell .nav__options > ul li a {
+	color: var(--color-sheet-ink);
 	text-decoration: none;
 }
 
-html body.signals-shell .nav__options ul:last-child {
-	border-top: 1px solid rgba(var(--rgb-black), 0.1);
+html body.signals-shell .nav__options > ul:last-child {
+	border-top: 1px solid rgba(var(--rgb-sheet-ink), 0.12);
 	margin-top: calc(var(--spacing) * 1.5);
 	padding-bottom: calc(var(--spacing) * 1.5);
 	padding-top: calc(var(--spacing) * 1.5);
 }
 
-html body.signals-shell .nav__options ul:last-child li {
+html body.signals-shell .nav__options > ul:last-child li {
 	font-size: var(--font-size-small);
 	letter-spacing: normal;
 	line-height: var(--line-height);
@@ -886,7 +941,7 @@ html body.signals-shell .footer__next a {
 }
 
 html body.signals-shell .footer__next a:after {
-	background: var(--color-white);
+	background: var(--color-ink);
 	border-radius: 100%;
 	box-shadow: 0 0 1.3em 0.1em rgba(var(--rgb-theme), 0.8);
 	content: "";
@@ -928,7 +983,7 @@ html body.signals-shell .cluster--signal .signal {
 }
 
 html body.signals-shell .cluster--signal .signal .signal__header a {
-	color: rgba(var(--rgb-white), 0.7);
+	color: rgba(var(--rgb-ink), 0.7);
 }
 
 html body.signals-shell .cluster--signal .signal .signal__header a dl dd {
@@ -956,7 +1011,7 @@ html body.signals-shell .cluster--loaded {
 
 	html body.signals-shell .cluster--index:hover header a:not(:hover),
 	html:not(.pointer-focus) body.signals-shell .cluster--index:focus-within header a:not(:focus) {
-		color: rgba(var(--rgb-white), 0.7);
+		color: rgba(var(--rgb-ink), 0.7);
 	}
 
 	html body.signals-shell .cluster--signal .signal {
@@ -965,7 +1020,7 @@ html body.signals-shell .cluster--loaded {
 
 	html body.signals-shell .cluster--signal .signal .signal__header a:hover,
 	html:not(.pointer-focus) body.signals-shell .cluster--signal .signal .signal__header a:focus {
-		color: var(--color-white);
+		color: var(--color-ink);
 	}
 
 	html body.signals-shell .cluster--signal .signal .signal__header a:hover dl dd,
@@ -984,7 +1039,7 @@ html body.signals-shell .cluster--loaded {
 /* ---------- signal.css ---------- */
 
 html body.signals-shell .signal {
-	color: var(--color-white);
+	color: var(--color-ink);
 	position: relative;
 }
 
@@ -1029,7 +1084,7 @@ html body.signals-shell .signal__header dl {
 }
 
 html body.signals-shell .signal__date {
-	color: rgba(var(--rgb-white), 0.85);
+	color: rgba(var(--rgb-ink), 0.85);
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	white-space: nowrap;
@@ -1069,7 +1124,7 @@ html body.signals-shell .signal--clone {
 
 	html body.signals-shell .signal__header a:hover,
 	html:not(.pointer-focus) body.signals-shell .signal__header a:focus {
-		color: var(--color-white);
+		color: var(--color-ink);
 	}
 }
 
@@ -1083,7 +1138,7 @@ html body.signals-shell .signal__header dl dd {
 }
 
 html body.signals-shell .signal__meta {
-	color: rgba(var(--rgb-white), 0.55);
+	color: rgba(var(--rgb-ink), 0.55);
 	font-size: var(--font-size-small);
 	font-weight: 400;
 	letter-spacing: normal;
@@ -1097,7 +1152,7 @@ html body.signals-shell .signal__meta {
 }
 
 html body.signals-shell .entry__meta {
-	color: rgba(var(--rgb-white), 0.7);
+	color: rgba(var(--rgb-ink), 0.7);
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	letter-spacing: normal;
@@ -1105,7 +1160,7 @@ html body.signals-shell .entry__meta {
 }
 
 html body.signals-shell .entry__kind {
-	color: var(--color-white);
+	color: var(--color-ink);
 }
 
 /* ---------- controller.css ---------- */
@@ -1131,7 +1186,7 @@ html body.signals-shell .controller a {
 }
 
 html body.signals-shell .controller a:after {
-	background: var(--color-white);
+	background: var(--color-ink);
 	border-radius: 100%;
 	box-shadow: 0 0 1.3em 0.1em rgba(var(--rgb-theme), 0.8);
 	content: "";
@@ -1180,7 +1235,7 @@ html body.signals-shell .origin {
 }
 
 html body.signals-shell .origin:after {
-	border: 1px solid rgba(var(--rgb-white), 0.3);
+	border: 1px solid rgba(var(--rgb-ink), 0.3);
 	border-radius: 100%;
 	content: "";
 	height: var(--line-height);
@@ -1203,6 +1258,12 @@ html body.signals-shell .origin--overlap {
 html body.signals-shell .content {
 	font-size: var(--font-size-small);
 	letter-spacing: normal;
+}
+
+/* No widows and orphans: a paragraph should never end on a single short line. */
+html body.signals-shell .content p,
+html body.signals-shell .content li {
+	text-wrap: pretty;
 }
 
 html body.signals-shell .content > * + * {
@@ -1246,19 +1307,48 @@ html body.signals-shell .content h6 + * {
 	--flow-space: calc(var(--line-height) * 0.5);
 }
 
-html body.signals-shell .content h1,
-html body.signals-shell .content h2 {
+/*
+ * Section headings inside a page. The old scale made .content h2 the same size
+ * as the page's own h1, so sub-pages had two competing headline sizes. Now the
+ * page title is always the largest thing on the page and the steps below it
+ * descend cleanly.
+ */
+html body.signals-shell .content h1 {
 	font-size: var(--font-size-xxx-large);
+	letter-spacing: -0.02em;
+	line-height: 1.1;
+}
+
+html body.signals-shell .content h2 {
+	font-size: var(--font-size-xx-large);
+	letter-spacing: -0.015em;
+	line-height: 1.15;
+}
+
+/*
+ * The paragraph that introduces a section. Sized to sit between the heading
+ * above it and the body below, so a page never opens a section with a paragraph
+ * larger than its own title.
+ */
+html body.signals-shell .content .lede,
+html body.signals-shell .lede {
+	font-size: var(--font-size-large);
+	letter-spacing: -0.005em;
+	line-height: 1.45;
 }
 
 html body.signals-shell .content h3,
 html body.signals-shell .content h4 {
-	font-size: var(--font-size-x-large);
+	font-size: var(--font-size-large);
+	line-height: 1.25;
 }
 
 html body.signals-shell .content h5,
 html body.signals-shell .content h6 {
-	font-size: var(--font-size-large);
+	font-size: var(--font-size-small);
+	letter-spacing: 0.04em;
+	line-height: 1.3;
+	text-transform: uppercase;
 }
 
 html body.signals-shell .content hr {
@@ -1280,7 +1370,7 @@ html body.signals-shell .content hr.ornament {
 }
 
 html body.signals-shell .content hr.ornament:before {
-	color: var(--color-white);
+	color: var(--color-ink);
 	content: "***";
 	font-size: var(--font-size-xx-large);
 	font-weight: 500;
@@ -1339,10 +1429,10 @@ html body.signals-shell .content ol li:before {
 }
 
 html body.signals-shell .content code {
-	background: rgba(var(--rgb-white), 0.2);
-	border: 1px solid rgba(var(--rgb-white), 0.2);
+	background: rgba(var(--rgb-ink), 0.2);
+	border: 1px solid rgba(var(--rgb-ink), 0.2);
 	border-radius: 0.15em;
-	color: var(--color-white);
+	color: var(--color-ink);
 	display: inline-block;
 	font-family: var(--font-family-mono);
 	font-size: 75%;
@@ -1353,7 +1443,7 @@ html body.signals-shell .content code {
 html body.signals-shell .content.content--jobs * + h2,
 html body.signals-shell .content.content--policies * + h2,
 html body.signals-shell .content.content--thoughts * + h2 {
-	--flow-space: calc(var(--line-height) * 1.8);
+	--flow-space: calc(var(--line-height) * 1.3);
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
@@ -1378,7 +1468,7 @@ html body.signals-shell .content.content--thoughts * + h2 {
 html body.signals-shell .thoughts {
 	display: flex;
 	flex-direction: column;
-	max-width: 49ch;
+	max-width: var(--measure);
 }
 
 html body.signals-shell .thoughts__container {
@@ -1399,7 +1489,7 @@ html body.signals-shell .thoughts__thought {
 
 html body.signals-shell .thoughts__thought h2,
 html body.signals-shell .thoughts__thought h3 {
-	font-size: var(--font-size-xxx-large);
+	font-size: var(--font-size-x-large);
 	font-weight: 700;
 	line-height: 1.2;
 }
@@ -1414,12 +1504,6 @@ html body.signals-shell .thoughts .signup {
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .thoughts {
-		margin-left: 2.8ch;
-		margin-right: 2.8ch;
-		max-width: 39ch;
-	}
-
 	html body.signals-shell .thoughts .signup {
 		margin-bottom: 0;
 		margin-top: 3.7em;
@@ -1432,7 +1516,7 @@ html body.signals-shell .thoughts .signup {
 html body.signals-shell .thought {
 	display: flex;
 	flex-direction: column;
-	max-width: 49ch;
+	max-width: var(--measure);
 }
 
 html body.signals-shell .thought__content {
@@ -1445,11 +1529,6 @@ html body.signals-shell .thought .signup {
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .thought {
-		margin-left: 2.8ch;
-		margin-right: 2.8ch;
-		max-width: 39ch;
-	}
 }
 
 /* ---------- jobs.css ---------- */
@@ -1457,7 +1536,7 @@ html body.signals-shell .thought .signup {
 html body.signals-shell .jobs {
 	display: flex;
 	flex-direction: column;
-	max-width: 49ch;
+	max-width: var(--measure);
 }
 
 html body.signals-shell .jobs__container {
@@ -1471,7 +1550,7 @@ html body.signals-shell .jobs__container {
 }
 
 html body.signals-shell .jobs__job h2 {
-	font-size: var(--font-size-xxx-large);
+	font-size: var(--font-size-x-large);
 	font-weight: 700;
 	line-height: 1.2;
 }
@@ -1497,11 +1576,6 @@ html body.signals-shell .jobs .signup {
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .jobs {
-		margin-left: 2.8ch;
-		margin-right: 2.8ch;
-		max-width: 39ch;
-	}
 }
 
 /* ---------- downloads.css ---------- */
@@ -1527,7 +1601,7 @@ html body.signals-shell .downloads__group {
 
 html body.signals-shell .downloads__group h2 {
 	grid-column: 1 / -1;
-	font-size: var(--font-size-xxx-large);
+	font-size: var(--font-size-x-large);
 	font-weight: 700;
 	letter-spacing: normal;
 	line-height: 1.2;
@@ -1535,15 +1609,15 @@ html body.signals-shell .downloads__group h2 {
 }
 
 html body.signals-shell .downloads__group a {
-	background: var(--color-white);
+	background: var(--color-ink);
 	border-radius: 0.3em;
 	box-shadow:
-		0 0 0 1px rgba(var(--rgb-black), 0.03),
-		0 0.2em 1.6em -0.8em rgba(var(--rgb-black), 0.1),
-		0 0.4em 2.4em -1.2em rgba(var(--rgb-black), 0.1),
-		0 0.4em 0.8em -1.2em rgba(var(--rgb-black), 0.2),
-		0 0.8em 1.2em -1.6em rgba(var(--rgb-black), 0.2),
-		0 1.2em 1.6em -2em rgba(var(--rgb-black), 0.3);
+		0 0 0 1px rgba(var(--rgb-shadow), 0.03),
+		0 0.2em 1.6em -0.8em rgba(var(--rgb-shadow), 0.1),
+		0 0.4em 2.4em -1.2em rgba(var(--rgb-shadow), 0.1),
+		0 0.4em 0.8em -1.2em rgba(var(--rgb-shadow), 0.2),
+		0 0.8em 1.2em -1.6em rgba(var(--rgb-shadow), 0.2),
+		0 1.2em 1.6em -2em rgba(var(--rgb-shadow), 0.3);
 	display: grid;
 	overflow: hidden;
 	position: relative;
@@ -1551,13 +1625,13 @@ html body.signals-shell .downloads__group a {
 }
 
 html body.signals-shell .downloads__group a figure {
-	background: rgba(var(--rgb-black), 0.05);
+	background: rgba(var(--rgb-paper), 0.05);
 }
 
 html body.signals-shell .downloads__group a figure figcaption {
 	align-items: center;
-	background: var(--color-white);
-	color: var(--color-black);
+	background: var(--color-ink);
+	color: var(--color-paper);
 	display: flex;
 	font-size: 72.5%;
 	justify-content: space-between;
@@ -1565,8 +1639,8 @@ html body.signals-shell .downloads__group a figure figcaption {
 }
 
 html body.signals-shell .downloads__group a figure figcaption span {
-	background: rgba(var(--rgb-black), 0.05);
-	border: 1px solid rgba(var(--rgb-black), 0.1);
+	background: rgba(var(--rgb-paper), 0.05);
+	border: 1px solid rgba(var(--rgb-paper), 0.1);
 	border-radius: 0.275em;
 	font-family: var(--font-family-mono);
 	font-size: 85%;
@@ -1576,11 +1650,6 @@ html body.signals-shell .downloads__group a figure figcaption span {
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .downloads {
-		margin-left: 2.8ch;
-		margin-right: 2.8ch;
-	}
-
 	html body.signals-shell .downloads__group {
 		gap: calc(var(--line-height) * 1.5);
 		grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
@@ -1592,7 +1661,7 @@ html body.signals-shell .downloads__group a figure figcaption span {
 html body.signals-shell .books {
 	display: flex;
 	flex-direction: column;
-	max-width: 49ch;
+	max-width: var(--measure);
 	position: relative;
 }
 
@@ -1634,7 +1703,7 @@ html body.signals-shell .books__content {
 }
 
 html body.signals-shell .books__content h3 {
-	font-size: var(--font-size-xxx-large);
+	font-size: var(--font-size-x-large);
 	font-weight: 700;
 	line-height: 1.2;
 }
@@ -1653,8 +1722,8 @@ html body.signals-shell .book-cover {
 	background: rgb(var(--book-tint, var(--rgb-theme)));
 	border-radius: 0.3em;
 	box-shadow:
-		0 0 0 1px rgba(var(--rgb-black), 0.08),
-		0 0.4em 1.6em -0.8em rgba(var(--rgb-black), 0.35);
+		0 0 0 1px rgba(var(--rgb-shadow), 0.08),
+		0 0.4em 1.6em -0.8em rgba(var(--rgb-shadow), 0.35);
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -1663,25 +1732,20 @@ html body.signals-shell .book-cover {
 }
 
 html body.signals-shell .book-cover__mark {
-	color: var(--color-white);
+	color: var(--color-ink);
 	font-size: var(--font-size-xx-large);
 	font-weight: 700;
 	letter-spacing: -0.03em;
 }
 
 html body.signals-shell .book-cover__title {
-	color: rgba(var(--rgb-white), 0.9);
+	color: rgba(var(--rgb-ink), 0.9);
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	line-height: 1.15;
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .books {
-		margin-left: 2.8ch;
-		margin-right: 2.8ch;
-	}
-
 	html body.signals-shell .books__book figure {
 		align-self: flex-start;
 		max-width: none;
@@ -1712,7 +1776,7 @@ html body.signals-shell .book-cover__title {
 
 html body.signals-shell .signup {
 	align-self: flex-start;
-	background: rgba(var(--rgb-white), 0.08);
+	background: rgba(var(--rgb-ink), 0.08);
 	border-radius: 0.3em;
 	display: flex;
 	flex-direction: column;
@@ -1725,7 +1789,7 @@ html body.signals-shell .signup p br {
 
 html body.signals-shell .signup form {
 	--flow-space: 1em;
-	background: var(--color-white);
+	background: var(--color-ink);
 	border-radius: 2em;
 	display: flex;
 	max-width: 20em;
@@ -1735,7 +1799,7 @@ html body.signals-shell .signup form {
 html body.signals-shell .signup form input[type="email"] {
 	appearance: none;
 	border: none;
-	color: rgba(var(--rgb-black), 0.75);
+	color: rgba(var(--rgb-paper), 0.75);
 	flex: 1;
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-small);
@@ -1746,7 +1810,7 @@ html body.signals-shell .signup form input[type="email"] {
 }
 
 html body.signals-shell .signup form input[type="email"]::placeholder {
-	color: rgba(var(--rgb-black), 0.4);
+	color: rgba(var(--rgb-paper), 0.4);
 }
 
 html body.signals-shell .signup form.error input {
@@ -1801,7 +1865,7 @@ html body.signals-shell .stack {
 	gap: calc(var(--line-height) * 1.6);
 	margin-bottom: 3.7em;
 	margin-top: 3.7em;
-	max-width: 49ch;
+	max-width: var(--measure);
 }
 
 html body.signals-shell .stack__group h2 {
@@ -1809,7 +1873,7 @@ html body.signals-shell .stack__group h2 {
 }
 
 html body.signals-shell .stack__note {
-	color: rgba(var(--rgb-white), 0.7);
+	color: rgba(var(--rgb-ink), 0.7);
 	font-size: var(--font-size-small);
 	margin-top: 0.2em;
 }
@@ -1825,8 +1889,8 @@ html body.signals-shell .stack__items {
 
 html body.signals-shell .stack__item {
 	align-items: center;
-	background: rgba(var(--rgb-white), 0.06);
-	border: 1px solid rgba(var(--rgb-white), 0.14);
+	background: rgba(var(--rgb-ink), 0.06);
+	border: 1px solid rgba(var(--rgb-ink), 0.14);
 	border-radius: 0.4em;
 	display: flex;
 	font-size: var(--font-size-small);
@@ -1835,9 +1899,24 @@ html body.signals-shell .stack__item {
 	padding: 0.55em 0.75em;
 }
 
+/*
+ * The stack marks are all single-colour white SVGs, drawn for the old dark
+ * palette. Masking them with the file itself paints each one in the current
+ * colour, so they stay legible on every ground without editing 24 assets — and
+ * because none of them is multi-colour, nothing is lost.
+ */
 html body.signals-shell .stack__logo {
+	background-color: currentColor;
 	flex: none;
 	height: 1.4em;
+	-webkit-mask-image: var(--logo);
+	-webkit-mask-position: center;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-size: contain;
+	mask-image: var(--logo);
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: contain;
 	width: 1.4em;
 }
 
@@ -1855,7 +1934,7 @@ html body.signals-shell .product__hero {
 }
 
 html body.signals-shell .product__kicker {
-	color: rgba(var(--rgb-white), 0.72);
+	color: rgba(var(--rgb-ink), 0.72);
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	letter-spacing: 0.08em;
@@ -1864,23 +1943,24 @@ html body.signals-shell .product__kicker {
 
 html body.signals-shell .product__hero h1 {
 	font-size: var(--font-size-xxxx-large);
-	letter-spacing: -0.02em;
-	line-height: 1.02;
+	letter-spacing: -0.03em;
+	line-height: 1.04;
 }
 
 html body.signals-shell .product__tagline {
-	font-size: var(--font-size-xxx-large);
+	font-size: var(--font-size-x-large);
 	font-weight: 700;
-	line-height: 1.1;
+	line-height: 1.25;
 }
 
 html body.signals-shell .product__summary {
 	font-size: var(--font-size-large);
-	max-width: 52ch;
+	line-height: 1.45;
+	max-width: var(--measure);
 }
 
 html body.signals-shell .product__pricing {
-	color: rgba(var(--rgb-white), 0.75);
+	color: rgba(var(--rgb-ink), 0.75);
 	font-size: var(--font-size-small);
 }
 
@@ -1906,8 +1986,8 @@ html body.signals-shell .product__grid {
 }
 
 html body.signals-shell .product__feature {
-	background: rgba(var(--rgb-white), 0.06);
-	border: 1px solid rgba(var(--rgb-white), 0.14);
+	background: rgba(var(--rgb-ink), 0.06);
+	border: 1px solid rgba(var(--rgb-ink), 0.14);
 	border-radius: 0.4em;
 	display: flex;
 	flex-direction: column;
@@ -1945,10 +2025,10 @@ html body.signals-shell .product-cards {
 }
 
 html body.signals-shell .product-card {
-	background: rgba(var(--rgb-white), 0.06);
-	border: 1px solid rgba(var(--rgb-white), 0.14);
+	background: rgba(var(--rgb-ink), 0.06);
+	border: 1px solid rgba(var(--rgb-ink), 0.14);
 	border-radius: 0.5em;
-	color: var(--color-white);
+	color: var(--color-ink);
 	display: flex;
 	flex-direction: column;
 	gap: 0.6em;
@@ -1962,8 +2042,8 @@ html body.signals-shell .product-card {
 
 html body.signals-shell .product-card:hover,
 html:not(.pointer-focus) body.signals-shell .product-card:focus-visible {
-	background: rgba(var(--rgb-white), 0.1);
-	border-color: rgba(var(--rgb-white), 0.35);
+	background: rgba(var(--rgb-ink), 0.1);
+	border-color: rgba(var(--rgb-ink), 0.35);
 	transform: translateY(-2px);
 }
 
@@ -1980,7 +2060,7 @@ html body.signals-shell .product-card__head h2 {
 }
 
 html body.signals-shell .product-card__status {
-	border: 1px solid rgba(var(--rgb-white), 0.25);
+	border: 1px solid rgba(var(--rgb-ink), 0.25);
 	border-radius: 1em;
 	font-size: var(--font-size-x-small);
 	font-weight: 700;
@@ -1995,7 +2075,7 @@ html body.signals-shell .product-card__tagline {
 }
 
 html body.signals-shell .product-card__summary {
-	color: rgba(var(--rgb-white), 0.85);
+	color: rgba(var(--rgb-ink), 0.85);
 	font-size: var(--font-size-small);
 	margin: 0;
 }
@@ -2014,7 +2094,7 @@ html body.signals-shell .product-card__cta span {
 /* Wider column for card-grid pages */
 @media (min-width: 64em) {
 	html body.signals-shell .page.page--wide {
-		max-width: 66rem;
+		max-width: 72rem;
 	}
 
 	html body.signals-shell .product-cards {
@@ -2043,14 +2123,14 @@ html body.signals-shell .cta-panel {
 	gap: var(--spacing);
 	max-width: 42em;
 	padding: 1.4em 1.6em;
-	border: 1px solid rgba(var(--rgb-white), 0.16);
+	border: 1px solid rgba(var(--rgb-ink), 0.16);
 	border-radius: 0.4em;
-	background: rgba(var(--rgb-white), 0.06);
+	background: rgba(var(--rgb-ink), 0.06);
 }
 
 html body.signals-shell .cta-panel p {
 	margin: 0;
-	color: var(--color-white);
+	color: var(--color-ink);
 	font-size: var(--font-size-large);
 	font-weight: 700;
 	letter-spacing: -0.01em;
@@ -2061,7 +2141,7 @@ html body.signals-shell .cta-panel p {
 html body.signals-shell .content-shell,
 html body.signals-shell .home-shell {
 	width: 100%;
-	max-width: 60ch;
+	max-width: var(--measure);
 	margin: 7.4em 0 calc(var(--line-height) + var(--spacing));
 	padding: 0;
 }
@@ -2071,7 +2151,7 @@ html body.signals-shell .home-title {
 	margin: 0 0 var(--spacing);
 	padding: 0;
 	border: 0;
-	color: var(--color-white);
+	color: var(--color-ink);
 	font-size: var(--font-size-xxx-large);
 	font-weight: 700;
 	line-height: 1.1;
@@ -2084,11 +2164,11 @@ html body.signals-shell .minimal-post-list {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	border-top: 1px solid rgba(var(--rgb-white), 0.16);
+	border-top: 1px solid rgba(var(--rgb-ink), 0.16);
 }
 
 html body.signals-shell .minimal-post-list > li {
-	border-bottom: 1px solid rgba(var(--rgb-white), 0.16);
+	border-bottom: 1px solid rgba(var(--rgb-ink), 0.16);
 }
 
 html body.signals-shell .post-preview-row {
@@ -2110,7 +2190,7 @@ html body.signals-shell .quiet-link,
 html body.signals-shell .footer-link,
 html body.signals-shell .author-name-link {
 	background: transparent !important;
-	color: var(--color-white) !important;
+	color: var(--color-ink) !important;
 	text-decoration: none;
 }
 
@@ -2130,7 +2210,7 @@ html body.signals-shell .pagination-nav {
 }
 
 html body.signals-shell .pagination-nav a {
-	color: var(--color-white) !important;
+	color: var(--color-ink) !important;
 	text-decoration: none;
 }
 
@@ -2143,7 +2223,7 @@ html body.signals-shell .count-badge {
 	margin-left: 0.4em;
 	padding: 0.05em 0.5em;
 	border-radius: 1em;
-	background: rgba(var(--rgb-white), 0.18);
+	background: rgba(var(--rgb-ink), 0.18);
 	font-size: 70%;
 	font-weight: 700;
 	line-height: 1.6;
@@ -2152,10 +2232,10 @@ html body.signals-shell .count-badge {
 /* Notion colour chips (tags, authors) → one consistent themed pill. */
 html body.signals-shell a span[class*="-background"] {
 	padding: 0.15em 0.7em;
-	border: 1px solid rgba(var(--rgb-white), 0.22);
+	border: 1px solid rgba(var(--rgb-ink), 0.22);
 	border-radius: 1em;
-	background: rgba(var(--rgb-white), 0.12) !important;
-	color: var(--color-white) !important;
+	background: rgba(var(--rgb-ink), 0.12) !important;
+	color: var(--color-ink) !important;
 	text-decoration: none;
 }
 
@@ -2164,8 +2244,8 @@ html body.signals-shell a span[class*="-background"] img {
 }
 
 html body.signals-shell a:hover span[class*="-background"] {
-	background: rgba(var(--rgb-white), 0.2) !important;
-	border-color: var(--color-white);
+	background: rgba(var(--rgb-ink), 0.2) !important;
+	border-color: var(--color-ink);
 }
 
 html body.signals-shell .divider,
@@ -2173,7 +2253,7 @@ html body.signals-shell .notion-divider {
 	height: 1px;
 	margin-block: 2em;
 	border: 0;
-	background: rgba(var(--rgb-white), 0.16);
+	background: rgba(var(--rgb-ink), 0.16);
 }
 
 /* Gallery cards */
@@ -2184,15 +2264,15 @@ html body.signals-shell .gallery-grid {
 }
 
 html body.signals-shell .post-card {
-	border: 1px solid rgba(var(--rgb-white), 0.16);
+	border: 1px solid rgba(var(--rgb-ink), 0.16);
 	border-radius: 0.35em;
 	overflow: hidden;
-	background: rgba(var(--rgb-white), 0.04);
+	background: rgba(var(--rgb-ink), 0.04);
 	transition: border-color var(--transition) !important;
 }
 
 html body.signals-shell .post-card:hover {
-	border-color: var(--color-white);
+	border-color: var(--color-ink);
 }
 
 html body.signals-shell .post-card-link {
@@ -2201,7 +2281,7 @@ html body.signals-shell .post-card-link {
 
 html body.signals-shell .post-card-image-container {
 	aspect-ratio: 3 / 2;
-	background: rgba(var(--rgb-white), 0.06);
+	background: rgba(var(--rgb-ink), 0.06);
 }
 
 html body.signals-shell .post-card-image,
@@ -2214,7 +2294,7 @@ html body.signals-shell .post-card-placeholder {
 html body.signals-shell .post-card-placeholder {
 	display: grid;
 	place-items: center;
-	color: var(--color-white);
+	color: var(--color-ink);
 	font-size: var(--font-size-x-large);
 	font-weight: 700;
 }
@@ -2224,26 +2304,18 @@ html body.signals-shell .callout,
 html body.signals-shell .bookmark-card,
 html body.signals-shell .ntable,
 html body.signals-shell pre {
-	border: 1px solid rgba(var(--rgb-white), 0.16);
+	border: 1px solid rgba(var(--rgb-ink), 0.16);
 	border-radius: 0.35em !important;
-	background: rgba(var(--rgb-white), 0.05) !important;
+	background: rgba(var(--rgb-ink), 0.05) !important;
 }
 
 html body.signals-shell .caption {
-	color: rgba(var(--rgb-white), 0.8);
+	color: rgba(var(--rgb-ink), 0.8);
 }
 
 /* Blog post reading column */
 html body.signals-shell .thought__content.content {
-	max-width: 42ch;
-}
-
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .content-shell,
-	html body.signals-shell .home-shell {
-		margin-left: 2.8ch;
-		margin-right: 2.8ch;
-	}
+	max-width: var(--measure);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2299,7 +2371,7 @@ html:not(.pointer-focus) body.signals-shell button:focus-visible,
 html:not(.pointer-focus) body.signals-shell input:focus-visible,
 html:not(.pointer-focus) body.signals-shell summary:focus-visible {
 	border-radius: 2px;
-	outline: 2px solid var(--color-white);
+	outline: 2px solid var(--color-ink);
 	outline-offset: 2px;
 }
 
@@ -2325,24 +2397,4 @@ html body.signals-shell .visually-hidden {
 	position: absolute;
 	white-space: nowrap;
 	width: 1px;
-}
-
-/* Center the editorial column so pages read well at any width. */
-@media (min-width: 64em) {
-	html body.signals-shell .page {
-		margin-left: auto;
-		margin-right: auto;
-		max-width: 48rem;
-		width: 100%;
-	}
-
-	html body.signals-shell .page__headline,
-	html body.signals-shell .page__anchors,
-	html body.signals-shell .page__body,
-	html body.signals-shell .thought,
-	html body.signals-shell .thoughts {
-		margin-left: 0;
-		margin-right: 0;
-		max-width: 100%;
-	}
 }

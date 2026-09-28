@@ -102,13 +102,35 @@ async function handleContextApi(request, env) {
  * focuslab.pk has DNS-only subdomains (mail, sip, lyncdiscover) that must not
  * be forced onto HTTPS.
  */
-function withSecurityHeaders(response) {
+const SECURITY_HEADERS = {
+	"Strict-Transport-Security": "max-age=31536000",
+	"X-Content-Type-Options": "nosniff",
+	"Referrer-Policy": "strict-origin-when-cross-origin",
+	"X-Frame-Options": "SAMEORIGIN",
+	"Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+};
+
+/** Build output is content-hashed, so it can be cached forever. */
+const IMMUTABLE_CACHE = "public, max-age=31536000, immutable";
+
+function withSecurityHeaders(request, response) {
 	const headers = new Headers(response.headers);
-	headers.set("Strict-Transport-Security", "max-age=31536000");
-	headers.set("X-Content-Type-Options", "nosniff");
-	headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-	headers.set("X-Frame-Options", "SAMEORIGIN");
-	headers.set("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
+	for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+		headers.set(name, value);
+	}
+
+	const { pathname } = new URL(request.url);
+
+	if (pathname.startsWith("/_astro/") || pathname.startsWith("/assets/")) {
+		headers.set("Cache-Control", IMMUTABLE_CACHE);
+	}
+
+	// The 404 page carries meta robots=noindex, but a header is the signal
+	// crawlers and caches cannot miss, and it survives a stripped <head>.
+	if (response.status === 404) {
+		headers.set("X-Robots-Tag", "noindex, follow");
+	}
+
 	return new Response(response.body, {
 		status: response.status,
 		statusText: response.statusText,
@@ -130,6 +152,6 @@ export default {
 			return handleContextApi(request, env);
 		}
 
-		return withSecurityHeaders(await env.ASSETS.fetch(request));
+		return withSecurityHeaders(request, await env.ASSETS.fetch(request));
 	},
 };
