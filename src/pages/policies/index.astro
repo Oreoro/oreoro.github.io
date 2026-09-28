@@ -1,7 +1,9 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import PageAnchors from "@/components/layout/PageAnchors.astro";
 import { getNavLink } from "@/lib/blog-helpers";
 import { policyLinks } from "@/data/policies";
+import { site } from "@/data/focuslab";
 ---
 
 <PageLayout
@@ -12,12 +14,23 @@ import { policyLinks } from "@/data/policies";
 >
 	<div class="page">
 		<div class="page__headline">
-			<h1>Policies</h1>
-			<p>Focus Lab makes our policies as clear, fair, and readable as possible.</p>
+			<p class="page__kicker">Policies</p>
+			<h1>Short, dated, and readable.</h1>
+			<p>
+				Focus Lab makes our policies as clear, fair, and readable as possible. If one of these reads
+				like legal boilerplate, that's our mistake — tell us.
+			</p>
+			<PageAnchors
+				anchors={[
+					{ id: "read", label: "Read these" },
+					{ id: "approach", label: "How we treat these" },
+				]}
+			/>
 		</div>
 
 		<div class="page__body">
 			<div class="page__content content content--policies">
+				<h2 id="read">Read these</h2>
 				<ul>
 					{
 						policyLinks.map((policy) => (
@@ -27,14 +40,61 @@ import { policyLinks } from "@/data/policies";
 						))
 					}
 				</ul>
-				<hr />
-				<p>
-					Focus Lab may update these policies as needed to comply with relevant regulations and
-					reflect any new practices. If we make significant changes, we will refresh the date at the
-					top of the page and notify users who have signed up to our <a
-						href={getNavLink("/policies/updates")}>policy updates mailing list</a
-					>.
-				</p>
+
+				<h2 id="approach">How we treat these</h2>
+				<ol class="numbered">
+					<li>
+						<div class="numbered__body">
+							<h3 class="numbered__title">Written to be read.</h3>
+							<p>
+								Plain language, short sentences, and no clauses hidden in the footnotes. If a policy
+								needs a lawyer to understand, we've written it wrong.
+							</p>
+						</div>
+					</li>
+					<li>
+						<div class="numbered__body">
+							<h3 class="numbered__title">Dated at the top.</h3>
+							<p>
+								Every page carries the date it was last revised, so you can always tell what you
+								agreed to and when.
+							</p>
+						</div>
+					</li>
+					<li>
+						<div class="numbered__body">
+							<h3 class="numbered__title">Changed only when something changes.</h3>
+							<p>
+								We update these to comply with the law and to reflect how we actually work. We don't
+								reshuffle the wording just to look current.
+							</p>
+						</div>
+					</li>
+					<li>
+						<div class="numbered__body">
+							<h3 class="numbered__title">Told to you first.</h3>
+							<p>
+								Significant changes go out to the <a href={getNavLink("/policies/updates")}
+									>policy updates mailing list</a
+								> before they take effect, so you hear about a revision from us before you read it.
+							</p>
+						</div>
+					</li>
+				</ol>
+
+				<div class="panel">
+					<h3 class="panel__title">Something unclear?</h3>
+					<div class="panel__body">
+						<p>
+							Ask. Write to <a href={`mailto:${site.email}`}>{site.email}</a> and we'll explain it in
+							a sentence, or fix the page so nobody has to ask.
+						</p>
+					</div>
+					<div class="panel__actions">
+						<a class="button" href={`mailto:${site.email}`}>Email us <span>&rarr;</span></a>
+						<a class="button button--ghost" href={getNavLink("/contact/")}>Contact</a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

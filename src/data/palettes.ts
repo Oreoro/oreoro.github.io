@@ -13,6 +13,10 @@
  * palette is in play, how many grounds that palette has, and whether it is a
  * light or a dark one.
  *
+ * There is one palette. The site used to offer four behind a picker; the picker
+ * is gone, so the registry is a single entry and the array is kept only so the
+ * pre-paint script and signal.ts still have one place to read from.
+ *
  * `size` must match the number of `--rgb-theme-N` entries in theme-picker.css.
  */
 export interface Palette {
@@ -23,12 +27,7 @@ export interface Palette {
 	scheme: "light" | "dark";
 }
 
-export const palettes: Palette[] = [
-	{ id: "pastel", label: "Pastel", size: 15, scheme: "light" },
-	{ id: "notion", label: "Notion", size: 9, scheme: "light" },
-	{ id: "signal", label: "Signal", size: 9, scheme: "dark" },
-	{ id: "ink", label: "Ink", size: 4, scheme: "dark" },
-];
+export const palettes: Palette[] = [{ id: "pastel", label: "Pastel", size: 15, scheme: "light" }];
 
 export const DEFAULT_PALETTE = "pastel";
 

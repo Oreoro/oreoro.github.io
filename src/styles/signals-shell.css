@@ -121,7 +121,7 @@
 	 *   paper  — the opposite of ink; used where a surface has to invert
 	 *   theme  — the page background itself, picked per load from the palette
 	 *
-	 * The palettes live in theme-picker.css (`[data-palette]`); the defaults here
+	 * The palettes live in palette.css (`[data-palette]`); the defaults here
 	 * are the warm pastel set.
 	 */
 	--rgb-theme: var(--rgb-theme-1);
@@ -131,6 +131,20 @@
 	--rgb-shadow: 35, 31, 26;
 	--rgb-sheet: 35, 31, 26;
 	--rgb-sheet-ink: 250, 247, 240;
+
+	/*
+	 * The floor for any *text* colour that is not full-strength ink.
+	 *
+	 * Muted type is written as `ink` at some alpha over the live ground, so its
+	 * contrast has to survive all fifteen grounds rather than one. The binding
+	 * constraint is #d4a373 (theme-5, light-bronze), the ground closest to ink
+	 * in luminance. At 78% that ground measures 4.70:1 and the palest measures
+	 * 7.64:1; at 70% the worst drops to 3.94:1 and at 62% to 3.30:1, both under
+	 * AA for normal text. Large text only needs 3:1, so a heading may go lower
+	 * — nothing in the shell currently does.
+	 */
+	--ink-muted: 78%;
+	--ink-faint: 88%;
 
 	--color-error: rgb(var(--rgb-error));
 
@@ -177,14 +191,26 @@
 
 	--line-height: calc(1.35em + 0.4vw);
 	/* Target reading measure. `ch` resolves against the body size of the element. */
-	--measure: 66ch;
+	--measure: 49ch;
 	--spacing: 1em;
+	/* The extra left indent a sub-page picks up on a wide screen. */
+	--indent: 0ch;
+	/* Air under a heading: tight for prose, wider for a discrete block. */
+	--lead-in: calc(var(--line-height) * 0.8);
+	--lead-in-block: calc(var(--line-height) * 1.1);
 	--transition: 0.2s ease;
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	:root {
 		--line-height: 1.35em;
+		/*
+		 * On a wide screen the column narrows and steps in from the gutter. The
+		 * result is a single narrow column of copy against a large empty field
+		 * of colour, which is the shape 37signals.com uses on its sub-pages.
+		 */
+		--measure: 39ch;
+		--indent: 2.8ch;
 	}
 }
 
@@ -373,24 +399,32 @@ html body.signals-shell .font-size-xxx-large {
 
 /* ---------- button.css ---------- */
 
+/*
+ * 37signals' button is a plain filled rectangle: 4px corners, a 120x40 floor,
+ * and no motion on hover. The pill-and-lift version that was here read like a
+ * generic SaaS template, so the geometry is now the source site's.
+ */
 html body.signals-shell .button {
 	align-self: flex-start;
 	background: var(--color-ink);
 	border: 1px solid transparent;
-	border-radius: 1.3em;
+	border-radius: 4px;
 	color: var(--color-theme) !important;
 	cursor: pointer;
 	display: inline-flex;
 	font-size: var(--font-size-small);
 	font-weight: 500;
 	gap: 0.4em;
+	justify-content: center;
 	letter-spacing: normal;
+	min-height: 40px;
+	min-width: 120px;
 	padding: 0.6em 1.1em 0.55em 1.1em;
 	text-decoration: none;
 	transition:
 		background-color var(--transition),
-		box-shadow var(--transition),
-		transform var(--transition);
+		border-color var(--transition),
+		color var(--transition);
 	white-space: nowrap;
 }
 
@@ -400,14 +434,20 @@ html body.signals-shell .button span {
 
 html body.signals-shell .button:hover,
 html:not(.pointer-focus) body.signals-shell .button:focus-visible {
-	box-shadow: 0 0.5em 1.4em -0.5em rgba(var(--rgb-shadow), 0.45);
-	transform: translateY(-1px);
+	background: color-mix(in srgb, var(--color-ink) 86%, var(--color-theme));
+	box-shadow: none;
+	transform: none;
 }
 
 /* Theme-coloured button, for use on light surfaces (e.g. the white signup form). */
 html body.signals-shell .button--theme {
 	background: var(--color-theme);
 	color: var(--color-ink) !important;
+}
+
+html body.signals-shell .button--theme:hover,
+html:not(.pointer-focus) body.signals-shell .button--theme:focus-visible {
+	background: color-mix(in srgb, var(--color-theme) 86%, var(--color-ink));
 }
 
 /* Ghost button — a native-feeling secondary action on a coloured background. */
@@ -479,7 +519,7 @@ html body.signals-shell .page__headline h2 {
 }
 
 html body.signals-shell .page__headline .page__kicker {
-	color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 	font-size: var(--font-size-x-small);
 	font-weight: 700;
 	letter-spacing: 0.1em;
@@ -499,6 +539,12 @@ html body.signals-shell .page__headline small {
 	font-weight: 700;
 }
 
+/*
+ * The in-page jump list, 37signals' `.page__anchors`. It was in the stylesheet
+ * from the start with nothing rendering it; a sub-page long enough to need one
+ * now does. Sits directly under the standfirst, before the body, so it is the
+ * last thing in the header block and the first thing you can click.
+ */
 html body.signals-shell .page__anchors {
 	color: var(--color-ink);
 }
@@ -510,24 +556,54 @@ html body.signals-shell .page__anchors dl {
 	font-weight: 700;
 	gap: 0.4em;
 	letter-spacing: normal;
-	margin-top: var(--line-height);
+	margin: 0;
+	padding: 0;
 }
 
-html body.signals-shell .page__anchors dl dd {
+/* The jump list is a discrete block, so it needs more than the headline's
+   0.6em flex gap above it. */
+html body.signals-shell .page__headline .page__anchors {
+	margin-top: 0.8em;
+}
+
+html body.signals-shell .page__anchors dt {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	font-size: var(--font-size-x-small);
+	letter-spacing: 0.1em;
+	margin-bottom: 0.9em;
+	text-transform: uppercase;
+}
+
+html body.signals-shell .page__anchors dd {
+	margin: 0;
 	padding-left: 2ch;
 	position: relative;
 }
 
-html body.signals-shell .page__anchors dl dd:before {
+html body.signals-shell .page__anchors dd a {
+	color: var(--color-ink);
+	text-decoration: none;
+}
+
+html body.signals-shell .page__anchors dd a:hover,
+html:not(.pointer-focus) body.signals-shell .page__anchors dd a:focus-visible {
+	text-decoration: underline;
+}
+
+html body.signals-shell .page__anchors dd:before {
 	content: "\2193";
 	left: 0;
 	position: absolute;
 	width: 2ch;
 }
 
+/* Section headings are anchor targets, so they must clear the fixed header. */
+html body.signals-shell :target {
+	scroll-margin-top: max(22.2vh, 7.4em);
+}
+
 html body.signals-shell .page__content {
-	margin-bottom: 3.7em;
-	margin-top: 3.7em;
+	margin: 3.7em 0;
 }
 
 html body.signals-shell .page__back {
@@ -544,17 +620,15 @@ html body.signals-shell .page__actions {
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	html body.signals-shell .page {
 		/*
-		 * Sub-pages read as two columns on a wide screen: the title and its
-		 * standfirst hold the left edge, the body fills the space to their right.
-		 * This is what stops the copy floating in the middle of the viewport, and
-		 * it is the layout the narrow centred column replaced.
+		 * A sub-page is one narrow column, anchored hard to the left gutter and
+		 * stepped in by --indent, with the rest of the viewport left as a field
+		 * of colour. Nothing is centred, and the title sits above the copy rather
+		 * than beside it — the shape 37signals.com uses on /jobs, /policies and
+		 * /thoughts.
 		 */
-		column-gap: clamp(2.5rem, 4vw, 5rem);
-		display: grid;
-		grid-template-columns: minmax(13em, 19em) minmax(0, 1fr);
-		margin-right: var(--spacing);
+		margin-left: calc(var(--spacing) + var(--indent));
+		margin-right: calc(var(--spacing) + var(--indent));
 		margin-top: max(22.2vh, 5.4em);
-		max-width: 94rem;
 	}
 
 	html body.signals-shell .page:after {
@@ -565,33 +639,30 @@ html body.signals-shell .page__actions {
 		height: calc(3.7em + var(--spacing));
 	}
 
-	/* The title block stays with the page as the body scrolls past it. */
-	html body.signals-shell .page__headline {
-		grid-column: 1;
-		grid-row: 1;
-		position: sticky;
-		top: max(22.2vh, 5.4em);
-	}
-
-	html body.signals-shell .page > :not(.page__headline) {
-		grid-column: 2;
-		max-width: var(--measure);
-	}
-
+	/* The title block keeps the wider 49ch box on desktop; only the running text
+	   narrows to 39ch, so the standfirst still has room to breathe. */
+	html body.signals-shell .page__headline,
 	html body.signals-shell .page__anchors {
-		grid-column: 1;
-		grid-row: 2;
+		max-width: 49ch;
+	}
+
+	/* The body copy runs narrower than the title block, so the standfirst and the
+	   prose do not sit in one long line. */
+	html body.signals-shell .page__body,
+	html body.signals-shell .page__content {
+		max-width: var(--measure);
 	}
 
 	/* Card grids and other full-bleed blocks opt out of the reading measure. */
 	html body.signals-shell .page > .product-cards,
-	html body.signals-shell .page > .stack__items {
+	html body.signals-shell .page > .stack__items,
+	html body.signals-shell .page > .gallery-grid {
 		max-width: none;
 	}
 
 	html body.signals-shell .page.page--wide {
 		display: flex;
-		grid-template-columns: none;
+		margin-left: var(--spacing);
 		margin-right: auto;
 		max-width: 72rem;
 	}
@@ -983,7 +1054,7 @@ html body.signals-shell .cluster--signal .signal {
 }
 
 html body.signals-shell .cluster--signal .signal .signal__header a {
-	color: rgba(var(--rgb-ink), 0.7);
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 }
 
 html body.signals-shell .cluster--signal .signal .signal__header a dl dd {
@@ -1011,7 +1082,7 @@ html body.signals-shell .cluster--loaded {
 
 	html body.signals-shell .cluster--index:hover header a:not(:hover),
 	html:not(.pointer-focus) body.signals-shell .cluster--index:focus-within header a:not(:focus) {
-		color: rgba(var(--rgb-ink), 0.7);
+		color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 	}
 
 	html body.signals-shell .cluster--signal .signal {
@@ -1084,7 +1155,7 @@ html body.signals-shell .signal__header dl {
 }
 
 html body.signals-shell .signal__date {
-	color: rgba(var(--rgb-ink), 0.85);
+	color: color-mix(in srgb, var(--color-ink) var(--ink-faint), transparent);
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	white-space: nowrap;
@@ -1138,7 +1209,7 @@ html body.signals-shell .signal__header dl dd {
 }
 
 html body.signals-shell .signal__meta {
-	color: rgba(var(--rgb-ink), 0.55);
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 	font-size: var(--font-size-small);
 	font-weight: 400;
 	letter-spacing: normal;
@@ -1152,7 +1223,7 @@ html body.signals-shell .signal__meta {
 }
 
 html body.signals-shell .entry__meta {
-	color: rgba(var(--rgb-ink), 0.7);
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	letter-spacing: normal;
@@ -1298,13 +1369,34 @@ html body.signals-shell .content h6 a {
 	text-decoration: none;
 }
 
+/*
+ * The lead-in under a heading.
+ *
+ * 37signals sets this to half a line, which reads as deliberate at their type
+ * sizes (a 51px heading followed by 22px of air) but collapsed to 11px here
+ * against a 34px gap above the heading — a 3x asymmetry that just looked like a
+ * mistake. Prose still tucks in close, because a paragraph does read as the
+ * heading's own sentence. Anything that is a discrete object rather than a
+ * continuation of the sentence — a list, a table, a quote, a panel — gets the
+ * wider `--lead-in-block` instead.
+ */
 html body.signals-shell .content h1 + *,
 html body.signals-shell .content h2 + *,
 html body.signals-shell .content h3 + *,
 html body.signals-shell .content h4 + *,
 html body.signals-shell .content h5 + *,
 html body.signals-shell .content h6 + * {
-	--flow-space: calc(var(--line-height) * 0.5);
+	--flow-space: var(--lead-in);
+}
+
+html body.signals-shell .content :is(ul, ol, table, blockquote, dl) + *,
+html body.signals-shell .content h1 + :is(ul, ol, table, blockquote, dl),
+html body.signals-shell .content h2 + :is(ul, ol, table, blockquote, dl),
+html body.signals-shell .content h3 + :is(ul, ol, table, blockquote, dl),
+html body.signals-shell .content h4 + :is(ul, ol, table, blockquote, dl),
+html body.signals-shell .content h5 + :is(ul, ol, table, blockquote, dl),
+html body.signals-shell .content h6 + :is(ul, ol, table, blockquote, dl) {
+	--flow-space: var(--lead-in-block);
 }
 
 /*
@@ -1353,6 +1445,7 @@ html body.signals-shell .content h6 {
 
 html body.signals-shell .content hr {
 	--flow-space: 0;
+	border: 0;
 	height: 3.7em;
 }
 
@@ -1377,6 +1470,197 @@ html body.signals-shell .content hr.ornament:before {
 	letter-spacing: 0.15em;
 	line-height: 1;
 	padding-top: 0.4em;
+}
+
+/* ---------- Sub-page content blocks ----------
+ *
+ * The four blocks below are the pieces 37signals gives its own sub-pages that
+ * a plain <h2> + <p> page does not have. They exist so a sub-page reads as a
+ * composed page rather than a wall of prose, without importing anything that
+ * looks like a design system.
+ */
+
+/*
+ * `.numbered` — the signal list. A run of items where the numeral sits in a
+ * fixed 2.8ch column and the body indents under it, which is how 37signals
+ * numbers its signals. The numerals come from a counter, so the markup is just
+ * a list.
+ */
+html body.signals-shell .numbered {
+	counter-reset: numbered;
+	display: flex;
+	flex-direction: column;
+	list-style: none;
+	/* The top margin belongs to `.content > * + *`, which ties on specificity and
+	   is declared earlier — so it must not be zeroed here. The bottom one is the
+	   UA's default on <ol>, and nothing else claims it. */
+	margin-bottom: 0;
+	padding: 0;
+}
+
+html body.signals-shell .numbered > li {
+	align-items: start;
+	display: flex;
+	--flow-space: calc(var(--line-height) * 1.4);
+}
+
+html body.signals-shell .numbered > li + li {
+	margin-top: var(--flow-space);
+}
+
+html body.signals-shell .numbered > li:before {
+	/*
+	 * 78% is the floor for this palette, not a taste call. Ink is rgb(35,31,26)
+	 * and it is alpha-composited over the live ground, so the worst case is
+	 * whichever of the fifteen grounds sits closest to it in luminance —
+	 * #d4a373, theme-5, at 4.70:1. Anything lighter than 78% drops that ground
+	 * under AA for normal text, and these ordinals are ~15px bold, which is
+	 * below the 18.66px large-text threshold. Every muted-ink colour in the
+	 * shell is held to the same floor.
+	 */
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	counter-increment: numbered;
+	content: counter(numbered, decimal-leading-zero) ".";
+	flex: none;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums lining-nums;
+	letter-spacing: normal;
+	width: 2.8ch;
+}
+
+html body.signals-shell .numbered__body {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+html body.signals-shell .numbered__body > * + * {
+	margin-top: 0.45em;
+}
+
+html body.signals-shell .numbered__title {
+	font-size: var(--font-size-large);
+	letter-spacing: -0.005em;
+	line-height: 1.25;
+	margin: 0;
+}
+
+/* The optional second line under a numbered title — a one-phrase qualifier. */
+html body.signals-shell .numbered__note {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+
+/*
+ * `.panel` — the raised surface. The same 8%-ink wash and 0.3em corner the
+ * signup box uses, generalised so any sub-page can set something apart: an
+ * aside, a call to action, a short list of links.
+ */
+html body.signals-shell .panel {
+	align-self: flex-start;
+	background: rgba(var(--rgb-ink), 0.08);
+	border-radius: 0.3em;
+	display: flex;
+	flex-direction: column;
+	padding: 1.3em 1.6em;
+	width: 100%;
+}
+
+html body.signals-shell .panel__title {
+	font-size: var(--font-size-large);
+	letter-spacing: -0.005em;
+	line-height: 1.25;
+	margin: 0;
+}
+
+html body.signals-shell .panel__body {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-faint), transparent);
+}
+
+html body.signals-shell .panel__body > * + * {
+	margin-top: 0.5em;
+}
+
+html body.signals-shell .panel__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6em;
+	margin-top: 1em;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	/* Let the panel bleed a little past the measure, the way the signup box does. */
+	html body.signals-shell .panel {
+		margin-left: -1em;
+		max-width: calc(100% + 2em);
+		width: calc(100% + 2em);
+	}
+}
+
+/*
+ * `.ledger` — a facts table. The cell edges are painted in the page colour, so
+ * the rule disappears and the alternating wash does the separating. This is
+ * 37signals' own table treatment: no visible borders anywhere.
+ */
+html body.signals-shell .ledger {
+	background: rgba(var(--rgb-ink), 0.08);
+	border-collapse: collapse;
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+	width: 100%;
+}
+
+html body.signals-shell .ledger th,
+html body.signals-shell .ledger td {
+	border: 2px solid var(--color-theme) !important;
+	padding: 1.1em 1.3em;
+	text-align: left;
+	vertical-align: top;
+}
+
+html body.signals-shell .ledger th {
+	font-weight: 700;
+	width: 34%;
+}
+
+html body.signals-shell .ledger tr:nth-child(even) {
+	background: rgba(var(--rgb-ink), 0.04);
+}
+
+/*
+ * `.pull` — a pull quote. The oversized curly quote is already drawn by the
+ * blockquote rule; this only lifts the size and sets the attribution, so the
+ * glyph keeps sitting in the left margin where 37signals puts it.
+ *
+ * It is a display object, so it gets more air than a paragraph would and stops
+ * a line short of the measure — a quote reads better ragged than flush.
+ */
+html body.signals-shell .pull {
+	font-size: var(--font-size-large);
+	font-style: italic;
+	letter-spacing: -0.005em;
+	line-height: 1.4;
+	margin-bottom: var(--lead-in-block);
+	max-width: 40ch;
+}
+
+html body.signals-shell .pull p {
+	margin: 0;
+}
+
+html body.signals-shell .pull cite {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	display: block;
+	font-size: var(--font-size-small);
+	font-style: normal;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	margin-top: 0.6em;
+}
+
+html body.signals-shell .pull cite:before {
+	content: "— ";
 }
 
 html body.signals-shell .content ul li ul,
@@ -1739,7 +2023,7 @@ html body.signals-shell .book-cover__mark {
 }
 
 html body.signals-shell .book-cover__title {
-	color: rgba(var(--rgb-ink), 0.9);
+	color: color-mix(in srgb, var(--color-ink) var(--ink-faint), transparent);
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	line-height: 1.15;
@@ -1819,6 +2103,15 @@ html body.signals-shell .signup form.error input {
 	text-decoration-thickness: from-font;
 }
 
+/* The submit button sits inside a 2em pill, so it keeps a pill corner and drops
+   the 120px floor the square buttons carry. */
+html body.signals-shell .signup form .button {
+	border-radius: 1.3em;
+	min-width: 0;
+	padding-left: 1.2em;
+	padding-right: 1.2em;
+}
+
 html body.signals-shell .signup--inline {
 	align-self: auto;
 	background: none;
@@ -1873,7 +2166,7 @@ html body.signals-shell .stack__group h2 {
 }
 
 html body.signals-shell .stack__note {
-	color: rgba(var(--rgb-ink), 0.7);
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 	font-size: var(--font-size-small);
 	margin-top: 0.2em;
 }
@@ -1934,7 +2227,7 @@ html body.signals-shell .product__hero {
 }
 
 html body.signals-shell .product__kicker {
-	color: rgba(var(--rgb-ink), 0.72);
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 	font-size: var(--font-size-small);
 	font-weight: 700;
 	letter-spacing: 0.08em;
@@ -1960,7 +2253,7 @@ html body.signals-shell .product__summary {
 }
 
 html body.signals-shell .product__pricing {
-	color: rgba(var(--rgb-ink), 0.75);
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 	font-size: var(--font-size-small);
 }
 
@@ -2075,7 +2368,7 @@ html body.signals-shell .product-card__tagline {
 }
 
 html body.signals-shell .product-card__summary {
-	color: rgba(var(--rgb-ink), 0.85);
+	color: color-mix(in srgb, var(--color-ink) var(--ink-faint), transparent);
 	font-size: var(--font-size-small);
 	margin: 0;
 }
@@ -2144,6 +2437,14 @@ html body.signals-shell .home-shell {
 	max-width: var(--measure);
 	margin: 7.4em 0 calc(var(--line-height) + var(--spacing));
 	padding: 0;
+}
+
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .content-shell,
+	html body.signals-shell .home-shell {
+		margin-left: calc(var(--spacing) + var(--indent));
+		margin-top: max(22.2vh, 5.4em);
+	}
 }
 
 html body.signals-shell .title,

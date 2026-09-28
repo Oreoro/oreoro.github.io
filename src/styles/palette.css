@@ -1,0 +1,63 @@
+/*
+ * Focus Lab's palette.
+ *
+ * signals-shell.css expresses the whole site through four role tokens:
+ *
+ *   --rgb-theme    the page background, rotated per page load
+ *   --rgb-ink      type, rules and surface washes
+ *   --rgb-paper    the inverse of ink, for surfaces that flip
+ *   --rgb-shadow   what an elevation shadow is cast in
+ *
+ * A palette is therefore just a table of those values. The inline script in
+ * BaseHead.astro sets `data-palette` on <html> before first paint and picks a
+ * `--rgb-theme-N` from the active palette, so the page colour is one attribute
+ * and one custom property.
+ *
+ * There is one palette. The site briefly carried four behind an on-site picker;
+ * Pastel is the one that stayed, and it is also what the page ground rolls
+ * through on every load.
+ *
+ * Rules here are deliberately unlayered so they win over Tailwind's cascade
+ * layers, the same trick minimal.css uses.
+ */
+
+/* ---------- Pastel — the only palette ---------- */
+/* Warm, chalky, low-contrast grounds that all take the same near-black ink. */
+:root,
+:root[data-palette="pastel"] {
+	color-scheme: light;
+
+	--rgb-theme-1: 204, 213, 174; /* tea-green   #ccd5ae */
+	--rgb-theme-2: 233, 237, 201; /* beige       #e9edc9 */
+	--rgb-theme-3: 254, 250, 224; /* cornsilk    #fefae0 */
+	--rgb-theme-4: 250, 237, 205; /* papaya-whip #faedcd */
+	--rgb-theme-5: 212, 163, 115; /* light-bronze #d4a373 */
+	--rgb-theme-6: 237, 220, 210; /* powder-petal #eddcd2 */
+	--rgb-theme-7: 255, 241, 230; /* linen       #fff1e6 */
+	--rgb-theme-8: 253, 226, 228; /* soft-blush  #fde2e4 */
+	--rgb-theme-9: 250, 210, 225; /* petal-frost #fad2e1 */
+	--rgb-theme-10: 197, 222, 221; /* light-cyan  #c5dedd */
+	--rgb-theme-11: 219, 231, 228; /* mint-cream  #dbe7e4 */
+	--rgb-theme-12: 240, 239, 235; /* parchment   #f0efeb */
+	--rgb-theme-13: 214, 226, 233; /* alice-blue  #d6e2e9 */
+	--rgb-theme-14: 188, 212, 230; /* pale-sky    #bcd4e6 */
+	--rgb-theme-15: 153, 193, 222; /* powder-blue #99c1de */
+
+	--rgb-ink: 35, 31, 26;
+	--rgb-paper: 255, 255, 255;
+	--rgb-accent: 176, 118, 58;
+	--rgb-shadow: 35, 31, 26;
+
+	/* The inverted full-bleed surface — the open mobile menu. */
+	--rgb-sheet: 35, 31, 26;
+	--rgb-sheet-ink: 250, 247, 240;
+}
+
+/* Accent is only used for the few places a second colour earns its keep. */
+html body.signals-shell .content hr.ornament:before {
+	color: var(--color-accent);
+}
+
+html body.signals-shell ::selection {
+	background: color-mix(in srgb, var(--color-accent) 26%, transparent);
+}

@@ -17,11 +17,14 @@ html body.signals-shell {
 
 /* ---------- Page column ---------- */
 
+/* The same single left-anchored column the shell uses: one gutter out from the
+   viewport edge, stepped in further on a wide screen, and no right padding. */
 html body.signals-shell .content-shell {
 	width: 100%;
 	max-width: var(--measure);
 	margin-inline: 0;
-	padding-inline: 0 clamp(20px, 5vw, 40px);
+	padding-inline: 0;
+	padding-left: calc(var(--spacing) + var(--indent));
 }
 
 html body.signals-shell .post-body {

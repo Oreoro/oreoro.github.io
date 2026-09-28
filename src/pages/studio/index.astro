@@ -1,7 +1,9 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import PageAnchors from "@/components/layout/PageAnchors.astro";
 import { products } from "@/data/products";
 import { getNavLink } from "@/lib/blog-helpers";
+import { site } from "@/data/focuslab";
 ---
 
 <PageLayout
@@ -19,57 +21,113 @@ import { getNavLink } from "@/lib/blog-helpers";
 				Focus Lab is a product studio based in Islamabad. We design, build, and run our own
 				software. Once in a while, when there is a mutual fit, we partner with a team on theirs.
 			</p>
+			<PageAnchors
+				anchors={[
+					{ id: "believe", label: "What we believe" },
+					{ id: "built", label: "What we've built" },
+					{ id: "working", label: "Working with us" },
+				]}
+			/>
 		</div>
 
 		<div class="page__content content">
-			<h2>What we believe</h2>
-			<ul class="list-spaced">
+			<h2 id="believe">What we believe</h2>
+			<ol class="numbered">
 				<li>
-					<strong>Product first.</strong> We don't start with a deck. We start with the smallest thing
-					worth building.
+					<div class="numbered__body">
+						<h3 class="numbered__title">Product first.</h3>
+						<p>
+							We don't start with a deck. We start with the smallest thing worth building, and we
+							put it in front of a real person as early as we can.
+						</p>
+					</div>
 				</li>
 				<li>
-					<strong>Ship to learn.</strong> Working software tells the truth. Everything else is a guess.
+					<div class="numbered__body">
+						<h3 class="numbered__title">Ship to learn.</h3>
+						<p>
+							Working software tells the truth. Everything else is a guess, and a guess costs more
+							the longer you hold it.
+						</p>
+					</div>
 				</li>
 				<li>
-					<strong>Small on purpose.</strong> Small teams move faster, decide better, and stay accountable.
+					<div class="numbered__body">
+						<h3 class="numbered__title">Small on purpose.</h3>
+						<p>
+							Small teams move faster, decide better, and stay accountable to each other because
+							there is nowhere to hide.
+						</p>
+					</div>
 				</li>
 				<li>
-					<strong>Own the outcome.</strong> We stay for support, metrics, and the second year.
+					<div class="numbered__body">
+						<h3 class="numbered__title">Own the outcome.</h3>
+						<p>
+							We stay for support, metrics, and the second year. Handing a product over at launch
+							isn't running a product.
+						</p>
+					</div>
 				</li>
-			</ul>
+			</ol>
 
-			<h2>What we've built</h2>
-			<ul class="list-spaced">
-				{
-					products.map((product) => (
-						<li>
-							{product.url ? (
-								<a href={product.url} target="_blank" rel="noopener">
-									{product.name}
-								</a>
-							) : (
-								<a href={getNavLink(`/products/${product.slug}/`)}>{product.name}</a>
-							)}{" "}
-							— {product.tagline}
-						</li>
-					))
-				}
-			</ul>
+			<h2 id="built">What we've built</h2>
+			<table class="ledger">
+				<tbody>
+					{
+						products.map((product) => (
+							<tr>
+								<th scope="row">
+									{product.url ? (
+										<a href={product.url} target="_blank" rel="noopener">
+											{product.name}
+										</a>
+									) : (
+										<a href={getNavLink(`/products/${product.slug}/`)}>{product.name}</a>
+									)}
+								</th>
+								<td>{product.tagline}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
 
-			<hr class="ornament" />
+			<blockquote class="pull">
+				<p>
+					We are not trying to be the biggest studio in Islamabad. We are trying to be the one that
+					still answers the phone in year three.
+				</p>
+				<cite>Focus Lab</cite>
+			</blockquote>
 
-			<h2>Working with us</h2>
+			<h2 id="working">Working with us</h2>
 			<p>
 				We are products first. We take on partner work only when there is a mutual fit: a real
 				problem, a clear owner, and room to decide how to solve it. If we are not the right fit, we
 				will say so early.
 			</p>
-			<p>
-				<a class="button" href={getNavLink("/contact/")}>
-					Start a conversation <span>&rarr;</span>
-				</a>
-			</p>
+
+			<div class="panel">
+				<h3 class="panel__title">Start a conversation</h3>
+				<div class="panel__body">
+					<p>
+						Tell us what you're building and what done looks like. You'll get a straight answer,
+						usually within a day.
+					</p>
+					<p>
+						Email <a href={`mailto:${site.email}`}>{site.email}</a>, or reach us on <a
+							href="https://www.linkedin.com/company/110646093/"
+							target="_blank"
+							rel="noopener">LinkedIn</a
+						>.
+					</p>
+				</div>
+				<div class="panel__actions">
+					<a class="button" href={`mailto:${site.email}`}>Email us <span>&rarr;</span></a>
+					<a class="button button--ghost" href={getNavLink("/contact/")}>Contact</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </PageLayout>

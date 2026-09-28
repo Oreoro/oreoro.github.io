@@ -1,5 +1,7 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import PageAnchors from "@/components/layout/PageAnchors.astro";
+import { getNavLink } from "@/lib/blog-helpers";
 import { site } from "@/data/focuslab";
 ---
 
@@ -16,9 +18,45 @@ import { site } from "@/data/focuslab";
 			<p>
 				Tell us what you're building and what done looks like. We'll reply with a straight answer.
 			</p>
+			<PageAnchors
+				anchors={[
+					{ id: "include", label: "What to include" },
+					{ id: "reach", label: "Where to reach us" },
+				]}
+			/>
 		</div>
 
 		<div class="page__content content">
+			<h2 id="include">What to include</h2>
+			<p>You don't need a brief. Four lines is plenty, and we'd rather have them than not.</p>
+			<ol class="numbered">
+				<li>
+					<div class="numbered__body">
+						<h3 class="numbered__title">The problem.</h3>
+						<p>What's broken or missing today, in a sentence.</p>
+					</div>
+				</li>
+				<li>
+					<div class="numbered__body">
+						<h3 class="numbered__title">Who hits it.</h3>
+						<p>How many people have this problem, and how often.</p>
+					</div>
+				</li>
+				<li>
+					<div class="numbered__body">
+						<h3 class="numbered__title">What done looks like.</h3>
+						<p>The version of the world that's obviously better when we're finished.</p>
+					</div>
+				</li>
+				<li>
+					<div class="numbered__body">
+						<h3 class="numbered__title">Your timeline.</h3>
+						<p>When you need it, and what's already committed.</p>
+					</div>
+				</li>
+			</ol>
+
+			<h2 id="reach">Where to reach us</h2>
 			<dl class="contact-list">
 				<div>
 					<dt>Email</dt>
@@ -42,11 +80,24 @@ import { site } from "@/data/focuslab";
 				</div>
 			</dl>
 
-			<p>
-				<a class="button" href={`mailto:${site.email}`}>
-					Email us <span>&rarr;</span>
-				</a>
-			</p>
+			<div class="panel">
+				<h3 class="panel__title">A note on fit</h3>
+				<div class="panel__body">
+					<p>
+						We take on partner work only when there's a mutual fit: a real problem, a clear owner,
+						and room to decide how to solve it. If we're not the right studio for it, we'll say so
+						early and point you somewhere better.
+					</p>
+					<p>
+						Read <a href={getNavLink("/studio/")}>what we believe</a> first — it'll tell you faster than
+						an email will.
+					</p>
+				</div>
+				<div class="panel__actions">
+					<a class="button" href={`mailto:${site.email}`}>Email us <span>&rarr;</span></a>
+					<a class="button button--ghost" href={getNavLink("/studio/")}>The studio</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </PageLayout>

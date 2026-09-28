@@ -2,8 +2,9 @@
  * Focus Lab shell behaviour — a faithful port of 37signals.com's
  * theme.js, controller.js and navigate.js.
  *
- *  - Theme: the palette and the page colour are applied by the inline script in
- *    BaseHead before the first paint; initThemePicker hands them to the visitor.
+ *  - Theme: the page colour is applied by the inline script in BaseHead before
+ *    the first paint; initTheme keeps the browser chrome and the color-scheme
+ *    in step with whatever ground settled.
  *  - Controller: the white dot can be dragged; releasing it over the origin
  *    ring snaps it home. Its position persists for the session.
  *  - Navigate: arrow keys and horizontal swipes move to the next/previous
@@ -195,15 +196,6 @@ function initNavigate() {
 }
 
 /**
- * The theme is chosen and applied by the inline script in BaseHead, before the
- * first paint. All that is left here is to reveal the shell once the fonts and
- * the controller are in place, so the page fades in already wearing its colour.
- */
-function initTheme() {
-	document.body.classList.add("is-ready");
-}
-
-/**
  * Track the last input modality on <html>. Some browsers treat a clicked
  * <summary> as :focus-visible and paint the focus ring, so the stylesheet uses
  * this class to keep the ring for keyboard users and hide it after a pointer
@@ -263,99 +255,48 @@ function initSignup() {
 }
 
 /**
- * theme.js — the theme picker.
+ * theme.js — the page ground.
  *
- * The colours live in CSS and the pre-paint script in BaseHead.astro has already
- * named a palette and pointed `--rgb-theme` at one of its grounds by the time
- * this runs, so the stylesheet is safe to read here. All that is left is to let
- * the visitor change it, and to keep the parts CSS cannot do on its own — the
- * radio buttons, the browser chrome colour, the colour-scheme — in step.
+ * The colour lives in CSS and the pre-paint script in BaseHead.astro has already
+ * pointed `--rgb-theme` at one of the palette's grounds by the time this runs,
+ * so the stylesheet is safe to read here. All that is left is to publish the
+ * settled colour — the browser chrome and the color-scheme the controls and
+ * scrollbars should follow — and to reveal the shell, so the page fades in
+ * already wearing its colour.
+ *
+ * There is one palette. The visitor no longer picks a theme; the ground simply
+ * rolls among Pastel's fifteen on each load.
  */
-function initThemePicker() {
+function initTheme() {
 	const root = document.documentElement;
 	const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-	const options = document.querySelectorAll<HTMLInputElement>("[data-theme-option]");
 
-	/** Which ground of the active palette is showing, zero-based. */
-	const groundIndex = () => Number(root.getAttribute("data-ground")) || 0;
+	// The scheme comes from the registry rather than from computed style. The
+	// pre-paint script writes colorScheme as an inline value, which outranks the
+	// `[data-palette]` rule, so reading it back would only ever return what we
+	// last wrote.
+	const palette = palettes.find(
+		(entry) => entry.id === (root.getAttribute("data-palette") ?? DEFAULT_PALETTE),
+	);
+	root.style.colorScheme = palette?.scheme ?? "light";
 
-	/**
-	 * Publish the settled ground: the browser chrome colour, and the
-	 * colour-scheme the controls and scrollbars should follow.
-	 *
-	 * The scheme comes from the registry rather than from computed style. The
-	 * pre-paint script writes colorScheme as an inline value, which outranks the
-	 * `[data-palette]` rule, so reading it back would only ever return what we
-	 * last wrote.
-	 */
-	function settle(id: string) {
-		const palette = palettes.find((entry) => entry.id === id);
-		root.style.colorScheme = palette?.scheme ?? "light";
-
-		// `--rgb-theme` is an `r, g, b` triple, so it can be handed to the meta
-		// tag as-is once the reference to `--rgb-theme-N` has resolved.
-		const ground = getComputedStyle(root).getPropertyValue("--rgb-theme").trim();
-		if (ground) {
-			root.setAttribute("data-theme", ground);
-			if (meta) meta.setAttribute("content", `rgb(${ground})`);
-		}
+	// `--rgb-theme` is an `r, g, b` triple, so it can be handed to the meta tag
+	// as-is once the reference to `--rgb-theme-N` has resolved.
+	const ground = getComputedStyle(root).getPropertyValue("--rgb-theme").trim();
+	if (ground) {
+		root.setAttribute("data-theme", ground);
+		if (meta) meta.setAttribute("content", `rgb(${ground})`);
 	}
 
-	function setPalette(id: string) {
-		root.setAttribute("data-palette", id);
-		try {
-			localStorage.setItem(PALETTE_STORAGE_KEY, id);
-		} catch (error) {
-			// A blocked or full storage must not stop the palette from applying.
-		}
-
-		// Keep the ground if the new palette happens to have it; otherwise take
-		// its first. Swapping palettes should not also re-roll the colour.
-		const size = palettes.find((palette) => palette.id === id)?.size ?? 1;
-		const current = groundIndex();
-		const index = size > 1 && current < size ? current : 0;
-		root.style.setProperty("--rgb-theme", `var(--rgb-theme-${index + 1})`);
-		root.setAttribute("data-ground", String(index));
-
-		settle(id);
+	// A palette stored by the retired picker would otherwise be honoured by an
+	// old cached copy of this script; drop it so nothing carries over.
+	try {
+		localStorage.removeItem(PALETTE_STORAGE_KEY);
+	} catch (error) {
+		// A blocked or full storage must not stop the page from rendering.
 	}
 
-	function shuffle() {
-		const id = root.getAttribute("data-palette") ?? DEFAULT_PALETTE;
-		const size = palettes.find((palette) => palette.id === id)?.size ?? 1;
-		const current = groundIndex();
-
-		let next = Math.floor(Math.random() * size);
-		if (size > 1 && next === current) next = (next + 1) % size;
-
-		root.style.setProperty("--rgb-theme", `var(--rgb-theme-${next + 1})`);
-		root.setAttribute("data-ground", String(next));
-
-		try {
-			sessionStorage.setItem("fl-ground", String(next));
-		} catch (error) {
-			// See above.
-		}
-		settle(id);
-	}
-
-	document.addEventListener("change", (event) => {
-		const input = event.target;
-		if (!(input instanceof HTMLInputElement) || !input.hasAttribute("data-theme-option")) return;
-		setPalette(input.value);
-	});
-
-	document.querySelectorAll<HTMLButtonElement>("[data-theme-shuffle]").forEach((button) => {
-		button.addEventListener("click", shuffle);
-	});
-
-	// The pre-paint script ran before this markup existed, so the radio buttons
-	// still have to be told which palette is live.
-	const active = root.getAttribute("data-palette") ?? DEFAULT_PALETTE;
-	options.forEach((input) => {
-		input.checked = input.value === active;
-	});
-	settle(active);
+	document.body.classList.add("is-ready");
 }
 
 function ready() {
@@ -363,7 +304,6 @@ function ready() {
 	initNavigate();
 	initSignup();
 	initInputModality();
-	initThemePicker();
 	initTheme();
 }
 

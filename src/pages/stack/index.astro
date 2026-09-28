@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import { getNavLink } from "@/lib/blog-helpers";
 
 interface StackItem {
 	name: string;
@@ -115,19 +116,66 @@ const groups: { title: string; note: string; items: StackItem[] }[] = [
 		<div class="page__content content">
 			<hr class="ornament" />
 
-			<h2>How we choose</h2>
-			<p>
-				We pick boring, proven tools. The ones with years of docs, real failure modes, and people
-				who know them. Novelty is a cost, not a feature.
-			</p>
-			<p>
-				Every layer has to earn its place. If a dependency does not remove more work than it adds,
-				we write the small version ourselves.
-			</p>
-			<p>
-				We own the whole path — from the first commit to the last deploy. That is the only way to
-				keep it fast, cheap, and ours to fix.
-			</p>
+			<h2 id="choose">How we choose</h2>
+			<ol class="numbered">
+				<li>
+					<div class="numbered__body">
+						<h3 class="numbered__title">Boring beats novel.</h3>
+						<p>
+							Years of docs, real failure modes, and people who know them. Novelty is a cost, not a
+							feature.
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="numbered__body">
+						<h3 class="numbered__title">Every layer earns its place.</h3>
+						<p>
+							If a dependency doesn't remove more work than it adds, we write the small version
+							ourselves.
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="numbered__body">
+						<h3 class="numbered__title">We own the whole path.</h3>
+						<p>
+							From the first commit to the last deploy. That's the only way to keep it fast, cheap,
+							and ours to fix.
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="numbered__body">
+						<h3 class="numbered__title">AI where it helps, not everywhere.</h3>
+						<p>
+							Models earn a place by removing real work. Anywhere else, a typed function is cheaper
+							and more predictable.
+						</p>
+					</div>
+				</li>
+			</ol>
+
+			<blockquote class="pull">
+				<p>
+					Choose boring technology. The excitement of the new thing lasts a release, and the
+					debugging lasts the life of the product.
+				</p>
+				<cite>Focus Lab</cite>
+			</blockquote>
+
+			<div class="panel">
+				<h3 class="panel__title">Something missing?</h3>
+				<div class="panel__body">
+					<p>
+						The list above is what runs in production today, not an aspiration. If you think a tool
+						belongs here, tell us what it would replace and why.
+					</p>
+				</div>
+				<div class="panel__actions">
+					<a class="button button--ghost" href={getNavLink("/contact/")}>Get in touch</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </PageLayout>

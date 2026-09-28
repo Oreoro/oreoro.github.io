@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import PageAnchors from "@/components/layout/PageAnchors.astro";
 import { getNavLink } from "@/lib/blog-helpers";
 import { site } from "@/data/focuslab";
 ---
@@ -12,11 +13,19 @@ import { site } from "@/data/focuslab";
 >
 	<div class="page">
 		<div class="page__headline">
+			<p class="page__kicker">Jobs</p>
 			<h1>Working at Focus Lab</h1>
 			<p>
 				Take a look at our current openings, sign up to be notified about future ones, and learn
 				what it's like to work here.
 			</p>
+			<PageAnchors
+				anchors={[
+					{ id: "who-we-are", label: "Who we are" },
+					{ id: "who-you-are", label: "Who you are" },
+					{ id: "how-we-work", label: "How we work" },
+				]}
+			/>
 		</div>
 
 		<div class="jobs">
@@ -48,7 +57,7 @@ import { site } from "@/data/focuslab";
 			</div>
 
 			<div class="jobs__content content content--jobs">
-				<h2>Who we are</h2>
+				<h2 id="who-we-are">Who we are</h2>
 				<p class="lede">
 					A small studio that builds its own products and answers to the people who use them.
 				</p>
@@ -63,43 +72,105 @@ import { site } from "@/data/focuslab";
 					Stripe, and OpenAI or Anthropic. We pick tools that let us ship quickly and keep running
 					what we build.
 				</p>
-				<p>
-					We're independent and self-funded. We make more than we spend, and we keep the team small
-					on purpose. That lets us move fast, stay close to the work, and hold on to the details.
-				</p>
+				<p>We're independent and self-funded, which is why the terms below look the way they do.</p>
 
-				<h2>Who you are</h2>
+				<h2 id="who-you-are">Who you are</h2>
 				<p class="lede">Rock star? Pass. Thoughtful and self-directed? Let's talk.</p>
-				<p>
-					You're a manager of one. You can take a rough goal, break it down, and ship without
-					someone checking in on you every day. You care about the craft and the outcome, not just
-					the ticket.
-				</p>
-				<p>
-					You write plainly and communicate early. You're comfortable owning a product end to end,
-					from a first sketch to a running service. When something breaks, you look into it.
-				</p>
+				<ol class="numbered">
+					<li>
+						<div class="numbered__body">
+							<h3 class="numbered__title">You own the whole thing.</h3>
+							<p>
+								You're a manager of one. You can take a rough goal, break it down, and ship without
+								someone checking in on you every day.
+							</p>
+						</div>
+					</li>
+					<li>
+						<div class="numbered__body">
+							<h3 class="numbered__title">You write plainly.</h3>
+							<p>
+								You say what you mean, and you communicate early — especially when something isn't
+								working.
+							</p>
+						</div>
+					</li>
+					<li>
+						<div class="numbered__body">
+							<h3 class="numbered__title">You go to the end of it.</h3>
+							<p>
+								You're comfortable owning a product from a first sketch to a running service. When
+								something breaks, you look into it.
+							</p>
+						</div>
+					</li>
+					<li>
+						<div class="numbered__body">
+							<h3 class="numbered__title">You care about craft and outcome.</h3>
+							<p>
+								Not just the ticket. You'd rather ship the right thing late than the wrong thing on
+								time.
+							</p>
+						</div>
+					</li>
+				</ol>
 				<p>
 					We don't care where you studied, where you've worked, or whether you finished a degree. We
 					care about what you can do now, how you'll grow, and how you treat the people you work
 					with.
 				</p>
 
-				<h2>How we work</h2>
+				<h2 id="how-we-work">How we work</h2>
 				<p class="lede">A calm, low-distraction environment where you can do your best work.</p>
 				<p>
 					We work in small, independent teams and give people room to own their part. Fewer
-					meetings, less email, fewer interruptions. Eight-hour days and forty-hour weeks are plenty
-					of time to do great work, so that's all we expect.
+					meetings, less email, fewer interruptions.
 				</p>
+
+				<table class="ledger">
+					<tbody>
+						<tr>
+							<th scope="row">Day</th>
+							<td>Eight hours. That's the whole expectation.</td>
+						</tr>
+						<tr>
+							<th scope="row">Week</th>
+							<td>Forty hours, and we protect them.</td>
+						</tr>
+						<tr>
+							<th scope="row">Meetings</th>
+							<td> A weekly one, kept short. Everything else is a document. </td>
+						</tr>
+						<tr>
+							<th scope="row">Location</th>
+							<td>
+								Remote-friendly, with a home base in Islamabad. We gather in person when it's worth
+								it.
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">Company</th>
+							<td>
+								Independent and self-funded. We make more than we spend, and we keep the team small
+								on purpose.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
 				<p>
-					We're remote-friendly, with a home base in Islamabad. You're free to work from wherever
-					you're most effective, and we gather in person when it's worth it.
+					That last row is the one that matters most. Being able to move fast, stay close to the
+					work, and hold on to the details is a direct consequence of nobody having to answer to a
+					board. If that sounds like you, we'd like to hear from you.
 				</p>
-				<p>
-					We keep a calm company and a steady pace. We ship, we maintain what we ship, and we learn
-					in public. If that sounds like you, we'd like to hear from you.
-				</p>
+
+				<blockquote class="pull">
+					<p>
+						Work isn't war. Nobody here is fighting a battle they have to win by Saturday, and we
+						hire for people who'd rather be right in March than loud in June.
+					</p>
+					<cite>Focus Lab</cite>
+				</blockquote>
 			</div>
 		</div>
 	</div>

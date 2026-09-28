@@ -5,10 +5,10 @@ import "@/styles/minimal.css";
 import "@/styles/signals-shell.css";
 import "@/styles/podcast.css";
 import "@/styles/notion-signals.css";
-import "@/styles/theme-picker.css";
+import "@/styles/palette.css";
 import { siteInfo } from "@/siteInfo";
 import { site } from "@/data/focuslab";
-import { palettes, DEFAULT_PALETTE, PALETTE_STORAGE_KEY } from "@/data/palettes";
+import { palettes, DEFAULT_PALETTE } from "@/data/palettes";
 import {
 	ENABLE_LIGHTBOX,
 	TRACKING,
@@ -265,29 +265,27 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 <meta name="twitter:image" content={socialImage} />
 
 {/*
-	Apply the palette and the page ground before first paint so there is no flash.
+	Pick the page ground before first paint so there is no flash.
 
 	This runs while the document is still being parsed, which is earlier than
-	Astro's `<link rel="stylesheet">` — so it reads nothing from CSS. It names a
-	palette and points `--rgb-theme` at one of that palette's `--rgb-theme-N`
-	entries; the cascade resolves the reference. That is the whole trick, and it
-	is why the colour values only ever have to be written down in theme-picker.css.
+	Astro's `<link rel="stylesheet">` — so it reads nothing from CSS. It points
+	`--rgb-theme` at one of the palette's `--rgb-theme-N` entries; the cascade
+	resolves the reference. That is the whole trick, and it is why the colour
+	values only ever have to be written down in palette.css.
+
+	There is no stored palette choice to honour any more — the picker is gone and
+	Pastel is the only palette — so this is just a roll among its fifteen grounds,
+	stepping away from the last one this session showed.
 */}
-<script is:inline define:vars={{ registry: palettes, defaultPalette: DEFAULT_PALETTE, storageKey: PALETTE_STORAGE_KEY }}>
+<script is:inline define:vars={{ registry: palettes, defaultPalette: DEFAULT_PALETTE }}>
 	(function () {
 		var el = document.documentElement;
 		var GROUND = "fl-ground";
 
-		var byId = {};
-		registry.forEach(function (palette) {
-			byId[palette.id] = palette;
-		});
-
-		var stored = null;
-		try {
-			stored = localStorage.getItem(storageKey);
-		} catch (e) {}
-		var chosen = byId[stored] || byId[defaultPalette];
+		var chosen = null;
+		for (var i = 0; i < registry.length; i++) {
+			if (registry[i].id === defaultPalette) chosen = registry[i];
+		}
 		if (!chosen) return;
 
 		el.setAttribute("data-palette", chosen.id);
@@ -301,8 +299,7 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 
 		/*
 		 * `data-theme-index` pins the ground for pages that have to look the same
-		 * on every build (the /NN entries). Everything else rolls a new ground,
-		 * stepping away from the last one this session showed.
+		 * on every build (the /NN entries). Everything else rolls a new ground.
 		 */
 		var pinned = parseInt(el.getAttribute("data-theme-index"), 10);
 		var index;
@@ -319,9 +316,8 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 		el.style.setProperty("--rgb-theme", "var(--rgb-theme-" + (index + 1) + ")");
 		/*
 		 * `data-ground` is which ground of the active palette is showing, so
-		 * signal.ts can hold on to it across a palette switch. `data-theme` is
-		 * the colour it resolves to, which is only knowable once the stylesheet
-		 * has loaded.
+		 * signal.ts can hold on to it across a page. `data-theme` is the colour it
+		 * resolves to, which is only knowable once the stylesheet has loaded.
 		 */
 		el.setAttribute("data-ground", String(index));
 	})();
