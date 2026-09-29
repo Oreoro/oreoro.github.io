@@ -1,6 +1,8 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 import { books } from "@/data/books";
+
+const total = books.length;
 ---
 
 <PageLayout
@@ -14,8 +16,9 @@ import { books } from "@/data/books";
 			<p class="page__kicker">Books</p>
 			<h1>Books that shaped how we build.</h1>
 			<p>
-				On top of running our own products, we read about the craft. This is the short shelf that
-				changed how we work — not just what we know.
+				On top of running our own products, we read about the craft. These {total} are the ones that
+				changed how we work — not just what we know. Links go to the publisher or a free edition where
+				one exists.
 			</p>
 		</div>
 

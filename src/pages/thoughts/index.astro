@@ -1,13 +1,17 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { thoughts } from "@/data/thoughts";
+import PageAnchors from "@/components/layout/PageAnchors.astro";
+import { thoughts, thoughtsByTopic } from "@/data/thoughts";
+
+const total = thoughts.length;
+const plural = total === 1 ? "link" : "links";
 ---
 
 <PageLayout
 	meta={{
 		title: "Thoughts",
 		description:
-			"Writing we find useful — a curated list of essays and guides that shaped how Focus Lab builds.",
+			"A curated list of the essays, guides, and books that shaped how Focus Lab builds products.",
 	}}
 >
 	<div class="page">
@@ -15,27 +19,43 @@ import { thoughts } from "@/data/thoughts";
 			<p class="page__kicker">Thoughts</p>
 			<h1>Writing we find useful</h1>
 			<p>
-				A running list of essays and guides that shaped how we build and run products. Every link
-				goes to the original author — none of this is ours.
+				{total}
+				{plural} on building products, writing software, and running a small studio — grouped by the
+				question each one helps answer. Every link goes to the original author. None of this is ours.
 			</p>
+			<PageAnchors
+				anchors={thoughtsByTopic.map((group) => ({
+					id: group.topic.toLowerCase(),
+					label: `${group.topic} · ${group.entries.length}`,
+				}))}
+			/>
 		</div>
 
 		<div class="thoughts">
-			<div class="thoughts__container">
-				{
-					thoughts.map((thought) => (
-						<div class="thoughts__thought">
-							<h2>
-								<a href={thought.url} target="_blank" rel="noopener">
-									{thought.title}
-								</a>
-							</h2>
-							<p class="font-size-small">{thought.source}</p>
-							<p>{thought.note}</p>
+			{
+				thoughtsByTopic.map((group) => (
+					<section class="thoughts__group">
+						<h2 class="thoughts__group-title" id={group.topic.toLowerCase()}>
+							{group.topic}
+							<span class="thoughts__count">{group.entries.length}</span>
+						</h2>
+
+						<div class="thoughts__container">
+							{group.entries.map((thought) => (
+								<div class="thoughts__thought">
+									<h3>
+										<a href={thought.url} target="_blank" rel="noopener">
+											{thought.title}
+										</a>
+									</h3>
+									<p class="thoughts__source">{thought.source}</p>
+									<p>{thought.note}</p>
+								</div>
+							))}
 						</div>
-					))
-				}
-			</div>
+					</section>
+				))
+			}
 		</div>
 	</div>
 </PageLayout>

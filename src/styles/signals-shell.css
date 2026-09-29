@@ -195,8 +195,22 @@
 	--font-size-xxxx-large: 178%;
 
 	--line-height: calc(1.35em + 0.4vw);
-	/* Target reading measure. `ch` resolves against the body size of the element. */
-	--measure: 49ch;
+	/*
+	 * Reading measure. `ch` resolves against the element's own body size.
+	 *
+	 * This was 39ch on a wide screen, which boxed every paragraph into a ~410px
+	 * strip with most of the viewport left empty — the single most common
+	 * complaint about the old layout. Prose now runs to a full 68ch, which at
+	 * the site's 19px body size is roughly 720px: a real line length, and wide
+	 * enough that a paragraph reads as a page rather than a sidebar.
+	 */
+	--measure: 68ch;
+	/*
+	 * A second, wider measure for blocks that are a *set* rather than a run of
+	 * prose — card grids, list shelves, ledgers. These are allowed to fill the
+	 * field and are broken into columns instead of being squeezed into one.
+	 */
+	--measure-wide: 100ch;
 	--spacing: 1em;
 	/* The extra left indent a sub-page picks up on a wide screen. */
 	--indent: 0ch;
@@ -210,11 +224,15 @@
 	:root {
 		--line-height: 1.35em;
 		/*
-		 * On a wide screen the column narrows and steps in from the gutter. The
-		 * result is a single narrow column of copy against a large empty field
-		 * of colour, which is the shape 37signals.com uses on its sub-pages.
+		 * A wide screen gets a wider column, not a narrower one. The old
+		 * `39ch` here is what boxed the prose: 37signals' sub-pages are narrow
+		 * because their type is enormous relative to the column, and copying
+		 * the width without the type put a paragraph in a box. Ours steps in
+		 * from the gutter and keeps reading, and the set-style blocks
+		 * (--measure-wide) go further still and break into columns.
 		 */
-		--measure: 39ch;
+		--measure: 72ch;
+		--measure-wide: 108ch;
 		--indent: 2.8ch;
 	}
 }
@@ -474,7 +492,14 @@ html:not(.pointer-focus) body.signals-shell .button--ghost:focus-visible {
 html body.signals-shell .page {
 	display: flex;
 	flex-direction: column;
-	margin: 7.4em var(--spacing) calc(var(--line-height) + var(--spacing)) var(--spacing);
+	/*
+	 * The footer is fixed to the bottom of the viewport, so the page has to
+	 * reserve room for it. The old value was one line-height plus the gutter,
+	 * which the footer's own line box plus padding matched exactly — meaning
+	 * the last line of every page sat underneath it. Two line-heights clears
+	 * it with air to spare.
+	 */
+	margin: 7.4em var(--spacing) calc(var(--line-height) * 2.4) var(--spacing);
 	position: relative;
 }
 
@@ -631,14 +656,15 @@ html body.signals-shell .page__actions {
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	html body.signals-shell .page {
 		/*
-		 * A sub-page is one narrow column, anchored hard to the left gutter and
-		 * stepped in by --indent, with the rest of the viewport left as a field
-		 * of colour. Nothing is centred, and the title sits above the copy rather
-		 * than beside it — the shape 37signals.com uses on /jobs, /policies and
-		 * /thoughts.
+		 * A sub-page is one column, anchored to the left gutter and stepped in by
+		 * --indent, with the rest of the viewport left as a field of colour.
+		 * Nothing is centred, and the title sits above the copy rather than
+		 * beside it — the shape 37signals.com uses on /jobs, /policies and
+		 * /thoughts. The column is wide enough to read on, though: it runs to
+		 * --measure, not the 39ch that used to box every paragraph.
 		 */
 		margin-left: calc(var(--spacing) + var(--indent));
-		margin-right: calc(var(--spacing) + var(--indent));
+		margin-right: var(--spacing);
 		margin-top: max(22.2vh, 5.4em);
 	}
 
@@ -650,25 +676,33 @@ html body.signals-shell .page__actions {
 		height: calc(3.7em + var(--spacing));
 	}
 
-	/* The title block keeps the wider 49ch box on desktop; only the running text
-	   narrows to 39ch, so the standfirst still has room to breathe. */
+	/* The title block and the jump list take the reading measure, so the
+	   standfirst sits in the same box as the prose it introduces. */
 	html body.signals-shell .page__headline,
-	html body.signals-shell .page__anchors {
-		max-width: 49ch;
-	}
-
-	/* The body copy runs narrower than the title block, so the standfirst and the
-	   prose do not sit in one long line. */
+	html body.signals-shell .page__anchors,
 	html body.signals-shell .page__body,
 	html body.signals-shell .page__content {
 		max-width: var(--measure);
 	}
 
-	/* Card grids and other full-bleed blocks opt out of the reading measure. */
+	/*
+	 * Set-style blocks opt out of the reading measure entirely and take the
+	 * wide one. These are lists of short items, not running prose: they read
+	 * better broken into columns, and letting them fill the field is what stops
+	 * /books, /thoughts, /jobs and /policies from reading as a boxed list with
+	 * an empty right half.
+	 */
 	html body.signals-shell .page > .product-cards,
 	html body.signals-shell .page > .stack__items,
-	html body.signals-shell .page > .gallery-grid {
-		max-width: none;
+	html body.signals-shell .page > .gallery-grid,
+	html body.signals-shell .page > .thoughts,
+	html body.signals-shell .page > .books,
+	html body.signals-shell .page > .jobs,
+	html body.signals-shell .page > .policies,
+	html body.signals-shell .page > .downloads,
+	html body.signals-shell .page > .ledger,
+	html body.signals-shell .page > .signup {
+		max-width: var(--measure-wide);
 	}
 
 	html body.signals-shell .page.page--wide {
@@ -676,6 +710,84 @@ html body.signals-shell .page__actions {
 		margin-left: var(--spacing);
 		margin-right: auto;
 		max-width: 72rem;
+	}
+}
+
+/*
+ * The last of the "boxed paragraph" fix.
+ *
+ * Widening the measure from 39ch to 72ch made the prose readable, but on a
+ * 1440px screen the page was still one column in the left half with a dead
+ * field of colour beside it — which is what people were describing as boxed.
+ *
+ * So on a genuinely wide screen the sub-page becomes a two-column editorial
+ * page: the title block stands in a narrow left column, the body runs in a
+ * full measure beside it. Together they fill roughly 100ch, which is most of
+ * a desktop viewport, and every individual line is still a sane length.
+ *
+ * The headline sticks, so scrolling a long shelf (books, thoughts) keeps the
+ * title and the jump list on screen. It stops sticking well before the footer,
+ * so it never sits on top of it.
+ *
+ * `.page--wide` is excluded: /products already runs its own full-bleed
+ * layout, and the podcast page does not use `.page` at all.
+ */
+@media (min-width: 88em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .page:not(.page--wide) {
+		align-items: start;
+		column-gap: calc(var(--line-height) * 1.5);
+		display: grid;
+		grid-template-columns: minmax(0, 26ch) minmax(0, 1fr);
+		/* 26ch of title column, one gutter, and the full reading measure. */
+		max-width: calc(26ch + var(--line-height) * 1.5 + var(--measure));
+	}
+
+	html body.signals-shell .page:not(.page--wide) > .page__headline {
+		grid-column: 1;
+		grid-row: 1;
+		max-width: none;
+		/* Clears the fixed header, and stops before the fixed footer. */
+		position: sticky;
+		top: max(12vh, 5em);
+	}
+
+	html body.signals-shell .page:not(.page--wide) > :not(.page__headline) {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	html body.signals-shell .page:not(.page--wide) > .page__body,
+	html body.signals-shell .page:not(.page--wide) > .page__content {
+		max-width: var(--measure);
+	}
+
+	/*
+	 * Set-style pages get a much wider right-hand column, because their content
+	 * is grids rather than prose. /books in a 72ch column fell back to a single
+	 * very long column of book entries; in 104ch it breaks into two, which is
+	 * what the layout was for.
+	 */
+	html
+		body.signals-shell
+		.page:not(.page--wide):is(
+			:has(> .books),
+			:has(> .thoughts),
+			:has(> .jobs),
+			:has(> .policies),
+			:has(> .stack),
+			:has(> .downloads)
+		) {
+		grid-template-columns: minmax(0, 22ch) minmax(0, 1fr);
+		max-width: calc(22ch + var(--line-height) * 1.5 + 104ch);
+	}
+
+	html body.signals-shell .page:not(.page--wide) > .thoughts,
+	html body.signals-shell .page:not(.page--wide) > .books,
+	html body.signals-shell .page:not(.page--wide) > .jobs,
+	html body.signals-shell .page:not(.page--wide) > .policies,
+	html body.signals-shell .page:not(.page--wide) > .stack,
+	html body.signals-shell .page:not(.page--wide) > .downloads {
+		max-width: none;
 	}
 }
 
@@ -1033,7 +1145,18 @@ html body.signals-shell .nav__options > ul:last-child li {
 /* ---------- footer.css ---------- */
 
 html body.signals-shell .footer {
-	background: linear-gradient(0deg, rgba(var(--rgb-theme), 1) 0, rgba(var(--rgb-theme), 0) 100%);
+	/*
+	 * Fixed to the bottom of the viewport, so page content scrolls behind it.
+	 * The gradient is what hides that: it has to be tall enough that the last
+	 * line of a paragraph is fully faded before it reaches the nav, or every
+	 * page looks like it has text struck through it.
+	 */
+	background: linear-gradient(
+		0deg,
+		rgba(var(--rgb-theme), 1) 0,
+		rgba(var(--rgb-theme), 1) 42%,
+		rgba(var(--rgb-theme), 0) 100%
+	);
 	bottom: 0;
 	display: flex;
 	justify-content: flex-end;
@@ -1114,6 +1237,12 @@ html body.signals-shell .footer__next a:after {
 
 html body.signals-shell .cluster {
 	margin: 7.4em var(--spacing) 4.5em var(--spacing);
+	/*
+	 * Capped so the stream reads as a table: the label sits on the left and the
+	 * author/date on the right, and at a full-bleed 1440px they ended up 900px
+	 * apart with nothing in between. 72ch keeps the pair read as one row.
+	 */
+	max-width: 78ch;
 	opacity: 0;
 	transition: opacity var(--transition);
 }
@@ -1145,6 +1274,84 @@ html body.signals-shell .cluster--loaded {
 	opacity: 1;
 }
 
+/*
+ * A phone gets the index too.
+ *
+ * Below 64em the whole cluster used to collapse to the selected entry alone,
+ * which was fine when the stream was thirty long and left a reader stranded
+ * on entry 55 of 106 with nothing but the corner dot. It is the same compact
+ * grid as the desktop layout, in enough columns to fit a 320px screen, and the
+ * same trick keeps every row one line tall: the label is collapsed out of the
+ * box until it is hovered or focused.
+ */
+@media (max-width: 63.99em) {
+	html body.signals-shell .cluster--signal {
+		column-gap: 0.6em;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(4.5em, 1fr));
+		row-gap: 0.2em;
+	}
+
+	html body.signals-shell .cluster--signal .signal {
+		display: block;
+	}
+
+	html body.signals-shell .cluster--signal .signal .signal__header a dl dd {
+		max-height: 0;
+		overflow: hidden;
+	}
+
+	html body.signals-shell .cluster--signal .signal .signal__header a:hover dl dd,
+	html:not(.pointer-focus)
+		body.signals-shell
+		.cluster--signal
+		.signal
+		.signal__header
+		a:focus
+		dl
+		dd {
+		max-height: 30em;
+		overflow: visible;
+	}
+
+	html body.signals-shell .cluster--signal .signal.signal--select {
+		grid-column: 1 / -1;
+		margin-bottom: calc(var(--line-height) * 1.2);
+		order: -1;
+	}
+}
+
+/*
+ * The index used to be one signal per line, which was fine at thirty entries
+ * and unusable at a hundred: a single column of numbers is 3000px of scroll
+ * before you reach anything. It is a grid now, so the whole stream fits on a
+ * screen or two and the numbering still reads down the left of each column.
+ *
+ * A column is about half the width it used to be, so the author/date moves
+ * under the label rather than sitting at the far end of the row.
+ */
+@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .cluster--index {
+		column-gap: 2.6em;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		max-width: none;
+		row-gap: 0.35em;
+	}
+
+	html body.signals-shell .cluster--index .signal__header dl dd {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 0.1em;
+	}
+}
+
+@media (min-width: 100em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .cluster--index {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	html body.signals-shell .cluster {
 		margin-bottom: 44.4vh;
@@ -1167,6 +1374,61 @@ html body.signals-shell .cluster--loaded {
 	html body.signals-shell .cluster--signal .signal .signal__header a:hover,
 	html:not(.pointer-focus) body.signals-shell .cluster--signal .signal .signal__header a:focus {
 		color: var(--color-ink);
+	}
+
+	/*
+	 * On an entry page the whole stream is reproduced so you can see where you
+	 * are in it. At a hundred entries that meant a 3000px wall of bare numbers
+	 * with your own entry buried somewhere in the middle of it, and the page
+	 * opened by scrolling you 1500px down.
+	 *
+	 * So the index becomes a compact grid of numbers, and the entry you asked
+	 * for is moved to the front of it (see initScroll). You still get the whole
+	 * stream; you just get it below the thing you came for, and you land at
+	 * the top of the page instead of the middle of it.
+	 */
+	html body.signals-shell .cluster--signal {
+		column-gap: 1.4em;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));
+		row-gap: 0.15em;
+	}
+
+	/*
+	 * The label is hidden until you hover a number, but a hidden label still
+	 * occupies the lines it would have wrapped to — at this column width that
+	 * was three or four blank lines per row, which is what made the index
+	 * 900px tall. Collapsing the box keeps every row exactly one line tall
+	 * until the label is actually wanted.
+	 */
+	html body.signals-shell .cluster--signal .signal .signal__header a dl dd {
+		max-height: 0;
+		overflow: hidden;
+	}
+
+	html body.signals-shell .cluster--signal .signal .signal__header a:hover dl dd,
+	html:not(.pointer-focus)
+		body.signals-shell
+		.cluster--signal
+		.signal
+		.signal__header
+		a:focus
+		dl
+		dd {
+		max-height: 30em;
+		overflow: visible;
+	}
+
+	/* The selected entry is not a chip: it is the page. */
+	html body.signals-shell .cluster--signal .signal.signal--select {
+		grid-column: 1 / -1;
+		margin-bottom: calc(var(--line-height) * 1.2);
+		order: -1;
+	}
+
+	html body.signals-shell .cluster--signal .signal.signal--select .signal__header h2 {
+		font-size: var(--font-size-xx-large);
+		letter-spacing: -0.015em;
 	}
 
 	html body.signals-shell .cluster--signal .signal .signal__header a:hover dl dd,
@@ -1199,8 +1461,15 @@ html body.signals-shell .signal__header h2 {
 
 html body.signals-shell .signal__header dl dt,
 html body.signals-shell .signal__header h2 span {
+	flex: none;
+	/*
+	 * The stream passed 99 entries, and a fixed 2.8ch number column ran
+	 * straight into the label at three digits ("100To lead, follow"). Tabular
+	 * figures plus 3.6ch fits the longest number we have without the labels
+	 * losing their alignment down a column.
+	 */
 	font-feature-settings: "ss02", "tnum";
-	width: 2.8ch;
+	width: 3.6ch;
 }
 
 html body.signals-shell .signal__header dl dd,
@@ -1237,10 +1506,24 @@ html body.signals-shell .signal__date {
 }
 
 html body.signals-shell .signal__content {
-	margin-left: 2.8ch;
+	/* Indented to the label column, which is now 3.6ch of number plus the
+	   dl's own 0.75em gap. */
+	margin-left: calc(3.6ch + 0.75em);
 	margin-top: 0.5em;
-	max-width: 50ch;
+	/* Was 50ch, which boxed every entry body into a narrow strip. Running
+	   prose wants the full reading measure. */
+	max-width: var(--measure);
 	pointer-events: auto;
+}
+
+/*
+ * The body of an entry is the whole point of the page, so it is set at the
+ * body size rather than the small size every other `.content` block uses.
+ * Leaving it at --font-size-small made the prose render smaller than the
+ * index labels above it.
+ */
+html body.signals-shell .signal--select .signal__content {
+	font-size: var(--font-size);
 }
 
 html body.signals-shell .signal__content > * + * {
@@ -1839,29 +2122,71 @@ html body.signals-shell .content.content--thoughts * + h2 {
 html body.signals-shell .thoughts {
 	display: flex;
 	flex-direction: column;
-	max-width: var(--measure);
+	/* The jump list is the last thing in the headline block; the first topic
+	   heading needs real air below it or the two run together. */
+	margin-top: calc(var(--line-height) * 1.2);
+	max-width: var(--measure-wide);
+}
+
+/* One section per topic. The heading is an anchor target, so it carries the
+   id that .page__anchors and :target both use. */
+html body.signals-shell .thoughts__group {
+	display: flex;
+	flex-direction: column;
+}
+
+html body.signals-shell .thoughts__group + .thoughts__group {
+	border-top: 1px solid color-mix(in srgb, var(--color-ink) 22%, transparent);
+	margin-top: calc(var(--line-height) * 1.4);
+	padding-top: calc(var(--line-height) * 1.4);
+}
+
+html body.signals-shell .thoughts__group-title {
+	align-items: baseline;
+	display: flex;
+	font-size: var(--font-size-xx-large);
+	font-weight: 700;
+	gap: 0.6em;
+	letter-spacing: -0.015em;
+	line-height: 1.15;
+	/* Clear the fixed header when jumped to. */
+	scroll-margin-top: max(22.2vh, 7.4em);
+}
+
+html body.signals-shell .thoughts__count {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	letter-spacing: normal;
 }
 
 html body.signals-shell .thoughts__container {
 	display: flex;
 	flex-direction: column;
 	font-size: var(--font-size-small);
-	gap: calc(var(--line-height) * 2);
+	gap: calc(var(--line-height) * 1.5);
 	letter-spacing: normal;
-	margin-bottom: 3.7em;
-	margin-top: 3.7em;
+	margin-bottom: calc(var(--line-height) * 1.2);
+	margin-top: calc(var(--line-height) * 0.8);
 }
 
 html body.signals-shell .thoughts__thought {
 	display: flex;
 	flex-direction: column;
-	gap: 0.6em;
+	gap: 0.4em;
 }
 
-html body.signals-shell .thoughts__thought h2 {
-	font-size: var(--font-size-x-large);
+html body.signals-shell .thoughts__thought h3 {
+	font-size: var(--font-size-large);
 	font-weight: 700;
-	line-height: 1.2;
+	line-height: 1.25;
+}
+
+html body.signals-shell .thoughts__source {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	font-weight: 700;
+	letter-spacing: normal;
+	margin: 0;
 }
 
 html body.signals-shell .thoughts__thought a.button {
@@ -1871,6 +2196,28 @@ html body.signals-shell .thoughts__thought a.button {
 html body.signals-shell .thoughts .signup {
 	margin-bottom: 3.7em;
 	order: 1;
+}
+
+/*
+ * Once there are two full columns of the field to fill, stop stacking. Each
+ * entry is a short title, an author, and two or three lines, which is exactly
+ * the shape a grid handles well — and it is the only way a list of a hundred
+ * links stays scannable instead of becoming one endless ribbon.
+ */
+@media (min-width: 46em) {
+	html body.signals-shell .thoughts__container {
+		display: grid;
+		column-gap: 3.7em;
+		grid-template-columns: repeat(auto-fill, minmax(26em, 1fr));
+		row-gap: calc(var(--line-height) * 1.2);
+	}
+
+	html body.signals-shell .thoughts__thought {
+		/* A hairline rule between rows, so the eye can find the next entry
+		   without reading the tail of the previous one. */
+		border-top: 1px solid color-mix(in srgb, var(--color-ink) 16%, transparent);
+		padding-top: calc(var(--line-height) * 0.5);
+	}
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
@@ -1906,7 +2253,7 @@ html body.signals-shell .thought .signup {
 html body.signals-shell .jobs {
 	display: flex;
 	flex-direction: column;
-	max-width: var(--measure);
+	max-width: var(--measure-wide);
 }
 
 html body.signals-shell .jobs__container {
@@ -2036,7 +2383,7 @@ html body.signals-shell .downloads__group a figure figcaption span {
 html body.signals-shell .books {
 	display: flex;
 	flex-direction: column;
-	max-width: var(--measure);
+	max-width: var(--measure-wide);
 	position: relative;
 }
 
@@ -2095,7 +2442,7 @@ html body.signals-shell .books__content ul {
    /thoughts they are the entire content. Padding lifts them to 24px without
    changing the type size or the list rhythm. */
 html body.signals-shell .books__content ul li a,
-html body.signals-shell .thoughts__thought h2 a {
+html body.signals-shell .thoughts__thought h3 a {
 	padding-bottom: 0.25em;
 	padding-top: 0.25em;
 }
@@ -2153,6 +2500,23 @@ html body.signals-shell .book-cover__title {
 		list-style: none;
 		margin-top: 0.2em;
 		padding-left: 0;
+	}
+
+	/*
+	 * A book is a cover plus a paragraph, so it wants a card-shaped column, not
+	 * a running measure. Two of them sit side by side and the shelf stops
+	 * hugging the left gutter with the rest of the screen empty.
+	 */
+	html body.signals-shell .books__container {
+		column-gap: 3.7em;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(24em, 1fr));
+		row-gap: calc(var(--line-height) * 1.6);
+	}
+
+	/* The row gap replaces the old per-book bottom margin. */
+	html body.signals-shell .books__book:not(:last-child) {
+		margin-bottom: 0;
 	}
 }
 
@@ -2265,7 +2629,7 @@ html body.signals-shell .stack {
 	gap: calc(var(--line-height) * 1.6);
 	margin-bottom: 3.7em;
 	margin-top: 3.7em;
-	max-width: var(--measure);
+	max-width: var(--measure-wide);
 }
 
 html body.signals-shell .stack__group h2 {
@@ -2405,6 +2769,38 @@ html body.signals-shell .product__feature p {
 	margin: 0;
 }
 
+/* The "what it is not" list. A plain disc list on purpose — it is a set of
+   statements, and cardifying them would make it read like a set of features
+   we do offer. */
+html body.signals-shell .product__section-note {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	font-size: var(--font-size-small);
+	margin-top: -0.4em;
+}
+
+html body.signals-shell .product__not {
+	border-top: 1px solid color-mix(in srgb, var(--color-ink) 20%, transparent);
+	list-style: none;
+	margin-top: 0.8em;
+	padding: 0;
+}
+
+html body.signals-shell .product__not li {
+	border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 20%, transparent);
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+	padding: 0.8em 0 0.8em 1.6em;
+	position: relative;
+}
+
+html body.signals-shell .product__not li:before {
+	content: "\00d7";
+	font-weight: 700;
+	left: 0;
+	position: absolute;
+	top: 0.8em;
+}
+
 html body.signals-shell .product__nav {
 	display: flex;
 	flex-direction: column;
@@ -2422,6 +2818,9 @@ html body.signals-shell .product-cards {
 	display: grid;
 	gap: 1.2em;
 	grid-template-columns: minmax(0, 1fr);
+	/* The card grid is the first thing after the standfirst, and the
+	   headline's own 0.6em gap is not enough air above a row of cards. */
+	margin-top: calc(var(--line-height) * 0.8);
 }
 
 html body.signals-shell .product-card {

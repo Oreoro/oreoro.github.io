@@ -75,6 +75,23 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 		</section>
 
 		{
+			product.notFor.length > 0 && (
+				<section class="product__section">
+					<h2>What it is not</h2>
+					<p class="product__section-note">
+						Most enquiries we turn away are one of these three. If yours is, we will say so in the
+						first reply rather than the third.
+					</p>
+					<ul class="product__not">
+						{product.notFor.map((item) => (
+							<li>{item}</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		{
 			product.stack && product.stack.length > 0 && (
 				<section class="product__section">
 					<h2>Built with</h2>

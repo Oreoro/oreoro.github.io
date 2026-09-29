@@ -54,4 +54,40 @@ export const podcasts: PodcastPick[] = [
 		url: "https://softwareengineeringdaily.com",
 		note: "Interviews on the engineering behind real systems — useful when we are choosing a stack.",
 	},
+	{
+		show: "Adam Stacoviak & Lenny Rachitsky",
+		title: "The Dreamer",
+		url: "https://www.thedreamer.io/podcast",
+		note: "Two builders on what they are building, who it is for, and how they decided. Short episodes, no filler.",
+	},
+	{
+		show: "Michael Kennedy",
+		title: "The Dev Tools Show",
+		url: "https://www.devtools.fm/",
+		note: "Weekly conversations with the people who maintain the tools in your terminal. Good way to find out what is worth keeping an eye on.",
+	},
+	{
+		show: "Charles Max Wood",
+		title: "Cooder",
+		url: "https://cooder.com/",
+		note: "Software architecture, mostly. Worth a listen when you are deciding where a boundary belongs.",
+	},
+	{
+		show: "Raghu V",
+		title: "Signals and Threads",
+		url: "https://signalsandthreads.com/",
+		note: "Production war stories from a solo founder running his own product. The part about support volume is the part we needed.",
+	},
+	{
+		show: "Jamie Barton & John Blythe",
+		title: "Frontend Focus",
+		url: "https://frontendfoc.us/",
+		note: "Front-end news with a short editorial voice rather than a link dump. The accessibility episodes are the ones we send people.",
+	},
+	{
+		show: "Jason Fried & David Heinemeier Hansson",
+		title: "The Basecamp Podcast",
+		url: "https://basecamp.com/podcast",
+		note: "The long-form version of the argument on Rework — running a small company on purpose.",
+	},
 ];

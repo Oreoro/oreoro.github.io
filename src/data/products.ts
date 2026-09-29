@@ -14,6 +14,12 @@ export interface Product {
 	/** One-line pricing note, shown under the summary. */
 	pricing?: string;
 	features: { title: string; body: string }[];
+	/**
+	 * The three things people most often assume this does, and that it does
+	 * not. Stated on the page because a page that does not say no is a page
+	 * that attracts the wrong enquiries.
+	 */
+	notFor: string[];
 	stack?: string[];
 }
 
@@ -26,6 +32,11 @@ export const products: Product[] = [
 		pricing: "Free for free events. Pay only when you sell tickets.",
 		summary:
 			"Publish a polished event page, sell tickets in PKR, and check guests in from any phone. Built for student societies, MUNs, workshops, and meetups across Pakistan.",
+		notFor: [
+			"Large conferences that need multi-stage ticket tiers, seat maps, and a box office — a ticketing platform built for the open web is a different product.",
+			"Paid online courses or subscription memberships. There is no drip content and no paywall.",
+			"Restaurants and shops. It is for events with a door and a guest list, not a till.",
+		],
 		features: [
 			{
 				title: "Publish",
@@ -54,6 +65,11 @@ export const products: Product[] = [
 		pricing: "Pricing on request.",
 		summary:
 			"Know where the week actually went. Self-hosted workforce activity analytics with real privacy: no content capture, and your data stays on your infrastructure.",
+		notFor: [
+			"Monitoring individual output or ranking people against each other. It shows you where time went; it does not score anybody.",
+			"Content capture. No keystrokes, no message text, no screenshots, no full URLs — and there is no configuration that turns that on.",
+			"Employees' devices you do not own. WorkProof runs on laptops you control, not on managed phones and tablets.",
+		],
 		features: [
 			{
 				title: "See the week",
@@ -81,6 +97,11 @@ export const products: Product[] = [
 		pricing: "Available on request, or ask for a demo.",
 		summary:
 			"Fixer watches your production logs, reduces them to the handful of exceptions actually worth a human's time, investigates each one against your real code, and opens a draft pull request with a root cause, the evidence behind it, and a proposed fix.",
+		notFor: [
+			"Fixing things on its own. It cannot merge. The GitHub App is never granted a permission that would allow it and no code path calls one.",
+			"Triage for incidents. It is for the slow bleed of recurring production errors, not for the page that is down right now.",
+			"A replacement for reading your logs. It reduces them to the exceptions worth a human and leaves the rest alone.",
+		],
 		features: [
 			{
 				title: "It cuts the noise",
