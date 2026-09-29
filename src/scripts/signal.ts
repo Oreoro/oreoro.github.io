@@ -406,8 +406,7 @@ function load() {
 
 /**
  * scroll.js — signal detail pages. Moves the expanded `.signal--clone`
- * content into the matching `.signal` in the cluster, puts that signal at the
- * front, and scrolls to it.
+ * content into the matching `.signal` in the cluster and scrolls to it.
  */
 function initScroll() {
 	const clone = document.querySelector<HTMLElement>(".signal--clone");
@@ -423,17 +422,22 @@ function initScroll() {
 	signalElement.replaceChildren(...Array.from(clone.children));
 	signalElement.classList.add("signal--select");
 
-	/*
-	 * Put the entry you asked for at the front of the index. It used to stay
-	 * where it fell in document order and the page scrolled you down to it,
-	 * which was fine at thirty entries and meant a 1500px jump past a wall of
-	 * numbers at a hundred. The index grid is below the entry now, so the
-	 * scroll target is the top of the cluster.
-	 */
-	cluster.prepend(signalElement);
-
 	if (window.innerWidth >= 1024) {
-		window.scrollTo(0, Math.max(0, cluster.offsetTop));
+		const boundary = document.querySelector<HTMLElement>(".boundary");
+		const boundaryHeight = boundary
+			? parseInt(getComputedStyle(boundary, ":before").getPropertyValue("height")) || 0
+			: 0;
+		const clusterHeight = cluster.offsetHeight;
+		const clusterOffset = cluster.offsetTop;
+		const clusterArea = window.innerHeight - clusterOffset;
+
+		const signalOffset = signalElement.offsetTop - clusterOffset;
+		const signalSpace = clusterHeight - signalOffset;
+		const signalPadding = clusterArea - signalSpace - boundaryHeight;
+
+		if (signalPadding > 0) cluster.style.paddingBottom = signalPadding + "px";
+
+		window.scrollTo(0, signalOffset);
 	}
 
 	if (!cluster.classList.contains("cluster--loaded")) cluster.classList.add("cluster--loaded");

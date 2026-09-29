@@ -1247,15 +1247,6 @@ html body.signals-shell .cluster--index {
 	pointer-events: none;
 }
 
-/*
- * Only the entry pages are capped. Their index is a grid of bare numbers
- * (see `.cluster--signal` below), and a grid stretched across 1440px would
- * put two entries a hundred lines apart from each other.
- */
-html body.signals-shell .cluster--signal {
-	max-width: 78ch;
-}
-
 html body.signals-shell .cluster--signal .signal {
 	display: none;
 }
@@ -1275,53 +1266,6 @@ html body.signals-shell .cluster--signal .signal.signal--select {
 
 html body.signals-shell .cluster--loaded {
 	opacity: 1;
-}
-
-/*
- * A phone gets the index too.
- *
- * Below 64em the whole cluster used to collapse to the selected entry alone,
- * which was fine when the stream was thirty long and left a reader stranded
- * on entry 55 of 106 with nothing but the corner dot. It is the same compact
- * grid as the desktop layout, in enough columns to fit a 320px screen, and the
- * same trick keeps every row one line tall: the label is collapsed out of the
- * box until it is hovered or focused.
- */
-@media (max-width: 63.99em) {
-	html body.signals-shell .cluster--signal {
-		column-gap: 0.6em;
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(4.5em, 1fr));
-		row-gap: 0.2em;
-	}
-
-	html body.signals-shell .cluster--signal .signal {
-		display: block;
-	}
-
-	html body.signals-shell .cluster--signal .signal .signal__header a dl dd {
-		max-height: 0;
-		overflow: hidden;
-	}
-
-	html body.signals-shell .cluster--signal .signal .signal__header a:hover dl dd,
-	html:not(.pointer-focus)
-		body.signals-shell
-		.cluster--signal
-		.signal
-		.signal__header
-		a:focus
-		dl
-		dd {
-		max-height: 30em;
-		overflow: visible;
-	}
-
-	html body.signals-shell .cluster--signal .signal.signal--select {
-		grid-column: 1 / -1;
-		margin-bottom: calc(var(--line-height) * 1.2);
-		order: -1;
-	}
 }
 
 /*
@@ -1356,61 +1300,6 @@ html body.signals-shell .cluster--loaded {
 	html body.signals-shell .cluster--signal .signal .signal__header a:hover,
 	html:not(.pointer-focus) body.signals-shell .cluster--signal .signal .signal__header a:focus {
 		color: var(--color-ink);
-	}
-
-	/*
-	 * On an entry page the whole stream is reproduced so you can see where you
-	 * are in it. At a hundred entries that meant a 3000px wall of bare numbers
-	 * with your own entry buried somewhere in the middle of it, and the page
-	 * opened by scrolling you 1500px down.
-	 *
-	 * So the index becomes a compact grid of numbers, and the entry you asked
-	 * for is moved to the front of it (see initScroll). You still get the whole
-	 * stream; you just get it below the thing you came for, and you land at
-	 * the top of the page instead of the middle of it.
-	 */
-	html body.signals-shell .cluster--signal {
-		column-gap: 1.4em;
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));
-		row-gap: 0.15em;
-	}
-
-	/*
-	 * The label is hidden until you hover a number, but a hidden label still
-	 * occupies the lines it would have wrapped to — at this column width that
-	 * was three or four blank lines per row, which is what made the index
-	 * 900px tall. Collapsing the box keeps every row exactly one line tall
-	 * until the label is actually wanted.
-	 */
-	html body.signals-shell .cluster--signal .signal .signal__header a dl dd {
-		max-height: 0;
-		overflow: hidden;
-	}
-
-	html body.signals-shell .cluster--signal .signal .signal__header a:hover dl dd,
-	html:not(.pointer-focus)
-		body.signals-shell
-		.cluster--signal
-		.signal
-		.signal__header
-		a:focus
-		dl
-		dd {
-		max-height: 30em;
-		overflow: visible;
-	}
-
-	/* The selected entry is not a chip: it is the page. */
-	html body.signals-shell .cluster--signal .signal.signal--select {
-		grid-column: 1 / -1;
-		margin-bottom: calc(var(--line-height) * 1.2);
-		order: -1;
-	}
-
-	html body.signals-shell .cluster--signal .signal.signal--select .signal__header h2 {
-		font-size: var(--font-size-xx-large);
-		letter-spacing: -0.015em;
 	}
 
 	html body.signals-shell .cluster--signal .signal .signal__header a:hover dl dd,
