@@ -20,12 +20,14 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 <PageLayout
 	meta={{
 		title: product.name,
-		description: product.summary,
+		// The blurb, not the summary: the summary is written for a reader who
+		// is already on the page and is too long to survive a search result.
+		description: product.blurb,
 		jsonLd: {
 			"@context": "https://schema.org",
 			"@type": "SoftwareApplication",
 			name: product.name,
-			description: product.summary,
+			description: product.blurb,
 			url: product.url ?? Astro.url.href,
 			applicationCategory: "BusinessApplication",
 			operatingSystem: product.selfHosted ? "Self-hosted" : "Web",

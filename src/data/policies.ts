@@ -2,6 +2,13 @@ export interface Policy {
 	slug: string;
 	title: string;
 	intro: string;
+	/**
+	 * A shorter sentence for the meta description. Only needed when `intro`
+	 * runs past where a search result truncates — the intro is also the first
+	 * thing on the page, so it should stay written for a reader rather than
+	 * trimmed to fit a snippet.
+	 */
+	blurb?: string;
 	sections: { id: string; heading: string; body: string[] }[];
 }
 
@@ -247,6 +254,8 @@ export const policies: Policy[] = [
 	{
 		slug: "accessibility",
 		title: "Accessibility",
+		blurb:
+			"Our products are for everyone, whatever their abilities and whatever tools they use. We aim for WCAG 2.2 AA.",
 		intro:
 			"Our products are for everyone, whatever their abilities and whatever tools they use. We design and test with accessibility in mind from the start. WCAG 2.2 AA is the standard we aim for.",
 		sections: [

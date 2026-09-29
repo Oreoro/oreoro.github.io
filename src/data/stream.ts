@@ -843,3 +843,53 @@ export const stream: StreamEntry[] = [
 		content: `<p>Everything we build is public software, but the thinking behind it was not. This is where it goes: launches, notes, and the occasional thing somebody else wrote that changed our mind.</p><p>Numbered and in order, newest first. That is the whole format.</p>`,
 	},
 ];
+
+/**
+ * A meta description for a stream entry, derived from its own body.
+ *
+ * The label alone made a useless description — "We keep a list of things we
+ * are not doing" is a title, not a summary, and search engines were getting
+ * that and nothing else on a hundred pages.
+ *
+ * The unit is the opening paragraph, not the first sentence. A lot of these
+ * entries open short and punchy — "It sits next to the roadmap and it is
+ * longer." — which reads badly as a standalone snippet because the point only
+ * arrives in the second paragraph. So: take the first paragraph, and if it is
+ * too thin to stand alone, add the next one.
+ *
+ * Capped at 155 characters because that is roughly where Google truncates, and
+ * a clean word-boundary cut is better than a mid-word one.
+ */
+export function entryDescription(entry: StreamEntry, max = 155): string {
+	const paragraphs = entry.content
+		.split(/<\/p>/i)
+		.map((part) =>
+			part
+				.replace(/<[^>]*>/g, " ")
+				.replace(/&(?:amp|nbsp|lt|gt|quot|#39);/g, " ")
+				.replace(/\s+/g, " ")
+				.trim(),
+		)
+		.filter(Boolean);
+
+	if (paragraphs.length === 0) return entry.label;
+
+	// Add paragraphs until there is enough to say something, or we run out.
+	let text = paragraphs[0]!;
+	for (let i = 1; i < paragraphs.length && text.length < 90; i++) {
+		const next = `${text} ${paragraphs[i]}`;
+		// Do not overshoot the cap just to clear the thinness threshold.
+		if (next.length > max) break;
+		text = next;
+	}
+
+	if (text.length <= max) return text;
+
+	const cut = text.slice(0, max);
+	const lastSpace = cut.lastIndexOf(" ");
+	const trimmed = (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut)
+		// Drop the dangling conjunction a mid-sentence cut leaves behind.
+		.replace(/[\s,;:—–-]+(?:and|or|but|which|that|with|for|to|a|an|the|in|on|at|is|are)$/i, "")
+		.replace(/[.,;:]$/, "");
+	return `${trimmed}…`;
+}

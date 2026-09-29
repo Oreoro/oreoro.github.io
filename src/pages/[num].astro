@@ -1,6 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { stream, type StreamKind } from "@/data/stream";
+import { entryDescription, stream, type StreamKind } from "@/data/stream";
 import { getNavLink } from "@/lib/blog-helpers";
 
 export function getStaticPaths() {
@@ -33,12 +33,13 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 <PageLayout
 	meta={{
 		title: `${entry.num}. ${entry.label}`,
-		description: entry.label,
+		description: entryDescription(entry),
 		articleDate: entry.date,
 		jsonLd: {
 			"@context": "https://schema.org",
 			"@type": "Article",
 			headline: entry.label,
+			description: entryDescription(entry),
 			datePublished: entry.date,
 			url: Astro.url.href,
 			mainEntityOfPage: Astro.url.href,

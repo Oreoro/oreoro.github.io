@@ -16,7 +16,7 @@ const { policy } = Astro.props;
 <PageLayout
 	meta={{
 		title: policy.title,
-		description: policy.intro,
+		description: policy.blurb ?? policy.intro,
 	}}
 >
 	<div class="page">

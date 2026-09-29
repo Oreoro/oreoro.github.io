@@ -13,6 +13,13 @@ export interface Product {
 	selfHosted?: boolean;
 	/** One-line pricing note, shown under the summary. */
 	pricing?: string;
+	/**
+	 * A short description for search results and link previews. The `summary`
+	 * above is written for someone already on the page and runs to 250
+	 * characters, which is past where a search result truncates — so this is a
+	 * separate, shorter sentence rather than a slice of the long one.
+	 */
+	blurb: string;
 	features: { title: string; body: string }[];
 	/**
 	 * The three things people most often assume this does, and that it does
@@ -29,6 +36,8 @@ export const products: Product[] = [
 		name: "Urban Events",
 		tagline: "Every great event starts here.",
 		url: "https://urbanevents.pk",
+		blurb:
+			"Publish a polished event page, sell tickets in PKR, and check guests in from any phone. Built for Pakistan.",
 		pricing: "Free for free events. Pay only when you sell tickets.",
 		summary:
 			"Publish a polished event page, sell tickets in PKR, and check guests in from any phone. Built for student societies, MUNs, workshops, and meetups across Pakistan.",
@@ -62,6 +71,8 @@ export const products: Product[] = [
 		tagline: "See the work, not the worker.",
 		url: "https://workproof.focuslab.pk",
 		selfHosted: true,
+		blurb:
+			"Self-hosted workforce activity analytics. See where the week went, with no content capture and no data leaving your server.",
 		pricing: "Pricing on request.",
 		summary:
 			"Know where the week actually went. Self-hosted workforce activity analytics with real privacy: no content capture, and your data stays on your infrastructure.",
@@ -94,6 +105,8 @@ export const products: Product[] = [
 		name: "Fixer",
 		tagline: "The errors worth a human's time.",
 		selfHosted: true,
+		blurb:
+			"Watches your production logs, finds the errors worth a human, and opens a draft pull request with a root cause and a proposed fix.",
 		pricing: "Available on request, or ask for a demo.",
 		summary:
 			"Fixer watches your production logs, reduces them to the handful of exceptions actually worth a human's time, investigates each one against your real code, and opens a draft pull request with a root cause, the evidence behind it, and a proposed fix.",
