@@ -2620,23 +2620,42 @@ html body.signals-shell .product__grid {
 	grid-template-columns: minmax(0, 1fr);
 }
 
+/*
+ * A feature is a bold lead-in and a line of copy, not a card. The boxes were
+ * the only place on the site that drew its own frame around content, and they
+ * made a short list of four read as a row of pricing tiles.
+ *
+ * The rhythm is the site's list rhythm instead: title, body indented under it,
+ * a line-height of space between items, nothing boxed.
+ */
 html body.signals-shell .product__feature {
-	background: rgba(var(--rgb-ink), 0.06);
-	border: 1px solid rgba(var(--rgb-ink), 0.14);
-	border-radius: 0.4em;
 	display: flex;
 	flex-direction: column;
-	gap: 0.4em;
-	padding: 1.1em 1.2em;
+	gap: 0.3em;
+	padding-left: 1.85ch;
+	position: relative;
+}
+
+/* A hairline instead of a full box: enough to group the body under its own
+   title, not enough to look like a card. */
+html body.signals-shell .product__feature:before {
+	background: color-mix(in srgb, var(--color-ink) 30%, transparent);
+	content: "";
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0.2em;
+	width: 1px;
 }
 
 html body.signals-shell .product__feature h3 {
-	font-size: var(--font-size-large);
-	line-height: 1.2;
+	font-size: var(--font-size);
+	line-height: var(--line-height);
 }
 
 html body.signals-shell .product__feature p {
-	font-size: var(--font-size-small);
+	font-size: var(--font-size);
+	letter-spacing: normal;
 	margin: 0;
 }
 
@@ -2778,11 +2797,13 @@ html body.signals-shell .product-card__cta span {
 	}
 }
 
-@media (min-width: 48em) {
-	html body.signals-shell .product__grid {
-		gap: 1.2em;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
+/*
+ * Left at one column. Two columns only worked because each feature had a box
+ * around it; without the box, a reader hits the lead-in for item three before
+ * they finish item one, and the hairline groups nothing.
+ */
+html body.signals-shell .product__grid {
+	gap: calc(var(--line-height) * 1.2);
 }
 
 /* Shared call-to-action panel used by index pages. */

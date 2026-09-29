@@ -27,6 +27,25 @@ const kindLabel: Record<StreamKind, string> = {
 const ctaLabel =
 	entry.kind === "essay" || entry.kind === "quote" ? "Read the original" : "Open link";
 
+/**
+ * The stream index is split into windows of 36.
+ *
+ * Reproducing all 106 entries on every entry page was fine at 30 and is a
+ * 3000px wall at 106 — you had to scroll past a hundred bare numbers to get
+ * out of one. A window keeps the page about a screen and a half, and the
+ * windows are aligned to page boundaries (00–35, 36–71, 72–105) rather than
+ * centred on the current entry, so the same entry always shows the same
+ * neighbours.
+ *
+ * Windows need no pagination UI. The footer steps one entry at a time, so
+ * walking from 35 to 36 crosses into the next window on its own, and every
+ * entry is still reachable directly at its own URL.
+ */
+const WINDOW_SIZE = 36;
+const windowStart = Math.floor(index / WINDOW_SIZE) * WINDOW_SIZE;
+const windowEnd = Math.min(windowStart + WINDOW_SIZE, stream.length);
+const windowEntries = stream.slice(windowStart, windowEnd);
+
 const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 ---
 
@@ -54,7 +73,7 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 >
 	<h1 class="visually-hidden">{entry.num}. {entry.label}</h1>
 
-	<section class="signal signal--clone" data-signal={index}>
+	<section class="signal signal--clone" data-signal={index - windowStart}>
 		<header class="signal__header" tabindex="-1" autofocus>
 			<h2 aria-label={`${kindLabel[entry.kind]}: ${entry.label}`}>
 				<span>{entry.num}.</span>
@@ -85,7 +104,7 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 
 	<div class="cluster cluster--signal">
 		{
-			stream.map((item, itemIndex) => (
+			windowEntries.map((item, itemIndex) => (
 				<section class="signal" data-signal={itemIndex}>
 					<header class="signal__header">
 						<a
