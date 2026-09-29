@@ -1237,12 +1237,6 @@ html body.signals-shell .footer__next a:after {
 
 html body.signals-shell .cluster {
 	margin: 7.4em var(--spacing) 4.5em var(--spacing);
-	/*
-	 * Capped so the stream reads as a table: the label sits on the left and the
-	 * author/date on the right, and at a full-bleed 1440px they ended up 900px
-	 * apart with nothing in between. 72ch keeps the pair read as one row.
-	 */
-	max-width: 78ch;
 	opacity: 0;
 	transition: opacity var(--transition);
 }
@@ -1251,6 +1245,15 @@ html body.signals-shell .cluster--index {
 	margin-bottom: 7.4em;
 	opacity: 1;
 	pointer-events: none;
+}
+
+/*
+ * Only the entry pages are capped. Their index is a grid of bare numbers
+ * (see `.cluster--signal` below), and a grid stretched across 1440px would
+ * put two entries a hundred lines apart from each other.
+ */
+html body.signals-shell .cluster--signal {
+	max-width: 78ch;
 }
 
 html body.signals-shell .cluster--signal .signal {
@@ -1322,36 +1325,15 @@ html body.signals-shell .cluster--loaded {
 }
 
 /*
- * The index used to be one signal per line, which was fine at thirty entries
- * and unusable at a hundred: a single column of numbers is 3000px of scroll
- * before you reach anything. It is a grid now, so the whole stream fits on a
- * screen or two and the numbering still reads down the left of each column.
+ * The home page index is deliberately back to one signal per line, full-bleed,
+ * label on the left and author on the right. It was a three-column grid for a
+ * while, which made a hundred entries fit on one screen, but it read as a
+ * dense table rather than a feed, and the wide gap between a label and its
+ * author was the point: the row is one line of a numbered stream, not a card.
  *
- * A column is about half the width it used to be, so the author/date moves
- * under the label rather than sitting at the far end of the row.
+ * The long scroll is the trade. If that comes back, widen the row rather than
+ * splitting it into columns.
  */
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .cluster--index {
-		column-gap: 2.6em;
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		max-width: none;
-		row-gap: 0.35em;
-	}
-
-	html body.signals-shell .cluster--index .signal__header dl dd {
-		align-items: flex-start;
-		flex-direction: column;
-		gap: 0.1em;
-	}
-}
-
-@media (min-width: 100em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .cluster--index {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-	}
-}
-
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	html body.signals-shell .cluster {
 		margin-bottom: 44.4vh;
