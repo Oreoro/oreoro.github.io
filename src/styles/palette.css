@@ -13,11 +13,11 @@
  * paint and picks a `--rgb-theme-N` from the active palette, so the page colour
  * is one attribute and one custom property.
  *
- * `focuslab` is the coordinated dark default and the no-JS fallback. The previous
+ * `focuslab` is the 37signals palette and the no-JS fallback. The previous
  * palettes remain available for explicit previews without editing components.
  * Book covers still read twelve tint tokens, independently of page grounds.
  *
- *   focuslab six deep, muted grounds with soft-white type and matching surfaces
+ *   focuslab eight exact 37signals grounds, excluding pink and yellow
  *   pastel   warm, chalky, low-contrast — the house look
  *   apple    Apple.com: cool neutrals and soft system tints on near-black ink
  *   notion   Notion: warm off-whites and the workspace pastel block colours
@@ -25,7 +25,7 @@
  *   ink      the dark one: deep, warm blacks with light type
  *
  * Testing a palette without a rebuild: append `?palette=<id>` to any URL. The
- * pre-paint script honours it, remembers it under `fl-palette-editorial-v3`,
+ * pre-paint script honours it, remembers it under `fl-palette-37signals-v4`,
  * and falls back to the configured default when the id is unknown. `?palette=reset`
  * clears the override. The default itself can be set for a whole build with the
  * `PUBLIC_PALETTE` environment variable (see src/data/palettes.ts).
@@ -34,35 +34,38 @@
  * layers, the same trick minimal.css uses.
  */
 
-/* ---------- Focus Lab — coordinated 37signals-inspired grounds ---------- */
+/* ---------- Focus Lab — 37signals' actual colors, minus pink and yellow ---------- */
+/* Source: https://37signals.com/assets/css/root.css. No hue or saturation changes. */
 :root,
 :root[data-palette="focuslab"] {
 	color-scheme: dark;
 
-	--rgb-theme-1: 32, 38, 44; /* graphite #20262c */
-	--rgb-theme-2: 36, 56, 82; /* midnight blue #243852 */
-	--rgb-theme-3: 36, 62, 52; /* forest #243e34 */
-	--rgb-theme-4: 37, 65, 74; /* deep teal #25414a */
-	--rgb-theme-5: 75, 47, 56; /* oxblood #4b2f38 */
-	--rgb-theme-6: 71, 56, 46; /* espresso #47382e */
+	--rgb-theme-1: 0, 100, 230; /* blue #0064e6 */
+	--rgb-theme-2: 41, 152, 80; /* green #299850 */
+	--rgb-theme-3: 0, 170, 194; /* teal #00aac2 */
+	--rgb-theme-4: 190, 82, 255; /* purple #be52ff */
+	--rgb-theme-5: 139, 119, 255; /* lavender #8b77ff */
+	--rgb-theme-6: 248, 121, 23; /* orange #f87917 */
+	--rgb-theme-7: 204, 61, 51; /* brick red #cc3d33 */
+	--rgb-theme-8: 236, 67, 67; /* red #ec4343 */
 
-	/* Additional book-cover tints reuse the same coordinated colors. */
-	--rgb-theme-7: var(--rgb-theme-1);
-	--rgb-theme-8: var(--rgb-theme-2);
-	--rgb-theme-9: var(--rgb-theme-3);
-	--rgb-theme-10: var(--rgb-theme-4);
-	--rgb-theme-11: var(--rgb-theme-5);
-	--rgb-theme-12: var(--rgb-theme-6);
-	--rgb-theme-13: var(--rgb-theme-1);
-	--rgb-theme-14: var(--rgb-theme-2);
-	--rgb-theme-15: var(--rgb-theme-3);
+	/* Additional book-cover tints also exclude the removed colors. */
+	--rgb-theme-9: var(--rgb-theme-1);
+	--rgb-theme-10: var(--rgb-theme-2);
+	--rgb-theme-11: var(--rgb-theme-3);
+	--rgb-theme-12: var(--rgb-theme-4);
+	--rgb-theme-13: var(--rgb-theme-5);
+	--rgb-theme-14: var(--rgb-theme-6);
+	--rgb-theme-15: var(--rgb-theme-7);
 
-	--rgb-ink: 236, 239, 235; /* soft white #ecefeb */
+	--rgb-ink-light: 255, 255, 255;
+	--rgb-ink-dark: 17, 17, 17;
+	--rgb-ink: var(--rgb-ink-light);
 	--rgb-paper: var(--rgb-theme);
-	--rgb-accent: 164, 184, 172; /* muted sage #a4b8ac */
+	--rgb-accent: var(--rgb-ink);
 	--rgb-shadow: 0, 0, 0;
-	--rgb-sheet: 32, 38, 44;
-	--rgb-sheet-ink: 236, 239, 235;
+	--rgb-sheet: var(--rgb-theme);
+	--rgb-sheet-ink: var(--rgb-ink);
 
 	--ink-muted: 78%;
 	--ink-faint: 88%;
@@ -71,12 +74,40 @@
 	--color-hairline: rgba(var(--rgb-ink), 0.14);
 }
 
+/* Keep the exact backgrounds; use dark type where white would fail contrast. */
+:root[data-palette="focuslab"]:is(
+		[data-ground="1"],
+		[data-ground="2"],
+		[data-ground="3"],
+		[data-ground="4"],
+		[data-ground="5"],
+		[data-ground="7"]
+	) {
+	--rgb-ink: var(--rgb-ink-dark);
+}
+
 :root:not([data-palette]),
 :root[data-palette="focuslab"] {
-	--rgb-error: 255, 170, 164;
-	--color-sheet: color-mix(in srgb, var(--color-theme) 90%, var(--color-ink));
-	--color-surface: color-mix(in srgb, var(--color-theme) 94%, var(--color-ink));
-	--color-surface-hover: color-mix(in srgb, var(--color-theme) 89%, var(--color-ink));
+	--ink-muted: 99%;
+	--ink-faint: 99%;
+	--rgb-error: var(--rgb-ink);
+	--color-sheet: color-mix(in srgb, var(--color-theme) 98%, var(--color-ink));
+	--color-surface: color-mix(in srgb, var(--color-theme) 98%, var(--color-ink));
+	--color-surface-hover: color-mix(in srgb, var(--color-theme) 97%, var(--color-ink));
+
+	/* Each cover has its own background, independent of the page's ground. */
+	--rgb-book-ink-1: var(--rgb-ink-light);
+	--rgb-book-ink-2: var(--rgb-ink-dark);
+	--rgb-book-ink-3: var(--rgb-ink-dark);
+	--rgb-book-ink-4: var(--rgb-ink-dark);
+	--rgb-book-ink-5: var(--rgb-ink-dark);
+	--rgb-book-ink-6: var(--rgb-ink-dark);
+	--rgb-book-ink-7: var(--rgb-ink-light);
+	--rgb-book-ink-8: var(--rgb-ink-dark);
+	--rgb-book-ink-9: var(--rgb-book-ink-1);
+	--rgb-book-ink-10: var(--rgb-book-ink-2);
+	--rgb-book-ink-11: var(--rgb-book-ink-3);
+	--rgb-book-ink-12: var(--rgb-book-ink-4);
 }
 
 /* ---------- Pastel ---------- */
@@ -295,6 +326,14 @@ html body.signals-shell ::selection {
 }
 
 /* Inverse actions and supporting surfaces follow the selected page color. */
+:root[data-palette="focuslab"] body.signals-shell {
+	color: var(--color-ink) !important;
+}
+
+:root[data-palette="focuslab"] body.signals-shell .page__headline > p:not(.page__kicker) {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+}
+
 :root[data-palette="focuslab"] body.signals-shell .button:not(.button--ghost) {
 	background: var(--color-ink);
 	border-color: var(--color-ink);
@@ -303,8 +342,17 @@ html body.signals-shell ::selection {
 
 :root[data-palette="focuslab"] body.signals-shell .button:not(.button--ghost):hover,
 :root[data-palette="focuslab"] body.signals-shell .button:not(.button--ghost):focus-visible {
-	background: color-mix(in srgb, var(--color-ink) 88%, var(--color-theme));
-	border-color: color-mix(in srgb, var(--color-ink) 88%, var(--color-theme));
+	background: color-mix(in srgb, var(--color-ink) 99%, var(--color-theme));
+	border-color: color-mix(in srgb, var(--color-ink) 99%, var(--color-theme));
+}
+
+:root[data-palette="focuslab"] body.signals-shell .button--ghost:hover,
+:root[data-palette="focuslab"] body.signals-shell .button--ghost:focus-visible {
+	background: var(--color-surface-hover);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .button--ghost {
+	border-color: rgba(var(--rgb-ink), 0.85);
 }
 
 :root[data-palette="focuslab"] body.signals-shell a[aria-current="page"] {
@@ -344,7 +392,7 @@ html body.signals-shell ::selection {
 
 :root[data-palette="focuslab"] body.signals-shell .signup form {
 	background: var(--color-theme);
-	border: 1px solid rgba(var(--rgb-ink), 0.45);
+	border: 1px solid rgba(var(--rgb-ink), 0.85);
 	border-radius: var(--radius-control);
 }
 
@@ -363,4 +411,35 @@ html body.signals-shell ::selection {
 
 :root[data-palette="focuslab"] body.signals-shell .signup form .button {
 	border-radius: var(--radius-control);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .book-cover__mark,
+:root[data-palette="focuslab"] body.signals-shell .book-cover__title {
+	color: rgb(var(--book-ink));
+}
+
+:root[data-palette="focuslab"] body.signals-shell .broadsheet {
+	--podcast-surface: var(--color-surface);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .episode__summary {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .podcast__subscribe a:hover,
+:root[data-palette="focuslab"] body.signals-shell .podcast__subscribe a:focus-visible,
+:root[data-palette="focuslab"] body.signals-shell .podcast__tags a:hover,
+:root[data-palette="focuslab"] body.signals-shell .podcast__tags a:focus-visible {
+	background: var(--color-surface-hover);
+}
+
+:root[data-palette="focuslab"] body.signals-shell table,
+:root[data-palette="focuslab"] body.signals-shell .ledger,
+:root[data-palette="focuslab"] body.signals-shell .stack__item {
+	background: var(--color-surface);
+}
+
+:root[data-palette="focuslab"] body.signals-shell table tbody tr:nth-of-type(odd),
+:root[data-palette="focuslab"] body.signals-shell .ledger tr:nth-child(even) {
+	background: var(--color-surface);
 }

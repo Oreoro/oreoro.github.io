@@ -280,7 +280,8 @@ function initSignup() {
  * scrollbars should follow. Content stays visible even if this script fails.
  *
  * The palette in play is whatever the pre-paint script resolved — the configured
- * default, or a `?palette=<id>` preview. The default rotates six deep grounds.
+ * default, or a `?palette=<id>` preview. The default uses 37signals' original
+ * grounds without pink or yellow, with light or dark type for each ground.
  */
 function initTheme() {
 	const root = document.documentElement;
@@ -294,8 +295,10 @@ function initTheme() {
 	const palette = palettes.find(
 		(entry) => entry.id === (root.getAttribute("data-palette") ?? DEFAULT_PALETTE),
 	);
-	root.style.colorScheme = palette?.scheme ?? "light";
-	schemeMeta?.setAttribute("content", palette?.scheme ?? "light");
+	const index = Number(root.getAttribute("data-ground") ?? 0);
+	const scheme = palette?.lightGrounds?.includes(index) ? "light" : (palette?.scheme ?? "light");
+	root.style.colorScheme = scheme;
+	schemeMeta?.setAttribute("content", scheme);
 
 	// `--rgb-theme` is an `r, g, b` triple, so it can be handed to the meta tag
 	// as-is once the reference to `--rgb-theme-N` has resolved.

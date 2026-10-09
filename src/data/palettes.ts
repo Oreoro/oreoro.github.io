@@ -15,8 +15,8 @@
  *
  * ## Choosing a palette
  *
- * `focuslab` is the default: six coordinated deep grounds, soft-white ink, and
- * matching surfaces. Each page load chooses a different ground, like 37signals.
+ * `focuslab` is the default: 37signals' eight original grounds without pink or
+ * yellow. Each page load chooses a different ground, with contrast-safe type.
  * The previous palettes remain available for
  * explicit previews. Three ways to switch, in order of
  * precedence:
@@ -39,12 +39,21 @@ export interface Palette {
 	/** How many grounds this palette offers, as `--rgb-theme-1` … `--rgb-theme-N`. */
 	size: number;
 	scheme: "light" | "dark";
+	/** Ground indices that use dark type and light native controls. */
+	lightGrounds?: number[];
 	/** First ground as a hex string, for the static `theme-color` meta tag. */
 	themeColor: string;
 }
 
 export const palettes: Palette[] = [
-	{ id: "focuslab", label: "Focus Lab", size: 6, scheme: "dark", themeColor: "#20262c" },
+	{
+		id: "focuslab",
+		label: "Focus Lab",
+		size: 8,
+		scheme: "dark",
+		lightGrounds: [1, 2, 3, 4, 5, 7],
+		themeColor: "#0064e6",
+	},
 	{ id: "pastel", label: "Pastel", size: 15, scheme: "light", themeColor: "#ccd5ae" },
 	{ id: "apple", label: "Apple", size: 15, scheme: "light", themeColor: "#ffffff" },
 	{ id: "notion", label: "Notion", size: 15, scheme: "light", themeColor: "#f6f5f4" },
@@ -73,4 +82,4 @@ export const DEFAULT_PALETTE: string = (() => {
  * A new key prevents earlier previews from overriding the coordinated default.
  * Visitors must explicitly opt in with `?palette=<id>` again.
  */
-export const PALETTE_STORAGE_KEY = "fl-palette-editorial-v3";
+export const PALETTE_STORAGE_KEY = "fl-palette-37signals-v4";

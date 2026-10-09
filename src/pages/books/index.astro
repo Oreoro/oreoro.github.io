@@ -36,7 +36,10 @@ const total = books.length;
 										rel="noopener"
 										aria-label={book.title}
 									>
-										<span class="book-cover" style={`--book-tint: var(--rgb-theme-${book.tint})`}>
+										<span
+											class="book-cover"
+											style={`--book-tint: var(--rgb-theme-${book.tint}); --book-ink: var(--rgb-book-ink-${book.tint}, var(--rgb-ink))`}
+										>
 											<span class="book-cover__mark">{book.mark}</span>
 											<span class="book-cover__title">{book.title}</span>
 										</span>

@@ -122,15 +122,15 @@
 	 *   theme  — the page background itself, selected before first paint
 	 *
 	 * The palettes live in palette.css (`[data-palette]`); the defaults here
-	 * use charcoal, soft-white ink, and muted green accents.
+	 * use 37signals' blue with white ink until a page ground is selected.
 	 */
 	--rgb-theme: var(--rgb-theme-1);
-	--rgb-ink: 236, 239, 235;
-	--rgb-paper: 16, 19, 18;
-	--rgb-accent: 164, 184, 172;
+	--rgb-ink: 255, 255, 255;
+	--rgb-paper: 0, 100, 230;
+	--rgb-accent: 255, 255, 255;
 	--rgb-shadow: 0, 0, 0;
-	--rgb-sheet: 24, 29, 27;
-	--rgb-sheet-ink: 236, 239, 235;
+	--rgb-sheet: 0, 100, 230;
+	--rgb-sheet-ink: 255, 255, 255;
 
 	/*
 	 * The floor for any *text* colour that is not full-strength ink.
