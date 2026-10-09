@@ -10,7 +10,7 @@
  *    signal using the controller's data-next / data-previous attributes.
  */
 
-import { palettes, DEFAULT_PALETTE } from "@/data/palettes";
+import { palettes, DEFAULT_PALETTE, getPaletteScheme } from "@/data/palettes";
 
 const originEl = document.querySelector<HTMLElement>(".origin");
 const controller = document.querySelector<HTMLElement>(".controller");
@@ -296,7 +296,7 @@ function initTheme() {
 		(entry) => entry.id === (root.getAttribute("data-palette") ?? DEFAULT_PALETTE),
 	);
 	const index = Number(root.getAttribute("data-ground") ?? 0);
-	const scheme = palette?.lightGrounds?.includes(index) ? "light" : (palette?.scheme ?? "light");
+	const scheme = palette ? getPaletteScheme(palette, index) : "light";
 	root.style.colorScheme = scheme;
 	schemeMeta?.setAttribute("content", scheme);
 

@@ -38,7 +38,7 @@
 /* Source: https://37signals.com/assets/css/root.css. No hue or saturation changes. */
 :root,
 :root[data-palette="focuslab"] {
-	color-scheme: dark;
+	color-scheme: light;
 
 	--rgb-theme-1: 0, 100, 230; /* blue #0064e6 */
 	--rgb-theme-2: 41, 152, 80; /* green #299850 */
@@ -60,7 +60,7 @@
 
 	--rgb-ink-light: 255, 255, 255;
 	--rgb-ink-dark: 17, 17, 17;
-	--rgb-ink: var(--rgb-ink-light);
+	--rgb-ink: var(--rgb-ink-dark);
 	--rgb-paper: var(--rgb-theme);
 	--rgb-accent: var(--rgb-ink);
 	--rgb-shadow: 0, 0, 0;
@@ -74,20 +74,15 @@
 	--color-hairline: rgba(var(--rgb-ink), 0.14);
 }
 
-/* Keep the exact backgrounds; use dark type where white would fail contrast. */
-:root[data-palette="focuslab"]:is(
-		[data-ground="1"],
-		[data-ground="2"],
-		[data-ground="3"],
-		[data-ground="4"],
-		[data-ground="5"],
-		[data-ground="7"]
-	) {
-	--rgb-ink: var(--rgb-ink-dark);
+/* Keep the exact backgrounds; blue and brick red need white type. */
+:root[data-palette="focuslab"]:is([data-ground="0"], [data-ground="6"]) {
+	color-scheme: dark;
+	--rgb-ink: var(--rgb-ink-light);
 }
 
 :root:not([data-palette]),
 :root[data-palette="focuslab"] {
+	--rgb-theme: var(--rgb-theme-2); /* green is the fresh-visit and no-JS default */
 	--ink-muted: 99%;
 	--ink-faint: 99%;
 	--rgb-error: var(--rgb-ink);

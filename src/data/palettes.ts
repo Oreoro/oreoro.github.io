@@ -16,7 +16,8 @@
  * ## Choosing a palette
  *
  * `focuslab` is the default: 37signals' eight original grounds without pink or
- * yellow. Each page load chooses a different ground, with contrast-safe type.
+ * yellow. New visits start green; subsequent loads choose a different ground,
+ * with contrast-safe type.
  * The previous palettes remain available for
  * explicit previews. Three ways to switch, in order of
  * precedence:
@@ -31,17 +32,19 @@
  * An unknown id always falls back rather than breaking the page.
  *
  * `size` counts page grounds, not the additional book-cover tints. `themeColor`
- * must match `--rgb-theme-1`, before CSS can be read.
+ * must match `initialGround` (or the first ground), before CSS can be read.
  */
 export interface Palette {
 	id: string;
 	label: string;
 	/** How many grounds this palette offers, as `--rgb-theme-1` … `--rgb-theme-N`. */
 	size: number;
+	/** Optional starting ground for a fresh session, using a zero-based index. */
+	initialGround?: number;
 	scheme: "light" | "dark";
 	/** Ground indices that use dark type and light native controls. */
 	lightGrounds?: number[];
-	/** First ground as a hex string, for the static `theme-color` meta tag. */
+	/** Starting ground as a hex string, for the static `theme-color` meta tag. */
 	themeColor: string;
 }
 
@@ -50,9 +53,10 @@ export const palettes: Palette[] = [
 		id: "focuslab",
 		label: "Focus Lab",
 		size: 8,
+		initialGround: 1,
 		scheme: "dark",
 		lightGrounds: [1, 2, 3, 4, 5, 7],
-		themeColor: "#0064e6",
+		themeColor: "#299850",
 	},
 	{ id: "pastel", label: "Pastel", size: 15, scheme: "light", themeColor: "#ccd5ae" },
 	{ id: "apple", label: "Apple", size: 15, scheme: "light", themeColor: "#ffffff" },
@@ -60,6 +64,11 @@ export const palettes: Palette[] = [
 	{ id: "spartan", label: "Spartan", size: 15, scheme: "light", themeColor: "#ecf2ee" },
 	{ id: "ink", label: "Ink", size: 15, scheme: "dark", themeColor: "#1a1a1d" },
 ];
+
+/** Native controls and static metadata follow the selected or starting ground. */
+export function getPaletteScheme(palette: Palette, ground = palette.initialGround ?? 0) {
+	return palette.lightGrounds?.includes(ground) ? "light" : palette.scheme;
+}
 
 /** The shipped default when neither a URL override nor PUBLIC_PALETTE is set. */
 export const FALLBACK_PALETTE = "focuslab";

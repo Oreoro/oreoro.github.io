@@ -58,7 +58,8 @@ Full schema, conventions, and examples: see `docs/CONTENT.md` in the repository.
 
 - The default design uses 37signals' original blue, green, teal, purple,
   lavender, orange, brick red, and red backgrounds, without pink or yellow.
-  Each page load chooses a different background from the previous one.
+  New visits start green (#299850); subsequent page loads choose a different
+  background from the previous one.
   Text uses white or near-black to stay readable on the original colors.
   Cards, forms, and menus follow the selected page color.
   Earlier palettes remain available for explicit previews with `?palette=<id>`
