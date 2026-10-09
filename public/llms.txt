@@ -56,8 +56,10 @@ Full schema, conventions, and examples: see `docs/CONTENT.md` in the repository.
 
 ## Notes
 
-- The default design uses a consistent charcoal background (#101312), soft-white
-  type, layered dark surfaces, and restrained forest-green accents.
+- The default design uses six coordinated deep backgrounds: graphite, midnight
+  blue, forest, deep teal, oxblood, and espresso, with soft-white type.
+  Each page load chooses a different background from the previous one, inspired
+  by 37signals. Cards, forms, and menus follow the selected page color.
   Earlier palettes remain available for explicit previews with `?palette=<id>`
   or a `PUBLIC_PALETTE=<id>` build override; `?palette=reset` clears a preview.
   The text and structure are identical across all palettes.

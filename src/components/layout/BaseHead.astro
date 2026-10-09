@@ -291,8 +291,6 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 >
 	(function () {
 		var el = document.documentElement;
-		var GROUND = "fl-ground";
-
 		function find(id) {
 			for (var i = 0; i < registry.length; i++) {
 				if (registry[i].id === id) return registry[i];
@@ -329,28 +327,34 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 		el.setAttribute("data-palette", chosen.id);
 		el.style.colorScheme = chosen.scheme;
 
+		var GROUND = "fl-ground-" + chosen.id;
 		var size = chosen.size;
-		var previous = 0;
+		var previous = -1;
 		try {
-			previous = parseInt(sessionStorage.getItem(GROUND), 10) || 0;
+			var storedGround = sessionStorage.getItem(GROUND);
+			if (storedGround !== null) previous = parseInt(storedGround, 10);
 		} catch (e) {}
 
 		/*
-		 * `data-theme-index` pins the ground for pages that have to look the same
-		 * on every build (the /NN entries). The default palette has one ground;
-		 * only explicit previews with multiple grounds rotate.
+		 * The default changes on every page load, including /NN entries.
+		 * Legacy previews can still pin an entry's ground with data-theme-index.
+		 * Exclude the last ground before sampling so all remaining colors have
+		 * the same chance, rather than favoring the next color in the list.
 		 */
 		var pinned = parseInt(el.getAttribute("data-theme-index"), 10);
 		var index;
-		if (!isNaN(pinned)) {
+		if (chosen.id !== "focuslab" && !isNaN(pinned)) {
 			index = ((pinned % size) + size) % size;
 		} else {
-			index = Math.floor(Math.random() * size);
-			if (size > 1 && index === previous) index = (index + 1) % size;
-			try {
-				sessionStorage.setItem(GROUND, String(index));
-			} catch (e) {}
+			var choices = [];
+			for (var i = 0; i < size; i++) {
+				if (size === 1 || i !== previous) choices.push(i);
+			}
+			index = choices[Math.floor(Math.random() * choices.length)];
 		}
+		try {
+			sessionStorage.setItem(GROUND, String(index));
+		} catch (e) {}
 
 		el.style.setProperty("--rgb-theme", "var(--rgb-theme-" + (index + 1) + ")");
 		/*

@@ -280,7 +280,7 @@ function initSignup() {
  * scrollbars should follow. Content stays visible even if this script fails.
  *
  * The palette in play is whatever the pre-paint script resolved — the configured
- * default, or a `?palette=<id>` preview. The default has a single charcoal ground.
+ * default, or a `?palette=<id>` preview. The default rotates six deep grounds.
  */
 function initTheme() {
 	const root = document.documentElement;

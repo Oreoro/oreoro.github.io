@@ -119,7 +119,7 @@
 	 *
 	 *   ink    — every piece of type, every rule, every surface wash
 	 *   paper  — the opposite of ink; used where a surface has to invert
-	 *   theme  — the page background itself, stable in the default palette
+	 *   theme  — the page background itself, selected before first paint
 	 *
 	 * The palettes live in palette.css (`[data-palette]`); the defaults here
 	 * use charcoal, soft-white ink, and muted green accents.

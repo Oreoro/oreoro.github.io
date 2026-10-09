@@ -3,7 +3,7 @@
  *
  * signals-shell.css expresses the whole site through four role tokens:
  *
- *   --rgb-theme    the page background, fixed for the default palette
+ *   --rgb-theme    the page background, selected before first paint
  *   --rgb-ink      type, rules and surface washes
  *   --rgb-paper    the inverse of ink, for surfaces that flip
  *   --rgb-shadow   what an elevation shadow is cast in
@@ -13,11 +13,11 @@
  * paint and picks a `--rgb-theme-N` from the active palette, so the page colour
  * is one attribute and one custom property.
  *
- * `focuslab` is the stable, neutral default and the no-JS fallback. The previous
+ * `focuslab` is the coordinated dark default and the no-JS fallback. The previous
  * palettes remain available for explicit previews without editing components.
  * Book covers still read twelve tint tokens, independently of page grounds.
  *
- *   focuslab charcoal, soft-white type, and restrained forest-green accents
+ *   focuslab six deep, muted grounds with soft-white type and matching surfaces
  *   pastel   warm, chalky, low-contrast — the house look
  *   apple    Apple.com: cool neutrals and soft system tints on near-black ink
  *   notion   Notion: warm off-whites and the workspace pastel block colours
@@ -25,7 +25,7 @@
  *   ink      the dark one: deep, warm blacks with light type
  *
  * Testing a palette without a rebuild: append `?palette=<id>` to any URL. The
- * pre-paint script honours it, remembers it under `fl-palette-dark-v2`,
+ * pre-paint script honours it, remembers it under `fl-palette-editorial-v3`,
  * and falls back to the configured default when the id is unknown. `?palette=reset`
  * clears the override. The default itself can be set for a whole build with the
  * `PUBLIC_PALETTE` environment variable (see src/data/palettes.ts).
@@ -34,35 +34,34 @@
  * layers, the same trick minimal.css uses.
  */
 
-/* ---------- Focus Lab — the stable default ---------- */
+/* ---------- Focus Lab — coordinated 37signals-inspired grounds ---------- */
 :root,
 :root[data-palette="focuslab"] {
 	color-scheme: dark;
 
-	--rgb-theme-1: 16, 19, 18; /* charcoal canvas #101312 */
-	--rgb-theme-2: 24, 29, 27; /* raised graphite #181d1b */
-	--rgb-theme-3: 34, 41, 37; /* active surface #222925 */
-	--rgb-theme-4: 21, 32, 27; /* deep forest surface #15201b */
+	--rgb-theme-1: 32, 38, 44; /* graphite #20262c */
+	--rgb-theme-2: 36, 56, 82; /* midnight blue #243852 */
+	--rgb-theme-3: 36, 62, 52; /* forest #243e34 */
+	--rgb-theme-4: 37, 65, 74; /* deep teal #25414a */
+	--rgb-theme-5: 75, 47, 56; /* oxblood #4b2f38 */
+	--rgb-theme-6: 71, 56, 46; /* espresso #47382e */
 
-	/* Quiet book-cover variations, never rotating page backgrounds. */
-	--rgb-theme-5: var(--rgb-theme-2);
-	--rgb-theme-6: var(--rgb-theme-4);
-	--rgb-theme-7: var(--rgb-theme-3);
+	/* Additional book-cover tints reuse the same coordinated colors. */
+	--rgb-theme-7: var(--rgb-theme-1);
 	--rgb-theme-8: var(--rgb-theme-2);
-	--rgb-theme-9: var(--rgb-theme-4);
-	--rgb-theme-10: var(--rgb-theme-3);
-	--rgb-theme-11: var(--rgb-theme-2);
-	--rgb-theme-12: var(--rgb-theme-4);
-	--rgb-theme-13: var(--rgb-theme-3);
+	--rgb-theme-9: var(--rgb-theme-3);
+	--rgb-theme-10: var(--rgb-theme-4);
+	--rgb-theme-11: var(--rgb-theme-5);
+	--rgb-theme-12: var(--rgb-theme-6);
+	--rgb-theme-13: var(--rgb-theme-1);
 	--rgb-theme-14: var(--rgb-theme-2);
-	--rgb-theme-15: var(--rgb-theme-1);
+	--rgb-theme-15: var(--rgb-theme-3);
 
 	--rgb-ink: 236, 239, 235; /* soft white #ecefeb */
-	--rgb-paper: 16, 19, 18;
+	--rgb-paper: var(--rgb-theme);
 	--rgb-accent: 164, 184, 172; /* muted sage #a4b8ac */
-	--rgb-action: 24, 69, 59; /* forest-green actions #18453b */
 	--rgb-shadow: 0, 0, 0;
-	--rgb-sheet: 24, 29, 27;
+	--rgb-sheet: 32, 38, 44;
 	--rgb-sheet-ink: 236, 239, 235;
 
 	--ink-muted: 78%;
@@ -70,6 +69,14 @@
 	--radius-surface: 12px;
 	--radius-control: 6px;
 	--color-hairline: rgba(var(--rgb-ink), 0.14);
+}
+
+:root:not([data-palette]),
+:root[data-palette="focuslab"] {
+	--rgb-error: 255, 170, 164;
+	--color-sheet: color-mix(in srgb, var(--color-theme) 90%, var(--color-ink));
+	--color-surface: color-mix(in srgb, var(--color-theme) 94%, var(--color-ink));
+	--color-surface-hover: color-mix(in srgb, var(--color-theme) 89%, var(--color-ink));
 }
 
 /* ---------- Pastel ---------- */
@@ -287,17 +294,17 @@ html body.signals-shell ::selection {
 	background: color-mix(in srgb, var(--color-accent) 26%, transparent);
 }
 
-/* Forest-green actions stay distinct from the quiet dark surfaces. */
+/* Inverse actions and supporting surfaces follow the selected page color. */
 :root[data-palette="focuslab"] body.signals-shell .button:not(.button--ghost) {
-	background: rgb(var(--rgb-action));
-	border-color: var(--color-accent);
-	color: var(--color-ink) !important;
+	background: var(--color-ink);
+	border-color: var(--color-ink);
+	color: var(--color-theme) !important;
 }
 
 :root[data-palette="focuslab"] body.signals-shell .button:not(.button--ghost):hover,
 :root[data-palette="focuslab"] body.signals-shell .button:not(.button--ghost):focus-visible {
-	background: color-mix(in srgb, rgb(var(--rgb-action)) 88%, var(--color-ink));
-	border-color: var(--color-ink);
+	background: color-mix(in srgb, var(--color-ink) 88%, var(--color-theme));
+	border-color: color-mix(in srgb, var(--color-ink) 88%, var(--color-theme));
 }
 
 :root[data-palette="focuslab"] body.signals-shell a[aria-current="page"] {
@@ -309,22 +316,22 @@ html body.signals-shell ::selection {
 }
 
 :root[data-palette="focuslab"] body.signals-shell .product-card {
-	background: var(--color-theme-2);
+	background: var(--color-surface);
 }
 
 :root[data-palette="focuslab"] body.signals-shell .product-card:hover,
 :root[data-palette="focuslab"] body.signals-shell .product-card:focus-visible {
-	background: var(--color-theme-3);
+	background: var(--color-surface-hover);
 }
 
 :root[data-palette="focuslab"] body.signals-shell .panel,
 :root[data-palette="focuslab"] body.signals-shell .cta-panel,
 :root[data-palette="focuslab"] body.signals-shell .pull {
-	background: var(--color-theme-4);
+	background: var(--color-surface);
 }
 
 :root[data-palette="focuslab"] body.signals-shell .signup {
-	background: var(--color-theme-2);
+	background: var(--color-surface);
 	border: 1px solid var(--color-hairline);
 	border-radius: var(--radius-surface);
 }
@@ -336,8 +343,8 @@ html body.signals-shell ::selection {
 }
 
 :root[data-palette="focuslab"] body.signals-shell .signup form {
-	background: var(--color-theme-1);
-	border: 1px solid var(--color-hairline);
+	background: var(--color-theme);
+	border: 1px solid rgba(var(--rgb-ink), 0.45);
 	border-radius: var(--radius-control);
 }
 

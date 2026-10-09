@@ -15,8 +15,9 @@
  *
  * ## Choosing a palette
  *
- * `focuslab` is the default: one charcoal ground, soft-white ink, dark surfaces,
- * and restrained forest-green accents. The previous palettes remain available for
+ * `focuslab` is the default: six coordinated deep grounds, soft-white ink, and
+ * matching surfaces. Each page load chooses a different ground, like 37signals.
+ * The previous palettes remain available for
  * explicit previews. Three ways to switch, in order of
  * precedence:
  *
@@ -43,7 +44,7 @@ export interface Palette {
 }
 
 export const palettes: Palette[] = [
-	{ id: "focuslab", label: "Focus Lab", size: 1, scheme: "dark", themeColor: "#101312" },
+	{ id: "focuslab", label: "Focus Lab", size: 6, scheme: "dark", themeColor: "#20262c" },
 	{ id: "pastel", label: "Pastel", size: 15, scheme: "light", themeColor: "#ccd5ae" },
 	{ id: "apple", label: "Apple", size: 15, scheme: "light", themeColor: "#ffffff" },
 	{ id: "notion", label: "Notion", size: 15, scheme: "light", themeColor: "#f6f5f4" },
@@ -69,7 +70,7 @@ export const DEFAULT_PALETTE: string = (() => {
 /**
  * localStorage key holding the visitor's test override.
  *
- * A new key prevents earlier light or colourful previews from overriding the
- * dark default. Visitors must explicitly opt in with `?palette=<id>` again.
+ * A new key prevents earlier previews from overriding the coordinated default.
+ * Visitors must explicitly opt in with `?palette=<id>` again.
  */
-export const PALETTE_STORAGE_KEY = "fl-palette-dark-v2";
+export const PALETTE_STORAGE_KEY = "fl-palette-editorial-v3";

@@ -8,7 +8,7 @@ import { siteInfo } from "@/siteInfo";
 import { DEFAULT_PALETTE } from "@/data/palettes";
 interface Props {
 	meta: SiteMeta;
-	/** Ground index for optional palette previews. The default ground is fixed. */
+	/** Fixed entry ground for legacy palette previews; the default rotates. */
 	themeIndex?: number;
 	/** The "next signal" dot shown bottom-right on small screens. */
 	footerNext?: { href: string; label: string };
