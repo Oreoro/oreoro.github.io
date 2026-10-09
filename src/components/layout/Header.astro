@@ -3,12 +3,14 @@ import { getNavLink } from "@/lib/blog-helpers";
 import Brand from "@/components/layout/Brand.astro";
 
 const primary: Array<[string, string]> = [
+	["Stream", "/"],
 	["Urban Events", "/products/urbanevents"],
 	["WorkProof", "/products/workproof"],
 	["Fixer", "/products/fixer"],
 ];
 
 const secondary: Array<[string, string]> = [
+	["Products", "/products"],
 	["Studio", "/studio"],
 	["Stack", "/stack"],
 	["Thoughts", "/thoughts"],
@@ -21,6 +23,8 @@ const secondary: Array<[string, string]> = [
 
 const isExternal = (href: string) => href.startsWith("http");
 const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
+const isCurrent = (href: string) =>
+	Astro.url.pathname.replace(/\/$/, "") === link(href).replace(/\/$/, "");
 ---
 
 <nav class="nav" aria-label="Mobile navigation">
@@ -32,8 +36,6 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 		aria-expanded="false"
 		aria-controls="nav-options"
 	/>
-
-	<label class="nav-underlay" for="nav-active" aria-hidden="true"></label>
 
 	<div class="nav__logo">
 		<Brand />
@@ -51,6 +53,7 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 						<a
 							href={link(href)}
 							aria-label={label}
+							aria-current={isCurrent(href) ? "page" : undefined}
 							target={isExternal(href) ? "_blank" : undefined}
 							rel={isExternal(href) ? "noopener" : undefined}
 						>
@@ -67,6 +70,7 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 						<a
 							href={link(href)}
 							aria-label={label}
+							aria-current={isCurrent(href) ? "page" : undefined}
 							target={isExternal(href) ? "_blank" : undefined}
 							rel={isExternal(href) ? "noopener" : undefined}
 						>
@@ -79,6 +83,8 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 	</div>
 </nav>
 
+<label class="nav-underlay" for="nav-active" aria-hidden="true"></label>
+
 <header class="header">
 	<div class="header__brand">
 		<Brand />
@@ -90,6 +96,7 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 					<a
 						href={link(href)}
 						aria-label={label}
+						aria-current={isCurrent(href) ? "page" : undefined}
 						target={isExternal(href) ? "_blank" : undefined}
 						rel={isExternal(href) ? "noopener" : undefined}
 					>

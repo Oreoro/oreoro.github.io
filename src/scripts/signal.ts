@@ -1,17 +1,16 @@
 /**
- * Focus Lab shell behaviour — a faithful port of 37signals.com's
- * theme.js, controller.js and navigate.js.
+ * Focus Lab shell behaviour, inspired by 37signals.com's stream navigation.
  *
  *  - Theme: the page colour is applied by the inline script in BaseHead before
  *    the first paint; initTheme keeps the browser chrome and the color-scheme
  *    in step with whatever ground settled.
- *  - Controller: the white dot can be dragged; releasing it over the origin
+ *  - Controller: the navigation dot can be dragged; releasing it over the origin
  *    ring snaps it home. Its position persists for the session.
  *  - Navigate: arrow keys and horizontal swipes move to the next/previous
  *    signal using the controller's data-next / data-previous attributes.
  */
 
-import { palettes, DEFAULT_PALETTE, PALETTE_STORAGE_KEY } from "@/data/palettes";
+import { palettes, DEFAULT_PALETTE } from "@/data/palettes";
 
 const originEl = document.querySelector<HTMLElement>(".origin");
 const controller = document.querySelector<HTMLElement>(".controller");
@@ -162,6 +161,9 @@ function initNavigate() {
 
 	let touchstartX = 0;
 	let touchstartTime = 0;
+	const isEditing = (target: EventTarget | null) =>
+		document.querySelector<HTMLInputElement>(".nav-active")?.checked ||
+		(target instanceof Element && target.closest("input, textarea, select, [contenteditable]"));
 
 	document.addEventListener("touchstart", (event) => {
 		const touch = event.touches[0];
@@ -171,6 +173,7 @@ function initNavigate() {
 	});
 
 	document.addEventListener("touchend", (event) => {
+		if (isEditing(event.target)) return;
 		const touch = event.changedTouches[0];
 		if (!touch) return;
 		const touchendX = touch.pageX;
@@ -187,6 +190,7 @@ function initNavigate() {
 	});
 
 	document.addEventListener("keydown", (event) => {
+		if (event.defaultPrevented || isEditing(event.target)) return;
 		if (event.key === "ArrowRight") {
 			window.location.assign(controller.getAttribute("data-next") || "");
 		} else if (event.key === "ArrowLeft") {
@@ -273,15 +277,15 @@ function initSignup() {
  * pointed `--rgb-theme` at one of the palette's grounds by the time this runs,
  * so the stylesheet is safe to read here. All that is left is to publish the
  * settled colour — the browser chrome and the color-scheme the controls and
- * scrollbars should follow — and to reveal the shell, so the page fades in
- * already wearing its colour.
+ * scrollbars should follow. Content stays visible even if this script fails.
  *
- * There is one palette. The visitor no longer picks a theme; the ground simply
- * rolls among Pastel's fifteen on each load.
+ * The palette in play is whatever the pre-paint script resolved — the configured
+ * default, or a `?palette=<id>` preview. The default has a single charcoal ground.
  */
 function initTheme() {
 	const root = document.documentElement;
 	const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+	const schemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
 
 	// The scheme comes from the registry rather than from computed style. The
 	// pre-paint script writes colorScheme as an inline value, which outranks the
@@ -291,6 +295,7 @@ function initTheme() {
 		(entry) => entry.id === (root.getAttribute("data-palette") ?? DEFAULT_PALETTE),
 	);
 	root.style.colorScheme = palette?.scheme ?? "light";
+	schemeMeta?.setAttribute("content", palette?.scheme ?? "light");
 
 	// `--rgb-theme` is an `r, g, b` triple, so it can be handed to the meta tag
 	// as-is once the reference to `--rgb-theme-N` has resolved.
@@ -298,14 +303,6 @@ function initTheme() {
 	if (ground) {
 		root.setAttribute("data-theme", ground);
 		if (meta) meta.setAttribute("content", `rgb(${ground})`);
-	}
-
-	// A palette stored by the retired picker would otherwise be honoured by an
-	// old cached copy of this script; drop it so nothing carries over.
-	try {
-		localStorage.removeItem(PALETTE_STORAGE_KEY);
-	} catch (error) {
-		// A blocked or full storage must not stop the page from rendering.
 	}
 
 	document.body.classList.add("is-ready");
@@ -323,7 +320,15 @@ function initMobileNav() {
 	if (!toggle) return;
 
 	const open = () => toggle.checked;
-	const sync = () => toggle.setAttribute("aria-expanded", String(open()));
+	const background = document.querySelectorAll<HTMLElement>(
+		"body > main, body > .header, body > .footer, body > .skip-link",
+	);
+	const sync = () => {
+		toggle.setAttribute("aria-expanded", String(open()));
+		background.forEach((element) => {
+			element.inert = open();
+		});
+	};
 
 	const close = () => {
 		if (!toggle.checked) return;
@@ -351,7 +356,7 @@ function initMobileNav() {
 		// is hidden behind the backdrop and cannot be read.
 		if (event.key === "Tab") {
 			const focusable = Array.from(
-				document.querySelectorAll<HTMLElement>(".nav a[href], .nav__toggle label"),
+				document.querySelectorAll<HTMLElement>(".nav-active, .nav a[href]"),
 			).filter((el) => el.getClientRects().length > 0);
 			const first = focusable[0];
 			const last = focusable[focusable.length - 1];
@@ -381,12 +386,14 @@ function initMobileNav() {
 		}
 	});
 
-	window.matchMedia("(min-width: 64em)").addEventListener("change", (query) => {
-		if (query.matches) {
-			toggle.checked = false;
-			sync();
-		}
-	});
+	window
+		.matchMedia("(min-width: 64em) and (hover: hover) and (pointer: fine)")
+		.addEventListener("change", (query) => {
+			if (query.matches) {
+				toggle.checked = false;
+				sync();
+			}
+		});
 }
 
 function ready() {
@@ -421,8 +428,10 @@ function initScroll() {
 
 	signalElement.replaceChildren(...Array.from(clone.children));
 	signalElement.classList.add("signal--select");
+	clone.remove();
+	cluster.classList.add("cluster--loaded");
 
-	if (window.innerWidth >= 1024) {
+	if (window.matchMedia("(min-width: 64em) and (hover: hover) and (pointer: fine)").matches) {
 		const boundary = document.querySelector<HTMLElement>(".boundary");
 		const boundaryHeight = boundary
 			? parseInt(getComputedStyle(boundary, ":before").getPropertyValue("height")) || 0
@@ -439,8 +448,6 @@ function initScroll() {
 
 		window.scrollTo(0, signalOffset);
 	}
-
-	if (!cluster.classList.contains("cluster--loaded")) cluster.classList.add("cluster--loaded");
 }
 
 window.addEventListener("resize", resizeController);

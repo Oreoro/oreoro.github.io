@@ -5,9 +5,10 @@ import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
 import SkipLink from "@/components/ui/SkipLink.astro";
 import { siteInfo } from "@/siteInfo";
+import { DEFAULT_PALETTE } from "@/data/palettes";
 interface Props {
 	meta: SiteMeta;
-	/** Deterministic palette index (0-11) for this page. Omit for a random theme. */
+	/** Ground index for optional palette previews. The default ground is fixed. */
 	themeIndex?: number;
 	/** The "next signal" dot shown bottom-right on small screens. */
 	footerNext?: { href: string; label: string };
@@ -30,6 +31,7 @@ const {
 <html
 	lang={siteInfo.lang}
 	class="dark"
+	data-palette={DEFAULT_PALETTE}
 	data-theme-index={themeIndex === undefined ? undefined : String(themeIndex)}
 >
 	<head>

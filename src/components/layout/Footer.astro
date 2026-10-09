@@ -22,6 +22,8 @@ const links: Array<[string, string]> = [
 
 const isExternal = (href: string) => href.startsWith("http");
 const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
+const isCurrent = (href: string) =>
+	Astro.url.pathname.replace(/\/$/, "") === link(href).replace(/\/$/, "");
 ---
 
 <footer class="footer">
@@ -32,6 +34,7 @@ const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
 					<a
 						href={link(href)}
 						aria-label={label}
+						aria-current={isCurrent(href) ? "page" : undefined}
 						target={isExternal(href) ? "_blank" : undefined}
 						rel={isExternal(href) ? "noopener" : undefined}
 					>

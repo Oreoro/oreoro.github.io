@@ -8,13 +8,8 @@ import "@/styles/notion-signals.css";
 import "@/styles/palette.css";
 import { siteInfo } from "@/siteInfo";
 import { site } from "@/data/focuslab";
-import { palettes, DEFAULT_PALETTE } from "@/data/palettes";
-import {
-	ENABLE_LIGHTBOX,
-	TRACKING,
-	GOOGLE_SEARCH_CONSOLE_META_TAG,
-	GISCUS,
-} from "@/constants";
+import { palettes, DEFAULT_PALETTE, PALETTE_STORAGE_KEY } from "@/data/palettes";
+import { ENABLE_LIGHTBOX, TRACKING, GOOGLE_SEARCH_CONSOLE_META_TAG, GISCUS } from "@/constants";
 import { getNavLink } from "@/lib/blog-helpers";
 
 type Props = SiteMeta;
@@ -24,7 +19,9 @@ const { title, description, articleDate, author, hasMarkdownAlternate, jsonLd, r
 
 const titleSeparator = "•";
 const siteTitle =
-	title && title !== siteInfo.title ? `${title} ${titleSeparator} ${siteInfo.title}` : siteInfo.title;
+	title && title !== siteInfo.title
+		? `${title} ${titleSeparator} ${siteInfo.title}`
+		: siteInfo.title;
 const metaDescription = description || siteInfo.description;
 const metaRobots = robots || "index, follow, max-image-preview:large";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -165,11 +162,15 @@ const useGiscus =
 	GISCUS["data-category-id"];
 
 /*
- * The static value a crawler (or anything without JS) sees. The default palette
- * is Pastel, so its first ground is the honest answer; signal.ts replaces this
- * with the ground actually in play as soon as the stylesheet is available.
+ * The static value a crawler (or anything without JS) sees. It is the first
+ * ground of the palette configured for this build (see src/data/palettes.ts for
+ * the PUBLIC_PALETTE switch); signal.ts replaces it with the ground actually in
+ * play as soon as the stylesheet is available. A per-visitor `?palette=`
+ * override cannot be known at build time, so this deliberately reports the
+ * build's default.
  */
-const themeColor = "#ccd5ae";
+const defaultPalette = palettes.find((palette) => palette.id === DEFAULT_PALETTE) ?? palettes[0]!;
+const themeColor = defaultPalette.themeColor;
 
 /*
  * Social card. Currently the square brand mark, so `summary` rather than
@@ -223,9 +224,7 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 <link rel="apple-touch-icon" href={getNavLink("/apple-touch-icon.png")} />
 <link rel="manifest" href={getNavLink("/site.webmanifest")} />
 <link rel="canonical" href={canonicalURL} />
-{hasMarkdownAlternate && (
-	<link rel="alternate" type="text/markdown" href={markdownAlternateUrl} />
-)}
+{hasMarkdownAlternate && <link rel="alternate" type="text/markdown" href={markdownAlternateUrl} />}
 
 {/* Primary Meta Tags */}
 <meta name="title" content={siteTitle} />
@@ -236,10 +235,11 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 <meta name="apple-mobile-web-app-title" content={siteInfo.title} />
 
 {/* Theme Colour */}
-<meta name="color-scheme" content="light dark" />
+<meta name="color-scheme" content={defaultPalette.scheme} />
 <meta name="theme-color" content={themeColor} />
 
-{/*
+{
+	/*
 	Social metadata. The Open Graph *text* tags are back; 061cb14 removed the
 	whole set along with og.png. A 1200x630 card would need a real text-bearing
 	image, and the site's only typeface is woff2 — which neither satori nor
@@ -247,7 +247,8 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 	this uses the 512 brand mark with a `summary` card, which is a valid and
 	honest representation. Swap in a 1200x630 card and change the two constants
 	below to switch to a large image.
-*/}
+*/
+}
 <meta property="og:type" content={articleDate ? "article" : "website"} />
 <meta property="og:title" content={siteTitle} />
 <meta property="og:description" content={metaDescription} />
@@ -264,7 +265,8 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 <meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={socialImage} />
 
-{/*
+{
+	/*
 	Pick the page ground before first paint so there is no flash.
 
 	This runs while the document is still being parsed, which is earlier than
@@ -273,19 +275,55 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 	resolves the reference. That is the whole trick, and it is why the colour
 	values only ever have to be written down in palette.css.
 
-	There is no stored palette choice to honour any more — the picker is gone and
-	Pastel is the only palette — so this is just a roll among its fifteen grounds,
-	stepping away from the last one this session showed.
-*/}
-<script is:inline define:vars={{ registry: palettes, defaultPalette: DEFAULT_PALETTE }}>
+	Which palette is in play is resolved here too, so the ground it rolls is one
+	of the right palette's. Precedence is the registry's: a `?palette=<id>` test
+	override (remembered in localStorage), then the stored choice, then the
+	build's configured default. `?palette=reset` clears the override.
+*/
+}
+<script
+	is:inline
+	define:vars={{
+		registry: palettes,
+		defaultPalette: DEFAULT_PALETTE,
+		storageKey: PALETTE_STORAGE_KEY,
+	}}
+>
 	(function () {
 		var el = document.documentElement;
 		var GROUND = "fl-ground";
 
-		var chosen = null;
-		for (var i = 0; i < registry.length; i++) {
-			if (registry[i].id === defaultPalette) chosen = registry[i];
+		function find(id) {
+			for (var i = 0; i < registry.length; i++) {
+				if (registry[i].id === id) return registry[i];
+			}
+			return null;
 		}
+
+		var chosen = null;
+
+		/* `?palette=<id>` wins and is remembered; `?palette=reset` forgets. */
+		try {
+			var param = new URLSearchParams(location.search).get("palette");
+			if (param === "reset") {
+				localStorage.removeItem(storageKey);
+			} else if (param) {
+				var fromParam = find(param);
+				if (fromParam) {
+					chosen = fromParam;
+					localStorage.setItem(storageKey, fromParam.id);
+				}
+			}
+		} catch (e) {}
+
+		if (!chosen) {
+			try {
+				var stored = localStorage.getItem(storageKey);
+				if (stored) chosen = find(stored);
+			} catch (e) {}
+		}
+
+		if (!chosen) chosen = find(defaultPalette);
 		if (!chosen) return;
 
 		el.setAttribute("data-palette", chosen.id);
@@ -299,7 +337,8 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 
 		/*
 		 * `data-theme-index` pins the ground for pages that have to look the same
-		 * on every build (the /NN entries). Everything else rolls a new ground.
+		 * on every build (the /NN entries). The default palette has one ground;
+		 * only explicit previews with multiple grounds rotate.
 		 */
 		var pinned = parseInt(el.getAttribute("data-theme-index"), 10);
 		var index;
@@ -376,14 +415,20 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 				src={`https://www.googletagmanager.com/gtag/js?id=${publicGaTrackingId}`}
 				defer
 			/>
-			<script type="text/partytown" define:vars={{ publicGaTrackingId }} defer>
-				window.dataLayer = window.dataLayer || [];
-				function gtag() {
-					dataLayer.push(arguments);
-				}
-				gtag("js", new Date());
-				gtag("config", publicGaTrackingId);
-			</script>
+			<script
+				is:inline
+				type="text/partytown"
+				define:vars={{ publicGaTrackingId }}
+				defer
+				set:html={`
+					window.dataLayer = window.dataLayer || [];
+					function gtag() {
+						dataLayer.push(arguments);
+					}
+					gtag("js", new Date());
+					gtag("config", publicGaTrackingId);
+				`}
+			/>
 		</>
 	)
 }

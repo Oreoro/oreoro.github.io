@@ -1,29 +1,79 @@
 /*
- * Focus Lab's palette.
+ * Focus Lab's palettes.
  *
  * signals-shell.css expresses the whole site through four role tokens:
  *
- *   --rgb-theme    the page background, rotated per page load
+ *   --rgb-theme    the page background, fixed for the default palette
  *   --rgb-ink      type, rules and surface washes
  *   --rgb-paper    the inverse of ink, for surfaces that flip
  *   --rgb-shadow   what an elevation shadow is cast in
  *
- * A palette is therefore just a table of those values. The inline script in
- * BaseHead.astro sets `data-palette` on <html> before first paint and picks a
- * `--rgb-theme-N` from the active palette, so the page colour is one attribute
- * and one custom property.
+ * A palette is therefore just a table of those values plus its grounds. The
+ * inline script in BaseHead.astro sets `data-palette` on <html> before first
+ * paint and picks a `--rgb-theme-N` from the active palette, so the page colour
+ * is one attribute and one custom property.
  *
- * There is one palette. The site briefly carried four behind an on-site picker;
- * Pastel is the one that stayed, and it is also what the page ground rolls
- * through on every load.
+ * `focuslab` is the stable, neutral default and the no-JS fallback. The previous
+ * palettes remain available for explicit previews without editing components.
+ * Book covers still read twelve tint tokens, independently of page grounds.
+ *
+ *   focuslab charcoal, soft-white type, and restrained forest-green accents
+ *   pastel   warm, chalky, low-contrast — the house look
+ *   apple    Apple.com: cool neutrals and soft system tints on near-black ink
+ *   notion   Notion: warm off-whites and the workspace pastel block colours
+ *   spartan  Michigan State: Spartan green ink, sage grounds, gold accent
+ *   ink      the dark one: deep, warm blacks with light type
+ *
+ * Testing a palette without a rebuild: append `?palette=<id>` to any URL. The
+ * pre-paint script honours it, remembers it under `fl-palette-dark-v2`,
+ * and falls back to the configured default when the id is unknown. `?palette=reset`
+ * clears the override. The default itself can be set for a whole build with the
+ * `PUBLIC_PALETTE` environment variable (see src/data/palettes.ts).
  *
  * Rules here are deliberately unlayered so they win over Tailwind's cascade
  * layers, the same trick minimal.css uses.
  */
 
-/* ---------- Pastel — the only palette ---------- */
-/* Warm, chalky, low-contrast grounds that all take the same near-black ink. */
+/* ---------- Focus Lab — the stable default ---------- */
 :root,
+:root[data-palette="focuslab"] {
+	color-scheme: dark;
+
+	--rgb-theme-1: 16, 19, 18; /* charcoal canvas #101312 */
+	--rgb-theme-2: 24, 29, 27; /* raised graphite #181d1b */
+	--rgb-theme-3: 34, 41, 37; /* active surface #222925 */
+	--rgb-theme-4: 21, 32, 27; /* deep forest surface #15201b */
+
+	/* Quiet book-cover variations, never rotating page backgrounds. */
+	--rgb-theme-5: var(--rgb-theme-2);
+	--rgb-theme-6: var(--rgb-theme-4);
+	--rgb-theme-7: var(--rgb-theme-3);
+	--rgb-theme-8: var(--rgb-theme-2);
+	--rgb-theme-9: var(--rgb-theme-4);
+	--rgb-theme-10: var(--rgb-theme-3);
+	--rgb-theme-11: var(--rgb-theme-2);
+	--rgb-theme-12: var(--rgb-theme-4);
+	--rgb-theme-13: var(--rgb-theme-3);
+	--rgb-theme-14: var(--rgb-theme-2);
+	--rgb-theme-15: var(--rgb-theme-1);
+
+	--rgb-ink: 236, 239, 235; /* soft white #ecefeb */
+	--rgb-paper: 16, 19, 18;
+	--rgb-accent: 164, 184, 172; /* muted sage #a4b8ac */
+	--rgb-action: 24, 69, 59; /* forest-green actions #18453b */
+	--rgb-shadow: 0, 0, 0;
+	--rgb-sheet: 24, 29, 27;
+	--rgb-sheet-ink: 236, 239, 235;
+
+	--ink-muted: 78%;
+	--ink-faint: 88%;
+	--radius-surface: 12px;
+	--radius-control: 6px;
+	--color-hairline: rgba(var(--rgb-ink), 0.14);
+}
+
+/* ---------- Pastel ---------- */
+/* Warm, chalky, low-contrast grounds that all take the same near-black ink. */
 :root[data-palette="pastel"] {
 	color-scheme: light;
 
@@ -53,6 +103,181 @@
 	--rgb-sheet-ink: 250, 247, 240;
 }
 
+/* ---------- Apple ---------- */
+/*
+ * Apple.com's restraint: a white page, a ladder of neutral greys, and its
+ * system tints used sparingly as grounds. Ink is Apple's near-black, the
+ * accent is system blue.
+ */
+:root[data-palette="apple"] {
+	color-scheme: light;
+
+	--rgb-theme-1: 255, 255, 255; /* white        #ffffff */
+	--rgb-theme-2: 245, 245, 247; /* apple-grey   #f5f5f7 */
+	--rgb-theme-3: 232, 232, 237; /* grey-100     #e8e8ed */
+	--rgb-theme-4: 234, 243, 255; /* blue-tint    #eaf3ff */
+	--rgb-theme-5: 231, 248, 239; /* green-tint   #e7f8ef */
+	--rgb-theme-6: 255, 240, 245; /* pink-tint    #fff0f5 */
+	--rgb-theme-7: 255, 246, 229; /* yellow-tint  #fff6e5 */
+	--rgb-theme-8: 240, 235, 255; /* purple-tint  #f0ebff */
+	--rgb-theme-9: 232, 247, 247; /* teal-tint    #e8f7f7 */
+	--rgb-theme-10: 207, 230, 255; /* blue-soft    #cfe6ff */
+	--rgb-theme-11: 214, 245, 227; /* green-soft   #d6f5e3 */
+	--rgb-theme-12: 255, 217, 232; /* pink-soft    #ffd9e8 */
+	--rgb-theme-13: 255, 233, 194; /* yellow-soft  #ffe9c2 */
+	--rgb-theme-14: 227, 217, 255; /* purple-soft  #e3d9ff */
+	--rgb-theme-15: 210, 210, 215; /* grey-200     #d2d2d7 */
+
+	--rgb-ink: 29, 29, 31;
+	--rgb-paper: 255, 255, 255;
+	--rgb-accent: 0, 113, 227;
+	--rgb-shadow: 29, 29, 31;
+
+	--rgb-sheet: 29, 29, 31;
+	--rgb-sheet-ink: 245, 245, 247;
+}
+
+/* ---------- Notion — preview ---------- */
+/*
+ * Notion's own values, taken from its light-mode colour table:
+ *
+ *   Default  text #373530  bg #FFFFFF
+ *   Gray     text #787774  bg #F1F1EF
+ *   Brown    text #976D57  bg #F3EEEE
+ *   Orange   text #CC782F  bg #F8ECDF
+ *   Yellow   text #C29343  bg #FAF3DD
+ *   Green    text #548164  bg #EEF3ED
+ *   Blue     text #487CA5  bg #E9F3F7
+ *   Purple   text #8A67AB  bg #F6F3F8
+ *   Pink     text #B35488  bg #F9F2F5
+ *   Red      text #C4554D  bg #FAECEC
+ *
+ * These are Notion's *text-highlight* backgrounds, which are nearly white. For a
+ * whole page they read as "no colour at all", so the grounds below instead come
+ * from the Notion DESIGN.md token set (see docs/NOTION-DESIGN.md): the pastel
+ * card tints first — peach, rose, mint, lavender, sky, yellow — which is the
+ * colourful half of Notion's marketing surfaces, then the neutral surfaces and
+ * hairlines. Ink is `charcoal` #37352F, the accent the signature purple
+ * `primary` #5645D4.
+ *
+ * The palette also sets Notion's geometry — 12px card radius, 8px control
+ * radius, and the warm #E5E3DF hairline — which the shell reads from
+ * `--radius-surface`, `--radius-control` and `--color-hairline`. The other
+ * palettes leave those at their defaults, so only Notion gets the geometry.
+ *
+ */
+:root[data-palette="notion"] {
+	color-scheme: light;
+
+	--rgb-theme-1: 246, 245, 244; /* surface           #f6f5f4 */
+	--rgb-theme-2: 255, 232, 212; /* tint peach        #ffe8d4 */
+	--rgb-theme-3: 253, 224, 236; /* tint rose         #fde0ec */
+	--rgb-theme-4: 217, 243, 225; /* tint mint         #d9f3e1 */
+	--rgb-theme-5: 230, 224, 245; /* tint lavender     #e6e0f5 */
+	--rgb-theme-6: 220, 236, 250; /* tint sky          #dcecfa */
+	--rgb-theme-7: 254, 247, 214; /* tint yellow       #fef7d6 */
+	--rgb-theme-8: 249, 231, 159; /* tint yellow bold  #f9e79f */
+	--rgb-theme-9: 248, 245, 232; /* tint cream        #f8f5e8 */
+	--rgb-theme-10: 240, 238, 236; /* tint gray         #f0eeec */
+	--rgb-theme-11: 214, 182, 246; /* brand purple 300  #d6b6f6 */
+	--rgb-theme-12: 229, 227, 223; /* hairline          #e5e3df */
+	--rgb-theme-13: 237, 233, 228; /* hairline soft     #ede9e4 */
+	--rgb-theme-14: 250, 250, 249; /* surface soft      #fafaf9 */
+	--rgb-theme-15: 255, 255, 255; /* canvas            #ffffff */
+
+	--rgb-ink: 55, 53, 47; /* charcoal    #37352f */
+	--rgb-paper: 255, 255, 255; /* canvas      #ffffff */
+	--rgb-accent: 86, 69, 212; /* primary     #5645d4 */
+	--rgb-shadow: 15, 15, 15;
+
+	--rgb-sheet: 10, 21, 48; /* brand navy  #0a1530 */
+	--rgb-sheet-ink: 255, 255, 255;
+
+	/*
+	 * Notion's darker grounds — brand-purple-300 (#d6b6f6) is the binding one —
+	 * put the shared 78% muted floor at 4.30:1, just under AA for normal text.
+	 * 82% clears it at 4.68:1 across every ground in this palette.
+	 */
+	--ink-muted: 82%;
+
+	/* Notion geometry: 12px cards, 8px controls, warm 1px hairlines. */
+	--radius-surface: 12px;
+	--radius-control: 8px;
+	--rgb-hairline: 229, 227, 223;
+	--color-hairline: rgb(var(--rgb-hairline));
+}
+
+/* ---------- Spartan ---------- */
+/*
+ * Michigan State, toned for a reading page: Spartan green (#18453B) as the ink
+ * and the accent, a family of sage and mint grounds, and a warm cream to break
+ * the green up. The grounds stay light enough that the deep green ink reads as
+ * near-black at the muted floor.
+ */
+:root[data-palette="spartan"] {
+	color-scheme: light;
+
+	--rgb-theme-1: 236, 242, 238; /* sage-mist    #ecf2ee */
+	--rgb-theme-2: 224, 235, 228; /* sage         #e0ebe4 */
+	--rgb-theme-3: 214, 229, 218; /* sage-deep    #d6e5da */
+	--rgb-theme-4: 240, 245, 240; /* green-white  #f0f5f0 */
+	--rgb-theme-5: 205, 222, 210; /* fern         #cdded2 */
+	--rgb-theme-6: 232, 239, 231; /* moss-light   #e8efe7 */
+	--rgb-theme-7: 219, 232, 222; /* moss         #dbe8de */
+	--rgb-theme-8: 226, 236, 225; /* lichen       #e2ece1 */
+	--rgb-theme-9: 209, 226, 214; /* pine-light   #d1e2d6 */
+	--rgb-theme-10: 244, 241, 230; /* cream        #f4f1e6 */
+	--rgb-theme-11: 236, 230, 214; /* cream-deep   #ece6d6 */
+	--rgb-theme-12: 199, 219, 205; /* pine         #c7dbcd */
+	--rgb-theme-13: 218, 231, 220; /* lichen-deep  #dae7dc */
+	--rgb-theme-14: 228, 238, 226; /* mint         #e4eee2 */
+	--rgb-theme-15: 196, 214, 200; /* evergreen    #c4d6c8 */
+
+	--rgb-ink: 20, 38, 32;
+	--rgb-paper: 255, 255, 255;
+	--rgb-accent: 24, 69, 59; /* Spartan green */
+	--rgb-shadow: 20, 38, 32;
+
+	--rgb-sheet: 24, 69, 59;
+	--rgb-sheet-ink: 240, 247, 242;
+}
+
+/* ---------- Ink — the dark one ---------- */
+/*
+ * A dark page built the same way as the light ones: light type over a deep
+ * ground, with a warm gold accent. `paper` is the inverse of `ink`, so the
+ * surfaces that flip (the download captions, the signup pill) stay legible.
+ * `--ink-muted`/`--ink-faint` need no special case — light ink over a dark
+ * ground clears AA comfortably at the shared floor.
+ */
+:root[data-palette="ink"] {
+	color-scheme: dark;
+
+	--rgb-theme-1: 26, 26, 29; /* charcoal     #1a1a1d */
+	--rgb-theme-2: 30, 29, 26; /* umber        #1e1d1a */
+	--rgb-theme-3: 23, 27, 31; /* midnight     #171b1f */
+	--rgb-theme-4: 28, 32, 30; /* pine-night   #1c201e */
+	--rgb-theme-5: 31, 28, 33; /* plum-night   #1f1c21 */
+	--rgb-theme-6: 35, 31, 26; /* coffee       #231f1a */
+	--rgb-theme-7: 24, 25, 27; /* graphite     #18191b */
+	--rgb-theme-8: 29, 30, 33; /* slate        #1d1e21 */
+	--rgb-theme-9: 27, 24, 22; /* espresso     #1b1816 */
+	--rgb-theme-10: 32, 30, 27; /* walnut       #201e1b */
+	--rgb-theme-11: 25, 29, 28; /* deep-teal    #191d1c */
+	--rgb-theme-12: 22, 24, 26; /* ink-black    #16181a */
+	--rgb-theme-13: 33, 29, 26; /* mahogany     #211d1a */
+	--rgb-theme-14: 26, 30, 29; /* deep-moss    #1a1e1d */
+	--rgb-theme-15: 30, 27, 31; /* aubergine    #1e1b1f */
+
+	--rgb-ink: 240, 237, 230;
+	--rgb-paper: 24, 24, 27;
+	--rgb-accent: 224, 179, 120;
+	--rgb-shadow: 0, 0, 0;
+
+	--rgb-sheet: 240, 237, 230;
+	--rgb-sheet-ink: 24, 24, 27;
+}
+
 /* Accent is only used for the few places a second colour earns its keep. */
 html body.signals-shell .content hr.ornament:before {
 	color: var(--color-accent);
@@ -60,4 +285,75 @@ html body.signals-shell .content hr.ornament:before {
 
 html body.signals-shell ::selection {
 	background: color-mix(in srgb, var(--color-accent) 26%, transparent);
+}
+
+/* Forest-green actions stay distinct from the quiet dark surfaces. */
+:root[data-palette="focuslab"] body.signals-shell .button:not(.button--ghost) {
+	background: rgb(var(--rgb-action));
+	border-color: var(--color-accent);
+	color: var(--color-ink) !important;
+}
+
+:root[data-palette="focuslab"] body.signals-shell .button:not(.button--ghost):hover,
+:root[data-palette="focuslab"] body.signals-shell .button:not(.button--ghost):focus-visible {
+	background: color-mix(in srgb, rgb(var(--rgb-action)) 88%, var(--color-ink));
+	border-color: var(--color-ink);
+}
+
+:root[data-palette="focuslab"] body.signals-shell a[aria-current="page"] {
+	color: var(--color-accent);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .nav__options a[aria-current="page"] {
+	color: var(--color-sheet-ink);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .product-card {
+	background: var(--color-theme-2);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .product-card:hover,
+:root[data-palette="focuslab"] body.signals-shell .product-card:focus-visible {
+	background: var(--color-theme-3);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .panel,
+:root[data-palette="focuslab"] body.signals-shell .cta-panel,
+:root[data-palette="focuslab"] body.signals-shell .pull {
+	background: var(--color-theme-4);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .signup {
+	background: var(--color-theme-2);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-surface);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .signup--inline {
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+}
+
+:root[data-palette="focuslab"] body.signals-shell .signup form {
+	background: var(--color-theme-1);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-control);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .signup form input[type="email"] {
+	background: transparent;
+	color: var(--color-ink);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .signup form input[type="email"]::placeholder {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .signup form.error input {
+	color: var(--color-error);
+}
+
+:root[data-palette="focuslab"] body.signals-shell .signup form .button {
+	border-radius: var(--radius-control);
 }

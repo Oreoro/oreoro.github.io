@@ -1,13 +1,13 @@
 /*
- * Focus Lab — an exact port of 37signals.com's stylesheet.
+ * Focus Lab — a 37signals-inspired editorial shell.
  *
  * Source: https://37signals.com/assets/css/{reset,root,fonts,elements,button,
  * page,boundary,header,nav,footer,cluster,signal,controller,origin,content,
  * thoughts,thought,jobs,books,downloads,signup}.css
  *
- * Class names, spacing tokens, gradients, hover/dim behaviour and the reveal
- * are reproduced 1:1. Rules are scoped to `html body.signals-shell` so they
- * win over the Notion content theme (minimal.css) without `!important` wars.
+ * The numbered stream and left-aligned pages follow the reference, with a
+ * separate reading size for Focus Lab's longer content. Rules are scoped to
+ * `html body.signals-shell` so they win over the Notion content theme.
  */
 
 /* ---------- fonts.css (exact 37signals.com font set) ---------- */
@@ -119,18 +119,18 @@
 	 *
 	 *   ink    — every piece of type, every rule, every surface wash
 	 *   paper  — the opposite of ink; used where a surface has to invert
-	 *   theme  — the page background itself, picked per load from the palette
+	 *   theme  — the page background itself, stable in the default palette
 	 *
 	 * The palettes live in palette.css (`[data-palette]`); the defaults here
-	 * are the warm pastel set.
+	 * use charcoal, soft-white ink, and muted green accents.
 	 */
 	--rgb-theme: var(--rgb-theme-1);
-	--rgb-ink: 35, 31, 26;
-	--rgb-paper: 255, 255, 255;
-	--rgb-accent: var(--rgb-theme-5);
-	--rgb-shadow: 35, 31, 26;
-	--rgb-sheet: 35, 31, 26;
-	--rgb-sheet-ink: 250, 247, 240;
+	--rgb-ink: 236, 239, 235;
+	--rgb-paper: 16, 19, 18;
+	--rgb-accent: 164, 184, 172;
+	--rgb-shadow: 0, 0, 0;
+	--rgb-sheet: 24, 29, 27;
+	--rgb-sheet-ink: 236, 239, 235;
 
 	/*
 	 * The floor for any *text* colour that is not full-strength ink.
@@ -179,61 +179,44 @@
 	--font-family: "Lab Grotesque", Sans-Serif;
 	--font-family-mono: "Lab Grotesque Mono", Monospace;
 
-	/*
-	 * One fluid size for every breakpoint. The old scale jumped from `1em + 1vw`
-	 * to `1.25em + 1vw` on desktop and multiplied it by up to 180% for a hero,
-	 * which is where the "everything is huge" feeling came from. This tops out
-	 * at 19px with a 178% ceiling — a 34px page title, not a 70px one.
-	 */
-	--font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
-	--font-size-x-small: 78%;
-	--font-size-small: 89%;
-	--font-size-large: 105%;
-	--font-size-x-large: 113%;
-	--font-size-xx-large: 124%;
-	--font-size-xxx-large: 146%;
-	--font-size-xxxx-large: 178%;
+	/* Display type follows the reference; prose has its own readable scale. */
+	--font-size: clamp(1.1875rem, 1rem + 1vw, 1.5rem);
+	--font-size-copy: clamp(1.0625rem, 0.9375rem + 0.5vw, 1.375rem);
+	--font-size-label: clamp(0.875rem, 0.8rem + 0.25vw, 1rem);
+	--font-size-x-small: max(0.8125rem, 75%);
+	--font-size-small: 85%;
+	--font-size-large: 115%;
+	--font-size-x-large: 125%;
+	--font-size-xx-large: 135%;
+	--font-size-xxx-large: 150%;
+	--font-size-xxxx-large: 160%;
 
-	--line-height: calc(1.35em + 0.4vw);
-	/*
-	 * Reading measure. `ch` resolves against the element's own body size.
-	 *
-	 * This was 39ch on a wide screen, which boxed every paragraph into a ~410px
-	 * strip with most of the viewport left empty — the single most common
-	 * complaint about the old layout. Prose now runs to a full 68ch, which at
-	 * the site's 19px body size is roughly 720px: a real line length, and wide
-	 * enough that a paragraph reads as a page rather than a sidebar.
-	 */
-	--measure: 68ch;
-	/*
-	 * A second, wider measure for blocks that are a *set* rather than a run of
-	 * prose — card grids, list shelves, ledgers. These are allowed to fill the
-	 * field and are broken into columns instead of being squeezed into one.
-	 */
-	--measure-wide: 100ch;
-	--spacing: 1em;
-	/* The extra left indent a sub-page picks up on a wide screen. */
+	--line-height: 1.3em;
+	--measure: min(65ch, 48rem);
+	--measure-headline: min(52ch, 56rem);
+	--measure-wide: min(108ch, 72rem);
+	--spacing: 0.75em;
 	--indent: 0ch;
-	/* Air under a heading: tight for prose, wider for a discrete block. */
-	--lead-in: calc(var(--line-height) * 0.8);
-	--lead-in-block: calc(var(--line-height) * 1.1);
+	--lead-in: calc(var(--line-height) * 0.7);
+	--lead-in-block: calc(var(--line-height) * 0.9);
 	--transition: 0.2s ease;
+
+	/*
+	 * Surface geometry. Defaults are the shell's original values; the Notion
+	 * palette overrides these with its own 12px cards, 8px controls and warm
+	 * #e5e3df hairline (see palette.css), so the Notion look only applies when
+	 * that palette is the one in play.
+	 */
+	--radius-surface: 0.3em;
+	--radius-control: 4px;
+	--color-hairline: rgba(var(--rgb-ink), 0.15);
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	:root {
-		--line-height: 1.35em;
-		/*
-		 * A wide screen gets a wider column, not a narrower one. The old
-		 * `39ch` here is what boxed the prose: 37signals' sub-pages are narrow
-		 * because their type is enormous relative to the column, and copying
-		 * the width without the type put a paragraph in a box. Ours steps in
-		 * from the gutter and keeps reading, and the set-style blocks
-		 * (--measure-wide) go further still and break into columns.
-		 */
-		--measure: 72ch;
-		--measure-wide: 108ch;
-		--indent: 2.8ch;
+		--font-size: clamp(1.75rem, 1.25rem + 1vw, 2.25rem);
+		--font-size-small: 65%;
+		--indent: 3.6ch;
 	}
 }
 
@@ -263,8 +246,14 @@ html body.signals-shell {
 	display: flex;
 	flex-direction: column;
 	font-family: var(--font-family) !important;
-	font-feature-settings: "liga", "ss02";
+	font-feature-settings: "liga", "kern", "ss02";
 	font-size: var(--font-size);
+	/* Real kerning rather than the browser's spacing guess, and no synthetic
+	   bold/italic: Lab Grotesque ships the whole 300–800 range, so a faux cut
+	   would only ever be a worse one. */
+	font-kerning: normal;
+	font-synthesis: none;
+	font-variant-ligatures: common-ligatures;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-style: normal;
@@ -275,30 +264,12 @@ html body.signals-shell {
 	max-width: none !important;
 	min-height: 100vh;
 	min-height: 100dvh;
-	opacity: 0;
 	overflow-x: hidden;
 	padding: 0 !important;
-	transition:
-		background-color 0.4s ease,
-		opacity 0.4s ease !important;
+	transition: background-color 0.4s ease !important;
 	width: 100% !important;
 	-webkit-tap-highlight-color: rgba(var(--rgb-ink), 0);
 	text-rendering: optimizeLegibility;
-}
-
-html body.signals-shell.is-ready {
-	opacity: 1;
-}
-
-/* No-JS / slow-script fallback: never leave the page invisible. */
-html body.signals-shell:not(.is-ready) {
-	animation: shell-force-visible 0s linear 2s forwards !important;
-}
-
-@keyframes shell-force-visible {
-	to {
-		opacity: 1;
-	}
 }
 
 html body.signals-shell ::selection {
@@ -386,7 +357,7 @@ html body.signals-shell table tbody tr:nth-of-type(odd) {
 html body.signals-shell table th,
 html body.signals-shell table td {
 	border: 2px solid var(--color-theme);
-	font-size: var(--font-size-small);
+	font-size: inherit;
 	letter-spacing: normal;
 	padding: 1.1em 1.3em;
 }
@@ -428,19 +399,20 @@ html body.signals-shell .font-size-xxx-large {
  * generic SaaS template, so the geometry is now the source site's.
  */
 html body.signals-shell .button {
+	align-items: center;
 	align-self: flex-start;
 	background: var(--color-ink);
 	border: 1px solid transparent;
-	border-radius: 4px;
+	border-radius: var(--radius-control);
 	color: var(--color-theme) !important;
 	cursor: pointer;
 	display: inline-flex;
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	font-weight: 500;
 	gap: 0.4em;
 	justify-content: center;
 	letter-spacing: normal;
-	min-height: 40px;
+	min-height: 44px;
 	min-width: 120px;
 	padding: 0.6em 1.1em 0.55em 1.1em;
 	text-decoration: none;
@@ -448,7 +420,8 @@ html body.signals-shell .button {
 		background-color var(--transition),
 		border-color var(--transition),
 		color var(--transition);
-	white-space: nowrap;
+	text-align: center;
+	white-space: normal;
 }
 
 html body.signals-shell .button span {
@@ -536,6 +509,7 @@ html body.signals-shell .page__body {
 html body.signals-shell .page__headline {
 	color: var(--color-ink);
 	gap: 0.6em;
+	max-width: var(--measure-headline);
 	position: relative;
 	z-index: 1;
 }
@@ -544,13 +518,14 @@ html body.signals-shell .page__headline h1,
 html body.signals-shell .page__headline h2 {
 	font-size: var(--font-size-xxxx-large);
 	font-weight: 700;
-	letter-spacing: -0.025em;
-	line-height: 1.05;
+	letter-spacing: -0.03em;
+	line-height: 1.08;
+	text-wrap: balance;
 }
 
 html body.signals-shell .page__headline .page__kicker {
 	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	font-size: var(--font-size-x-small);
+	font-size: var(--font-size-label);
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	line-height: 1.2;
@@ -560,12 +535,12 @@ html body.signals-shell .page__headline .page__kicker {
 /* The standfirst under the page title. */
 html body.signals-shell .page__headline > p:not(.page__kicker) {
 	color: color-mix(in srgb, var(--color-ink) 82%, transparent);
-	font-size: var(--font-size-large);
+	font-size: clamp(1.1875rem, 1rem + 1vw, 2rem);
 	line-height: 1.45;
 }
 
 html body.signals-shell .page__headline small {
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	font-weight: 700;
 }
 
@@ -582,7 +557,7 @@ html body.signals-shell .page__anchors {
 html body.signals-shell .page__anchors dl {
 	display: flex;
 	flex-direction: column;
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	font-weight: 700;
 	gap: 0.4em;
 	letter-spacing: normal;
@@ -598,7 +573,7 @@ html body.signals-shell .page__headline .page__anchors {
 
 html body.signals-shell .page__anchors dt {
 	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	font-size: var(--font-size-x-small);
+	font-size: var(--font-size-label);
 	letter-spacing: 0.1em;
 	margin-bottom: 0.9em;
 	text-transform: uppercase;
@@ -610,14 +585,13 @@ html body.signals-shell .page__anchors dd {
 	position: relative;
 }
 
-/* The jump links were 18px tall — a comfortable mouse target and a bad one for
-   a thumb. inline-block plus vertical padding takes them to a 24px minimum
-   without moving the type, which is what the surrounding list is set in. */
 html body.signals-shell .page__anchors dd a {
+	align-items: center;
 	color: var(--color-ink);
-	display: inline-block;
+	display: inline-flex;
 	line-height: 1.5;
-	padding: 0.25em 0;
+	min-height: 44px;
+	padding: 0.15em 0;
 	text-decoration: none;
 }
 
@@ -630,6 +604,7 @@ html body.signals-shell .page__anchors dd:before {
 	content: "\2193";
 	left: 0;
 	position: absolute;
+	top: 0.3em;
 	width: 2ch;
 }
 
@@ -639,7 +614,7 @@ html body.signals-shell :target {
 }
 
 html body.signals-shell .page__content {
-	margin: 3.7em 0;
+	margin: 2.2em 0;
 }
 
 html body.signals-shell .page__back {
@@ -655,14 +630,7 @@ html body.signals-shell .page__actions {
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	html body.signals-shell .page {
-		/*
-		 * A sub-page is one column, anchored to the left gutter and stepped in by
-		 * --indent, with the rest of the viewport left as a field of colour.
-		 * Nothing is centred, and the title sits above the copy rather than
-		 * beside it — the shape 37signals.com uses on /jobs, /policies and
-		 * /thoughts. The column is wide enough to read on, though: it runs to
-		 * --measure, not the 39ch that used to box every paragraph.
-		 */
+		/* Match the stream's label column, with the title above the copy. */
 		margin-left: calc(var(--spacing) + var(--indent));
 		margin-right: var(--spacing);
 		margin-top: max(22.2vh, 5.4em);
@@ -676,28 +644,22 @@ html body.signals-shell .page__actions {
 		height: calc(3.7em + var(--spacing));
 	}
 
-	/* The title block and the jump list take the reading measure, so the
-	   standfirst sits in the same box as the prose it introduces. */
-	html body.signals-shell .page__headline,
+	html body.signals-shell .page__headline {
+		max-width: var(--measure-headline);
+	}
+
 	html body.signals-shell .page__anchors,
 	html body.signals-shell .page__body,
 	html body.signals-shell .page__content {
 		max-width: var(--measure);
 	}
 
-	/*
-	 * Set-style blocks opt out of the reading measure entirely and take the
-	 * wide one. These are lists of short items, not running prose: they read
-	 * better broken into columns, and letting them fill the field is what stops
-	 * /books, /thoughts, /jobs and /policies from reading as a boxed list with
-	 * an empty right half.
-	 */
+	/* Collections can use a wider shelf without stretching prose. */
 	html body.signals-shell .page > .product-cards,
 	html body.signals-shell .page > .stack__items,
 	html body.signals-shell .page > .gallery-grid,
 	html body.signals-shell .page > .thoughts,
 	html body.signals-shell .page > .books,
-	html body.signals-shell .page > .jobs,
 	html body.signals-shell .page > .policies,
 	html body.signals-shell .page > .downloads,
 	html body.signals-shell .page > .ledger,
@@ -706,88 +668,9 @@ html body.signals-shell .page__actions {
 	}
 
 	html body.signals-shell .page.page--wide {
-		display: flex;
-		margin-left: var(--spacing);
-		margin-right: auto;
+		margin-left: calc(var(--spacing) + var(--indent));
+		margin-right: var(--spacing);
 		max-width: 72rem;
-	}
-}
-
-/*
- * The last of the "boxed paragraph" fix.
- *
- * Widening the measure from 39ch to 72ch made the prose readable, but on a
- * 1440px screen the page was still one column in the left half with a dead
- * field of colour beside it — which is what people were describing as boxed.
- *
- * So on a genuinely wide screen the sub-page becomes a two-column editorial
- * page: the title block stands in a narrow left column, the body runs in a
- * full measure beside it. Together they fill roughly 100ch, which is most of
- * a desktop viewport, and every individual line is still a sane length.
- *
- * The headline sticks, so scrolling a long shelf (books, thoughts) keeps the
- * title and the jump list on screen. It stops sticking well before the footer,
- * so it never sits on top of it.
- *
- * `.page--wide` is excluded: /products already runs its own full-bleed
- * layout, and the podcast page does not use `.page` at all.
- */
-@media (min-width: 88em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .page:not(.page--wide) {
-		align-items: start;
-		column-gap: calc(var(--line-height) * 1.5);
-		display: grid;
-		grid-template-columns: minmax(0, 26ch) minmax(0, 1fr);
-		/* 26ch of title column, one gutter, and the full reading measure. */
-		max-width: calc(26ch + var(--line-height) * 1.5 + var(--measure));
-	}
-
-	html body.signals-shell .page:not(.page--wide) > .page__headline {
-		grid-column: 1;
-		grid-row: 1;
-		max-width: none;
-		/* Clears the fixed header, and stops before the fixed footer. */
-		position: sticky;
-		top: max(12vh, 5em);
-	}
-
-	html body.signals-shell .page:not(.page--wide) > :not(.page__headline) {
-		grid-column: 2;
-		grid-row: 1;
-	}
-
-	html body.signals-shell .page:not(.page--wide) > .page__body,
-	html body.signals-shell .page:not(.page--wide) > .page__content {
-		max-width: var(--measure);
-	}
-
-	/*
-	 * Set-style pages get a much wider right-hand column, because their content
-	 * is grids rather than prose. /books in a 72ch column fell back to a single
-	 * very long column of book entries; in 104ch it breaks into two, which is
-	 * what the layout was for.
-	 */
-	html
-		body.signals-shell
-		.page:not(.page--wide):is(
-			:has(> .books),
-			:has(> .thoughts),
-			:has(> .jobs),
-			:has(> .policies),
-			:has(> .stack),
-			:has(> .downloads)
-		) {
-		grid-template-columns: minmax(0, 22ch) minmax(0, 1fr);
-		max-width: calc(22ch + var(--line-height) * 1.5 + 104ch);
-	}
-
-	html body.signals-shell .page:not(.page--wide) > .thoughts,
-	html body.signals-shell .page:not(.page--wide) > .books,
-	html body.signals-shell .page:not(.page--wide) > .jobs,
-	html body.signals-shell .page:not(.page--wide) > .policies,
-	html body.signals-shell .page:not(.page--wide) > .stack,
-	html body.signals-shell .page:not(.page--wide) > .downloads {
-		max-width: none;
 	}
 }
 
@@ -867,7 +750,7 @@ html body.signals-shell .brand__mark {
 }
 
 html body.signals-shell .brand__word {
-	font-size: 1.15rem;
+	font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
 	font-weight: 700;
 	letter-spacing: -0.03em;
 	line-height: 1;
@@ -900,20 +783,12 @@ html body.signals-shell .header ul li {
 }
 
 html body.signals-shell .header ul li a {
+	align-items: center;
+	display: inline-flex;
+	min-height: 44px;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 	text-decoration: none;
-}
-
-/* The primary links in the header and the footer are the only navigation on a
-   phone, and they were 14px tall. Vertical padding takes each to the 24px
-   minimum without moving the type; the fixed header grows by 10px to suit. */
-@media not all and (min-width: 64em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .header ul li a,
-	html body.signals-shell .footer ul li a {
-		padding-bottom: 0.4em;
-		padding-top: 0.4em;
-	}
 }
 
 html body.signals-shell .header ul li:first-child {
@@ -926,7 +801,8 @@ html body.signals-shell .header ul li:first-child {
 	}
 
 	html body.signals-shell .header ul li a:hover,
-	html:not(.pointer-focus) body.signals-shell .header ul li a:focus {
+	html:not(.pointer-focus) body.signals-shell .header ul li a:focus,
+	html body.signals-shell .header ul li a[aria-current="page"] {
 		text-decoration: underline;
 	}
 }
@@ -991,20 +867,19 @@ html:not(.pointer-focus) body.signals-shell .nav-active:focus-visible ~ .nav__to
 	outline-offset: 2px;
 }
 
-html body.signals-shell .nav-active:checked ~ .nav-underlay {
+html body.signals-shell:has(.nav-active:checked) .nav-underlay {
 	display: block;
 }
 
-/* The checkbox is inside the <nav> now, so nothing may be styled with a
-   `~ .nav ...` combinator any more: `.nav` is the checkbox's parent, not its
-   sibling, and every such rule silently stopped matching. The sheet's own
-   surface uses `:has()`; the logo, toggle and options are still siblings of
-   the checkbox, so they keep a plain `~`. This is worth a screenshot on any
-   future change here — axe and the contrast sweep both pass with a sheet that
-   has lost its background. */
+/* The backdrop stays outside the sheet's stacking context, below its dark
+   surface and links. The checkbox lives inside the sheet, so both open states
+   use :has(); its logo, toggle and options still use sibling selectors. */
 html body.signals-shell .nav:has(.nav-active:checked) {
 	background: var(--color-sheet);
 	border-radius: 0 0 var(--spacing) var(--spacing);
+	max-height: 100dvh;
+	overflow-y: auto;
+	overscroll-behavior: contain;
 	pointer-events: auto;
 }
 
@@ -1021,7 +896,7 @@ html body.signals-shell .nav-active:checked ~ .nav__options {
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
-	html body.signals-shell .nav-active:checked ~ .nav-underlay,
+	html body.signals-shell:has(.nav-active:checked) .nav-underlay,
 	html body.signals-shell .nav:has(.nav-active:checked) {
 		display: none;
 	}
@@ -1086,13 +961,14 @@ html body.signals-shell .nav__toggle label {
 	display: flex;
 	justify-content: flex-start;
 	line-height: var(--line-height);
+	min-height: 64px;
 	padding: var(--spacing);
 	pointer-events: auto;
 }
 
 html body.signals-shell .nav__toggle label span {
 	color: var(--color-ink);
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-label);
 	font-weight: 700;
 	letter-spacing: normal;
 }
@@ -1112,13 +988,15 @@ html body.signals-shell .nav__options > ul {
 }
 
 html body.signals-shell .nav__options > ul li {
+	font-size: var(--font-size-copy);
 	font-weight: 700;
 }
 
-/* Same problem in the sheet: 14px tall, one per row, and the only way out of
-   the menu on a phone. 0.5em either side of the line puts each row at 24px. */
 html body.signals-shell .nav__options > ul li a {
+	align-items: center;
 	color: var(--color-sheet-ink);
+	display: flex;
+	min-height: 44px;
 	padding: 0.3em 0;
 	text-decoration: none;
 }
@@ -1131,7 +1009,7 @@ html body.signals-shell .nav__options > ul:last-child {
 }
 
 html body.signals-shell .nav__options > ul:last-child li {
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	letter-spacing: normal;
 	line-height: var(--line-height);
 }
@@ -1170,7 +1048,10 @@ html body.signals-shell .footer {
 html body.signals-shell .footer ul {
 	display: none;
 	flex: 1;
+	flex-wrap: wrap;
 	line-height: var(--line-height);
+	margin-right: auto;
+	max-width: calc(100% - 4em);
 	padding-bottom: var(--spacing);
 	padding-left: var(--spacing);
 	pointer-events: auto;
@@ -1178,12 +1059,15 @@ html body.signals-shell .footer ul {
 
 html body.signals-shell .footer ul li {
 	align-items: center;
-	font-size: var(--font-size-small);
+	font-size: clamp(0.9375rem, 0.75rem + 0.65vw, 1.375rem);
 	font-weight: 700;
 	letter-spacing: normal;
 }
 
 html body.signals-shell .footer ul li a {
+	align-items: center;
+	display: inline-flex;
+	min-height: 44px;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 	text-decoration: none;
@@ -1224,7 +1108,8 @@ html body.signals-shell .footer__next a:after {
 	}
 
 	html body.signals-shell .footer ul li a:hover,
-	html:not(.pointer-focus) body.signals-shell .footer ul li a:focus {
+	html:not(.pointer-focus) body.signals-shell .footer ul li a:focus,
+	html body.signals-shell .footer ul li a[aria-current="page"] {
 		text-decoration: underline;
 	}
 
@@ -1248,6 +1133,10 @@ html body.signals-shell .cluster--index {
 }
 
 html body.signals-shell .cluster--signal .signal {
+	display: none;
+}
+
+html body.signals-shell .cluster--signal:not(.cluster--loaded) {
 	display: none;
 }
 
@@ -1322,6 +1211,15 @@ html body.signals-shell .signal {
 	position: relative;
 }
 
+html body.signals-shell .cluster--signal .signal.signal--select {
+	display: grid;
+	grid-template-columns: 3.6ch minmax(0, 1fr);
+}
+
+html body.signals-shell .signal__header {
+	grid-column: 1 / -1;
+}
+
 html body.signals-shell .signal__header dl,
 html body.signals-shell .signal__header h2 {
 	display: flex;
@@ -1346,6 +1244,7 @@ html body.signals-shell .signal__header h2 span {
 html body.signals-shell .signal__header dl dd,
 html body.signals-shell .signal__header h2 strong {
 	flex: 1;
+	min-width: 0;
 	transition: opacity var(--transition);
 	width: auto;
 }
@@ -1360,6 +1259,7 @@ html body.signals-shell .signal__header a {
 	display: flex;
 	gap: 0.75em;
 	letter-spacing: -0.01em;
+	min-height: 44px;
 	pointer-events: auto;
 	text-decoration: none;
 	transition: color var(--transition);
@@ -1377,24 +1277,14 @@ html body.signals-shell .signal__date {
 }
 
 html body.signals-shell .signal__content {
-	/* Indented to the label column, which is now 3.6ch of number plus the
-	   dl's own 0.75em gap. */
-	margin-left: calc(3.6ch + 0.75em);
-	margin-top: 0.5em;
-	/* Was 50ch, which boxed every entry body into a narrow strip. Running
-	   prose wants the full reading measure. */
+	grid-column: 2;
+	margin-top: 0.8em;
 	max-width: var(--measure);
 	pointer-events: auto;
 }
 
-/*
- * The body of an entry is the whole point of the page, so it is set at the
- * body size rather than the small size every other `.content` block uses.
- * Leaving it at --font-size-small made the prose render smaller than the
- * index labels above it.
- */
 html body.signals-shell .signal--select .signal__content {
-	font-size: var(--font-size);
+	font-size: var(--font-size-copy);
 }
 
 html body.signals-shell .signal__content > * + * {
@@ -1402,10 +1292,17 @@ html body.signals-shell .signal__content > * + * {
 }
 
 html body.signals-shell .signal--clone {
-	display: none;
+	display: grid;
+	grid-template-columns: 3.6ch minmax(0, 1fr);
+	margin: 7.4em var(--spacing) 4.5em;
 }
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+	html body.signals-shell .signal--clone {
+		margin-bottom: 44.4vh;
+		margin-top: max(22.2vh, 5.4em);
+	}
+
 	html body.signals-shell .signal:hover,
 	html body.signals-shell .signal:focus,
 	html body.signals-shell .signal:focus-within {
@@ -1439,7 +1336,7 @@ html body.signals-shell .signal__header dl dd {
 
 html body.signals-shell .signal__meta {
 	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	font-weight: 400;
 	letter-spacing: normal;
 	white-space: nowrap;
@@ -1453,7 +1350,7 @@ html body.signals-shell .signal__meta {
 
 html body.signals-shell .entry__meta {
 	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-label);
 	font-weight: 700;
 	letter-spacing: normal;
 	text-transform: uppercase;
@@ -1556,8 +1453,9 @@ html body.signals-shell .origin--overlap {
 /* ---------- content.css ---------- */
 
 html body.signals-shell .content {
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	letter-spacing: normal;
+	line-height: 1.5;
 }
 
 /* No widows and orphans: a paragraph should never end on a single short line. */
@@ -1635,13 +1533,13 @@ html body.signals-shell .content h6 + :is(ul, ol, table, blockquote, dl) {
  * descend cleanly.
  */
 html body.signals-shell .content h1 {
-	font-size: var(--font-size-xxx-large);
-	letter-spacing: -0.02em;
+	font-size: var(--font-size-xxxx-large);
+	letter-spacing: -0.025em;
 	line-height: 1.1;
 }
 
 html body.signals-shell .content h2 {
-	font-size: var(--font-size-xx-large);
+	font-size: var(--font-size-xxx-large);
 	letter-spacing: -0.015em;
 	line-height: 1.15;
 }
@@ -1666,7 +1564,7 @@ html body.signals-shell .content h4 {
 
 html body.signals-shell .content h5,
 html body.signals-shell .content h6 {
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-label);
 	letter-spacing: 0.04em;
 	line-height: 1.3;
 	text-transform: uppercase;
@@ -1776,7 +1674,7 @@ html body.signals-shell .numbered__title {
 /* The optional second line under a numbered title — a one-phrase qualifier. */
 html body.signals-shell .numbered__note {
 	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-label);
 	font-weight: 700;
 	letter-spacing: 0.02em;
 }
@@ -1789,7 +1687,8 @@ html body.signals-shell .numbered__note {
 html body.signals-shell .panel {
 	align-self: flex-start;
 	background: rgba(var(--rgb-ink), 0.08);
-	border-radius: 0.3em;
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-surface);
 	display: flex;
 	flex-direction: column;
 	padding: 1.3em 1.6em;
@@ -1835,14 +1734,14 @@ html body.signals-shell .panel__actions {
 html body.signals-shell .ledger {
 	background: rgba(var(--rgb-ink), 0.08);
 	border-collapse: collapse;
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	letter-spacing: normal;
 	width: 100%;
 }
 
 html body.signals-shell .ledger th,
 html body.signals-shell .ledger td {
-	border: 2px solid var(--color-theme) !important;
+	border: 1px solid var(--color-hairline) !important;
 	padding: 1.1em 1.3em;
 	text-align: left;
 	vertical-align: top;
@@ -1953,6 +1852,24 @@ html body.signals-shell .content ol li:before {
 	width: 2em;
 }
 
+/* The numbered list owns its marker and spacing, not the generic <ol>. */
+html body.signals-shell .content ol.numbered {
+	counter-reset: numbered;
+	padding-left: 0;
+}
+
+html body.signals-shell .content ol.numbered > li + li {
+	margin-top: var(--flow-space);
+}
+
+html body.signals-shell .content ol.numbered > li:before {
+	counter-increment: numbered;
+	content: counter(numbered, decimal-leading-zero) ".";
+	margin: 0;
+	text-align: left;
+	width: 2.8ch;
+}
+
 html body.signals-shell .content code {
 	background: rgba(var(--rgb-ink), 0.2);
 	border: 1px solid rgba(var(--rgb-ink), 0.2);
@@ -2026,7 +1943,7 @@ html body.signals-shell .thoughts__group-title {
 
 html body.signals-shell .thoughts__count {
 	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-label);
 	font-weight: 700;
 	letter-spacing: normal;
 }
@@ -2034,7 +1951,7 @@ html body.signals-shell .thoughts__count {
 html body.signals-shell .thoughts__container {
 	display: flex;
 	flex-direction: column;
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	gap: calc(var(--line-height) * 1.5);
 	letter-spacing: normal;
 	margin-bottom: calc(var(--line-height) * 1.2);
@@ -2079,7 +1996,7 @@ html body.signals-shell .thoughts .signup {
 	html body.signals-shell .thoughts__container {
 		display: grid;
 		column-gap: 3.7em;
-		grid-template-columns: repeat(auto-fill, minmax(26em, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 22em), 1fr));
 		row-gap: calc(var(--line-height) * 1.2);
 	}
 
@@ -2124,13 +2041,13 @@ html body.signals-shell .thought .signup {
 html body.signals-shell .jobs {
 	display: flex;
 	flex-direction: column;
-	max-width: var(--measure-wide);
+	max-width: 48rem;
 }
 
 html body.signals-shell .jobs__container {
 	display: flex;
 	flex-direction: column;
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	gap: calc(var(--line-height) * 2);
 	letter-spacing: normal;
 	margin-bottom: 3.7em;
@@ -2259,7 +2176,7 @@ html body.signals-shell .books {
 }
 
 html body.signals-shell .books__container {
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	letter-spacing: normal;
 	margin-bottom: 3.7em;
 	margin-top: 3.7em;
@@ -2322,10 +2239,9 @@ html body.signals-shell .thoughts__thought h3 a {
 html body.signals-shell .book-cover {
 	aspect-ratio: 3 / 4;
 	background: rgb(var(--book-tint, var(--rgb-theme)));
-	border-radius: 0.3em;
-	box-shadow:
-		0 0 0 1px rgba(var(--rgb-shadow), 0.08),
-		0 0.4em 1.6em -0.8em rgba(var(--rgb-shadow), 0.35);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-surface);
+	box-shadow: 0 0.4em 1.6em -0.8em rgba(var(--rgb-shadow), 0.35);
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -2351,7 +2267,7 @@ html body.signals-shell .book-cover__title {
 	html body.signals-shell .books__book figure {
 		align-self: flex-start;
 		max-width: none;
-		width: 12em;
+		width: 7em;
 	}
 
 	html body.signals-shell .books__wrap {
@@ -2381,7 +2297,7 @@ html body.signals-shell .book-cover__title {
 	html body.signals-shell .books__container {
 		column-gap: 3.7em;
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(24em, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 23em), 1fr));
 		row-gap: calc(var(--line-height) * 1.6);
 	}
 
@@ -2424,10 +2340,10 @@ html body.signals-shell .signup form {
 html body.signals-shell .signup form input[type="email"] {
 	appearance: none;
 	border: none;
-	color: rgba(var(--rgb-paper), 0.75);
+	color: var(--color-paper);
 	flex: 1;
 	font-family: var(--font-family-mono);
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	line-height: 1;
 	margin-right: 0.25em;
 	min-width: 0;
@@ -2436,7 +2352,7 @@ html body.signals-shell .signup form input[type="email"] {
 }
 
 html body.signals-shell .signup form input[type="email"]::placeholder {
-	color: rgba(var(--rgb-paper), 0.4);
+	color: color-mix(in srgb, var(--color-paper) 78%, transparent);
 }
 
 html body.signals-shell .signup form.error input {
@@ -2570,7 +2486,7 @@ html body.signals-shell .product__hero {
 
 html body.signals-shell .product__kicker {
 	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-label);
 	font-weight: 700;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -2589,14 +2505,14 @@ html body.signals-shell .product__tagline {
 }
 
 html body.signals-shell .product__summary {
-	font-size: var(--font-size-large);
+	font-size: var(--font-size-copy);
 	line-height: 1.45;
 	max-width: var(--measure);
 }
 
 html body.signals-shell .product__pricing {
 	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 }
 
 html body.signals-shell .product__actions {
@@ -2607,7 +2523,16 @@ html body.signals-shell .product__actions {
 }
 
 html body.signals-shell .product__section {
+	font-size: var(--font-size-copy);
+	line-height: 1.5;
 	margin-bottom: 3.7em;
+	max-width: var(--measure);
+}
+
+html body.signals-shell .product__section > h2 {
+	font-size: var(--font-size-xxx-large);
+	letter-spacing: -0.02em;
+	line-height: 1.15;
 }
 
 html body.signals-shell .product__section > h2 {
@@ -2649,12 +2574,12 @@ html body.signals-shell .product__feature:before {
 }
 
 html body.signals-shell .product__feature h3 {
-	font-size: var(--font-size);
+	font-size: var(--font-size-large);
 	line-height: var(--line-height);
 }
 
 html body.signals-shell .product__feature p {
-	font-size: var(--font-size);
+	font-size: inherit;
 	letter-spacing: normal;
 	margin: 0;
 }
@@ -2664,7 +2589,7 @@ html body.signals-shell .product__feature p {
    we do offer. */
 html body.signals-shell .product__section-note {
 	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	margin-top: -0.4em;
 }
 
@@ -2677,7 +2602,7 @@ html body.signals-shell .product__not {
 
 html body.signals-shell .product__not li {
 	border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 20%, transparent);
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-copy);
 	letter-spacing: normal;
 	padding: 0.8em 0 0.8em 1.6em;
 	position: relative;
@@ -2716,11 +2641,13 @@ html body.signals-shell .product-cards {
 html body.signals-shell .product-card {
 	background: rgba(var(--rgb-ink), 0.06);
 	border: 1px solid rgba(var(--rgb-ink), 0.14);
-	border-radius: 0.5em;
+	border-radius: var(--radius-surface);
 	color: var(--color-ink);
 	display: flex;
 	flex-direction: column;
+	font-size: var(--font-size-copy);
 	gap: 0.6em;
+	line-height: 1.5;
 	padding: 1.4em 1.5em;
 	text-decoration: none;
 	transition:
@@ -2765,12 +2692,12 @@ html body.signals-shell .product-card__tagline {
 
 html body.signals-shell .product-card__summary {
 	color: color-mix(in srgb, var(--color-ink) var(--ink-faint), transparent);
-	font-size: var(--font-size-small);
+	font-size: inherit;
 	margin: 0;
 }
 
 html body.signals-shell .product-card__cta {
-	font-size: var(--font-size-small);
+	font-size: inherit;
 	font-weight: 700;
 	margin-top: auto;
 	padding-top: 0.4em;
@@ -2817,6 +2744,18 @@ html body.signals-shell .cta-panel {
 	border: 1px solid rgba(var(--rgb-ink), 0.16);
 	border-radius: 0.4em;
 	background: rgba(var(--rgb-ink), 0.06);
+}
+
+html body.signals-shell .product > hr.ornament {
+	font-size: var(--font-size-copy);
+	height: auto;
+	margin-bottom: 2.6em;
+}
+
+html body.signals-shell .product > hr.ornament::before {
+	content: "***";
+	font-size: var(--font-size-xx-large);
+	letter-spacing: 0.15em;
 }
 
 html body.signals-shell .cta-panel p {
@@ -3032,11 +2971,6 @@ html body.signals-shell .thought__content.content {
 		transition-duration: 0.001ms !important;
 		scroll-behavior: auto !important;
 	}
-
-	html body.signals-shell:not(.is-ready) {
-		animation: none !important;
-		opacity: 1 !important;
-	}
 }
 
 /*
@@ -3072,6 +3006,11 @@ html:not(.pointer-focus) body.signals-shell summary:focus-visible {
 	border-radius: 2px;
 	outline: 2px solid var(--color-ink);
 	outline-offset: 2px;
+}
+
+html:not(.pointer-focus) body.signals-shell .nav:has(.nav-active:checked) a:focus-visible,
+html:not(.pointer-focus) body.signals-shell .nav-active:checked:focus-visible ~ .nav__toggle label {
+	outline-color: var(--color-sheet-ink);
 }
 
 /* Pointer input: no focus ring (author or UA) on anything clickable. */

@@ -16,8 +16,10 @@ html body.signals-shell .broadsheet {
 	--podcast-muted: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
 	--podcast-surface: rgba(var(--rgb-ink), 0.08);
 	display: grid;
+	font-size: var(--font-size-copy);
 	gap: var(--line-height);
 	grid-template-columns: minmax(0, 1fr);
+	line-height: 1.5;
 	margin: 7.4em var(--spacing) 7.4em var(--spacing);
 }
 
@@ -57,7 +59,7 @@ html body.signals-shell .masthead__sub {
 
 html body.signals-shell .podcast__summary {
 	color: var(--podcast-muted);
-	font-size: var(--font-size-small);
+	font-size: inherit;
 	margin: 0;
 }
 
@@ -75,7 +77,7 @@ html body.signals-shell .podcast__section-title {
 	align-items: center;
 	cursor: pointer;
 	display: flex;
-	font-size: var(--font-size-small);
+	font-size: inherit;
 	font-weight: 700;
 	gap: 0.4em;
 	list-style: none;
@@ -106,7 +108,7 @@ html body.signals-shell .podcast__tags {
 
 html body.signals-shell .podcast__section > p {
 	color: var(--podcast-muted);
-	font-size: var(--font-size-small);
+	font-size: inherit;
 }
 
 html body.signals-shell .podcast__subscribe {
@@ -121,7 +123,7 @@ html body.signals-shell .podcast__subscribe a {
 	background: var(--podcast-surface);
 	border: 1px solid var(--podcast-border);
 	border-radius: 1em;
-	font-size: var(--font-size-x-small);
+	font-size: var(--font-size-label);
 	font-weight: 500;
 	letter-spacing: normal;
 	padding: 0.3em 0.85em;
@@ -136,7 +138,7 @@ html:not(.pointer-focus) body.signals-shell .podcast__subscribe a:focus-visible 
 html body.signals-shell .podcast__tags {
 	display: flex;
 	flex-wrap: wrap;
-	font-size: var(--font-size-x-small);
+	font-size: var(--font-size-label);
 	gap: 0.4em;
 }
 
@@ -182,7 +184,7 @@ html body.signals-shell .broadsheet__episodes {
 	align-items: start;
 	display: grid;
 	gap: 1.5em;
-	grid-template-columns: repeat(auto-fill, minmax(16em, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 16em), 1fr));
 }
 
 html body.signals-shell .episode {
@@ -197,7 +199,7 @@ html body.signals-shell .episode.--featured {
 
 html body.signals-shell .episode__preface {
 	color: var(--podcast-muted);
-	font-size: var(--font-size-x-small);
+	font-size: var(--font-size-label);
 	font-weight: 700;
 	letter-spacing: normal;
 	margin: 0 0 var(--spacing) 0;
@@ -211,7 +213,7 @@ html body.signals-shell .episode__mast {
 html body.signals-shell .episode__number {
 	color: var(--podcast-muted);
 	display: block;
-	font-size: var(--font-size-x-small);
+	font-size: var(--font-size-label);
 	font-weight: 400;
 	letter-spacing: normal;
 	margin-bottom: 0.5em;
@@ -239,7 +241,7 @@ html body.signals-shell .--featured .episode__title {
 
 html body.signals-shell .episode__summary {
 	color: rgba(var(--rgb-ink), 0.85);
-	font-size: var(--font-size-small);
+	font-size: inherit;
 	margin: 0 0 0.6em 0;
 	max-width: 46ch;
 }
@@ -249,7 +251,7 @@ html body.signals-shell .--featured .episode__summary {
 }
 
 html body.signals-shell .episode__permalink {
-	font-size: var(--font-size-small);
+	font-size: inherit;
 	margin: 0;
 }
 
@@ -317,7 +319,7 @@ html body.signals-shell .episode.--perma .episode__title {
 }
 
 html body.signals-shell .episode__content {
-	font-size: var(--font-size-small);
+	font-size: inherit;
 	letter-spacing: normal;
 	max-width: 46ch;
 }
@@ -339,18 +341,19 @@ html body.signals-shell .episode__tags {
 
 @media (min-width: 64em) and (hover: hover) and (pointer: fine) {
 	html body.signals-shell .broadsheet {
-		gap: calc(var(--line-height) * 2.5);
-		grid-template-columns: 16em minmax(0, 1fr);
+		gap: clamp(2rem, 5vw, 5rem);
+		grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
 		margin-left: 2.8ch;
 		margin-right: 2.8ch;
+		margin-top: max(22.2vh, 5.4em);
 	}
 
 	html body.signals-shell .broadsheet__sidebar {
 		align-self: start;
-		max-height: calc(100vh - 9em);
+		max-height: calc(100dvh - 12rem);
 		overflow-y: auto;
 		padding-right: var(--spacing);
 		position: sticky;
-		top: 7.4em;
+		top: 6rem;
 	}
 }
