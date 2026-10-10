@@ -353,7 +353,7 @@ export const policies: Policy[] = [
 		slug: "updates",
 		title: "Policy Updates",
 		intro:
-			"If you would like to receive policy updates, sign up below. We will never share your email, or use it for any other purpose.",
+			"If you would like to receive policy updates, request them by email below. Prepare a draft, then open it and send it from your email app. We will never share your email, or use it for any other purpose.",
 		sections: [],
 	},
 ];

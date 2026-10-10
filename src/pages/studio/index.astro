@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import Arrow from "@/components/ui/Arrow.astro";
 import PageAnchors from "@/components/layout/PageAnchors.astro";
 import { products } from "@/data/products";
 import { getNavLink } from "@/lib/blog-helpers";
@@ -124,7 +125,7 @@ import { site } from "@/data/focuslab";
 					</p>
 				</div>
 				<div class="panel__actions">
-					<a class="button" href={`mailto:${site.email}`}>Email us <span>&rarr;</span></a>
+					<a class="button" href={`mailto:${site.email}`}>Email us <Arrow /></a>
 					<a class="button button--ghost" href={getNavLink("/contact/")}>Contact</a>
 				</div>
 			</div>

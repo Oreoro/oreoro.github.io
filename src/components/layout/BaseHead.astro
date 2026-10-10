@@ -1,21 +1,25 @@
 ---
 import type { SiteMeta } from "@/types";
-import "@/styles/global.css";
-import "@/styles/minimal.css";
-import "@/styles/signals-shell.css";
-import "@/styles/podcast.css";
+import "@/styles/refined-shell.css";
 import "@/styles/notion-signals.css";
-import "@/styles/palette.css";
 import { siteInfo } from "@/siteInfo";
 import { site } from "@/data/focuslab";
-import { palettes, DEFAULT_PALETTE, PALETTE_STORAGE_KEY, getPaletteScheme } from "@/data/palettes";
+import { palettes, DEFAULT_PALETTE, getPaletteScheme } from "@/data/palettes";
 import { ENABLE_LIGHTBOX, TRACKING, GOOGLE_SEARCH_CONSOLE_META_TAG, GISCUS } from "@/constants";
 import { getNavLink } from "@/lib/blog-helpers";
 
-type Props = SiteMeta;
+type Props = SiteMeta & { chromeColor?: string | undefined };
 
-const { title, description, articleDate, author, hasMarkdownAlternate, jsonLd, robots } =
-	Astro.props;
+const {
+	title,
+	description,
+	articleDate,
+	author,
+	hasMarkdownAlternate,
+	jsonLd,
+	robots,
+	chromeColor,
+} = Astro.props;
 
 const titleSeparator = "•";
 const siteTitle =
@@ -161,16 +165,9 @@ const useGiscus =
 	GISCUS["data-category"] &&
 	GISCUS["data-category-id"];
 
-/*
- * The static value a crawler (or anything without JS) sees is the configured
- * starting ground (see src/data/palettes.ts for the PUBLIC_PALETTE switch).
- * signal.ts replaces it with the ground actually in
- * play as soon as the stylesheet is available. A per-visitor `?palette=`
- * override cannot be known at build time, so this deliberately reports the
- * build's default.
- */
+/* Stable browser chrome, including when JavaScript is unavailable. */
 const defaultPalette = palettes.find((palette) => palette.id === DEFAULT_PALETTE) ?? palettes[0]!;
-const themeColor = defaultPalette.themeColor;
+const themeColor = chromeColor ?? defaultPalette.themeColor;
 
 /*
  * Social card. Currently the square brand mark, so `summary` rather than
@@ -264,125 +261,6 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 <meta name="twitter:title" content={siteTitle} />
 <meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={socialImage} />
-
-{
-	/*
-	Pick the page ground before first paint so there is no flash.
-
-	This runs while the document is still being parsed, which is earlier than
-	Astro's `<link rel="stylesheet">` — so it reads nothing from CSS. It points
-	`--rgb-theme` at one of the palette's `--rgb-theme-N` entries; the cascade
-	resolves the reference. That is the whole trick, and it is why the colour
-	values only ever have to be written down in palette.css.
-
-	Which palette is in play is resolved here too, so the ground it rolls is one
-	of the right palette's. Precedence is the registry's: a `?palette=<id>` test
-	override (remembered in localStorage), then the stored choice, then the
-	build's configured default. `?palette=reset` clears the override.
-*/
-}
-<script
-	is:inline
-	define:vars={{
-		registry: palettes,
-		defaultPalette: DEFAULT_PALETTE,
-		storageKey: PALETTE_STORAGE_KEY,
-	}}
->
-	(function () {
-		var el = document.documentElement;
-		function find(id) {
-			for (var i = 0; i < registry.length; i++) {
-				if (registry[i].id === id) return registry[i];
-			}
-			return null;
-		}
-
-		var chosen = null;
-
-		/* `?palette=<id>` wins and is remembered; `?palette=reset` forgets. */
-		try {
-			var param = new URLSearchParams(location.search).get("palette");
-			if (param === "reset") {
-				localStorage.removeItem(storageKey);
-			} else if (param) {
-				var fromParam = find(param);
-				if (fromParam) {
-					chosen = fromParam;
-					localStorage.setItem(storageKey, fromParam.id);
-				}
-			}
-		} catch (e) {}
-
-		if (!chosen) {
-			try {
-				var stored = localStorage.getItem(storageKey);
-				if (stored) chosen = find(stored);
-			} catch (e) {}
-		}
-
-		if (!chosen) chosen = find(defaultPalette);
-		if (!chosen) return;
-
-		el.setAttribute("data-palette", chosen.id);
-
-		/* A new starting ground resets older session memory once. */
-		var GROUND =
-			"fl-ground-" +
-			chosen.id +
-			(chosen.initialGround !== undefined ? "-start-" + chosen.initialGround : "");
-		var size = chosen.size;
-		var previous = -1;
-		try {
-			var storedGround = sessionStorage.getItem(GROUND);
-			if (storedGround !== null) previous = parseInt(storedGround, 10);
-		} catch (e) {}
-
-		/*
-		 * New visits start on the configured ground. Later loads rotate,
-		 * including /NN entries.
-		 * Legacy previews can still pin an entry's ground with data-theme-index.
-		 * Exclude the last ground before sampling so all remaining colors have
-		 * the same chance, rather than favoring the next color in the list.
-		 */
-		var pinned = parseInt(el.getAttribute("data-theme-index"), 10);
-		var index;
-		if (chosen.id !== "focuslab" && !isNaN(pinned)) {
-			index = ((pinned % size) + size) % size;
-		} else if (
-			chosen.initialGround !== undefined &&
-			(isNaN(previous) || previous < 0 || previous >= size)
-		) {
-			index = chosen.initialGround;
-		} else {
-			var choices = [];
-			for (var i = 0; i < size; i++) {
-				if (size === 1 || i !== previous) choices.push(i);
-			}
-			index = choices[Math.floor(Math.random() * choices.length)];
-		}
-		try {
-			sessionStorage.setItem(GROUND, String(index));
-		} catch (e) {}
-
-		var scheme =
-			chosen.lightGrounds && chosen.lightGrounds.indexOf(index) !== -1 ? "light" : chosen.scheme;
-		el.style.colorScheme = scheme;
-		el.classList.toggle("dark", scheme === "dark");
-		el.style.setProperty("--rgb-theme", "var(--rgb-theme-" + (index + 1) + ")");
-		/*
-		 * `data-ground` is which ground of the active palette is showing, so
-		 * signal.ts can hold on to it across a page. `data-theme` is the colour it
-		 * resolves to, which is only knowable once the stylesheet has loaded.
-		 */
-		el.setAttribute("data-ground", String(index));
-	})();
-</script>
-
-{/* Default to pointer input before first paint so click focus rings stay off. */}
-<script is:inline>
-	document.documentElement.classList.add("pointer-focus");
-</script>
 
 {
 	articleDate && (

@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import Arrow from "@/components/ui/Arrow.astro";
 import PageAnchors from "@/components/layout/PageAnchors.astro";
 import { getNavLink } from "@/lib/blog-helpers";
 import { site } from "@/data/focuslab";
@@ -95,7 +96,7 @@ import { site } from "@/data/focuslab";
 					</p>
 				</div>
 				<div class="panel__actions">
-					<a class="button" href={`mailto:${site.email}`}>Email us <span>&rarr;</span></a>
+					<a class="button" href={`mailto:${site.email}`}>Email us <Arrow /></a>
 					<a class="button button--ghost" href={getNavLink("/studio/")}>The studio</a>
 				</div>
 			</div>
@@ -125,10 +126,11 @@ import { site } from "@/data/focuslab";
 		text-transform: uppercase;
 	}
 
-	/* The address links are 22px tall and are the whole point of the page.
-	   Vertical padding on an inline element extends the tap area without
-	   changing the line box, so the address keeps its own wrapping. */
+	/* Give the direct contact links a comfortable touch target. */
 	.contact-list dd a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
 		padding: 0.2em 0;
 	}
 
@@ -136,6 +138,6 @@ import { site } from "@/data/focuslab";
 		margin: 0;
 		color: var(--color-ink);
 		font-size: 1.2em;
-		font-weight: 500;
+		font-weight: 400;
 	}
 </style>

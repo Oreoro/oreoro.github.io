@@ -1,68 +1,96 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { stream, type StreamKind } from "@/data/stream";
+import ProductCard from "@/components/ui/ProductCard.astro";
+import Arrow from "@/components/ui/Arrow.astro";
+import { products } from "@/data/products";
+import { stream } from "@/data/stream";
 import { getNavLink } from "@/lib/blog-helpers";
 
-const firstEntry = stream[0]!;
-const lastEntry = stream[stream.length - 1]!;
-const nextHref = getNavLink(`/${firstEntry.num}`);
-const previousHref = getNavLink(`/${lastEntry.num}`);
-
-const kindLabel: Record<StreamKind, string> = {
-	note: "Note",
-	launch: "Launch",
-	essay: "Essay",
-	quote: "Quote",
-	link: "Link",
-};
-
-const metaFor = (entry: (typeof stream)[number]) => entry.source ?? kindLabel[entry.kind];
+const selected = ["01", "05", "13"].map((num) => stream.find((entry) => entry.num === num)!);
 ---
 
 <PageLayout
+	home
 	meta={{
 		title: "Focus Lab",
 		description:
-			"The Focus Lab stream — a feed of what we are building, reading, and thinking about. A product studio in Islamabad: Urban Events, WorkProof, and Fixer.",
+			"Focus Lab is an independent product studio in Islamabad. We design, build, and run Urban Events, WorkProof, and Fixer. Small on purpose.",
 	}}
-	footerNext={{ href: `/${firstEntry.num}`, label: `${firstEntry.num}. ${firstEntry.label}` }}
 >
-	<h1 class="visually-hidden">Focus Lab — a product studio</h1>
+	<section class="home__hero" aria-labelledby="home-title">
+		<div class="home__inner">
+			<p class="eyebrow">Independent product studio · Islamabad</p>
+			<h1 id="home-title"><span>We build products.</span><span>And stay to run them.</span></h1>
+			<p class="home__intro">
+				We design, build, and run our own software. From the first useful version to the second
+				year, we own the whole thing.
+			</p>
+			<div class="home__actions">
+				<a class="button" href={getNavLink("/products/")}>Explore our products <Arrow /></a>
+				<a class="button button--ghost" href={getNavLink("/studio/")}>Meet the studio</a>
+			</div>
+			<div class="home__footnote">
+				<span>Small on purpose. Products first.</span><span
+					>Based in Islamabad, building for the web.</span
+				>
+			</div>
+		</div>
+	</section>
 
-	<div class="cluster cluster--index">
-		{
-			stream.map((entry) => (
-				<section class="signal">
-					<header class="signal__header">
-						<a
-							href={getNavLink(`/${entry.num}`)}
-							aria-label={`${kindLabel[entry.kind]}: ${entry.label}`}
-						>
-							<dl>
-								<dt>{entry.num}.</dt>
-								<dd>
-									{entry.label}
-									<span class="signal__meta">{metaFor(entry)}</span>
-								</dd>
-							</dl>
+	<section class="home__section" aria-labelledby="home-products">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Our products</p>
+				<h2 id="home-products">Useful software. Ours to keep running.</h2>
+				<p>Three different problems. The same care for the details.</p>
+			</div>
+		</div>
+		<div class="product-cards">
+			{
+				products.map((product, index) => (
+					<ProductCard product={product} index={index} compact headingLevel={3} />
+				))
+			}
+		</div>
+	</section>
+
+	<section class="home__section home__reading" aria-labelledby="home-reading">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">The stream</p>
+				<h2 id="home-reading">Building, reading, thinking.</h2>
+				<p>Notes from the studio, launches, and ideas worth passing on.</p>
+			</div>
+			<a class="link-arrow" href={getNavLink("/stream/")}>Explore the stream <Arrow /></a>
+		</div>
+		<ul class="journal">
+			{
+				selected.map((entry) => (
+					<li>
+						<a href={getNavLink(`/${entry.num}/`)}>
+							<span class="journal__meta">
+								{entry.source ?? (entry.kind === "launch" ? "Product launch" : "Studio note")}
+							</span>
+							<span class="journal__title">{entry.label}</span>
+							<Arrow class="journal__arrow" />
 						</a>
-					</header>
-				</section>
-			))
-		}
-	</div>
+					</li>
+				))
+			}
+		</ul>
+	</section>
 
-	<div class="boundary"></div>
-
-	<div
-		class="controller controller--origin"
-		data-next={nextHref}
-		data-previous={previousHref}
-		role="navigation"
-		aria-label="Stream navigation"
-	>
-		<a href={nextHref} aria-label={`Next: ${firstEntry.label}`} tabindex="-1"></a>
-	</div>
-
-	<div class="origin"></div>
+	<section class="home__section home__studio" aria-labelledby="home-studio">
+		<h2 id="home-studio">Small on purpose.</h2>
+		<div>
+			<p>
+				We’re products first. Once in a while, when there’s a mutual fit, we partner with a team on
+				theirs. A real problem, a clear owner, and room to decide how to solve it.
+			</p>
+			<div class="home__actions">
+				<a class="button" href={getNavLink("/contact/")}>Tell us what you’re building <Arrow /></a>
+				<a class="link-arrow" href={getNavLink("/studio/")}>How we work <Arrow /></a>
+			</div>
+		</div>
+	</section>
 </PageLayout>

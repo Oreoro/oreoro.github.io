@@ -1,6 +1,7 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 import PageAnchors from "@/components/layout/PageAnchors.astro";
+import EmailRequest from "@/components/ui/EmailRequest.astro";
 import { getNavLink } from "@/lib/blog-helpers";
 import { site } from "@/data/focuslab";
 ---
@@ -17,8 +18,8 @@ import { site } from "@/data/focuslab";
 			<p class="page__kicker">Jobs</p>
 			<h1>Working at Focus Lab</h1>
 			<p>
-				Take a look at our current openings, sign up to be notified about future ones, and learn
-				what it's like to work here.
+				Take a look at our current openings, request job notifications by email, and learn what it's
+				like to work here.
 			</p>
 			<PageAnchors
 				anchors={[
@@ -37,24 +38,19 @@ import { site } from "@/data/focuslab";
 			</div>
 
 			<div class="signup signup--jobs content">
-				<h2>Sign up to be notified</h2>
+				<h2>Request job notifications by email</h2>
 				<p>
-					If you'd like to be notified about job openings, sign up below, or <a
+					If you'd like to hear about job openings, prepare an email request below, or <a
 						href={getNavLink("/feed/jobs.xml")}>grab the RSS feed</a
 					>. We will never share your email, or use it for any other purpose.
 				</p>
-				<form data-signup data-mailto={site.email} data-subject="Focus Lab jobs" novalidate>
-					<input
-						type="email"
-						name="email"
-						aria-label="Email address"
-						placeholder="you@example.com"
-						spellcheck="false"
-						autocomplete="email"
-						required
-					/>
-					<button class="button button--theme" type="submit">Sign up</button>
-				</form>
+				<EmailRequest
+					id="job-notifications"
+					recipient={site.email}
+					subject="Focus Lab jobs"
+					request="I'd like to receive email notifications about Focus Lab job openings."
+					hint="This prepares a draft in your email app. You must open and send it to request job notifications; this form does not subscribe you automatically."
+				/>
 			</div>
 
 			<div class="jobs__content content content--jobs">

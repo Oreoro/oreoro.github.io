@@ -15,7 +15,8 @@ LinkedIn: https://www.linkedin.com/company/110646093/
 
 ## Pages
 
-- [Home / stream](https://focuslab.pk/): a numbered feed of what we are building, reading, and thinking about.
+- [Home](https://focuslab.pk/): an introduction to the studio, its products, and selected stream entries.
+- [Stream](https://focuslab.pk/stream/): the complete, searchable numbered archive of what we are building, reading, and thinking about.
 - [Products](https://focuslab.pk/products/): the software we build and run.
 - [Studio](https://focuslab.pk/studio/): who we are and how we work.
 - [Stack](https://focuslab.pk/stack/): the tools we build with, including AI.
@@ -28,7 +29,7 @@ LinkedIn: https://www.linkedin.com/company/110646093/
 
 ## The stream
 
-The home page is a numbered feed served at `/00`, `/01`, `/02`, … Each entry is
+The stream archive lives at `/stream/`, with individual entries at `/00`, `/01`, `/02`, … Each entry is
 self-contained and is one of five kinds:
 
 - `note` — a short thought or update from the studio
@@ -56,15 +57,12 @@ Full schema, conventions, and examples: see `docs/CONTENT.md` in the repository.
 
 ## Notes
 
-- The default design uses 37signals' original blue, green, teal, purple,
-  lavender, orange, brick red, and red backgrounds, without pink or yellow.
-  New visits start green (#299850); subsequent page loads choose a different
-  background from the previous one.
-  Text uses white or near-black to stay readable on the original colors.
-  Cards, forms, and menus follow the selected page color.
-  Earlier palettes remain available for explicit previews with `?palette=<id>`
-  or a `PUBLIC_PALETTE=<id>` build override; `?palette=reset` clears a preview.
-  The text and structure are identical across all palettes.
+- The design uses a stable forest green (#235C43) identity and cool paper
+  (#F4F6F3) reading surface, with locally hosted Lab Grotesque typography.
+  Page colours no longer rotate. Earlier preview URLs and stored choices
+  do not change the current design.
+- Jobs and policy updates prepare email requests, not automatic subscriptions.
+  Visitors must open and send the draft from their own email app.
 - sitemap.xml is generated from the build output and lists exactly the pages
   that are not marked noindex, so it cannot fall behind the routes.
 - External curated links are always attributed to their source.

@@ -1,9 +1,8 @@
 /*
- * 37signals-style typography and Notion block rendering for Focus Lab.
- * Applies on the themed shell; overrides the blog theme with `html body`.
+ * Notion block rendering for Focus Lab's editorial shell.
  */
 
-/* Fonts are declared once in signals-shell.css (the exact 37signals set). */
+/* Fonts are declared once in refined-shell.css. */
 
 html body.signals-shell {
 	--font-sans:

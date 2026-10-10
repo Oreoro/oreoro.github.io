@@ -1,6 +1,7 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 import PageAnchors from "@/components/layout/PageAnchors.astro";
+import ListFilter from "@/components/ui/ListFilter.astro";
 import { thoughts, thoughtsByTopic } from "@/data/thoughts";
 
 const total = thoughts.length;
@@ -14,7 +15,7 @@ const plural = total === 1 ? "link" : "links";
 			"A curated list of the essays, guides, and books that shaped how Focus Lab builds products.",
 	}}
 >
-	<div class="page">
+	<div class="page page--wide" data-filter-list data-filter-noun="link">
 		<div class="page__headline">
 			<p class="page__kicker">Thoughts</p>
 			<h1>Writing we find useful</h1>
@@ -23,6 +24,12 @@ const plural = total === 1 ? "link" : "links";
 				{plural} on building products, writing software, and running a small studio — grouped by the
 				question each one helps answer. Every link goes to the original author. None of this is ours.
 			</p>
+			<ListFilter
+				id="thoughts-search"
+				label="Find something useful"
+				placeholder="Search by title, author, or topic"
+				controls="thoughts-results"
+			/>
 			<PageAnchors
 				anchors={thoughtsByTopic.map((group) => ({
 					id: group.topic.toLowerCase(),
@@ -31,10 +38,10 @@ const plural = total === 1 ? "link" : "links";
 			/>
 		</div>
 
-		<div class="thoughts">
+		<div class="thoughts" id="thoughts-results">
 			{
 				thoughtsByTopic.map((group) => (
-					<section class="thoughts__group">
+					<section class="thoughts__group" data-filter-group={group.topic}>
 						<h2 class="thoughts__group-title" id={group.topic.toLowerCase()}>
 							{group.topic}
 							<span class="thoughts__count">{group.entries.length}</span>
@@ -42,7 +49,7 @@ const plural = total === 1 ? "link" : "links";
 
 						<div class="thoughts__container">
 							{group.entries.map((thought) => (
-								<div class="thoughts__thought">
+								<div class="thoughts__thought" data-filter-item>
 									<h3>
 										<a href={thought.url} target="_blank" rel="noopener">
 											{thought.title}
@@ -57,5 +64,8 @@ const plural = total === 1 ? "link" : "links";
 				))
 			}
 		</div>
+		<p class="filter__empty" data-filter-empty hidden>
+			No links match that search. Try an author, topic, or a shorter phrase.
+		</p>
 	</div>
 </PageLayout>

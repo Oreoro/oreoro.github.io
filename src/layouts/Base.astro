@@ -8,10 +8,7 @@ import { siteInfo } from "@/siteInfo";
 import { DEFAULT_PALETTE, palettes, getPaletteScheme } from "@/data/palettes";
 interface Props {
 	meta: SiteMeta;
-	/** Fixed entry ground for legacy palette previews; the default rotates. */
-	themeIndex?: number;
-	/** The "next signal" dot shown bottom-right on small screens. */
-	footerNext?: { href: string; label: string };
+	home?: boolean;
 }
 const {
 	meta: {
@@ -23,8 +20,7 @@ const {
 		robots,
 		jsonLd,
 	},
-	themeIndex,
-	footerNext,
+	home = false,
 } = Astro.props;
 const defaultPalette = palettes.find((palette) => palette.id === DEFAULT_PALETTE) ?? palettes[0]!;
 ---
@@ -34,7 +30,6 @@ const defaultPalette = palettes.find((palette) => palette.id === DEFAULT_PALETTE
 	class={getPaletteScheme(defaultPalette) === "dark" ? "dark" : undefined}
 	data-palette={DEFAULT_PALETTE}
 	data-ground={String(defaultPalette.initialGround ?? 0)}
-	data-theme-index={themeIndex === undefined ? undefined : String(themeIndex)}
 >
 	<head>
 		<BaseHead
@@ -45,15 +40,16 @@ const defaultPalette = palettes.find((palette) => palette.id === DEFAULT_PALETTE
 			hasMarkdownAlternate={hasMarkdownAlternate}
 			robots={robots}
 			jsonLd={jsonLd}
+			chromeColor={home ? "#235C43" : undefined}
 		/>
 	</head>
-	<body class="signals-shell">
+	<body class:list={["signals-shell", { "home-page": home }]}>
 		<SkipLink />
 		<Header />
 		<main id="main">
 			<slot />
 		</main>
-		<Footer next={footerNext} />
+		<Footer />
 		<script src="../scripts/signal.ts"></script>
 	</body>
 </html>

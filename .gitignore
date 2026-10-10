@@ -14,8 +14,6 @@ yarn-error.log*
 *.zip
 
 # environment variables
-.env
-.env.production
 
 # macOS-specific files
 .DS_Store
@@ -25,7 +23,6 @@ yarn-error.log*
 *.pem
 .cache
 .astro
-.vscode/
 public/notion/**/*
 public/custom-components/**/*
 public/external-posts/**/*
@@ -49,3 +46,4 @@ reference/
 
 # opencode runtime (may contain local secrets like particle.env)
 .opencode/
+config.bat

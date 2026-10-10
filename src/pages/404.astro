@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import Arrow from "@/components/ui/Arrow.astro";
 import { getNavLink } from "@/lib/blog-helpers";
 
 const meta = {
@@ -22,11 +23,9 @@ const meta = {
 
 		<div class="page__body">
 			<p class="page__actions">
-				<a class="button" href={getNavLink("/")}>Back home <span>&rarr;</span></a>
+				<a class="button" href={getNavLink("/")}>Back home <Arrow /></a>
 				<a class="button button--ghost" href={getNavLink("/studio/")}>See the studio</a>
 			</p>
 		</div>
 	</div>
-
-	<div class="boundary"></div>
 </PageLayout>

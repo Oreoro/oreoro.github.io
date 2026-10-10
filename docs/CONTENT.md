@@ -9,12 +9,17 @@ After any change:
 ```bash
 npm run check     # type-checks (must be 0 errors)
 npm run build     # builds to dist/
-npm run deploy    # build + deploy to Cloudflare
+npm run test:ui   # search normalization and email-draft tests
+npm run preview   # inspect the local production build
 ```
+
+Publish with `npm run deploy` only after the change is reviewed and deployment is approved.
 
 ## The stream — `src/data/stream.ts`
 
-The home page is a feed. Each entry is self-contained and opens at `/<num>`.
+The complete feed lives at `/stream/`. The homepage introduces the studio and
+shows a few selected entries. Each entry is self-contained and opens at `/<num>`.
+Previous/next links and the nearby-entry list work without JavaScript.
 
 ```ts
 export type StreamKind = "note" | "launch" | "link" | "quote" | "essay";
@@ -90,13 +95,16 @@ export interface Product {
 
 Rendered as a hero (name, tagline, summary, pricing, CTAs) plus a feature grid.
 If `url` is set the primary CTA is "Visit <name>"; otherwise it is a
-"Request access or a demo" mailto. When adding a product, also add it to the
-header nav in `src/components/layout/Header.astro` if it should appear there.
+"Request access or a demo" mailto. The homepage and Products page use the shared
+`ProductCard` component and link to the product’s detail page, not its external site.
+Keep product links in the footer in step when adding or removing products.
 
 ## Books — `src/data/books.ts`
 
 `{ slug, title, author, description, links: {label,href}[], mark, tint }`.
-`mark` is a 2-letter placeholder-cover label; `tint` is a palette index 1–12.
+`mark` is a 2-letter illustrated-cover label. The presentation cycles through
+four coordinated cover colours independently of the page background. The legacy
+`tint` field remains in the data for compatibility but no longer changes the page.
 
 ## Thoughts — `src/data/thoughts.ts`
 
@@ -106,11 +114,15 @@ have a working `url` and correct `source`. Verify links before committing.
 ## Podcast — `src/data/podcast.ts`
 
 Curated shows only: `{ show, title, url, note }`. The first entry is featured.
+Links open the show’s own website; the studio does not host a player or podcast feed.
 
 ## Policies — `src/data/policies.ts`
 
 `{ slug, title, intro, sections: {id,heading,body[]}[] }`. The `updates` entry
 is special: it is linked from the index but not listed.
+Jobs and policy updates use `EmailRequest` to prepare a mailto draft. This is
+not an automatic subscription or a sending endpoint. Do not promise policy dates
+or a mailing-list registration that the implementation does not provide.
 
 ## Style rules
 

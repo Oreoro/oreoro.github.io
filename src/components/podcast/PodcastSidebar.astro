@@ -1,24 +1,14 @@
 ---
-import { getNavLink } from "@/lib/blog-helpers";
 import { site } from "@/data/focuslab";
-
-const listen: Array<[string, string]> = [
-	["Apple Podcasts", "https://podcasts.apple.com/"],
-	["Spotify", "https://open.spotify.com/"],
-	["Overcast", "https://overcast.fm/"],
-	["Pocket Casts", "https://pocketcasts.com/"],
-	["RSS", getNavLink("/rss.xml")],
-];
 
 const topics = ["Product", "Engineering", "Design", "Business", "Craft"];
 ---
 
-<nav class="broadsheet__sidebar" aria-label="Podcast">
+<aside class="broadsheet__sidebar" aria-label="About this podcast list">
+	<p class="page__kicker">Listening list</p>
 	<h1 class="podcast__masthead">
-		<a href={getNavLink("/podcast/")}>
-			<span class="masthead__mark">Podcasts</span>{" "}
-			<span class="masthead__sub">we find useful</span>
-		</a>
+		<span class="masthead__mark">Podcasts</span>
+		<span class="masthead__sub">we find useful</span>
 	</h1>
 
 	<p class="podcast__summary">
@@ -26,23 +16,9 @@ const topics = ["Product", "Engineering", "Design", "Business", "Craft"];
 		None of them are ours.
 	</p>
 
-	<details class="podcast__section" open>
+	<details class="podcast__section">
 		<summary class="podcast__section-title">Where to listen</summary>
-		<ul class="podcast__subscribe">
-			{
-				listen.map(([label, href]) => (
-					<li>
-						<a
-							href={href}
-							target={href.startsWith("http") ? "_blank" : undefined}
-							rel={href.startsWith("http") ? "noopener" : undefined}
-						>
-							{label}
-						</a>
-					</li>
-				))
-			}
-		</ul>
+		<p>Each link opens the show’s own website. Choose an episode and your listening app there.</p>
 	</details>
 
 	<details class="podcast__section">
@@ -67,4 +43,4 @@ const topics = ["Product", "Engineering", "Design", "Business", "Craft"];
 			>. We listen to every message.
 		</p>
 	</details>
-</nav>
+</aside>

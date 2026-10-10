@@ -12,7 +12,7 @@ const total = books.length;
 			"The 22 books that changed how Focus Lab builds and runs software, from Inspired to Shape Up to Zen and the Art of Motorcycle Maintenance.",
 	}}
 >
-	<div class="page">
+	<div class="page page--wide">
 		<div class="page__headline">
 			<p class="page__kicker">Books</p>
 			<h1>Books that shaped how we build.</h1>
@@ -26,7 +26,7 @@ const total = books.length;
 		<div class="books">
 			<div class="books__container">
 				{
-					books.map((book) => (
+					books.map((book, index) => (
 						<div class="books__book">
 							<div class="books__wrap">
 								<figure>
@@ -38,7 +38,7 @@ const total = books.length;
 									>
 										<span
 											class="book-cover"
-											style={`--book-tint: var(--rgb-theme-${book.tint}); --book-ink: var(--rgb-book-ink-${book.tint}, var(--rgb-ink))`}
+											style={`--book-tint: var(--book-tint-${(index % 4) + 1}); --book-ink: var(--book-ink-${(index % 4) + 1})`}
 										>
 											<span class="book-cover__mark">{book.mark}</span>
 											<span class="book-cover__title">{book.title}</span>
