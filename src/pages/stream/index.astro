@@ -1,0 +1,57 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import ListFilter from "@/components/ui/ListFilter.astro";
+import Arrow from "@/components/ui/Arrow.astro";
+import { stream, type StreamKind } from "@/data/stream";
+import { getNavLink } from "@/lib/blog-helpers";
+
+const kindLabel: Record<StreamKind, string> = {
+	note: "Note",
+	launch: "Launch",
+	essay: "Essay",
+	quote: "Quote",
+	link: "Link",
+};
+---
+
+<PageLayout
+	meta={{
+		title: "Stream",
+		description:
+			"The complete Focus Lab stream: notes from the studio, product launches, essays, and ideas worth passing on.",
+	}}
+>
+	<div class="page" data-filter-list data-filter-noun="entry" data-filter-plural="entries">
+		<div class="page__headline">
+			<p class="page__kicker">The stream</p>
+			<h1>Building, reading, thinking.</h1>
+			<p>
+				Notes from the studio, product launches, and ideas worth passing on. All {stream.length} entries,
+				in one place. When the writing isn’t ours, we say whose it is.
+			</p>
+			<ListFilter
+				id="stream-search"
+				label="Find an entry"
+				placeholder="Search by title, author, or kind"
+				controls="stream-results"
+			/>
+		</div>
+		<ul class="stream-list" id="stream-results">
+			{
+				stream.map((entry) => (
+					<li data-filter-item>
+						<a href={getNavLink(`/${entry.num}/`)}>
+							<span class="stream-list__number">{entry.num}.</span>
+							<span class="stream-list__title">{entry.label}</span>
+							<span class="stream-list__meta">{entry.source ?? kindLabel[entry.kind]}</span>
+							<Arrow class="stream-list__arrow" />
+						</a>
+					</li>
+				))
+			}
+		</ul>
+		<p class="filter__empty" data-filter-empty hidden>
+			No entries match that search. Try a title, author, or a shorter phrase.
+		</p>
+	</div>
+</PageLayout>

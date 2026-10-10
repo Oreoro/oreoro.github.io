@@ -1,0 +1,32 @@
+---
+interface Props {
+	id: string;
+	label: string;
+	placeholder: string;
+	controls: string;
+}
+
+const { id, label, placeholder, controls } = Astro.props;
+---
+
+<div class="filter" data-filter-controls hidden>
+	<label for={id}>{label}</label>
+	<div class="filter__field">
+		<input
+			id={id}
+			type="search"
+			placeholder={placeholder}
+			aria-controls={controls}
+			data-filter-input
+			autocomplete="off"
+		/>
+		<button class="button button--ghost" type="button" data-filter-clear hidden>Clear</button>
+	</div>
+	<p class="filter__status" data-filter-status role="status" aria-live="polite" aria-atomic="true">
+	</p>
+</div>
+
+<script>
+	import { initListFilters } from "@/scripts/list-filter";
+	initListFilters();
+</script>

@@ -1,0 +1,33 @@
+---
+interface Props {
+	direction?: "forward" | "external";
+	class?: string;
+}
+const { direction = "forward", class: className } = Astro.props;
+---
+
+<svg
+	class:list={["arrow-icon", className]}
+	viewBox="0 0 16 16"
+	width="16"
+	height="16"
+	fill="none"
+	aria-hidden="true"
+	focusable="false"
+>
+	<path
+		d={direction === "external" ? "M4 12 12 4M4 4h8v8" : "M3 8h10m-4-4 4 4-4 4"}
+		stroke="currentColor"
+		stroke-width="1.5"
+		stroke-linecap="round"
+		stroke-linejoin="round"></path>
+</svg>
+
+<style>
+	.arrow-icon {
+		width: 1em;
+		height: 1em;
+		flex: 0 0 auto;
+		vertical-align: middle;
+	}
+</style>

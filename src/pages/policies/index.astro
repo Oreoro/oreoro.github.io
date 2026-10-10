@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import Arrow from "@/components/ui/Arrow.astro";
 import PageAnchors from "@/components/layout/PageAnchors.astro";
 import { getNavLink } from "@/lib/blog-helpers";
 import { policyLinks } from "@/data/policies";
@@ -10,13 +11,13 @@ import { site } from "@/data/focuslab";
 	meta={{
 		title: "Policies",
 		description:
-			"Focus Lab's policies — terms, privacy, security, accessibility, refunds and ownership — written in plain language and dated at the top.",
+			"Focus Lab's policies — terms, privacy, security, accessibility, refunds and ownership — written in plain language.",
 	}}
 >
 	<div class="page">
 		<div class="page__headline">
 			<p class="page__kicker">Policies</p>
-			<h1>Short, dated, and readable.</h1>
+			<h1>Short, clear, and readable.</h1>
 			<p>
 				Focus Lab makes our policies as clear, fair, and readable as possible. If one of these reads
 				like legal boilerplate, that's our mistake — tell us.
@@ -32,7 +33,7 @@ import { site } from "@/data/focuslab";
 		<div class="page__body">
 			<div class="page__content content content--policies">
 				<h2 id="read">Read these</h2>
-				<ul>
+				<ul class="policy-list">
 					{
 						policyLinks.map((policy) => (
 							<li>
@@ -55,15 +56,6 @@ import { site } from "@/data/focuslab";
 					</li>
 					<li>
 						<div class="numbered__body">
-							<h3 class="numbered__title">Dated at the top.</h3>
-							<p>
-								Every page carries the date it was last revised, so you can always tell what you
-								agreed to and when.
-							</p>
-						</div>
-					</li>
-					<li>
-						<div class="numbered__body">
 							<h3 class="numbered__title">Changed only when something changes.</h3>
 							<p>
 								We update these to comply with the law and to reflect how we actually work. We don't
@@ -73,11 +65,12 @@ import { site } from "@/data/focuslab";
 					</li>
 					<li>
 						<div class="numbered__body">
-							<h3 class="numbered__title">Told to you first.</h3>
+							<h3 class="numbered__title">Request updates by email.</h3>
 							<p>
-								Significant changes go out to the <a href={getNavLink("/policies/updates")}
-									>policy updates mailing list</a
-								> before they take effect, so you hear about a revision from us before you read it.
+								If you'd like to hear about policy changes, <a
+									href={getNavLink("/policies/updates")}>request policy updates by email</a
+								>. You'll prepare a draft and send it from your email app; there is no automatic
+								subscription on this site.
 							</p>
 						</div>
 					</li>
@@ -92,7 +85,7 @@ import { site } from "@/data/focuslab";
 						</p>
 					</div>
 					<div class="panel__actions">
-						<a class="button" href={`mailto:${site.email}`}>Email us <span>&rarr;</span></a>
+						<a class="button" href={`mailto:${site.email}`}>Email us <Arrow /></a>
 						<a class="button button--ghost" href={getNavLink("/contact/")}>Contact</a>
 					</div>
 				</div>

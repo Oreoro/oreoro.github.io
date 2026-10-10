@@ -1,14 +1,6 @@
 ---
 /**
- * The in-page jump list, 37signals' `.page__anchors`.
- *
- * Placed by the page directly after `.page__headline`, which is where the
- * source site puts it — the last thing in the header block and the first thing
- * you can click. Render it only on a page long enough that scrolling to find a
- * section is worse than clicking to it; on a short page it is just clutter.
- *
- * Each `id` must match an `id` on the heading it points at, and that heading is
- * what `.content :target` offsets to clear the fixed header.
+ * Compact jump links for longer pages. Each id matches a section heading.
  */
 interface Props {
 	anchors: { id: string; label: string }[];
@@ -22,14 +14,16 @@ const { anchors, label = "On this page" } = Astro.props;
 {
 	anchors.length > 1 && (
 		<nav class="page__anchors" aria-label={label}>
-			<dl>
-				<dt>{label}</dt>
+			<p class="page__anchors-label" aria-hidden="true">
+				{label}
+			</p>
+			<ul>
 				{anchors.map((anchor) => (
-					<dd>
+					<li>
 						<a href={`#${anchor.id}`}>{anchor.label}</a>
-					</dd>
+					</li>
 				))}
-			</dl>
+			</ul>
 		</nav>
 	)
 }

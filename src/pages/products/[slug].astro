@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import Arrow from "@/components/ui/Arrow.astro";
 import { products } from "@/data/products";
 import { getNavLink } from "@/lib/blog-helpers";
 import { site } from "@/data/focuslab";
@@ -38,6 +39,7 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 >
 	<div class="page page--wide product">
 		<header class="product__hero">
+			<p class="product__breadcrumb"><a href={getNavLink("/products/")}>← All products</a></p>
 			<p class="product__kicker">
 				Product{product.selfHosted ? " · Self-hosted" : ""}
 			</p>
@@ -50,11 +52,11 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 				{
 					product.url ? (
 						<a class="button" href={product.url} target="_blank" rel="noopener">
-							Visit {product.name} <span>&rarr;</span>
+							Visit {product.name} <Arrow direction="external" />
 						</a>
 					) : (
 						<a class="button" href={accessHref}>
-							Request access or a demo <span>&rarr;</span>
+							Request access or a demo <Arrow />
 						</a>
 					)
 				}

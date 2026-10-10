@@ -17,7 +17,8 @@
 		"context:scrape": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/context-scrape.mts",
 		"context": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/context.mts",
 		"reference:clone": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/context-clone.mts",
-		"test:context": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test scripts/context-dev.test.mts"
+		"test:context": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test scripts/context-dev.test.mts",
+		"test:ui": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test scripts/ui-behavior.test.mts"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^5.0.4",

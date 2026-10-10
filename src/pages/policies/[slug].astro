@@ -1,7 +1,9 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import EmailRequest from "@/components/ui/EmailRequest.astro";
 import { getNavLink } from "@/lib/blog-helpers";
 import { policies } from "@/data/policies";
+import { site } from "@/data/focuslab";
 
 export function getStaticPaths() {
 	return policies.map((policy) => ({
@@ -20,13 +22,26 @@ const { policy } = Astro.props;
 	}}
 >
 	<div class="page">
+		<a class="policy__back" href={getNavLink("/policies/")}>← All policies</a>
 		<div class="page__headline">
+			<p class="page__kicker">Policies</p>
 			<h1>{policy.title}</h1>
 			<p>{policy.intro}</p>
 		</div>
 
 		<div class="page__body">
 			<div class="page__content content content--policies">
+				{
+					policy.slug === "updates" && (
+						<EmailRequest
+							id="policy-updates"
+							recipient={site.email}
+							subject="Focus Lab policy updates"
+							request="I'd like to receive email updates about Focus Lab policy changes."
+							hint="This prepares a draft in your email app. You must open and send it to request policy updates; this form does not subscribe you automatically."
+						/>
+					)
+				}
 				{
 					policy.sections.map((section) => (
 						<>
@@ -37,7 +52,7 @@ const { policy } = Astro.props;
 						</>
 					))
 				}
-				<hr />
+				<hr class="ornament" />
 				<p>
 					<a href={getNavLink("/policies/")}>All policies</a>
 				</p>

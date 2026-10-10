@@ -6,7 +6,7 @@
  * piece of writing we found useful. Curated entries carry their source and a
  * link to the original; our own entries stand on their own.
  *
- * The stream drives the home page (`.cluster--index`) and every `/NN` page.
+ * The stream drives /stream, selected homepage entries, and every /NN page.
  */
 
 export type StreamKind = "note" | "launch" | "essay" | "quote" | "link";
@@ -29,7 +29,7 @@ export const stream: StreamEntry[] = [
 		kind: "note",
 		label: "Start here",
 		date: "2026-09-22",
-		content: `<p>Welcome. This is the Focus Lab stream — a feed of the things we are building, reading, and thinking about. We are a product studio in Islamabad. We design, build, and run our own software, and once in a while we partner with a team when the fit is right.</p><p>Some entries are ours: launches and notes from the studio. Some are things we found useful — an essay, a link, an idea worth passing on. When it is not ours, we say whose it is and link to the original.</p><p>Use the dot at the bottom right to move forward, or wander through the numbered list in any order.</p>`,
+		content: `<p>Welcome. This is the Focus Lab stream — a feed of the things we are building, reading, and thinking about. We are a product studio in Islamabad. We design, build, and run our own software, and once in a while we partner with a team when the fit is right.</p><p>Some entries are ours: launches and notes from the studio. Some are things we found useful — an essay, a link, an idea worth passing on. When it is not ours, we say whose it is and link to the original.</p><p>Use the previous and next links to move through the stream, or wander through the numbered archive in any order.</p>`,
 	},
 	{
 		num: "01",

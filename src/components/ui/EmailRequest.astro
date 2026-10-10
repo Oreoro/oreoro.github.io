@@ -1,0 +1,68 @@
+---
+import { buildEmailRequestHref } from "@/scripts/email-request";
+
+interface Props {
+	id: string;
+	recipient: string;
+	subject: string;
+	request: string;
+	hint: string;
+}
+
+const { id, recipient, subject, request, hint } = Astro.props;
+const inputId = `${id}-email`;
+const hintId = `${id}-hint`;
+const errorId = `${id}-error`;
+---
+
+<div
+	class="email-request"
+	id={id}
+	data-email-request
+	data-recipient={recipient}
+	data-subject={subject}
+	data-request={request}
+>
+	<form class="email-request__form" hidden novalidate>
+		<div class="email-request__field">
+			<label class="email-request__label" for={inputId}>Email address</label>
+			<input
+				class="email-request__input"
+				id={inputId}
+				type="email"
+				name="email"
+				placeholder="you@example.com"
+				autocomplete="email"
+				spellcheck="false"
+				required
+				aria-describedby={`${hintId} ${errorId}`}
+				aria-invalid="false"
+			/>
+			<p class="email-request__hint" id={hintId}>{hint}</p>
+			<p class="email-request__error" id={errorId} hidden></p>
+		</div>
+		<div class="email-request__actions">
+			<button class="button" type="submit">Prepare email request</button>
+		</div>
+	</form>
+	<p class="email-request__status" role="status" aria-live="polite" aria-atomic="true"></p>
+	<div class="email-request__actions">
+		<a
+			class="button button--ghost"
+			data-email-request-draft
+			href={buildEmailRequestHref(recipient, subject, request)}>Open email draft</a
+		>
+	</div>
+	<noscript>
+		<p class="email-request__hint">
+			Open the draft in your email app, add the address where you'd like to receive updates, and
+			send it. Opening a draft does not send an email or subscribe you automatically.
+		</p>
+	</noscript>
+</div>
+
+<script>
+	import { initEmailRequests } from "@/scripts/email-request";
+
+	initEmailRequests();
+</script>

@@ -1,54 +1,81 @@
 ---
 import { getNavLink } from "@/lib/blog-helpers";
+import Brand from "@/components/layout/Brand.astro";
+import Arrow from "@/components/ui/Arrow.astro";
+import { site } from "@/data/focuslab";
 
-interface Props {
-	next?: { href: string; label: string } | undefined;
-}
-
-const { next } = Astro.props;
-
-const links: Array<[string, string]> = [
-	["Products", "/products"],
-	["Studio", "/studio"],
-	["Stack", "/stack"],
-	["Thoughts", "/thoughts"],
-	["Podcast", "/podcast"],
-	["Books", "/books"],
-	["Jobs", "/jobs"],
-	["Policies", "/policies"],
-	["Contact", "/contact"],
-	["LinkedIn", "https://www.linkedin.com/company/110646093/"],
+const groups: { title: string; links: Array<[string, string]> }[] = [
+	{
+		title: "Studio",
+		links: [
+			["About us", "/studio"],
+			["Jobs", "/jobs"],
+			["Contact", "/contact"],
+			["Policies", "/policies"],
+		],
+	},
+	{
+		title: "Explore",
+		links: [
+			["Stream", "/stream"],
+			["Thoughts", "/thoughts"],
+			["Books", "/books"],
+			["Podcast", "/podcast"],
+			["Stack", "/stack"],
+		],
+	},
+	{
+		title: "Our products",
+		links: [
+			["Urban Events", "/products/urbanevents"],
+			["WorkProof", "/products/workproof"],
+			["Fixer", "/products/fixer"],
+		],
+	},
 ];
 
-const isExternal = (href: string) => href.startsWith("http");
-const link = (href: string) => (isExternal(href) ? href : getNavLink(href));
+const link = (href: string) => getNavLink(href);
 const isCurrent = (href: string) =>
 	Astro.url.pathname.replace(/\/$/, "") === link(href).replace(/\/$/, "");
 ---
 
 <footer class="footer">
-	<ul>
-		{
-			links.map(([label, href]) => (
-				<li>
-					<a
-						href={link(href)}
-						aria-label={label}
-						aria-current={isCurrent(href) ? "page" : undefined}
-						target={isExternal(href) ? "_blank" : undefined}
-						rel={isExternal(href) ? "noopener" : undefined}
-					>
-						{label}
-					</a>
-				</li>
-			))
-		}
-	</ul>
-	{
-		next && (
-			<div class="footer__next">
-				<a href={getNavLink(next.href)} aria-label={`Next signal: ${next.label}`} tabindex="-1" />
+	<div class="footer__inner">
+		<div class="footer__top">
+			<div class="footer__intro">
+				<Brand />
+				<p>A product studio. Small on purpose.<br />Based in Islamabad, building for the web.</p>
+				<a href={`mailto:${site.email}`} class="footer__email"
+					>{site.email} <Arrow direction="external" /></a
+				>
 			</div>
-		)
-	}
+			<div class="footer__groups">
+				{
+					groups.map((group) => (
+						<nav aria-label={`Footer ${group.title}`}>
+							<h2>{group.title}</h2>
+							<ul>
+								{group.links.map(([label, href]) => (
+									<li>
+										<a href={link(href)} aria-current={isCurrent(href) ? "page" : undefined}>
+											{label}
+										</a>
+									</li>
+								))}
+							</ul>
+						</nav>
+					))
+				}
+			</div>
+		</div>
+		<div class="footer__base">
+			<span>{site.location}</span>
+			<div>
+				<a href={getNavLink("/rss.xml")}>Stream RSS</a>
+				<a href="https://www.linkedin.com/company/110646093/" target="_blank" rel="noopener"
+					>LinkedIn <Arrow direction="external" /></a
+				>
+			</div>
+		</div>
+	</div>
 </footer>
