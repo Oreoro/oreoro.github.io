@@ -1001,6 +1001,14 @@ html body.signals-shell .nav__toggle label span {
 	letter-spacing: normal;
 }
 
+html body.signals-shell .nav__toggle label span::after {
+	content: "Menu";
+}
+
+html body.signals-shell .nav-active:checked ~ .nav__toggle label span::after {
+	content: "Close";
+}
+
 html body.signals-shell .nav__options {
 	display: none;
 	flex-direction: column;
