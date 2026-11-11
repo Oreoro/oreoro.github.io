@@ -18,6 +18,9 @@ LinkedIn: https://www.linkedin.com/company/110646093/
 - [Home / stream](https://focuslab.pk/): the complete numbered feed of what we are building, reading, and thinking about.
 - [Stream](https://focuslab.pk/stream/): the complete, searchable numbered archive of what we are building, reading, and thinking about.
 - [Products](https://focuslab.pk/products/): the software we build and run.
+- [Urban Events](https://focuslab.pk/products/urbanevents/): full product page — features, pricing (Rs 0 for free events, 5% per paid ticket), and payments.
+- [WorkProof](https://focuslab.pk/products/workproof/): full product page — features, security model (captured vs never captured), and plans.
+- [Fixer](https://focuslab.pk/products/fixer/): full product page — how it works, sources, bring-your-own-model, and plans.
 - [Studio](https://focuslab.pk/studio/): who we are and how we work.
 - [Stack](https://focuslab.pk/stack/): the tools we build with, including AI.
 - [Thoughts](https://focuslab.pk/thoughts/): writing we find useful (curated, external).

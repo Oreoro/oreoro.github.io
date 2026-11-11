@@ -3058,3 +3058,96 @@ html body.signals-shell .visually-hidden {
 	white-space: nowrap;
 	width: 1px;
 }
+
+/* --- Product detail pages --- */
+
+html body.signals-shell .product__lead {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+}
+
+html body.signals-shell .product__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+html body.signals-shell .product__list li {
+	padding-left: 1.85ch;
+	position: relative;
+}
+
+html body.signals-shell .product__list li:before {
+	content: "—";
+	left: 0;
+	position: absolute;
+}
+
+html body.signals-shell .product__plans {
+	display: grid;
+	gap: 1.2em;
+	grid-template-columns: minmax(0, 1fr);
+}
+
+html body.signals-shell .product__plan {
+	border: 1px solid rgba(var(--rgb-ink), 0.14);
+	border-radius: var(--radius-surface);
+	padding: 1.2em 1.3em;
+}
+
+html body.signals-shell .product__plan-name {
+	font-size: var(--font-size-large);
+	line-height: 1.2;
+}
+
+html body.signals-shell .product__plan-price {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	font-size: var(--font-size-copy);
+	margin-top: 0.3em;
+}
+
+html body.signals-shell .product__plan-note {
+	font-size: var(--font-size-copy);
+	margin-top: 0.6em;
+}
+
+html body.signals-shell .product__plan-includes {
+	list-style: none;
+	margin: 0.8em 0 0;
+	padding: 0;
+}
+
+html body.signals-shell .product__plan-includes li {
+	padding-left: 1.85ch;
+	position: relative;
+}
+
+html body.signals-shell .product__plan-includes li:before {
+	content: "—";
+	left: 0;
+	position: absolute;
+}
+
+html body.signals-shell .product__pricing-note {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	font-size: var(--font-size-copy);
+}
+
+html body.signals-shell .product__nav {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+html body.signals-shell .product__nav li {
+	padding: 0.4em 0;
+}
+
+html body.signals-shell .product__nav a {
+	font-weight: 700;
+}
+
+@media (min-width: 40em) {
+	html body.signals-shell .product__plans {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}

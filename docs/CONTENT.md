@@ -51,28 +51,28 @@ Rules:
 
 ```ts
 export interface Product {
-	slug: keyof typeof productSites; // stable identifier, not a detail-page route
+	slug: keyof typeof productSites; // detail-page route: /products/<slug>/
 	name: string;
 	tagline: string; // one line
 	summary: string; // 1–2 sentences
-	url: string; // required public website, shared through productSites
+	url: string; // the product's own website, shared through productSites
 	selfHosted?: boolean;
 	pricing?: string; // one line
 	features: { title: string; body: string }[];
+	notFor: string[]; // "what it is not" positioning
 	stack?: string[]; // optional
+	plans?: { name: string; price: string; note?: string; includes: string[] }[];
+	sections?: { heading: string; intro?: string; items: string[] }[];
 }
 ```
 
 `productSites` in `src/data/product-sites.ts` is the shared source for website URLs.
-The Products listing uses `ProductCard` and links directly to those websites.
-Desktop and mobile navigation and the Studio product list use the same product
-data. Product detail pages are no longer generated.
-
-The Worker permanently redirects the retired `/products/<slug>` URLs, with or
-without a trailing slash or `index.html`, to the corresponding website.
-These redirects apply only to GET and HEAD and do not forward query parameters.
-Additional feature, pricing, and positioning data is retained for content editing,
-but no longer renders as a separate product page.
+Each product has a full detail page at `/products/<slug>/` rendered from this data:
+hero, "What it does", detail sections (how it works, security, sources), pricing
+plans, "What it is not", and a CTA out to the product's own website.
+The Products listing, desktop and mobile navigation, and the Studio product list
+link to the detail pages. Keep `features`, `plans`, and `sections` in step with
+the live product sites — product copy must stay grounded in what the sites say.
 
 ## Books — `src/data/books.ts`
 

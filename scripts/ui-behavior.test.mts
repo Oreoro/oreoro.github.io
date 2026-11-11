@@ -27,7 +27,7 @@ test("every product has its own public HTTPS website", () => {
 	}
 });
 
-test("navigation, product cards, and stream content no longer link to detail pages", () => {
+test("product cards, header, and studio link to the internal product pages", () => {
 	const header = readFileSync(
 		new URL("../src/components/layout/Header.astro", import.meta.url),
 		"utf8",
@@ -37,20 +37,25 @@ test("navigation, product cards, and stream content no longer link to detail pag
 		"utf8",
 	);
 	const studio = readFileSync(new URL("../src/pages/studio/index.astro", import.meta.url), "utf8");
-	assert.match(header, /products\.map/);
-	assert.match(header, /\[product\.name, product\.url\]/);
-	assert.match(card, /href=\{product\.url\}/);
-	assert.match(card, /target="_blank"/);
-	assert.match(card, /rel="noopener"/);
-	assert.match(card, /Visit website/);
-	assert.match(studio, /href=\{product\.url\} target="_blank" rel="noopener"/);
-	for (const source of [header, card, studio, ...stream.map((entry) => entry.content)]) {
-		assert.doesNotMatch(source, /\/products\/(?:urbanevents|workproof|fixer|\$\{)/);
-	}
-	assert.ok(
-		!existsSync(new URL("../src/pages/products/[slug].astro", import.meta.url)),
-		"Product detail pages are no longer generated",
+	const detail = readFileSync(
+		new URL("../src/pages/products/[slug].astro", import.meta.url),
+		"utf8",
 	);
+	assert.match(header, /products\.map/);
+	for (const source of [header, card, studio]) {
+		assert.ok(source.includes("/products/${product.slug}/"), "links to the internal detail page");
+	}
+	assert.match(card, /See the product/);
+	assert.ok(
+		existsSync(new URL("../src/pages/products/[slug].astro", import.meta.url)),
+		"Product detail pages are generated",
+	);
+	// The detail pages link out to the real product websites.
+	assert.match(detail, /href=\{product\.url\} target="_blank" rel="noopener"/);
+	// The stream never links to the /products/ routes.
+	for (const source of stream.map((entry) => entry.content)) {
+		assert.doesNotMatch(source, /\/products\//);
+	}
 	for (const entry of stream) {
 		for (const [tag, href] of entry.content.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>/g)) {
 			if (!Object.values(productSites).some((website) => website === href)) continue;
@@ -61,30 +66,26 @@ test("navigation, product cards, and stream content no longer link to detail pag
 	assert.ok(stream.some((entry) => entry.content.includes(`href="${productSites.fixer}"`)));
 });
 
-test("retired product URLs permanently redirect without forwarding query parameters", async () => {
-	const env = {
-		ASSETS: {
-			fetch: async () => {
-				assert.fail("Product redirects must not fetch a retired page");
-			},
-		},
-	};
-	for (const [slug, website] of Object.entries(productSites)) {
+test("product pages are served by the static build, not redirected", async () => {
+	for (const slug of Object.keys(productSites)) {
 		for (const suffix of ["", "/", "/index.html"]) {
-			for (const method of ["GET", "HEAD"]) {
-				const response = await worker.fetch(
-					new Request(
-						`https://focuslab.pk/products/${slug}${suffix}?next=https://example.com&ref=old-page`,
-						{ method },
-					),
-					env,
-				);
-				assert.equal(response.status, 301);
-				assert.equal(response.headers.get("location"), new URL(website).href);
-				assert.equal(response.headers.get("x-content-type-options"), "nosniff");
-				assert.equal(response.headers.get("strict-transport-security"), "max-age=31536000");
-				assert.equal(await response.text(), "");
-			}
+			const request = new Request(`https://focuslab.pk/products/${slug}${suffix}`, {
+				method: "GET",
+			});
+			let assetCalls = 0;
+			const response = await worker.fetch(request, {
+				ASSETS: {
+					fetch: async (received: Request) => {
+						assert.equal(received, request);
+						assetCalls += 1;
+						return new Response("asset response", { status: 200 });
+					},
+				},
+			});
+			assert.equal(response.status, 200);
+			assert.equal(response.headers.get("location"), null);
+			assert.equal(assetCalls, 1);
+			assert.equal(await response.text(), "asset response");
 		}
 	}
 });

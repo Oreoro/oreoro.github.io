@@ -1,0 +1,129 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import Arrow from "@/components/ui/Arrow.astro";
+import { products } from "@/data/products";
+import { getNavLink } from "@/lib/blog-helpers";
+
+export function getStaticPaths() {
+	return products.map((product) => ({
+		params: { slug: product.slug },
+		props: { product },
+	}));
+}
+
+const { product } = Astro.props;
+const others = products.filter((item) => item.slug !== product.slug);
+---
+
+<PageLayout
+	meta={{
+		title: `${product.name} — Focus Lab`,
+		description: product.summary,
+		jsonLd: {
+			"@context": "https://schema.org",
+			"@type": "SoftwareApplication",
+			name: product.name,
+			description: product.summary,
+			url: product.url ?? Astro.url.href,
+			applicationCategory: "BusinessApplication",
+			operatingSystem: product.selfHosted ? "Self-hosted" : "Web",
+			brand: { "@type": "Organization", name: "Focus Lab" },
+		},
+	}}
+>
+	<div class="page product">
+		<header class="product__hero">
+			<p class="product__kicker">
+				Product{product.selfHosted ? " · Self-hosted" : ""}
+			</p>
+			<h1>{product.name}</h1>
+			<p class="product__tagline">{product.tagline}</p>
+			<p class="product__summary">{product.summary}</p>
+			{product.pricing && <p class="product__pricing">{product.pricing}</p>}
+
+			<div class="product__actions">
+				<a class="button" href={product.url} target="_blank" rel="noopener">
+					Visit {product.name} <Arrow direction="external" />
+				</a>
+				<a class="button button--ghost" href={getNavLink("/contact/")}>Talk to us</a>
+			</div>
+		</header>
+
+		<section class="product__section">
+			<h2>What it does</h2>
+			<div class="product__grid">
+				{product.features.map((feature) => (
+					<article class="product__feature">
+						<h3>{feature.title}</h3>
+						<p>{feature.body}</p>
+					</article>
+				))}
+			</div>
+		</section>
+
+		{
+			product.sections &&
+				product.sections.map((section) => (
+					<section class="product__section">
+						<h2>{section.heading}</h2>
+						{section.intro && <p class="product__lead">{section.intro}</p>}
+						<ul class="product__list">
+							{section.items.map((item) => (
+								<li>{item}</li>
+							))}
+						</ul>
+					</section>
+				))
+		}
+
+		{
+			product.plans && (
+				<section class="product__section">
+					<h2>Pricing</h2>
+					<div class="product__plans">
+						{product.plans.map((plan) => (
+							<article class="product__plan">
+								<h3 class="product__plan-name">{plan.name}</h3>
+								<p class="product__plan-price">{plan.price}</p>
+								{plan.note && <p class="product__plan-note">{plan.note}</p>}
+								<ul class="product__plan-includes">
+									{plan.includes.map((item) => (
+										<li>{item}</li>
+									))}
+								</ul>
+							</article>
+						))}
+					</div>
+					<p class="product__pricing-note">
+						Pricing details and availability are on the product's own site —
+						<a href={product.url} target="_blank" rel="noopener">visit {product.name}</a> for the latest.
+					</p>
+				</section>
+			)
+		}
+
+		<section class="product__section">
+			<h2>What it is not</h2>
+			<ul class="product__list">
+				{product.notFor.map((item) => (
+					<li>{item}</li>
+				))}
+			</ul>
+		</section>
+
+		<hr class="ornament" />
+
+		<section class="product__section">
+			<h2>More from Focus Lab</h2>
+			<ul class="product__nav">
+				{others.map((item) => (
+					<li>
+						<a href={getNavLink(`/products/${item.slug}/`)}>{item.name}</a>
+						{" — "}
+						{item.tagline}
+					</li>
+				))}
+			</ul>
+		</section>
+	</div>
+</PageLayout>
