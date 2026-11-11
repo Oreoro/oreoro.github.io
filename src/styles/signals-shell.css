@@ -1454,6 +1454,7 @@ html body.signals-shell .signal--clone .signal__content,
 html body.signals-shell .signal--select .signal__content {
 	font-size: var(--font-size-copy);
 	line-height: 1.5;
+	max-width: var(--measure-wide);
 }
 
 @media (min-width: 64em) {
