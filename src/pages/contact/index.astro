@@ -10,14 +10,17 @@ import { site } from "@/data/focuslab";
 	meta={{
 		title: "Contact",
 		description:
-			"Tell Focus Lab what you're building and what done looks like. Four lines is plenty.",
+			"Contact Focus Lab in Islamabad — email, phone, or WhatsApp. Tell us what you're building and what done looks like.",
 	}}
 >
 	<div class="page">
 		<div class="page__headline">
 			<p class="page__kicker">Contact</p>
 			<h1>Tell us what you're building.</h1>
-			<p>Four lines is plenty.</p>
+			<p>
+				Four lines is plenty — the problem, who it affects, what done looks like, and
+				your timeline.
+			</p>
 			<PageAnchors
 				anchors={[
 					{ id: "include", label: "What to include" },
@@ -66,8 +69,21 @@ import { site } from "@/data/focuslab";
 					<dd><a href={`tel:${site.phone.replace(/\s+/g, "")}`}>{site.phone}</a></dd>
 				</div>
 				<div>
+					<dt>WhatsApp</dt>
+					<dd>
+						<a href={site.whatsappHref} target="_blank" rel="noopener">
+							{site.whatsapp}
+						</a>
+						<small class="contact-list__note">We reply fastest on WhatsApp.</small>
+					</dd>
+				</div>
+				<div>
 					<dt>Studio</dt>
 					<dd>{site.location}</dd>
+				</div>
+				<div>
+					<dt>Time</dt>
+					<dd>Pakistan Standard Time (PKT, UTC+5)</dd>
 				</div>
 				<div>
 					<dt>LinkedIn</dt>
@@ -130,5 +146,12 @@ import { site } from "@/data/focuslab";
 		color: var(--color-ink);
 		font-size: 1.2em;
 		font-weight: 400;
+	}
+
+	.contact-list__note {
+		color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+		display: block;
+		font-size: 0.8em;
+		margin-top: 0.1em;
 	}
 </style>
