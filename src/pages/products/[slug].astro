@@ -17,7 +17,7 @@ const others = products.filter((item) => item.slug !== product.slug);
 
 <PageLayout
 	meta={{
-		title: `${product.name} — Focus Lab`,
+		title: product.name,
 		description: product.summary,
 		jsonLd: {
 			"@context": "https://schema.org",
