@@ -53,9 +53,6 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 >
 	<section class="signal signal--clone" data-signal={index - windowStart}>
 		<header class="signal__header">
-			<p class="entry__back">
-				<a href={getNavLink("/")}>← The stream</a>
-			</p>
 			<h1 aria-label={`${kindLabel[entry.kind]}: ${entry.label}`}>
 				<span>{entry.num}.</span>
 				<strong>{entry.label}</strong>

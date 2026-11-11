@@ -993,14 +993,6 @@ html body.signals-shell .nav__toggle label span {
 	letter-spacing: normal;
 }
 
-html body.signals-shell .nav__toggle label span::after {
-	content: "Menu";
-}
-
-html body.signals-shell .nav-active:checked ~ .nav__toggle label span::after {
-	content: "Close";
-}
-
 html body.signals-shell .nav__options {
 	display: none;
 	flex-direction: column;
@@ -1008,36 +1000,19 @@ html body.signals-shell .nav__options {
 	padding-right: var(--spacing);
 }
 
-html body.signals-shell .nav__group {
-	padding-bottom: calc(var(--spacing) * 1.25);
-	padding-top: calc(var(--spacing) * 0.5);
-}
-
-html body.signals-shell .nav__group + .nav__group {
-	border-top: 1px solid rgba(var(--rgb-sheet-ink), 0.12);
-}
-
-html body.signals-shell .nav__group-label {
-	color: color-mix(in srgb, var(--color-sheet-ink) 55%, transparent);
-	font-size: var(--font-size-label);
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	margin: 0 0 0.2em;
-	text-transform: uppercase;
-}
-
-html body.signals-shell .nav__group ul {
+html body.signals-shell .nav__options > ul {
 	display: flex;
+	flex: 1;
 	flex-direction: column;
 	line-height: var(--line-height);
 }
 
-html body.signals-shell .nav__group ul li {
+html body.signals-shell .nav__options > ul li {
 	font-size: var(--font-size-copy);
 	font-weight: 700;
 }
 
-html body.signals-shell .nav__group ul li a {
+html body.signals-shell .nav__options > ul li a {
 	align-items: center;
 	color: var(--color-sheet-ink);
 	display: flex;
@@ -1046,8 +1021,17 @@ html body.signals-shell .nav__group ul li a {
 	text-decoration: none;
 }
 
-html body.signals-shell .nav__group ul li a[aria-current="page"] {
-	color: color-mix(in srgb, var(--color-sheet-ink) 55%, transparent);
+html body.signals-shell .nav__options > ul:last-child {
+	border-top: 1px solid rgba(var(--rgb-sheet-ink), 0.12);
+	margin-top: calc(var(--spacing) * 1.5);
+	padding-bottom: calc(var(--spacing) * 1.5);
+	padding-top: calc(var(--spacing) * 1.5);
+}
+
+html body.signals-shell .nav__options > ul:last-child li {
+	font-size: var(--font-size-copy);
+	letter-spacing: normal;
+	line-height: var(--line-height);
 }
 
 @media (min-width: 64em) {
@@ -1413,55 +1397,9 @@ html body.signals-shell .entry__kind {
 	color: var(--color-ink);
 }
 
-/* Entry pages read as standalone articles: a back link and a proper
-   headline in the same number-gutter grid as the feed rows. The article
-   starts as .signal--clone and is moved into .signal--select on load, so
-   both states carry the same layout. */
-html body.signals-shell .signal--clone .entry__back,
-html body.signals-shell .signal--select .entry__back {
-	display: grid;
-	grid-template-columns: var(--number-gutter) minmax(0, 1fr);
-	margin: 0 0 1.2em;
-}
-
-html body.signals-shell .signal--clone .entry__back a,
-html body.signals-shell .signal--select .entry__back a {
-	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	font-size: var(--font-size-label);
-	font-weight: 700;
-	grid-column: 2;
-	letter-spacing: 0.04em;
-	text-decoration: none;
-	text-transform: uppercase;
-}
-
-html body.signals-shell .signal--clone .entry__back a:hover,
-html body.signals-shell .signal--select .entry__back a:hover,
-html:not(.pointer-focus) body.signals-shell .signal--clone .entry__back a:focus,
-html:not(.pointer-focus) body.signals-shell .signal--select .entry__back a:focus {
-	color: var(--color-ink);
-	text-decoration: underline;
-}
-
-html body.signals-shell .signal--clone .signal__header :is(h1, h2),
-html body.signals-shell .signal--select .signal__header :is(h1, h2) {
-	font-size: var(--font-size-xxxx-large);
-	letter-spacing: -0.02em;
-	line-height: 1.08;
-}
-
 html body.signals-shell .signal--clone .signal__content,
 html body.signals-shell .signal--select .signal__content {
-	font-size: var(--font-size-copy);
-	line-height: 1.5;
 	max-width: var(--measure-wide);
-}
-
-@media (min-width: 64em) {
-	html body.signals-shell .signal--clone .signal__content > * + *,
-	html body.signals-shell .signal--select .signal__content > * + * {
-		margin-top: var(--flow-space, var(--line-height));
-	}
 }
 
 /* ---------- controller.css ---------- */
