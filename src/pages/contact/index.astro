@@ -10,16 +10,14 @@ import { site } from "@/data/focuslab";
 	meta={{
 		title: "Contact",
 		description:
-			"Tell Focus Lab what you're building and what done looks like. Four lines is plenty — you'll get a straight answer, usually within a day.",
+			"Tell Focus Lab what you're building and what done looks like. Four lines is plenty.",
 	}}
 >
 	<div class="page">
 		<div class="page__headline">
 			<p class="page__kicker">Contact</p>
 			<h1>Tell us what you're building.</h1>
-			<p>
-				Tell us what you're building and what done looks like. We'll reply with a straight answer.
-			</p>
+			<p>Four lines is plenty.</p>
 			<PageAnchors
 				anchors={[
 					{ id: "include", label: "What to include" },
@@ -30,7 +28,6 @@ import { site } from "@/data/focuslab";
 
 		<div class="page__content content">
 			<h2 id="include">What to include</h2>
-			<p>You don't need a brief. Four lines is plenty, and we'd rather have them than not.</p>
 			<ol class="numbered">
 				<li>
 					<div class="numbered__body">
@@ -41,13 +38,13 @@ import { site } from "@/data/focuslab";
 				<li>
 					<div class="numbered__body">
 						<h3 class="numbered__title">Who hits it.</h3>
-						<p>How many people have this problem, and how often.</p>
+						<p>How many people, and how often.</p>
 					</div>
 				</li>
 				<li>
 					<div class="numbered__body">
 						<h3 class="numbered__title">What done looks like.</h3>
-						<p>The version of the world that's obviously better when we're finished.</p>
+						<p>The finished product, described simply.</p>
 					</div>
 				</li>
 				<li>
@@ -86,13 +83,8 @@ import { site } from "@/data/focuslab";
 				<h3 class="panel__title">A note on fit</h3>
 				<div class="panel__body">
 					<p>
-						We take on partner work only when there's a mutual fit: a real problem, a clear owner,
-						and room to decide how to solve it. If we're not the right studio for it, we'll say so
-						early and point you somewhere better.
-					</p>
-					<p>
-						Read <a href={getNavLink("/studio/")}>what we believe</a> first — it'll tell you faster than
-						an email will.
+						We take on partner work only when the fit is mutual. If we are not the right studio,
+						we say so early.
 					</p>
 				</div>
 				<div class="panel__actions">
@@ -126,7 +118,6 @@ import { site } from "@/data/focuslab";
 		text-transform: uppercase;
 	}
 
-	/* Give the direct contact links a comfortable touch target. */
 	.contact-list dd a {
 		display: inline-flex;
 		align-items: center;

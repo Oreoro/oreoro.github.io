@@ -16,13 +16,12 @@ import { products } from "@/data/products";
 			<p class="page__kicker">Products</p>
 			<h1>Software we build and run.</h1>
 			<p>
-				We design, ship, and operate our own products — and carry the pager for them. Two run in the
-				open, and one runs on your infrastructure.
+				Our own products, built and run in Islamabad. Visit each site for details and pricing.
 			</p>
 		</div>
 
 		<div class="product-cards">
-			{products.map((product, index) => <ProductCard product={product} index={index} />)}
+			{products.map((product) => <ProductCard product={product} />)}
 		</div>
 	</div>
 </PageLayout>

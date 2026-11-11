@@ -17,9 +17,10 @@ Publish with `npm run deploy` only after the change is reviewed and deployment i
 
 ## The stream — `src/data/stream.ts`
 
-The complete feed lives at `/stream/`. The homepage introduces the studio and
-shows a few selected entries. Each entry is self-contained and opens at `/<num>`.
-Previous/next links and the nearby-entry list work without JavaScript.
+The homepage is the complete numbered feed, one entry per line. `/stream/`
+keeps a searchable archive of the same entries. Each entry is self-contained
+and opens at `/<num>`. Entry pages retain 36-entry index windows, with visible
+previous/next links and a nearby-entry list that work without JavaScript.
 
 ```ts
 export type StreamKind = "note" | "launch" | "link" | "quote" | "essay";
@@ -81,11 +82,11 @@ Example (our own launch):
 
 ```ts
 export interface Product {
-	slug: string; // url: /products/<slug>/
+	slug: keyof typeof productSites; // stable identifier, not a detail-page route
 	name: string;
 	tagline: string; // one line
 	summary: string; // 1–2 sentences
-	url?: string; // public site, if any
+	url: string; // required public website, shared through productSites
 	selfHosted?: boolean;
 	pricing?: string; // one line
 	features: { title: string; body: string }[];
@@ -93,11 +94,16 @@ export interface Product {
 }
 ```
 
-Rendered as a hero (name, tagline, summary, pricing, CTAs) plus a feature grid.
-If `url` is set the primary CTA is "Visit <name>"; otherwise it is a
-"Request access or a demo" mailto. The homepage and Products page use the shared
-`ProductCard` component and link to the product’s detail page, not its external site.
-Keep product links in the footer in step when adding or removing products.
+`productSites` in `src/data/product-sites.ts` is the shared source for website URLs.
+The Products listing uses `ProductCard` and links directly to those websites.
+Desktop and mobile navigation and the Studio product list use the same product
+data. Product detail pages are no longer generated.
+
+The Worker permanently redirects the retired `/products/<slug>` URLs, with or
+without a trailing slash or `index.html`, to the corresponding website.
+These redirects apply only to GET and HEAD and do not forward query parameters.
+Additional feature, pricing, and positioning data is retained for content editing,
+but no longer renders as a separate product page.
 
 ## Books — `src/data/books.ts`
 
@@ -123,6 +129,19 @@ is special: it is linked from the index but not listed.
 Jobs and policy updates use `EmailRequest` to prepare a mailto draft. This is
 not an automatic subscription or a sending endpoint. Do not promise policy dates
 or a mailing-list registration that the implementation does not provide.
+
+## Typography
+
+DM Sans is self-hosted in `public/assets/fonts/` under the SIL Open Font License.
+The shell uses a single preloaded Latin variable font for body copy, navigation,
+and headings. Italics and extended Latin load only when needed. Real monospace
+stream numbers retain the existing number gutter and article alignment.
+
+Font declarations and weight tokens live in `src/styles/signals-shell.css`.
+Notion content inherits the same family through `--font-sans`. Font filenames
+include their version and content hash because assets use immutable caching.
+Keep the accompanying license and update the preload in `BaseHead.astro` when
+replacing the primary font.
 
 ## Style rules
 

@@ -6,8 +6,16 @@ import {
 	scrapeFonts,
 	ContextDevError,
 } from "./lib/context-dev.ts";
+import { productSites } from "./data/product-sites.ts";
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8" };
+const PRODUCT_REDIRECTS = new Map(
+	Object.entries(productSites).flatMap(([slug, url]) => [
+		[`/products/${slug}`, url],
+		[`/products/${slug}/`, url],
+		[`/products/${slug}/index.html`, url],
+	]),
+);
 
 function json(body, status = 200) {
 	return new Response(JSON.stringify(body), { status, headers: JSON_HEADERS });
@@ -146,6 +154,12 @@ export default {
 		if (url.hostname.startsWith("www.")) {
 			url.hostname = url.hostname.slice(4);
 			return Response.redirect(url.toString(), 301);
+		}
+
+		// Retired product pages go straight to the product's own website.
+		const productWebsite = PRODUCT_REDIRECTS.get(url.pathname);
+		if (productWebsite && (request.method === "GET" || request.method === "HEAD")) {
+			return withSecurityHeaders(request, Response.redirect(productWebsite, 301));
 		}
 
 		if (url.pathname === "/api/context" || url.pathname.startsWith("/api/context/")) {

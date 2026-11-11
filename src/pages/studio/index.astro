@@ -11,16 +11,15 @@ import { site } from "@/data/focuslab";
 	meta={{
 		title: "Studio",
 		description:
-			"Focus Lab is a product studio in Islamabad. We design, build, and run our own software — and occasionally partner with a team when the fit is right.",
+			"Focus Lab is a product studio in Islamabad. We build and run our own software.",
 	}}
 >
 	<div class="page">
 		<div class="page__headline">
 			<p class="page__kicker">Studio</p>
-			<h1>We build products. That is the work.</h1>
+			<h1>We build products.</h1>
 			<p>
-				Focus Lab is a product studio based in Islamabad. We design, build, and run our own
-				software. Once in a while, when there is a mutual fit, we partner with a team on theirs.
+				Focus Lab is a product studio in Islamabad. We design, build, and run our own software.
 			</p>
 			<PageAnchors
 				anchors={[
@@ -38,8 +37,8 @@ import { site } from "@/data/focuslab";
 					<div class="numbered__body">
 						<h3 class="numbered__title">Product first.</h3>
 						<p>
-							We don't start with a deck. We start with the smallest thing worth building, and we
-							put it in front of a real person as early as we can.
+							Start with the smallest thing worth building, and put it in front of a real person as
+							early as you can.
 						</p>
 					</div>
 				</li>
@@ -47,26 +46,22 @@ import { site } from "@/data/focuslab";
 					<div class="numbered__body">
 						<h3 class="numbered__title">Ship to learn.</h3>
 						<p>
-							Working software tells the truth. Everything else is a guess, and a guess costs more
-							the longer you hold it.
+							Working software tells the truth. A guess costs more the longer you hold it.
 						</p>
 					</div>
 				</li>
 				<li>
 					<div class="numbered__body">
 						<h3 class="numbered__title">Small on purpose.</h3>
-						<p>
-							Small teams move faster, decide better, and stay accountable to each other because
-							there is nowhere to hide.
-						</p>
+						<p>Small teams move faster and decide better.</p>
 					</div>
 				</li>
 				<li>
 					<div class="numbered__body">
 						<h3 class="numbered__title">Own the outcome.</h3>
 						<p>
-							We stay for support, metrics, and the second year. Handing a product over at launch
-							isn't running a product.
+							Stay for support, metrics, and the second year. Handing a product over at launch is
+							not running a product.
 						</p>
 					</div>
 				</li>
@@ -79,13 +74,9 @@ import { site } from "@/data/focuslab";
 						products.map((product) => (
 							<tr>
 								<th scope="row">
-									{product.url ? (
-										<a href={product.url} target="_blank" rel="noopener">
-											{product.name}
-										</a>
-									) : (
-										<a href={getNavLink(`/products/${product.slug}/`)}>{product.name}</a>
-									)}
+									<a href={product.url} target="_blank" rel="noopener">
+										{product.name}
+									</a>
 								</th>
 								<td>{product.tagline}</td>
 							</tr>
@@ -95,27 +86,20 @@ import { site } from "@/data/focuslab";
 			</table>
 
 			<blockquote class="pull">
-				<p>
-					We are not trying to be the biggest studio in Islamabad. We are trying to be the one that
-					still answers the phone in year three.
-				</p>
+				<p>Small enough to still answer the phone in year three.</p>
 				<cite>Focus Lab</cite>
 			</blockquote>
 
 			<h2 id="working">Working with us</h2>
 			<p>
-				We are products first. We take on partner work only when there is a mutual fit: a real
-				problem, a clear owner, and room to decide how to solve it. If we are not the right fit, we
-				will say so early.
+				Partner work only when there is a mutual fit: a real problem, a clear owner, and room to
+				decide. If we are not the right fit, we say so early.
 			</p>
 
 			<div class="panel">
 				<h3 class="panel__title">Start a conversation</h3>
 				<div class="panel__body">
-					<p>
-						Tell us what you're building and what done looks like. You'll get a straight answer,
-						usually within a day.
-					</p>
+					<p>Tell us what you're building and what done looks like.</p>
 					<p>
 						Email <a href={`mailto:${site.email}`}>{site.email}</a>, or reach us on <a
 							href="https://www.linkedin.com/company/110646093/"

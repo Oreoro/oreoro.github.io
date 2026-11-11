@@ -1,29 +1,27 @@
 ---
 import type { Product } from "@/data/products";
 import Arrow from "@/components/ui/Arrow.astro";
-import { getNavLink } from "@/lib/blog-helpers";
 
 interface Props {
 	product: Product;
-	index: number;
-	compact?: boolean;
-	headingLevel?: 2 | 3;
 }
 
-const { product, index, compact = false, headingLevel = 2 } = Astro.props;
+const { product } = Astro.props;
 const headingId = `product-${product.slug}`;
-const Heading = `h${headingLevel}` as "h2" | "h3";
 ---
 
-<a class="product-card" href={getNavLink(`/products/${product.slug}/`)} aria-labelledby={headingId}>
-	<span class="product-card__number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-	<div class="product-card__intro">
-		<div class="product-card__head">
-			<Heading id={headingId}>{product.name}</Heading>
-			<span class="product-card__status">{product.selfHosted ? "Self-hosted" : "Live"}</span>
-		</div>
-		<p class="product-card__tagline">{product.tagline}</p>
+<a
+	class="product-card"
+	href={product.url}
+	target="_blank"
+	rel="noopener"
+	aria-labelledby={headingId}
+>
+	<div class="product-card__head">
+		<h2 id={headingId}>{product.name}</h2>
+		<span class="product-card__status">{product.selfHosted ? "Self-hosted" : "Live"}</span>
 	</div>
-	<p class="product-card__summary">{compact ? product.blurb : product.summary}</p>
-	<span class="product-card__cta">Explore product <Arrow /></span>
+	<p class="product-card__tagline">{product.tagline}</p>
+	<p class="product-card__summary">{product.summary}</p>
+	<span class="product-card__cta">Visit website <Arrow direction="external" /></span>
 </a>

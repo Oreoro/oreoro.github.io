@@ -1,0 +1,387 @@
+/*
+ * Keep the forest-and-white theme independent of the numbered-stream layout.
+ * The layout lives in signals-shell.css; no palette picker runs on page load.
+ */
+:root,
+:root.dark {
+	color-scheme: dark;
+	scroll-padding-bottom: calc(var(--font-size) * 4.5);
+	--rgb-theme: 35, 92, 67;
+	--rgb-ink: 244, 246, 243;
+	--rgb-paper: 35, 92, 67;
+	--rgb-accent: 244, 246, 243;
+	--rgb-shadow: 25, 37, 31;
+	--rgb-sheet: 27, 70, 51;
+	--rgb-sheet-ink: 244, 246, 243;
+	--rgb-error: 255, 184, 173;
+	--color-muted: #d1ded4;
+	--color-surface: #1d4d38;
+	--color-surface-hover: color-mix(in srgb, var(--color-surface) 92%, var(--color-ink));
+	--color-hairline: #527a61;
+	--color-boundary: #91b09b;
+	--ink-muted: 78%;
+	--ink-faint: 88%;
+	--radius-control: 6px;
+	--radius-surface: 12px;
+	--theme-bg: var(--color-theme);
+	--theme-text: var(--color-ink);
+	--theme-link: var(--color-accent);
+	--theme-accent: var(--color-accent);
+	--theme-accent-2: var(--color-muted);
+	--theme-quote: var(--color-muted);
+	--theme-popover-bg: var(--color-surface);
+	/* Covers keep their colours independently of the reading ground. */
+	--book-tint-1: #235c43;
+	--book-tint-2: #dce7e0;
+	--book-tint-3: #dae3e8;
+	--book-tint-4: #e1e6df;
+	--book-ink-1: #f4f6f3;
+	--book-ink-2: #19251f;
+	--book-ink-3: #19251f;
+	--book-ink-4: #19251f;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+html body.signals-shell {
+	color: var(--color-ink) !important;
+}
+
+html body.signals-shell ::selection {
+	color: var(--color-paper);
+	background: var(--color-accent);
+}
+
+html body.signals-shell .content a:not(.button) {
+	color: var(--color-accent);
+	overflow-wrap: anywhere;
+}
+
+html body.signals-shell .button:not(.button--ghost) {
+	background: var(--color-accent);
+	border-color: var(--color-accent);
+	color: var(--color-paper) !important;
+}
+
+html body.signals-shell .button:not(.button--ghost):hover,
+html:not(.pointer-focus) body.signals-shell .button:not(.button--ghost):focus-visible {
+	background: color-mix(in srgb, var(--color-accent) 86%, var(--color-theme));
+}
+
+html body.signals-shell .button--ghost {
+	border-color: var(--color-boundary);
+	color: var(--color-accent) !important;
+}
+
+html body.signals-shell .button--ghost:hover,
+html:not(.pointer-focus) body.signals-shell .button--ghost:focus-visible {
+	background: var(--color-surface-hover);
+}
+
+html body.signals-shell .product-card,
+html body.signals-shell .panel,
+html body.signals-shell .cta-panel,
+html body.signals-shell .pull,
+html body.signals-shell .stack__item,
+html body.signals-shell .ledger {
+	background: var(--color-surface);
+}
+
+html body.signals-shell .product-card:hover,
+html:not(.pointer-focus) body.signals-shell .product-card:focus-visible {
+	background: var(--color-surface-hover);
+}
+
+html body.signals-shell .book-cover {
+	background: var(--book-tint, var(--color-surface));
+}
+
+html body.signals-shell .book-cover__mark,
+html body.signals-shell .book-cover__title {
+	color: var(--book-ink, var(--color-ink));
+}
+
+html body.signals-shell .broadsheet {
+	--podcast-surface: var(--color-surface);
+}
+
+/* Search remains progressive: without JavaScript the complete list is shown. */
+html body.signals-shell .filter {
+	max-width: 35rem;
+	margin-top: 2rem;
+}
+
+html body.signals-shell .filter label,
+html body.signals-shell .email-request__label {
+	display: block;
+	margin-bottom: 0.625rem;
+	font-size: 0.875rem;
+	font-weight: 700;
+}
+
+html body.signals-shell .filter__field {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	align-items: center;
+}
+
+html body.signals-shell .filter__field input {
+	flex: 1 1 14rem;
+}
+
+html body.signals-shell .filter input,
+html body.signals-shell .email-request__input,
+html body.signals-shell .signup .email-request__form .email-request__input {
+	width: 100%;
+	min-width: 0;
+	min-height: 48px;
+	margin: 0;
+	padding: 0.75rem;
+	border: 1px solid var(--color-boundary);
+	border-radius: var(--radius-control);
+	background: var(--color-surface);
+	color: var(--color-ink);
+	font-family: var(--font-family);
+	font-size: 1rem;
+	line-height: 1.5;
+}
+
+html body.signals-shell .filter input::placeholder,
+html body.signals-shell .email-request__input::placeholder,
+html body.signals-shell .signup .email-request__form .email-request__input::placeholder {
+	color: var(--color-muted);
+	opacity: 1;
+}
+
+html body.signals-shell .filter__status {
+	min-height: 1.5em;
+	margin-top: 0.75rem;
+	color: var(--color-muted);
+	font-size: 0.8125rem;
+}
+
+html body.signals-shell .filter__empty {
+	max-width: 50ch;
+	margin-top: 2rem;
+	padding: 1.5rem;
+	background: var(--color-surface);
+	border-radius: var(--radius-surface);
+}
+
+html body.signals-shell .stream-list {
+	list-style: none;
+	border-top: 1px solid var(--color-hairline);
+}
+
+html body.signals-shell .stream-list li {
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+html body.signals-shell .stream-list a {
+	display: grid;
+	grid-template-columns: 3.6ch minmax(0, 1fr) 10rem 1rem;
+	align-items: baseline;
+	gap: 1.25rem;
+	min-height: 44px;
+	padding-block: 1.125rem;
+	text-decoration: none;
+}
+
+html body.signals-shell .stream-list__number {
+	color: var(--color-muted);
+	font-family: var(--font-family-mono);
+	font-size: 0.8125rem;
+}
+
+html body.signals-shell .stream-list__title {
+	font-size: var(--font-size-copy);
+	line-height: 1.4;
+}
+
+html body.signals-shell .stream-list__meta {
+	color: var(--color-muted);
+	font-size: 0.875rem;
+	font-weight: 400;
+}
+
+html body.signals-shell .stream-list a:hover .stream-list__title {
+	color: var(--color-accent);
+	text-decoration: underline;
+}
+
+/* Visible links supplement the restored dot, keyboard shortcuts and swipes. */
+html body.signals-shell .entry__navigation {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1.5rem;
+	margin-top: 2rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--color-hairline);
+}
+
+html body.signals-shell .entry__navigation a {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	min-width: 0;
+	min-height: 44px;
+	overflow-wrap: anywhere;
+	text-decoration: none;
+}
+
+html body.signals-shell .entry__navigation a:last-child {
+	text-align: right;
+}
+
+html body.signals-shell .entry__navigation small {
+	color: var(--color-muted);
+	font-size: 0.8125rem;
+}
+
+html body.signals-shell .entry__navigation span {
+	font-size: 0.9375rem;
+	line-height: 1.4;
+}
+
+html body.signals-shell .entry__navigation a:hover span {
+	text-decoration: underline;
+}
+
+html body.signals-shell .policy__back {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	margin-bottom: 1.5rem;
+	font-size: 0.875rem;
+}
+
+/* Email requests still prepare drafts, never claim to subscribe or send. */
+html body.signals-shell .signup {
+	background: var(--color-surface);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-surface);
+}
+
+html body.signals-shell .email-request {
+	margin-top: 1.5rem;
+}
+
+html body.signals-shell .signup .email-request__form {
+	display: block;
+	width: 100%;
+	max-width: none;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+}
+
+html body.signals-shell .signup .email-request__form .button {
+	border-radius: var(--radius-control);
+	min-width: 120px;
+	padding: 0.6em 1.1em 0.55em;
+}
+
+html body.signals-shell .email-request__hint {
+	margin-top: 0.75rem;
+	color: var(--color-muted);
+	font-size: 0.8125rem;
+	line-height: 1.6;
+}
+
+html body.signals-shell .email-request__input[aria-invalid="true"],
+html body.signals-shell .signup .email-request__form .email-request__input[aria-invalid="true"] {
+	border: 2px solid var(--color-error);
+}
+
+html body.signals-shell .email-request__error {
+	margin-top: 0.625rem;
+	color: var(--color-error);
+	font-size: 0.875rem;
+	font-weight: 700;
+}
+
+html body.signals-shell .email-request__actions {
+	margin-top: 1rem;
+}
+
+html body.signals-shell .email-request__actions:has(> [hidden]) {
+	display: none;
+}
+
+html body.signals-shell .email-request__status:not(:empty) {
+	margin-top: 1rem;
+	font-size: 0.875rem;
+}
+
+@media (max-width: 48em) {
+	html body.signals-shell .stream-list a {
+		grid-template-columns: 3.6ch minmax(0, 1fr) 1rem;
+		gap: 0.75rem;
+	}
+
+	html body.signals-shell .stream-list__meta {
+		grid-column: 2;
+	}
+
+	html body.signals-shell .stream-list__arrow {
+		grid-column: 3;
+		grid-row: 1;
+	}
+}
+
+@media print {
+	:root,
+	:root.dark {
+		color-scheme: light;
+		scroll-padding: 0;
+		--rgb-theme: 255, 255, 255;
+		--rgb-paper: 255, 255, 255;
+		--rgb-ink: 0, 0, 0;
+		--rgb-accent: 0, 0, 0;
+		--color-muted: #333;
+		--color-surface: #fff;
+		--color-hairline: #999;
+		--color-boundary: #666;
+	}
+
+	html body.signals-shell .header,
+	html body.signals-shell .footer,
+	html body.signals-shell .nav,
+	html body.signals-shell .nav-underlay,
+	html body.signals-shell .controller,
+	html body.signals-shell .origin,
+	html body.signals-shell .boundary,
+	html body.signals-shell .page:before,
+	html body.signals-shell .page:after,
+	html body.signals-shell .skip-link,
+	html body.signals-shell .filter,
+	html body.signals-shell .entry__navigation,
+	html body.signals-shell .email-request {
+		display: none;
+	}
+
+	html body.signals-shell .page,
+	html body.signals-shell .cluster,
+	html body.signals-shell .signal--clone {
+		margin: 1rem 0;
+		padding-bottom: 0 !important;
+	}
+
+	html body.signals-shell .button:not(.button--ghost) {
+		background: none;
+		color: var(--color-ink) !important;
+	}
+
+	html body.signals-shell .book-cover {
+		background: none;
+	}
+
+	html body.signals-shell .book-cover__mark,
+	html body.signals-shell .book-cover__title {
+		color: var(--color-ink);
+	}
+}

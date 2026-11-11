@@ -11,11 +11,11 @@ LinkedIn: https://www.linkedin.com/company/110646093/
 
 - [Urban Events](https://urbanevents.pk): Ticketing for Pakistan. Publish an event page, sell tickets in PKR via JazzCash, Easypaisa, and bank transfer, and check guests in by QR. Free for free events; 5% per paid ticket.
 - [WorkProof](https://workproof.focuslab.pk): Self-hosted workforce activity analytics with real privacy. Active vs. idle, focus ratio, and per-person rollups; no keystroke or content capture. Pricing on request.
-- [Fixer](/products/fixer/): Self-hosted. Watches production logs, reduces them to the exceptions worth a human's time, and opens draft pull requests with a root cause, the evidence, and a proposed fix. A human always reviews and merges — the GitHub App can never merge. Available on request.
+- [Fixer](https://fixer.focuslab.pk): Self-hosted. Watches production logs, reduces them to the exceptions worth a human's time, and opens draft pull requests with a root cause, the evidence, and a proposed fix. A human always reviews and merges — the GitHub App can never merge. Available on request.
 
 ## Pages
 
-- [Home](https://focuslab.pk/): an introduction to the studio, its products, and selected stream entries.
+- [Home / stream](https://focuslab.pk/): the complete numbered feed of what we are building, reading, and thinking about.
 - [Stream](https://focuslab.pk/stream/): the complete, searchable numbered archive of what we are building, reading, and thinking about.
 - [Products](https://focuslab.pk/products/): the software we build and run.
 - [Studio](https://focuslab.pk/studio/): who we are and how we work.
@@ -29,7 +29,7 @@ LinkedIn: https://www.linkedin.com/company/110646093/
 
 ## The stream
 
-The stream archive lives at `/stream/`, with individual entries at `/00`, `/01`, `/02`, … Each entry is
+The numbered feed is the homepage, with a searchable archive at `/stream/` and individual entries at `/00`, `/01`, `/02`, … Each entry is
 self-contained and is one of five kinds:
 
 - `note` — a short thought or update from the studio
@@ -57,8 +57,9 @@ Full schema, conventions, and examples: see `docs/CONTENT.md` in the repository.
 
 ## Notes
 
-- The design uses a stable forest green (#235C43) identity and cool paper
-  (#F4F6F3) reading surface, with locally hosted Lab Grotesque typography.
+- The design uses a stable forest green (#235C43) background and soft white
+  (#F4F6F3) text, with locally hosted variable DM Sans typography and
+  monospace stream numbers.
   Page colours no longer rotate. Earlier preview URLs and stored choices
   do not change the current design.
 - Jobs and policy updates prepare email requests, not automatic subscriptions.

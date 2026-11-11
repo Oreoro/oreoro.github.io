@@ -1,7 +1,7 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 import Arrow from "@/components/ui/Arrow.astro";
-import { entryDescription, stream, type StreamKind } from "@/data/stream";
+import { entryDescription, stream, streamKindLabels as kindLabel } from "@/data/stream";
 import { getNavLink } from "@/lib/blog-helpers";
 
 export function getStaticPaths() {
@@ -17,18 +17,9 @@ const previousEntry = stream[(index - 1 + stream.length) % stream.length]!;
 const nextHref = getNavLink(`/${nextEntry.num}`);
 const previousHref = getNavLink(`/${previousEntry.num}`);
 
-const kindLabel: Record<StreamKind, string> = {
-	note: "Note",
-	launch: "Launch",
-	essay: "Essay",
-	quote: "Quote",
-	link: "Link",
-};
+const ctaLabel = "Open link";
 
-const ctaLabel =
-	entry.kind === "essay" || entry.kind === "quote" ? "Read the original" : "Open link";
-
-/* Keep the nearby 36 entries available, without putting them before the article. */
+/* The numbered index keeps the original 36-entry windows. */
 const WINDOW_SIZE = 36;
 const windowStart = Math.floor(index / WINDOW_SIZE) * WINDOW_SIZE;
 const windowEnd = Math.min(windowStart + WINDOW_SIZE, stream.length);
@@ -56,73 +47,99 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 			publisher: { "@id": `${siteOrigin}/#organization` },
 		},
 	}}
+	footerNext={{ href: `/${nextEntry.num}`, label: `${nextEntry.num}. ${nextEntry.label}` }}
 >
-	<div class="page">
-		<article class="entry">
-			<p class="entry__breadcrumb">
-				<a href={getNavLink("/stream/")}>The stream</a><span aria-hidden="true">/</span><span
-					>{entry.num}</span
-				>
+	<section class="signal signal--clone" data-signal={index - windowStart}>
+		<header class="signal__header">
+			<h1 aria-label={`${kindLabel[entry.kind]}: ${entry.label}`}>
+				<span>{entry.num}.</span>
+				<strong>{entry.label}</strong>
+			</h1>
+		</header>
+		<div class="signal__content content">
+			<p class="entry__meta">
+				<span class="entry__kind">{kindLabel[entry.kind]}</span>
+				{" · "}
+				<time datetime={entry.date}>{entry.date}</time>
+				{entry.source && ` · ${entry.source}`}
 			</p>
-			<header class="entry__header">
-				<h1>{entry.label}</h1>
-				<p class="entry__meta">
-					<span class="entry__kind">{kindLabel[entry.kind]}</span>
-					<time datetime={entry.date}>{entry.date}</time>
-					{entry.source && <span>{entry.source}</span>}
-				</p>
-			</header>
-			<div class="entry__content content">
-				<Fragment set:html={entry.content} />
-				{
-					entry.url && (
-						<p>
-							<a class="button" href={entry.url} target="_blank" rel="noopener">
-								{ctaLabel} <Arrow direction="external" />
-							</a>
-						</p>
-					)
-				}
-			</div>
-		</article>
 
-		<nav
-			class="entry entry__navigation"
-			data-next={nextHref}
-			data-previous={previousHref}
-			aria-label="Stream navigation"
-		>
-			<a href={previousHref} rel="prev"
-				><small>← Previous · {previousEntry.num}</small><span>{previousEntry.label}</span></a
+			<Fragment set:html={entry.content} />
+
+			{
+				entry.url && (
+					<p>
+						<a class="button" href={entry.url} target="_blank" rel="noopener">
+							{ctaLabel} <Arrow direction="external" />
+						</a>
+					</p>
+				)
+			}
+
+			<nav
+				class="entry__navigation"
+				data-next={nextHref}
+				data-previous={previousHref}
+				aria-label="Stream navigation"
 			>
-			<a href={nextHref} rel="next"
-				><small>Next · {nextEntry.num} →</small><span>{nextEntry.label}</span></a
-			>
-		</nav>
-		<details class="entry entry__archive">
-			<summary
-				>Explore entries {windowEntries[0]!.num}–{
-					windowEntries[windowEntries.length - 1]!.num
-				}</summary
-			>
-			<ul class="stream-list">
-				{
-					windowEntries.map((item) => (
-						<li>
-							<a
-								href={getNavLink(`/${item.num}/`)}
-								aria-current={item.num === entry.num ? "page" : undefined}
-							>
-								<>
-									<span class="stream-list__number">{item.num}.</span>
-									<span class="stream-list__title">{item.label}</span>
-								</>
-							</a>
-						</li>
-					))
-				}
-			</ul>
-			<p><a href={getNavLink("/stream/")}>Browse the complete stream →</a></p>
-		</details>
+				<a href={previousHref} rel="prev"
+					><small>← Previous · {previousEntry.num}</small><span>{previousEntry.label}</span></a
+				>
+				<a href={nextHref} rel="next"
+					><small>Next · {nextEntry.num} →</small><span>{nextEntry.label}</span></a
+				>
+			</nav>
+		</div>
+	</section>
+
+	<div class="cluster cluster--signal" role="navigation" aria-label="Nearby stream entries">
+		{
+			windowEntries.map((item, itemIndex) => (
+				<section class="signal" data-signal={itemIndex}>
+					<header class="signal__header">
+						<a
+							href={getNavLink(`/${item.num}`)}
+							aria-label={`${kindLabel[item.kind]}: ${item.label}`}
+							aria-current={item.num === entry.num ? "page" : undefined}
+						>
+							<dl>
+								<dt>{item.num}.</dt>
+								<dd>
+									{item.label}
+									<span class="signal__meta">{item.source ?? kindLabel[item.kind]}</span>
+								</dd>
+							</dl>
+						</a>
+					</header>
+				</section>
+			))
+		}
 	</div>
+
+	<noscript>
+		<style is:inline>
+			html body.signals-shell .cluster--signal:not(.cluster--loaded),
+			html body.signals-shell .cluster--signal .signal {
+				display: block;
+				opacity: 1;
+			}
+			html body.signals-shell .cluster--signal .signal .signal__header a dl dd {
+				opacity: 1;
+			}
+		</style>
+	</noscript>
+
+	<div class="boundary"></div>
+
+	<div
+		class="controller controller--origin"
+		data-next={nextHref}
+		data-previous={previousHref}
+		role="navigation"
+		aria-label="Next stream entry"
+	>
+		<a href={nextHref} aria-label={`Next: ${nextEntry.label}`}></a>
+	</div>
+
+	<div class="origin"></div>
 </PageLayout>

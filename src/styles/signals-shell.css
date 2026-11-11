@@ -10,86 +10,97 @@
  * `html body.signals-shell` so they win over the Notion content theme.
  */
 
-/* ---------- fonts.css (exact 37signals.com font set) ---------- */
+/* ---------- Self-hosted DM Sans; real variable weights and italics ---------- */
 
 @font-face {
-	font-family: "Lab Grotesque";
+	font-family: "DM Sans";
 	font-style: normal;
-	font-weight: 300;
+	font-weight: 100 1000;
 	font-display: swap;
-	src: url("/assets/fonts/LabGrotesque-Light.woff2") format("woff2");
+	src: url("/assets/fonts/dm-sans-latin-ext-normal-v17-5d18d31d23ad.woff2") format("woff2");
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
 }
 
 @font-face {
-	font-family: "Lab Grotesque";
-	font-style: italic;
-	font-weight: 300;
-	font-display: swap;
-	src: url("/assets/fonts/LabGrotesque-LightItalic.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Lab Grotesque";
+	font-family: "DM Sans";
 	font-style: normal;
-	font-weight: 400;
+	font-weight: 100 1000;
 	font-display: swap;
-	src: url("/assets/fonts/LabGrotesque-Regular.woff2") format("woff2");
+	src: url("/assets/fonts/dm-sans-latin-normal-v17-ca72d2bcea8f.woff2") format("woff2");
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-	font-family: "Lab Grotesque";
+	font-family: "DM Sans";
 	font-style: italic;
-	font-weight: 400;
+	font-weight: 100 1000;
 	font-display: swap;
-	src: url("/assets/fonts/LabGrotesque-Italic.woff2") format("woff2");
+	src: url("/assets/fonts/dm-sans-latin-ext-italic-v17-b72f7226650d.woff2") format("woff2");
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
 }
 
 @font-face {
-	font-family: "Lab Grotesque";
+	font-family: "DM Sans";
+	font-style: italic;
+	font-weight: 100 1000;
+	font-display: swap;
+	src: url("/assets/fonts/dm-sans-latin-italic-v17-d5c53a505365.woff2") format("woff2");
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Match the reading-size x-height and line metrics before the webfont loads. */
+@font-face {
+	font-family: "DM Sans Fallback";
 	font-style: normal;
-	font-weight: 500;
-	font-display: swap;
-	src: url("/assets/fonts/LabGrotesque-Medium.woff2") format("woff2");
+	font-weight: 100 499;
+	src: local("Arial"), local("ArialMT");
+	size-adjust: 96.81%;
+	ascent-override: 102.47%;
+	descent-override: 32.02%;
+	line-gap-override: 0%;
 }
 
 @font-face {
-	font-family: "Lab Grotesque";
-	font-style: italic;
-	font-weight: 500;
-	font-display: swap;
-	src: url("/assets/fonts/LabGrotesque-MediumItalic.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Lab Grotesque";
+	font-family: "DM Sans Fallback";
 	font-style: normal;
-	font-weight: 700;
-	font-display: swap;
-	src: url("/assets/fonts/LabGrotesque-Bold.woff2") format("woff2");
+	font-weight: 500 1000;
+	src: local("Arial Bold"), local("Arial-BoldMT");
+	size-adjust: 96.81%;
+	ascent-override: 102.47%;
+	descent-override: 32.02%;
+	line-gap-override: 0%;
 }
 
 @font-face {
-	font-family: "Lab Grotesque";
+	font-family: "DM Sans Fallback";
 	font-style: italic;
-	font-weight: 700;
-	font-display: swap;
-	src: url("/assets/fonts/LabGrotesque-BoldItalic.woff2") format("woff2");
+	font-weight: 100 499;
+	src: local("Arial Italic"), local("Arial-ItalicMT");
+	size-adjust: 96.81%;
+	ascent-override: 102.47%;
+	descent-override: 32.02%;
+	line-gap-override: 0%;
 }
 
 @font-face {
-	font-family: "Lab Grotesque";
-	font-style: normal;
-	font-weight: 800;
-	font-display: swap;
-	src: url("/assets/fonts/LabGrotesque-Black.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Lab Grotesque";
+	font-family: "DM Sans Fallback";
 	font-style: italic;
-	font-weight: 800;
-	font-display: swap;
-	src: url("/assets/fonts/LabGrotesque-BlackItalic.woff2") format("woff2");
+	font-weight: 500 1000;
+	src: local("Arial Bold Italic"), local("Arial-BoldItalicMT");
+	size-adjust: 96.81%;
+	ascent-override: 102.47%;
+	descent-override: 32.02%;
+	line-gap-override: 0%;
 }
 
 @font-face {
@@ -176,13 +187,20 @@
 	--color-theme-14: rgb(var(--rgb-theme-14));
 	--color-theme-15: rgb(var(--rgb-theme-15));
 
-	--font-family: "Lab Grotesque", Sans-Serif;
-	--font-family-mono: "Lab Grotesque Mono", Monospace;
+	--font-family:
+		"DM Sans", "DM Sans Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial,
+		sans-serif;
+	--font-family-mono:
+		"Lab Grotesque Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	--font-weight-heading: 650;
+	--font-weight-ui: 600;
+	/* Unlike ch, em keeps the title and article gutters equal across weights. */
+	--number-gutter: 2.5em;
 
 	/* Display type follows the reference; prose has its own readable scale. */
-	--font-size: clamp(1.1875rem, 1rem + 1vw, 1.5rem);
-	--font-size-copy: clamp(1.0625rem, 0.9375rem + 0.5vw, 1.375rem);
-	--font-size-label: clamp(0.875rem, 0.8rem + 0.25vw, 1rem);
+	--font-size: clamp(1.25rem, 0.9375rem + 1.25vw, 1.75rem);
+	--font-size-copy: clamp(1.125rem, 0.9375rem + 0.75vw, 1.5rem);
+	--font-size-label: clamp(0.9375rem, 0.8125rem + 0.5vw, 1.125rem);
 	--font-size-x-small: max(0.8125rem, 75%);
 	--font-size-small: 85%;
 	--font-size-large: 115%;
@@ -212,7 +230,7 @@
 	--color-hairline: rgba(var(--rgb-ink), 0.15);
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	:root {
 		--font-size: clamp(1.75rem, 1.25rem + 1vw, 2.25rem);
 		--font-size-small: 65%;
@@ -232,7 +250,7 @@ html:not(.is-signal) {
 	scroll-behavior: smooth;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html {
 		scroll-padding-top: 22.2vh;
 	}
@@ -246,19 +264,18 @@ html body.signals-shell {
 	display: flex;
 	flex-direction: column;
 	font-family: var(--font-family) !important;
-	font-feature-settings: "liga", "kern", "ss02";
+	font-feature-settings: normal;
 	font-size: var(--font-size);
-	/* Real kerning rather than the browser's spacing guess, and no synthetic
-	   bold/italic: Lab Grotesque ships the whole 300–800 range, so a faux cut
-	   would only ever be a worse one. */
+	/* Optical sizing and real font cuts keep small copy and large titles crisp. */
 	font-kerning: normal;
+	font-optical-sizing: auto;
 	font-synthesis: none;
 	font-variant-ligatures: common-ligatures;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-style: normal;
 	font-weight: 400;
-	letter-spacing: -0.01em;
+	letter-spacing: normal;
 	line-height: 1.3;
 	margin: 0 !important;
 	max-width: none !important;
@@ -288,14 +305,14 @@ html body.signals-shell h4,
 html body.signals-shell h5,
 html body.signals-shell h6 {
 	color: var(--color-ink) !important;
-	font-weight: 700;
+	font-weight: var(--font-weight-heading);
 	/* Stop a lone word ("Products.") owning a line of its own. */
 	text-wrap: balance;
 }
 
 html body.signals-shell a {
 	color: var(--color-ink);
-	font-weight: 700;
+	font-weight: var(--font-weight-ui);
 	letter-spacing: normal;
 	text-decoration: underline;
 	text-decoration-thickness: 0.085em;
@@ -408,7 +425,7 @@ html body.signals-shell .button {
 	cursor: pointer;
 	display: inline-flex;
 	font-size: var(--font-size-copy);
-	font-weight: 500;
+	font-weight: var(--font-weight-ui);
 	gap: 0.4em;
 	justify-content: center;
 	letter-spacing: normal;
@@ -517,7 +534,7 @@ html body.signals-shell .page__headline {
 html body.signals-shell .page__headline h1,
 html body.signals-shell .page__headline h2 {
 	font-size: var(--font-size-xxxx-large);
-	font-weight: 700;
+	font-weight: var(--font-weight-heading);
 	letter-spacing: -0.03em;
 	line-height: 1.08;
 	text-wrap: balance;
@@ -628,7 +645,7 @@ html body.signals-shell .page__actions {
 	margin: 0;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .page {
 		/* Match the stream's label column, with the title above the copy. */
 		margin-left: calc(var(--spacing) + var(--indent));
@@ -697,7 +714,7 @@ html body.signals-shell .boundary:before {
 	bottom: 0;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .boundary:after {
 		height: max(22.2vh, 5.4em);
 	}
@@ -736,9 +753,11 @@ html body.signals-shell .header .header__brand a {
 }
 
 html body.signals-shell .brand {
+	/* The decorative mark yields space before enlarged navigation text collides. */
+	--brand-mark-room: calc(100vw - 11rem);
 	align-items: center;
 	display: flex;
-	gap: 0.45em;
+	gap: clamp(0px, var(--brand-mark-room), 0.45em);
 	text-decoration: none;
 }
 
@@ -746,12 +765,12 @@ html body.signals-shell .brand__mark {
 	display: block;
 	flex: none;
 	height: 1.25em;
-	width: 1.25em;
+	width: clamp(0px, var(--brand-mark-room), 1.25em);
 }
 
 html body.signals-shell .brand__word {
 	font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
-	font-weight: 700;
+	font-weight: var(--font-weight-heading);
 	letter-spacing: -0.03em;
 	line-height: 1;
 	white-space: nowrap;
@@ -795,7 +814,7 @@ html body.signals-shell .header ul li:first-child {
 	margin-left: -0.5em;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .header ul {
 		display: flex;
 	}
@@ -895,7 +914,7 @@ html body.signals-shell .nav-active:checked ~ .nav__options {
 	display: flex;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell:has(.nav-active:checked) .nav-underlay,
 	html body.signals-shell .nav:has(.nav-active:checked) {
 		display: none;
@@ -913,7 +932,7 @@ html body.signals-shell .nav-underlay {
 	z-index: 107;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .nav-underlay {
 		display: none;
 	}
@@ -963,6 +982,7 @@ html body.signals-shell .nav__toggle label {
 	line-height: var(--line-height);
 	min-height: 64px;
 	padding: var(--spacing);
+	padding-inline-end: min(var(--spacing), max(0.5rem, calc(100vw - 12rem)));
 	pointer-events: auto;
 }
 
@@ -1014,7 +1034,7 @@ html body.signals-shell .nav__options > ul:last-child li {
 	line-height: var(--line-height);
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .nav {
 		display: none;
 	}
@@ -1102,7 +1122,7 @@ html body.signals-shell .footer__next a:after {
 	width: var(--line-height);
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .footer ul {
 		display: flex;
 	}
@@ -1167,7 +1187,7 @@ html body.signals-shell .cluster--loaded {
  * The long scroll is the trade. If that comes back, widen the row rather than
  * splitting it into columns.
  */
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .cluster {
 		margin-bottom: 44.4vh;
 		margin-top: max(22.2vh, 5.4em);
@@ -1213,7 +1233,7 @@ html body.signals-shell .signal {
 
 html body.signals-shell .cluster--signal .signal.signal--select {
 	display: grid;
-	grid-template-columns: 3.6ch minmax(0, 1fr);
+	grid-template-columns: var(--number-gutter) minmax(0, 1fr);
 }
 
 html body.signals-shell .signal__header {
@@ -1221,29 +1241,29 @@ html body.signals-shell .signal__header {
 }
 
 html body.signals-shell .signal__header dl,
-html body.signals-shell .signal__header h2 {
-	display: flex;
-	font-weight: 700;
+html body.signals-shell .signal__header :is(h1, h2) {
+	align-items: baseline;
+	display: grid;
+	grid-template-columns: var(--number-gutter) minmax(0, 1fr);
+	font-weight: var(--font-weight-ui);
 	padding-bottom: 0.15em;
 	padding-top: 0.15em;
 }
 
 html body.signals-shell .signal__header dl dt,
-html body.signals-shell .signal__header h2 span {
-	flex: none;
-	/*
-	 * The stream passed 99 entries, and a fixed 2.8ch number column ran
-	 * straight into the label at three digits ("100To lead, follow"). Tabular
-	 * figures plus 3.6ch fits the longest number we have without the labels
-	 * losing their alignment down a column.
-	 */
-	font-feature-settings: "ss02", "tnum";
-	width: 3.6ch;
+html body.signals-shell .signal__header :is(h1, h2) span {
+	/* DM Sans has proportional figures; use real monospace in the same gutter. */
+	font-family: var(--font-family-mono);
+	font-size: 0.82em;
+	font-weight: 400;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: normal;
 }
 
 html body.signals-shell .signal__header dl dd,
-html body.signals-shell .signal__header h2 strong {
+html body.signals-shell .signal__header :is(h1, h2) strong {
 	flex: 1;
+	font-weight: inherit;
 	min-width: 0;
 	transition: opacity var(--transition);
 	width: auto;
@@ -1251,7 +1271,7 @@ html body.signals-shell .signal__header h2 strong {
 
 html body.signals-shell .signal__label {
 	flex: 1;
-	font-weight: 700;
+	font-weight: var(--font-weight-ui);
 }
 
 html body.signals-shell .signal__header a {
@@ -1293,11 +1313,11 @@ html body.signals-shell .signal__content > * + * {
 
 html body.signals-shell .signal--clone {
 	display: grid;
-	grid-template-columns: 3.6ch minmax(0, 1fr);
+	grid-template-columns: var(--number-gutter) minmax(0, 1fr);
 	margin: 7.4em var(--spacing) 4.5em;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .signal--clone {
 		margin-bottom: 44.4vh;
 		margin-top: max(22.2vh, 5.4em);
@@ -1314,7 +1334,7 @@ html body.signals-shell .signal--clone {
 	}
 
 	html body.signals-shell .signal__header dl,
-	html body.signals-shell .signal__header h2 {
+	html body.signals-shell .signal__header :is(h1, h2) {
 		padding-bottom: 0;
 		padding-top: 0;
 	}
@@ -1407,7 +1427,7 @@ html body.signals-shell .controller--transition {
 		right var(--transition) !important;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .controller {
 		visibility: visible;
 	}
@@ -1444,7 +1464,7 @@ html body.signals-shell .origin--overlap {
 	opacity: 1;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .origin {
 		visibility: visible;
 	}
@@ -1717,7 +1737,7 @@ html body.signals-shell .panel__actions {
 	margin-top: 1em;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	/* Let the panel bleed a little past the measure, the way the signup box does. */
 	html body.signals-shell .panel {
 		margin-left: -1em;
@@ -1888,7 +1908,7 @@ html body.signals-shell .content.content--thoughts * + h2 {
 	--flow-space: calc(var(--line-height) * 1.3);
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .content h1 a:hover,
 	html body.signals-shell .content h2 a:hover,
 	html body.signals-shell .content h3 a:hover,
@@ -2008,7 +2028,7 @@ html body.signals-shell .thoughts .signup {
 	}
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .thoughts .signup {
 		margin-bottom: 0;
 		margin-top: 3.7em;
@@ -2033,7 +2053,7 @@ html body.signals-shell .thought .signup {
 	margin-bottom: 3.7em;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 }
 
 /* ---------- jobs.css ---------- */
@@ -2159,7 +2179,7 @@ html body.signals-shell .downloads__group a figure figcaption span {
 	text-transform: uppercase;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .downloads__group {
 		gap: calc(var(--line-height) * 1.5);
 		grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
@@ -2263,7 +2283,7 @@ html body.signals-shell .book-cover__title {
 	line-height: 1.15;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .books__book figure {
 		align-self: flex-start;
 		max-width: none;
@@ -2381,7 +2401,7 @@ html body.signals-shell .signup--inline form {
 	max-width: 24em;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .signup {
 		align-self: auto;
 		margin-left: -1em;
@@ -2776,7 +2796,7 @@ html body.signals-shell .home-shell {
 	padding: 0;
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .content-shell,
 	html body.signals-shell .home-shell {
 		margin-left: calc(var(--spacing) + var(--indent));
@@ -2963,6 +2983,8 @@ html body.signals-shell .thought__content.content {
 		animation: none !important;
 	}
 
+	html,
+	html body.signals-shell,
 	html body.signals-shell *,
 	html body.signals-shell *::before,
 	html body.signals-shell *::after {

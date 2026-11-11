@@ -1,25 +1,21 @@
 ---
 import type { SiteMeta } from "@/types";
-import "@/styles/refined-shell.css";
+import "@/styles/global.css";
+import "@/styles/minimal.css";
+import "@/styles/signals-shell.css";
+import "@/styles/podcast.css";
 import "@/styles/notion-signals.css";
+import "@/styles/forest-theme.css";
 import { siteInfo } from "@/siteInfo";
 import { site } from "@/data/focuslab";
 import { palettes, DEFAULT_PALETTE, getPaletteScheme } from "@/data/palettes";
 import { ENABLE_LIGHTBOX, TRACKING, GOOGLE_SEARCH_CONSOLE_META_TAG, GISCUS } from "@/constants";
 import { getNavLink } from "@/lib/blog-helpers";
 
-type Props = SiteMeta & { chromeColor?: string | undefined };
+type Props = SiteMeta;
 
-const {
-	title,
-	description,
-	articleDate,
-	author,
-	hasMarkdownAlternate,
-	jsonLd,
-	robots,
-	chromeColor,
-} = Astro.props;
+const { title, description, articleDate, author, hasMarkdownAlternate, jsonLd, robots } =
+	Astro.props;
 
 const titleSeparator = "•";
 const siteTitle =
@@ -167,7 +163,7 @@ const useGiscus =
 
 /* Stable browser chrome, including when JavaScript is unavailable. */
 const defaultPalette = palettes.find((palette) => palette.id === DEFAULT_PALETTE) ?? palettes[0]!;
-const themeColor = chromeColor ?? defaultPalette.themeColor;
+const themeColor = defaultPalette.themeColor;
 
 /*
  * Social card. Currently the square brand mark, so `summary` rather than
@@ -186,17 +182,10 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 {/* Preconnect to giscus for faster loading */}
 {useGiscus && <link rel="preconnect" href="https://giscus.app" crossorigin />}
 
-{/* Preload the shell font */}
+{/* One variable font covers regular copy, navigation and headings. */}
 <link
 	rel="preload"
-	href="/assets/fonts/LabGrotesque-Regular.woff2"
-	as="font"
-	type="font/woff2"
-	crossorigin
-/>
-<link
-	rel="preload"
-	href="/assets/fonts/LabGrotesque-Bold.woff2"
+	href="/assets/fonts/dm-sans-latin-normal-v17-ca72d2bcea8f.woff2"
 	as="font"
 	type="font/woff2"
 	crossorigin

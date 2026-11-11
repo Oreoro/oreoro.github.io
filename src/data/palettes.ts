@@ -1,5 +1,5 @@
 /**
- * Static metadata for the stable reading ground in refined-shell.css.
+ * Static metadata for the stable reading ground in forest-theme.css.
  * There is no page-load picker or stored preview override.
  */
 export interface Palette {
@@ -17,8 +17,8 @@ export const palettes: Palette[] = [
 		id: "focuslab",
 		label: "Focus Lab",
 		initialGround: 0,
-		scheme: "light",
-		themeColor: "#F4F6F3",
+		scheme: "dark",
+		themeColor: "#235C43",
 	},
 ];
 

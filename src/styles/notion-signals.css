@@ -2,11 +2,10 @@
  * Notion block rendering for Focus Lab's editorial shell.
  */
 
-/* Fonts are declared once in refined-shell.css. */
+/* Fonts are declared once in signals-shell.css. */
 
 html body.signals-shell {
-	--font-sans:
-		"Lab Grotesque", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+	--font-sans: var(--font-family);
 	--ns-fg: color-mix(in srgb, var(--color-ink) 88%, transparent);
 	--ns-white: var(--color-ink);
 	--ns-line: color-mix(in srgb, var(--color-ink) 22%, transparent);
@@ -32,7 +31,7 @@ html body.signals-shell .post-body {
 	font-size: 1.0625rem;
 	font-weight: 400;
 	line-height: 1.55;
-	letter-spacing: -0.011em;
+	letter-spacing: normal;
 	color: var(--ns-fg);
 }
 
@@ -51,7 +50,7 @@ html body.signals-shell .post-body h2,
 html body.signals-shell .post-body h3,
 html body.signals-shell .post-body h4 {
 	color: var(--ns-white);
-	font-weight: 700;
+	font-weight: var(--font-weight-heading);
 	line-height: 1.1;
 	letter-spacing: -0.03em;
 	text-wrap: balance;

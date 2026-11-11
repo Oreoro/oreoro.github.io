@@ -1,10 +1,110 @@
 /**
- * Progressive shell behaviour. Content, links and the checkbox menu work
- * without this script. The enhanced menu manages focus; stream shortcuts
- * never replace visible previous and next links.
+ * Progressive behaviour for the numbered stream and checkbox menu.
+ * Content and visible previous/next links work without this script.
  */
+const desktopQuery = "(min-width: 64em)";
+
+function initController(): void {
+	const controller = document.querySelector<HTMLElement>(".controller");
+	const link = controller?.querySelector<HTMLAnchorElement>("a");
+	const origin = document.querySelector<HTMLElement>(".origin");
+	if (!controller || !link || !origin) return;
+
+	const clampPosition = (right: number, bottom: number) => {
+		const { width, height } = controller.getBoundingClientRect();
+		const nextRight = Math.max(0, Math.min(right, window.innerWidth - width));
+		const nextBottom = Math.max(0, Math.min(bottom, window.innerHeight - height));
+		controller.style.right = `${nextRight}px`;
+		controller.style.bottom = `${nextBottom}px`;
+		return {
+			left: window.innerWidth - nextRight - width,
+			right: window.innerWidth - nextRight,
+			top: window.innerHeight - nextBottom - height,
+			bottom: window.innerHeight - nextBottom,
+		};
+	};
+	try {
+		const right = Number.parseFloat(sessionStorage.getItem("controller_right") ?? "");
+		const bottom = Number.parseFloat(sessionStorage.getItem("controller_bottom") ?? "");
+		if (Number.isFinite(right) && Number.isFinite(bottom)) clampPosition(right, bottom);
+	} catch {
+		// Storage may be unavailable; the dot still works in its default position.
+	}
+
+	let start: { id: number; x: number; y: number; right: number; bottom: number } | undefined;
+	let dragged = false;
+	link.addEventListener("pointerdown", (event) => {
+		if (event.pointerType !== "mouse" || event.button !== 0) return;
+		event.preventDefault();
+		const bounds = controller.getBoundingClientRect();
+		start = {
+			id: event.pointerId,
+			x: event.clientX,
+			y: event.clientY,
+			right: window.innerWidth - bounds.right,
+			bottom: window.innerHeight - bounds.bottom,
+		};
+		dragged = false;
+		controller.classList.remove("controller--transition");
+		link.setPointerCapture(event.pointerId);
+	});
+	link.addEventListener("pointermove", (event) => {
+		if (!start || event.pointerId !== start.id) return;
+		const dx = event.clientX - start.x;
+		const dy = event.clientY - start.y;
+		if (Math.hypot(dx, dy) < 5 && !dragged) return;
+		dragged = true;
+		const ring = origin.getBoundingClientRect();
+		const dot = clampPosition(start.right - dx, start.bottom - dy);
+		origin.classList.toggle(
+			"origin--overlap",
+			dot.left < ring.right &&
+				dot.right > ring.left &&
+				dot.top < ring.bottom &&
+				dot.bottom > ring.top,
+		);
+	});
+	const finish = () => {
+		if (!start) return;
+		start = undefined;
+		if (origin.classList.contains("origin--overlap")) {
+			controller.style.removeProperty("right");
+			controller.style.removeProperty("bottom");
+			controller.classList.add("controller--transition");
+		}
+		origin.classList.remove("origin--overlap");
+		try {
+			if (controller.style.right && controller.style.bottom) {
+				sessionStorage.setItem("controller_right", controller.style.right);
+				sessionStorage.setItem("controller_bottom", controller.style.bottom);
+			} else {
+				sessionStorage.removeItem("controller_right");
+				sessionStorage.removeItem("controller_bottom");
+			}
+		} catch {
+			// Session persistence is optional.
+		}
+	};
+	link.addEventListener("pointerup", finish);
+	link.addEventListener("pointercancel", finish);
+	link.addEventListener("click", (event) => {
+		if (dragged) {
+			event.preventDefault();
+			dragged = false;
+		}
+	});
+	window.addEventListener("resize", () => {
+		if (!controller.style.right || !controller.style.bottom) return;
+		clampPosition(
+			Number.parseFloat(controller.style.right),
+			Number.parseFloat(controller.style.bottom),
+		);
+	});
+	controller.classList.add("controller--loaded");
+}
+
 function initNavigate(): void {
-	const navigation = document.querySelector<HTMLElement>(".entry__navigation");
+	const navigation = document.querySelector<HTMLElement>(".entry__navigation, .controller");
 	if (!navigation) return;
 
 	const interactive = (target: EventTarget | null) =>
@@ -78,7 +178,7 @@ function initMobileNav(): void {
 	const toggle = document.querySelector<HTMLInputElement>(".nav-active");
 	if (!toggle) return;
 	const background = document.querySelectorAll<HTMLElement>(
-		"body > main, body > .footer, body > .skip-link, .header__brand, .header__links",
+		"body > main, body > .header, body > .footer, body > .skip-link",
 	);
 	const label = document.querySelector<HTMLElement>(".nav__toggle-text");
 	const sync = () => {
@@ -127,14 +227,72 @@ function initMobileNav(): void {
 	document.addEventListener("click", (event) => {
 		if (event.target instanceof Element && event.target.closest(".nav a[href]")) close(false);
 	});
-	window.matchMedia("(min-width: 48.001em)").addEventListener("change", (query) => {
+	window.matchMedia(desktopQuery).addEventListener("change", (query) => {
 		if (query.matches) close(false);
 	});
 }
 
+function initInputModality(): void {
+	const root = document.documentElement;
+	const navigationKeys = new Set([
+		"Tab",
+		"ArrowUp",
+		"ArrowDown",
+		"ArrowLeft",
+		"ArrowRight",
+		"Home",
+		"End",
+		"PageUp",
+		"PageDown",
+	]);
+	const usePointer = () => root.classList.add("pointer-focus");
+	usePointer();
+	document.addEventListener("pointerdown", usePointer, true);
+	document.addEventListener(
+		"keydown",
+		(event) => {
+			if (navigationKeys.has(event.key)) root.classList.remove("pointer-focus");
+		},
+		true,
+	);
+}
+
+function initScroll(): void {
+	const clone = document.querySelector<HTMLElement>(".signal--clone");
+	const cluster = document.querySelector<HTMLElement>(".cluster--signal");
+	if (!clone || !cluster) return;
+	const signalIndex = Number.parseInt(clone.dataset.signal ?? "", 10);
+	const signal = cluster.querySelectorAll<HTMLElement>(".signal").item(signalIndex);
+	if (!signal) return;
+
+	signal.replaceChildren(...Array.from(clone.children));
+	signal.classList.add("signal--select");
+	clone.remove();
+	cluster.classList.add("cluster--loaded");
+
+	if (!window.matchMedia(desktopQuery).matches) return;
+	const boundary = document.querySelector<HTMLElement>(".boundary");
+	const boundaryHeight = boundary
+		? Number.parseInt(getComputedStyle(boundary, ":before").height, 10) || 0
+		: 0;
+	const signalOffset = signal.offsetTop - cluster.offsetTop;
+	const signalPadding =
+		window.innerHeight - cluster.offsetTop - (cluster.offsetHeight - signalOffset) - boundaryHeight;
+	if (signalPadding > 0) cluster.style.paddingBottom = `${signalPadding}px`;
+	window.scrollTo({ top: signalOffset, behavior: "instant" });
+}
+
 function ready(): void {
+	initInputModality();
 	initMobileNav();
+	initController();
 	initNavigate();
+}
+
+if (document.readyState === "complete") {
+	initScroll();
+} else {
+	window.addEventListener("load", initScroll, { once: true });
 }
 
 if (document.readyState === "loading") {

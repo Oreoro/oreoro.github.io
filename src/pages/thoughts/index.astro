@@ -12,17 +12,16 @@ const plural = total === 1 ? "link" : "links";
 	meta={{
 		title: "Thoughts",
 		description:
-			"A curated list of the essays, guides, and books that shaped how Focus Lab builds products.",
+			"Readings that shaped how Focus Lab builds products.",
 	}}
 >
-	<div class="page page--wide" data-filter-list data-filter-noun="link">
+	<div class="page" data-filter-list data-filter-noun="link">
 		<div class="page__headline">
 			<p class="page__kicker">Thoughts</p>
 			<h1>Writing we find useful</h1>
 			<p>
-				{total}
-				{plural} on building products, writing software, and running a small studio — grouped by the
-				question each one helps answer. Every link goes to the original author. None of this is ours.
+				{total} {plural} on product and engineering — grouped by the question each one helps answer.
+				None of this is ours.
 			</p>
 			<ListFilter
 				id="thoughts-search"

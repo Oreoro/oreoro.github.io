@@ -1,31 +1,20 @@
 /**
- * Focus Lab products — one entry per product, rendered at /products/<slug>/.
+ * Focus Lab products — listed at /products/ and linked to their own websites.
  */
 
+import { productSites } from "./product-sites.ts";
+
 export interface Product {
-	slug: string;
+	slug: keyof typeof productSites;
 	name: string;
 	tagline: string;
 	summary: string;
-	/** Public product site, if there is one. */
-	url?: string;
-	/** True for products that run in the customer's own environment. */
+	url: string;
+	/** Runs in the customer's own environment. */
 	selfHosted?: boolean;
-	/** One-line pricing note, shown under the summary. */
 	pricing?: string;
-	/**
-	 * A short description for search results and link previews. The `summary`
-	 * above is written for someone already on the page and runs to 250
-	 * characters, which is past where a search result truncates — so this is a
-	 * separate, shorter sentence rather than a slice of the long one.
-	 */
 	blurb: string;
 	features: { title: string; body: string }[];
-	/**
-	 * The three things people most often assume this does, and that it does
-	 * not. Stated on the page because a page that does not say no is a page
-	 * that attracts the wrong enquiries.
-	 */
 	notFor: string[];
 	stack?: string[];
 }
@@ -35,16 +24,16 @@ export const products: Product[] = [
 		slug: "urbanevents",
 		name: "Urban Events",
 		tagline: "Every great event starts here.",
-		url: "https://urbanevents.pk",
+		url: productSites.urbanevents,
 		blurb:
 			"Publish a polished event page, sell tickets in PKR, and check guests in from any phone. Built for Pakistan.",
 		pricing: "Free for free events. Pay only when you sell tickets.",
 		summary:
 			"Publish a polished event page, sell tickets in PKR, and check guests in from any phone. Built for student societies, MUNs, workshops, and meetups across Pakistan.",
 		notFor: [
-			"Large conferences that need multi-stage ticket tiers, seat maps, and a box office — a ticketing platform built for the open web is a different product.",
-			"Paid online courses or subscription memberships. There is no drip content and no paywall.",
-			"Restaurants and shops. It is for events with a door and a guest list, not a till.",
+			"Large conferences with seat maps and multi-tier ticketing.",
+			"Online courses or subscriptions. No drip content, no paywall.",
+			"Restaurants and shops. This is for events with a door and a guest list.",
 		],
 		features: [
 			{
@@ -53,11 +42,11 @@ export const products: Product[] = [
 			},
 			{
 				title: "Sell tickets",
-				body: "JazzCash, Easypaisa, and bank transfer, priced in PKR with no dollar surprises.",
+				body: "JazzCash, Easypaisa, and bank transfer. Priced in PKR.",
 			},
 			{
 				title: "Check in",
-				body: "Scan QR codes from any phone and watch the counts sync live at the door.",
+				body: "Scan QR codes from any phone.",
 			},
 			{
 				title: "Live analytics",
@@ -69,7 +58,7 @@ export const products: Product[] = [
 		slug: "workproof",
 		name: "WorkProof",
 		tagline: "See the work, not the worker.",
-		url: "https://workproof.focuslab.pk",
+		url: productSites.workproof,
 		selfHosted: true,
 		blurb:
 			"Self-hosted workforce activity analytics. See where the week went, with no content capture and no data leaving your server.",
@@ -77,9 +66,9 @@ export const products: Product[] = [
 		summary:
 			"Know where the week actually went. Self-hosted workforce activity analytics with real privacy: no content capture, and your data stays on your infrastructure.",
 		notFor: [
-			"Monitoring individual output or ranking people against each other. It shows you where time went; it does not score anybody.",
-			"Content capture. No keystrokes, no message text, no screenshots, no full URLs — and there is no configuration that turns that on.",
-			"Employees' devices you do not own. WorkProof runs on laptops you control, not on managed phones and tablets.",
+			"Scoring or ranking people against each other.",
+			"Keystrokes, screenshots, or full URLs. None of that is collected.",
+			"Phones or tablets you do not own.",
 		],
 		features: [
 			{
@@ -104,6 +93,7 @@ export const products: Product[] = [
 		slug: "fixer",
 		name: "Fixer",
 		tagline: "The errors worth a human's time.",
+		url: productSites.fixer,
 		selfHosted: true,
 		blurb:
 			"Watches your production logs, finds the errors worth a human, and opens a draft pull request with a root cause and a proposed fix.",
@@ -111,26 +101,26 @@ export const products: Product[] = [
 		summary:
 			"Fixer watches your production logs, reduces them to the handful of exceptions actually worth a human's time, investigates each one against your real code, and opens a draft pull request with a root cause, the evidence behind it, and a proposed fix.",
 		notFor: [
-			"Fixing things on its own. It cannot merge. The GitHub App is never granted a permission that would allow it and no code path calls one.",
-			"Triage for incidents. It is for the slow bleed of recurring production errors, not for the page that is down right now.",
-			"A replacement for reading your logs. It reduces them to the exceptions worth a human and leaves the rest alone.",
+			"Fixing and merging on its own. A human reviews and merges every pull request.",
+			"Incident triage. It is for recurring errors, not the page that is down right now.",
+			"Replacing your logs. It surfaces the exceptions worth a human and leaves the rest.",
 		],
 		features: [
 			{
 				title: "It cuts the noise",
-				body: "Most logs are the same handful of errors on repeat. Fixer groups them and surfaces only what is new, newsworthy, or getting worse.",
+				body: "Groups repeated errors and surfaces only what is new or getting worse.",
 			},
 			{
 				title: "It investigates against your code",
-				body: "Each surviving exception is traced through your actual repository, not guessed at in the abstract. The proposed fix comes with the evidence behind it.",
+				body: "Traces each exception through your actual repository, not guessed at in the abstract.",
 			},
 			{
 				title: "A draft pull request, not a merge",
-				body: "You get a root cause, the evidence, and a proposed fix as a draft PR — ready to review, never already done.",
+				body: "A root cause, the evidence, and a proposed fix — ready for review, never already done.",
 			},
 			{
 				title: "A human is always in the loop",
-				body: "A human reviews it. A human merges it. Fixer cannot — the GitHub App is never granted a permission that would allow a merge, and no code path calls one.",
+				body: "A human reviews and merges. Fixer has no merge permission.",
 			},
 			{
 				title: "Self-hosted",

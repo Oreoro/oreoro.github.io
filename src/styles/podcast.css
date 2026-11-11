@@ -339,7 +339,7 @@ html body.signals-shell .episode__tags {
 	margin-top: var(--line-height);
 }
 
-@media (min-width: 64em) and (hover: hover) and (pointer: fine) {
+@media (min-width: 64em) {
 	html body.signals-shell .broadsheet {
 		gap: clamp(2rem, 5vw, 5rem);
 		grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);

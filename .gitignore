@@ -49,3 +49,6 @@ reference/
 
 # opencode runtime (may contain local secrets like particle.env)
 .opencode/
+
+# local wrangler state
+.wrangler/
