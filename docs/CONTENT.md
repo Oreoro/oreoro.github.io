@@ -39,7 +39,7 @@ export interface StreamEntry {
 Rules:
 
 - `num` must be unique and contiguous, zero-padded from `01`. Entries are
-  kept to a small set (currently 15); renumbering the whole feed when it is
+  kept to a small set (currently 17); renumbering the whole feed when it is
   trimmed is expected — the URLs are the numbers.
 - `kind` drives the label: `note` or `launch`. All entries are ours; there is
   no `source`/`url`.

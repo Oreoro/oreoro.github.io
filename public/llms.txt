@@ -35,7 +35,7 @@ self-contained and is one of two kinds:
 - `note` — a short thought or update from the studio
 - `launch` — something we shipped
 
-All entries are ours; the feed is kept small (currently 15) and covers the
+All entries are ours; the feed is kept small (currently 17) and covers the
 three products and the studio's way of working.
 
 ## Adding content (for LLMs and agents)
