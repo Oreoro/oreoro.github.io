@@ -1,10 +1,3 @@
-/**
- * Site metadata for Focus Lab.
- *
- * This is the single source of truth for the shell (title, description and
- * contact details). Edit here and the site rebuilds.
- */
-
 export const site = {
 	name: "Focus Lab",
 	tagline: "A product studio.",

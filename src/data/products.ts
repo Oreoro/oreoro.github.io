@@ -1,11 +1,3 @@
-/**
- * Focus Lab products — listed at /products/, with full pages at
- * /products/<slug>/ and their own websites at productSites[slug].
- *
- * Product copy is grounded in the live product sites (features, pricing,
- * security pages); keep it in step when the sites change.
- */
-
 import { productSites } from "./product-sites.ts";
 
 export interface Product {
@@ -14,7 +6,6 @@ export interface Product {
 	tagline: string;
 	summary: string;
 	url: string;
-	/** Runs in the customer's own environment. */
 	selfHosted?: boolean;
 	pricing?: string;
 	blurb: string;

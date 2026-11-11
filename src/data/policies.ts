@@ -2,12 +2,6 @@ export interface Policy {
 	slug: string;
 	title: string;
 	intro: string;
-	/**
-	 * A shorter sentence for the meta description. Only needed when `intro`
-	 * runs past where a search result truncates — the intro is also the first
-	 * thing on the page, so it should stay written for a reader rather than
-	 * trimmed to fit a snippet.
-	 */
 	blurb?: string;
 	sections: { id: string; heading: string; body: string[] }[];
 }
@@ -110,49 +104,6 @@ export const policies: Policy[] = [
 				body: [
 					"We keep your data while your account is active and delete it within 60 days of cancellation. Data is encrypted in transit and our backups are encrypted.",
 				],
-			},
-		],
-	},
-	{
-		slug: "ccpa",
-		title: "California Resident Notice at Collection",
-		intro:
-			"This notice describes the categories of personal information we collect from California residents and how we use it.",
-		sections: [
-			{
-				id: "what-we-collect",
-				heading: "What we collect",
-				body: [
-					"We collect identifiers (name, email, company), commercial information (billing history), and internet activity (log data) as described in our Privacy Policy.",
-					"We do not sell personal information, and we do not share it for cross-context behavioral advertising.",
-				],
-			},
-			{
-				id: "your-rights",
-				heading: "Your California rights",
-				body: [
-					"You may request access to, correction of, or deletion of your personal information, and you may ask us to limit the use of sensitive information. Email privacy@focuslab.pk.",
-				],
-			},
-		],
-	},
-	{
-		slug: "ferpa",
-		title: "FERPA (US Schools)",
-		intro:
-			"For US schools and districts, this describes how we handle education records under FERPA.",
-		sections: [
-			{
-				id: "our-role",
-				heading: "Our role",
-				body: [
-					"Where we process education records on behalf of a school, we act as a school official with a legitimate educational interest and handle the data only as directed by the school.",
-				],
-			},
-			{
-				id: "questions",
-				heading: "Questions",
-				body: ["Email privacy@focuslab.pk with any FERPA questions or requests."],
 			},
 		],
 	},
@@ -271,22 +222,6 @@ export const policies: Policy[] = [
 				heading: "Questions or issues?",
 				body: [
 					"If you hit an accessibility barrier in one of our products, email accessibility@focuslab.pk. Hearing what is not working is how we know what to fix next.",
-				],
-			},
-		],
-	},
-	{
-		slug: "until-the-end-of-the-internet",
-		title: "Until the End of the Internet",
-		intro:
-			"A commitment we make to every customer: we will keep your data available to you, and keep our promises, for as long as the internet lasts.",
-		sections: [
-			{
-				id: "our-commitment",
-				heading: "Our commitment",
-				body: [
-					"We do not hold your data hostage. You can export everything you put into our products at any time, in an open format.",
-					"If we ever shut a product down, we will give you notice and a way to take your data with you.",
 				],
 			},
 		],

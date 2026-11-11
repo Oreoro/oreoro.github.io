@@ -15,8 +15,6 @@ export interface Thought {
 	topic: Topic;
 }
 
-/** Group order on /thoughts. Not alphabetical — this is the order we would
- *  want to read them in if we were starting from nothing. */
 export const topicOrder: Topic[] = [
 	"Product",
 	"Engineering",
@@ -165,9 +163,6 @@ export const thoughts: Thought[] = [
 	},
 ];
 
-/** Thoughts bucketed by topic, in `topicOrder`, with the order inside each
- *  bucket preserved. Anything tagged with an unknown topic lands in a trailing
- *  "Other" bucket rather than disappearing. */
 export const thoughtsByTopic: { topic: string; entries: Thought[] }[] = [
 	...topicOrder.map((topic) => ({
 		topic,
