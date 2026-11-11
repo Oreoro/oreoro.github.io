@@ -45,7 +45,7 @@ export const policies: Policy[] = [
 				id: "definitions",
 				heading: "Definitions",
 				body: [
-					"“Focus Lab”, “we”, “our”, and “us” refer to Focus Lab. “Services” refers to our products — Urbanevents, Workproof, and Fixer — and to focuslab.pk.",
+					"“Focus Lab”, “we”, “our”, and “us” refer to Focus Lab. “Services” refers to our products — Urban Events, WorkProof, and Fixer — and to focuslab.pk.",
 					"“You” and “your” refer to the person or organization that owns an account with one or more of our Services.",
 				],
 			},

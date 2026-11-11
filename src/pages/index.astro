@@ -19,7 +19,14 @@ const metaFor = (entry: (typeof stream)[number]) => entry.source ?? kindLabel[en
 	}}
 	footerNext={{ href: `/${firstEntry.num}`, label: `${firstEntry.num}. ${firstEntry.label}` }}
 >
-	<h1 class="visually-hidden">Focus Lab — a product studio</h1>
+	<div class="page__headline page__headline--home">
+		<p class="page__kicker">Focus Lab · Islamabad</p>
+		<h1>A product studio.</h1>
+		<p>
+			We design, build, and run our own software — Urban Events, WorkProof, and Fixer —
+			and take on a partner build when the fit is right. The stream below is newest first.
+		</p>
+	</div>
 
 	<div class="cluster cluster--index">
 		{
