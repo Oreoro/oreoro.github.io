@@ -1,69 +1,97 @@
 # Focus Lab
 
-> Focus Lab is a product studio based in Islamabad, Pakistan. We design, build,
-> and run our own software — Urban Events, WorkProof, and Fixer — and
-> occasionally partner with a team when the fit is right.
+> Focus Lab is a product company based in Islamabad, Pakistan. We design, build,
+> and operate our own software — Urban Events, WorkProof, and Fixer — and take
+> on a limited amount of partner work when the fit is right.
 
 Contact: bilal@focuslab.pk · +92 333 5507394 · Islamabad, Pakistan
 LinkedIn: https://www.linkedin.com/company/110646093/
 
 ## Products
 
-- [Urban Events](https://urbanevents.focuslab.pk): Ticketing for Pakistan. Publish an event page, sell tickets in PKR via JazzCash, Easypaisa, and bank transfer, and check guests in by QR. Free for free events; 5% per paid ticket.
-- [WorkProof](https://workproof.focuslab.pk): Self-hosted workforce activity analytics with real privacy. Active vs. idle, focus ratio, and per-person rollups; no keystroke or content capture. Pricing on request.
-- [Fixer](https://fixer.focuslab.pk): Self-hosted. Watches production logs, reduces them to the exceptions worth a human's time, and opens draft pull requests with a root cause, the evidence, and a proposed fix. A human always reviews and merges — the GitHub App can never merge. Available on request.
+All three products are Focus Lab's own: we design, build, and operate them.
+Each has a full product page on this site and its own website with live
+documentation.
+
+- [Urban Events](https://urbanevents.focuslab.pk): ticketing for Pakistan. Publish a branded event page, sell tickets in PKR via JazzCash, Easypaisa, and bank transfer, and check guests in by QR from any phone. Free for free events; 5% per paid ticket, settled in PKR, with weekly payouts. [Full page](https://focuslab.pk/products/urbanevents/).
+- [WorkProof](https://workproof.focuslab.pk): self-hosted workforce activity analytics. Active vs. idle, focus ratio, and per-person rollups computed on your own server. Captures what anyone types? Never. Domains, never full URLs; screenshots opt-in; audit log and CSV. Pricing on request, per person, billed annually. [Full page](https://focuslab.pk/products/workproof/).
+- [Fixer](https://fixer.focuslab.pk): production logs in, draft pull requests out. Connects to 24 log sources, isolates the exceptions worth a human, investigates against your code, and opens a draft pull request with a root cause and proposed fix. Draft PRs only — a human reviews and merges; the GitHub App has no merge permission. Bring your own model key, or self-host on your Cloudflare account. [Full page](https://focuslab.pk/products/fixer/).
 
 ## Pages
 
-- [Home / stream](https://focuslab.pk/): the complete numbered feed of what we are building, reading, and thinking about.
-- [Stream](https://focuslab.pk/stream/): the complete, searchable numbered archive of what we are building, reading, and thinking about.
+- [Home](https://focuslab.pk/): the numbered stream of product launches and studio notes.
+- [Stream](https://focuslab.pk/stream/): the same 17 entries, searchable.
 - [Products](https://focuslab.pk/products/): the software we build and run.
-- [Urban Events](https://focuslab.pk/products/urbanevents/): full product page — features, pricing (Rs 0 for free events, 5% per paid ticket), and payments.
-- [WorkProof](https://focuslab.pk/products/workproof/): full product page — features, security model (captured vs never captured), and plans.
-- [Fixer](https://focuslab.pk/products/fixer/): full product page — how it works, sources, bring-your-own-model, and plans.
 - [Studio](https://focuslab.pk/studio/): who we are and how we work.
-- [Stack](https://focuslab.pk/stack/): the tools we build with, including AI.
-- [Thoughts](https://focuslab.pk/thoughts/): writing we find useful (curated, external).
-- [Podcast](https://focuslab.pk/podcast/): podcasts we find useful (curated, external).
-- [Books](https://focuslab.pk/books/): the shelf that shaped how we build.
-- [Jobs](https://focuslab.pk/jobs/): working at Focus Lab.
-- [Policies](https://focuslab.pk/policies/): terms, privacy, and the rest.
+- [Stack](https://focuslab.pk/stack/): the tools we build with.
+- [Thoughts](https://focuslab.pk/thoughts/): curated external writing we find useful (58 links, attributed).
+- [Podcast](https://focuslab.pk/podcast/): curated external shows we find useful (14 shows, attributed).
+- [Books](https://focuslab.pk/books/): 23 books that shaped how we build.
+- [Jobs](https://focuslab.pk/jobs/): working at Focus Lab. [Jobs feed](https://focuslab.pk/feed/jobs.xml).
+- [Policies](https://focuslab.pk/policies/): terms, privacy, security, and the rest, in plain language.
 - [Contact](https://focuslab.pk/contact/): start a conversation.
+- Site-wide feed: [RSS](https://focuslab.pk/rss.xml).
 
 ## The stream
 
-The numbered feed is the homepage, with a searchable archive at `/stream/` and individual entries at `/01`, `/02`, …, `/15`. Each entry is
-self-contained and is one of two kinds:
+The homepage is the numbered feed; `/stream/` is the searchable archive.
+There are 17 entries, at `/01` … `/17`. Each entry is self-contained and is
+one of two kinds:
 
-- `note` — a short thought or update from the studio
-- `launch` — something we shipped
+- `note` — a studio note or partner update
+- `launch` — a product launch or product update
 
-All entries are ours; the feed is kept small (currently 17) and covers the
-three products and the studio's way of working.
+Current entries, newest first:
+
+| Num | Kind | Date | Title |
+| --- | --- | --- | --- |
+| 01 | note | 2026-09-22 | Start here |
+| 02 | note | 2026-11-12 | Warp N Woof — luxury women's wear on Shopify |
+| 03 | note | 2026-11-04 | Al Qiyas Movers — a Framer site for a UAE moving company |
+| 04 | launch | 2026-10-20 | Urban Events: PKR checkout, the way Pakistan pays |
+| 05 | launch | 2026-09-21 | Fixer opens draft PRs for production errors |
+| 06 | launch | 2026-09-14 | WorkProof: see the work, not the worker |
+| 07 | launch | 2026-09-07 | Urban Events: ticketing for Pakistan |
+| 08 | note | 2026-08-24 | Products first, partners occasionally |
+| 09 | launch | 2026-03-03 | WorkProof: enrolled in under a minute |
+| 10 | launch | 2026-02-10 | Urban Events: QR check-in at the door |
+| 11 | launch | 2026-01-06 | Fixer: new issues, not repeated alerts |
+| 12 | launch | 2025-07-01 | WorkProof: per-person rollups |
+| 13 | launch | 2025-05-27 | Urban Events: live analytics at the door |
+| 14 | note | 2025-04-29 | We are a studio, not an agency |
+| 15 | launch | 2025-04-15 | Fixer: evidence before the fix |
+| 16 | launch | 2025-03-11 | WorkProof: the whole story is local |
+| 17 | launch | 2024-11-19 | Fixer: no merge permission, still |
+
+Partner work (02, 03) is delivered on the same terms as our own products.
 
 ## Adding content (for LLMs and agents)
 
 All content lives in typed data files under `src/data/`. To add content, edit
 the relevant file and follow its exported TypeScript interface:
 
-- New stream entry → append to `stream` in `src/data/stream.ts`
-- New product → add to `products` in `src/data/products.ts`
-- New book → add to `books` in `src/data/books.ts`
-- New curated essay → add to `thoughts` in `src/data/thoughts.ts`
-- New curated show → add to `podcasts` in `src/data/podcast.ts`
-- New policy → add to `policies` in `src/data/policies.ts`
+- New stream entry → append to `stream` in `src/data/stream.ts` (keep the
+  feed small; entries are numbered `01`… contiguously, newest first).
+- New product → add to `products` in `src/data/products.ts` (keep copy in
+  step with the live product site).
+- New book → add to `books` in `src/data/books.ts`.
+- New curated essay → add to `thoughts` in `src/data/thoughts.ts` (must have
+  a real `url` and correct `source`).
+- New curated show → add to `podcasts` in `src/data/podcast.ts`.
+- New policy → add to `policies` in `src/data/policies.ts`.
 
 Full schema, conventions, and examples: see `docs/CONTENT.md` in the repository.
 
 ## Notes
 
-- The design uses a stable forest green (#235C43) background and soft white
-  (#F4F6F3) text, with locally hosted variable DM Sans typography and
-  monospace stream numbers.
-  Page colours no longer rotate. Earlier preview URLs and stored choices
-  do not change the current design.
-- Jobs and policy updates prepare email requests, not automatic subscriptions.
-  Visitors must open and send the draft from their own email app.
-- sitemap.xml is generated from the build output and lists exactly the pages
-  that are not marked noindex, so it cannot fall behind the routes.
+- The design uses a stable forest green (#235C43) ground, soft white
+  (#F4F6F3) text, and a warm gold accent (#E8C469) for links, selection,
+  and call-to-action buttons, with locally hosted variable DM Sans
+  typography and monospace stream numbers. The palette is fixed; no
+  page-load rotation or stored overrides.
+- Jobs and policy updates prepare email requests, not automatic
+  subscriptions. Visitors must open and send the draft from their own
+  email app.
+- sitemap.xml is generated from the build output and lists exactly the
+  pages that are not marked noindex, so it cannot fall behind the routes.
 - External curated links are always attributed to their source.
