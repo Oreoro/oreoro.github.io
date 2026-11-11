@@ -19,9 +19,11 @@ const previousHref = getNavLink(`/${previousEntry.num}`);
 
 const ctaLabel = "Open link";
 
-/* The numbered index keeps the original 36-entry windows. */
-const WINDOW_SIZE = 36;
-const windowStart = Math.floor(index / WINDOW_SIZE) * WINDOW_SIZE;
+/* A compact window around the current entry, plus a link to the full stream.
+   The article (clone) always sits at its position inside this window. */
+const WINDOW_SIZE = 5;
+const half = Math.floor(WINDOW_SIZE / 2);
+const windowStart = Math.max(0, Math.min(index - half, stream.length - WINDOW_SIZE));
 const windowEnd = Math.min(windowStart + WINDOW_SIZE, stream.length);
 const windowEntries = stream.slice(windowStart, windowEnd);
 
@@ -114,6 +116,11 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 				</section>
 			))
 		}
+		<p class="cluster__more">
+			<a href={getNavLink("/stream/")}>
+				See all {stream.length} entries <Arrow direction="forward" />
+			</a>
+		</p>
 	</div>
 
 	<noscript>

@@ -1177,6 +1177,23 @@ html body.signals-shell .cluster--loaded {
 	opacity: 1;
 }
 
+html body.signals-shell .cluster--signal .cluster__more {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	font-size: var(--font-size-copy);
+	margin: 0;
+	padding-top: 1.2em;
+}
+
+html body.signals-shell .cluster--signal .cluster__more a {
+	font-weight: 700;
+	text-decoration: none;
+}
+
+html body.signals-shell .cluster--signal .cluster__more a:hover,
+html:not(.pointer-focus) body.signals-shell .cluster--signal .cluster__more a:focus {
+	text-decoration: underline;
+}
+
 /*
  * The home page index is deliberately back to one signal per line, full-bleed,
  * label on the left and author on the right. It was a three-column grid for a
