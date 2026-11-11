@@ -23,60 +23,29 @@ and opens at `/<num>`. Entry pages retain 36-entry index windows, with visible
 previous/next links and a nearby-entry list that work without JavaScript.
 
 ```ts
-export type StreamKind = "note" | "launch" | "link" | "quote" | "essay";
+export type StreamKind = "note" | "launch";
 
 export interface StreamEntry {
-	num: string; // "00", "01", ... — unique, contiguous, zero-padded
+	num: string; // "01", "02", ... — unique, contiguous, zero-padded
 	kind: StreamKind;
 	label: string; // the headline shown in the feed
 	date: string; // "YYYY-MM-DD"
-	source?: string; // author/publication — required for curated kinds
-	url?: string; // link to the original — required for curated kinds
+	source?: string; // reserved — unused for note/launch entries
+	url?: string; // reserved — unused for note/launch entries
 	content: string; // HTML fragment (see rules below)
 }
 ```
 
 Rules:
 
-- `num` must be unique and contiguous. To add an entry, use the next number
-  (e.g. if the last is `27`, add `28`). Never renumber existing entries — the
-  URLs are permanent.
-- `kind` drives the label and the CTA:
-  - `note`, `launch` — ours; no `source`/`url`.
-  - `essay`, `quote`, `link` — curated; **always** set `source` and `url`.
+- `num` must be unique and contiguous, zero-padded from `01`. Entries are
+  kept to a small set (currently 15); renumbering the whole feed when it is
+  trimmed is expected — the URLs are the numbers.
+- `kind` drives the label: `note` or `launch`. All entries are ours; there is
+  no `source`/`url`.
 - `content` is an HTML string. Use `<p>`, `<h2>`, `<ul>/<li>`, `<strong>`,
   `<em>`, and `<a>`. Keep it short (2–4 paragraphs). Do not include a top-level
   heading — the `label` is the heading.
-- For curated entries, the detail page renders a "Read the original" button from
-  `url`; do not also link it inside `content` unless you are pointing somewhere
-  else.
-- Attribute accurately. Never present someone else's writing as ours.
-
-Example (curated essay):
-
-```ts
-{
-	num: "28",
-	kind: "essay",
-	label: "The Cathedral and the Bazaar",
-	date: "2026-10-01",
-	source: "Eric S. Raymond",
-	url: "http://www.catb.org/~esr/writings/cathedral-bazaar/cathedral-bazaar/",
-	content: `<p>Why open, iterative development beats the closed model. "Given enough eyeballs, all bugs are shallow."</p>`,
-},
-```
-
-Example (our own launch):
-
-```ts
-{
-	num: "29",
-	kind: "launch",
-	label: "WorkProof adds CSV export",
-	date: "2026-10-03",
-	content: `<p>You can now export a week of activity as CSV. <a href="https://workproof.focuslab.pk" target="_blank" rel="noopener">See it live</a>.</p>`,
-},
-```
 
 ## Products — `src/data/products.ts`
 

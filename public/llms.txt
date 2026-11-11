@@ -29,17 +29,14 @@ LinkedIn: https://www.linkedin.com/company/110646093/
 
 ## The stream
 
-The numbered feed is the homepage, with a searchable archive at `/stream/` and individual entries at `/00`, `/01`, `/02`, … Each entry is
-self-contained and is one of five kinds:
+The numbered feed is the homepage, with a searchable archive at `/stream/` and individual entries at `/01`, `/02`, …, `/15`. Each entry is
+self-contained and is one of two kinds:
 
 - `note` — a short thought or update from the studio
 - `launch` — something we shipped
-- `link` — a link worth sharing
-- `quote` — a line worth keeping
-- `essay` — a piece of writing we found useful (curated, with a source + link)
 
-Curated entries (`essay`, `quote`, `link`) always carry a `source` and a `url`
-to the original. Nothing curated is presented as ours.
+All entries are ours; the feed is kept small (currently 15) and covers the
+three products and the studio's way of working.
 
 ## Adding content (for LLMs and agents)
 
