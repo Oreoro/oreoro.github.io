@@ -12,7 +12,7 @@ import worker from "../src/worker.js";
 
 test("every product has its own public HTTPS website", () => {
 	assert.deepEqual(productSites, {
-		urbanevents: "https://urbanevents.pk",
+		urbanevents: "https://urbanevents.focuslab.pk",
 		workproof: "https://workproof.focuslab.pk",
 		fixer: "https://fixer.focuslab.pk",
 	});

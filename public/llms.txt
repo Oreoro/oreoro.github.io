@@ -9,7 +9,7 @@ LinkedIn: https://www.linkedin.com/company/110646093/
 
 ## Products
 
-- [Urban Events](https://urbanevents.pk): Ticketing for Pakistan. Publish an event page, sell tickets in PKR via JazzCash, Easypaisa, and bank transfer, and check guests in by QR. Free for free events; 5% per paid ticket.
+- [Urban Events](https://urbanevents.focuslab.pk): Ticketing for Pakistan. Publish an event page, sell tickets in PKR via JazzCash, Easypaisa, and bank transfer, and check guests in by QR. Free for free events; 5% per paid ticket.
 - [WorkProof](https://workproof.focuslab.pk): Self-hosted workforce activity analytics with real privacy. Active vs. idle, focus ratio, and per-person rollups; no keystroke or content capture. Pricing on request.
 - [Fixer](https://fixer.focuslab.pk): Self-hosted. Watches production logs, reduces them to the exceptions worth a human's time, and opens draft pull requests with a root cause, the evidence, and a proposed fix. A human always reviews and merges — the GitHub App can never merge. Available on request.
 

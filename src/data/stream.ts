@@ -55,7 +55,7 @@ export const stream: StreamEntry[] = [
 		kind: "launch",
 		label: "Urban Events: print-at-home tickets",
 		date: "2026-10-20",
-		content: `<p>Event organisers can now download a print-ready PDF ticket with guest name, venue, time, and scannable QR. Tested on every printer in Pakistan.</p><p><a href="https://urbanevents.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
+		content: `<p>Event organisers can now download a print-ready PDF ticket with guest name, venue, time, and scannable QR. Tested on every printer in Pakistan.</p><p><a href="https://urbanevents.focuslab.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
 	},
 	{
 		num: "110",
@@ -104,7 +104,7 @@ export const stream: StreamEntry[] = [
 		kind: "launch",
 		label: "Urban Events: ticketing for Pakistan",
 		date: "2026-09-07",
-		content: `<p>Urban Events lets organizers publish a polished event page, sell tickets in PKR through JazzCash, Easypaisa, and bank transfer, and check guests in by QR from any phone.</p><p>Free for free events. A simple 5% per paid ticket is added at checkout — no monthly fees, no contracts. Built for student societies, MUNs, workshops, and meetups across Pakistan.</p><p><a href="https://urbanevents.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
+		content: `<p>Urban Events lets organizers publish a polished event page, sell tickets in PKR through JazzCash, Easypaisa, and bank transfer, and check guests in by QR from any phone.</p><p>Free for free events. A simple 5% per paid ticket is added at checkout — no monthly fees, no contracts. Built for student societies, MUNs, workshops, and meetups across Pakistan.</p><p><a href="https://urbanevents.focuslab.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
 	},
 	{
 		num: "05",
@@ -153,7 +153,7 @@ export const stream: StreamEntry[] = [
 		kind: "launch",
 		label: "Urban Events: bank transfer in the browser",
 		date: "2026-02-10",
-		content: `<p>Bank transfer now shows a unique reference number per order and marks the ticket paid when the payment lands, usually inside a minute during business hours.</p><p>No more asking someone to email you a receipt.</p><p><a href="https://urbanevents.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
+		content: `<p>Bank transfer now shows a unique reference number per order and marks the ticket paid when the payment lands, usually inside a minute during business hours.</p><p>No more asking someone to email you a receipt.</p><p><a href="https://urbanevents.focuslab.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
 	},
 	{
 		num: "34",
@@ -202,7 +202,7 @@ export const stream: StreamEntry[] = [
 		kind: "launch",
 		label: "Urban Events: printable QR posters",
 		date: "2025-12-02",
-		content: `<p>Download a poster-sized QR code for any event, with logo, date, and venue. Every person who scans it lands on the ticket page.</p><p>The most requested feature we have ever shipped. Nobody asked for it in a survey. They asked for it in a WhatsApp group.</p><p><a href="https://urbanevents.pk" target="_blank" rel="noopener">Make a poster</a>.</p>`,
+		content: `<p>Download a poster-sized QR code for any event, with logo, date, and venue. Every person who scans it lands on the ticket page.</p><p>The most requested feature we have ever shipped. Nobody asked for it in a survey. They asked for it in a WhatsApp group.</p><p><a href="https://urbanevents.focuslab.pk" target="_blank" rel="noopener">Make a poster</a>.</p>`,
 	},
 	{
 		num: "45",
@@ -286,7 +286,7 @@ export const stream: StreamEntry[] = [
 		kind: "launch",
 		label: "Urban Events: one event, unlimited guests",
 		date: "2025-08-12",
-		content: `<p>There is no cap on the number of tickets or guests on an event any more. The cap existed to stop people building a ticketing system on top of us by accident, and it was stopping a lot of legitimate events instead.</p><p>If you abuse it, we will notice, and it is one email to sort out.</p><p><a href="https://urbanevents.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
+		content: `<p>There is no cap on the number of tickets or guests on an event any more. The cap existed to stop people building a ticketing system on top of us by accident, and it was stopping a lot of legitimate events instead.</p><p>If you abuse it, we will notice, and it is one email to sort out.</p><p><a href="https://urbanevents.focuslab.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
 	},
 	{
 		num: "60",
@@ -349,7 +349,7 @@ export const stream: StreamEntry[] = [
 		kind: "launch",
 		label: "Urban Events: check-in works offline",
 		date: "2025-05-27",
-		content: `<p>The check-in list works with no connection and syncs when the phone sees signal again. Duplicate scans are resolved by timestamp.</p><p><a href="https://urbanevents.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
+		content: `<p>The check-in list works with no connection and syncs when the phone sees signal again. Duplicate scans are resolved by timestamp.</p><p><a href="https://urbanevents.focuslab.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
 	},
 	{
 		num: "71",
@@ -440,7 +440,7 @@ export const stream: StreamEntry[] = [
 		kind: "launch",
 		label: "Urban Events: the whole event in the URL",
 		date: "2025-01-14",
-		content: `<p>Every event is a single link. No account needed, no app, no confirmation email chain. For a student society, the link goes in a group chat and the job is done.</p><p><a href="https://urbanevents.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
+		content: `<p>Every event is a single link. No account needed, no app, no confirmation email chain. For a student society, the link goes in a group chat and the job is done.</p><p><a href="https://urbanevents.focuslab.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
 	},
 	{
 		num: "90",
