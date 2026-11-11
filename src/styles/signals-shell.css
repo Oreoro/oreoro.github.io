@@ -1037,14 +1037,14 @@ html body.signals-shell .nav__options > ul li a {
 	text-decoration: none;
 }
 
-html body.signals-shell .nav__options > ul:last-child {
+html body.signals-shell .nav__options > ul + ul {
 	border-top: 1px solid rgba(var(--rgb-sheet-ink), 0.12);
 	margin-top: calc(var(--spacing) * 1.5);
 	padding-bottom: calc(var(--spacing) * 1.5);
 	padding-top: calc(var(--spacing) * 1.5);
 }
 
-html body.signals-shell .nav__options > ul:last-child li {
+html body.signals-shell .nav__options > ul + ul li {
 	font-size: var(--font-size-copy);
 	letter-spacing: normal;
 	line-height: var(--line-height);

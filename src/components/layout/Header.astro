@@ -8,7 +8,10 @@ const primary: Array<[string, string]> = [
 	...products.map((product): [string, string] => [product.name, product.url]),
 ];
 
-const secondary: Array<[string, string]> = [
+/* The mobile sheet is one clean list — the products live under Products,
+   not twice in the same menu. */
+const mobile: Array<[string, string]> = [
+	["Stream", "/"],
 	["Products", "/products"],
 	["Studio", "/studio"],
 	["Stack", "/stack"],
@@ -55,24 +58,7 @@ const isCurrent = (href: string) => {
 	<div class="nav__options" id="nav-options">
 		<ul>
 			{
-				primary.map(([label, href]) => (
-					<li>
-						<a
-							href={link(href)}
-							aria-label={label}
-							aria-current={isCurrent(href) ? "page" : undefined}
-							target={isExternal(href) ? "_blank" : undefined}
-							rel={isExternal(href) ? "noopener" : undefined}
-						>
-							{label}
-						</a>
-					</li>
-				))
-			}
-		</ul>
-		<ul>
-			{
-				secondary.map(([label, href]) => (
+				mobile.map(([label, href]) => (
 					<li>
 						<a
 							href={link(href)}
