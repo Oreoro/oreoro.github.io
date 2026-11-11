@@ -229,7 +229,7 @@ test("stream numerals use a fixed grid gutter and real monospace figures", () =>
 	assert.match(header, /grid-template-columns:\s*var\(--number-gutter\) minmax\(0, 1fr\);/);
 	assert.equal(
 		css.match(/grid-template-columns:\s*var\(--number-gutter\) minmax\(0, 1fr\);/g)?.length,
-		3,
+		4,
 	);
 	assert.match(numerals, /font-family:\s*var\(--font-family-mono\);/);
 	assert.match(numerals, /font-variant-numeric:\s*tabular-nums;/);

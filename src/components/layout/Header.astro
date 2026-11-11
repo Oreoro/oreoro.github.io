@@ -8,17 +8,38 @@ const primary: Array<[string, string]> = [
 	...products.map((product): [string, string] => [product.name, `/products/${product.slug}/`]),
 ];
 
-const secondary: Array<[string, string]> = [
-	["Products", "/products"],
-	["Studio", "/studio"],
-	["Stack", "/stack"],
-	["Thoughts", "/thoughts"],
-	["Podcast", "/podcast"],
-	["Books", "/books"],
-	["Jobs", "/jobs"],
-	["Policies", "/policies"],
-	["RSS", "/rss.xml"],
-	["Contact", "/contact"],
+/* The mobile sheet is grouped so a long list reads as a menu, not a wall. */
+const mobileGroups: Array<[string, Array<[string, string]>]> = [
+	[
+		"The stream",
+		[["Stream", "/"]],
+	],
+	[
+		"Products",
+		[
+			["Products", "/products"],
+			...products.map((product): [string, string] => [product.name, `/products/${product.slug}/`]),
+		],
+	],
+	[
+		"Studio",
+		[
+			["Studio", "/studio"],
+			["Stack", "/stack"],
+			["Thoughts", "/thoughts"],
+			["Podcast", "/podcast"],
+			["Books", "/books"],
+		],
+	],
+	[
+		"Company",
+		[
+			["Jobs", "/jobs"],
+			["Policies", "/policies"],
+			["RSS", "/rss.xml"],
+			["Contact", "/contact"],
+		],
+	],
 ];
 
 const isExternal = (href: string) => href.startsWith("http");
@@ -49,44 +70,34 @@ const isCurrent = (href: string) => {
 	</div>
 	<div class="nav__toggle">
 		<label for="nav-active">
-			<span class="nav__toggle-text">Menu</span>
+			<span class="nav__toggle-text" aria-hidden="true"></span>
 		</label>
 	</div>
 	<div class="nav__options" id="nav-options">
-		<ul>
-			{
-				primary.map(([label, href]) => (
-					<li>
-						<a
-							href={link(href)}
-							aria-label={label}
-							aria-current={isCurrent(href) ? "page" : undefined}
-							target={isExternal(href) ? "_blank" : undefined}
-							rel={isExternal(href) ? "noopener" : undefined}
-						>
-							{label}
-						</a>
-					</li>
-				))
-			}
-		</ul>
-		<ul>
-			{
-				secondary.map(([label, href]) => (
-					<li>
-						<a
-							href={link(href)}
-							aria-label={label}
-							aria-current={isCurrent(href) ? "page" : undefined}
-							target={isExternal(href) ? "_blank" : undefined}
-							rel={isExternal(href) ? "noopener" : undefined}
-						>
-							{label}
-						</a>
-					</li>
-				))
-			}
-		</ul>
+		{
+			mobileGroups.map(([groupLabel, items]) => (
+				<div class="nav__group">
+					<p class="nav__group-label">{groupLabel}</p>
+					<ul>
+						{
+							items.map(([label, href]) => (
+								<li>
+									<a
+										href={link(href)}
+										aria-label={label}
+										aria-current={isCurrent(href) ? "page" : undefined}
+										target={isExternal(href) ? "_blank" : undefined}
+										rel={isExternal(href) ? "noopener" : undefined}
+									>
+										{label}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			))
+		}
 	</div>
 </nav>
 
