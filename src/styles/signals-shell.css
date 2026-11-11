@@ -200,6 +200,14 @@
 	/* Display type follows the reference; prose has its own readable scale. */
 	--font-size: clamp(1.25rem, 0.9375rem + 1.25vw, 1.75rem);
 	--font-size-copy: clamp(1.125rem, 0.9375rem + 0.75vw, 1.5rem);
+
+	/* Very small phones: the fluid base keeps a 20px floor that makes feed
+	   rows wrap; pin base and prose to 17px below 480px instead. Desktop
+	   type is untouched (the min-width: 64em block below still applies). */
+	@media (max-width: 30em) {
+		--font-size: 1.0625rem;
+		--font-size-copy: 1.0625rem;
+	}
 	--font-size-label: clamp(0.9375rem, 0.8125rem + 0.5vw, 1.125rem);
 	--font-size-x-small: max(0.8125rem, 75%);
 	--font-size-small: 85%;
