@@ -31,7 +31,7 @@ import { getNavLink } from "@/lib/blog-helpers";
 			{
 				stream.map((entry) => (
 					<li data-filter-item>
-						<a href={getNavLink(`/${entry.num}/`)}>
+					<a href={getNavLink(`/${entry.num}/`)} target="_blank" rel="noopener">
 							<span class="stream-list__number">{entry.num}.</span>
 							<span class="stream-list__title">{entry.label}</span>
 							<span class="stream-list__meta">{entry.source ?? kindLabel[entry.kind]}</span>

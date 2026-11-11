@@ -29,6 +29,8 @@ const metaFor = (entry: (typeof stream)[number]) => entry.source ?? kindLabel[en
 						<a
 							href={getNavLink(`/${entry.num}`)}
 							aria-label={`${kindLabel[entry.kind]}: ${entry.label}`}
+							target="_blank"
+							rel="noopener"
 						>
 							<dl>
 								<dt>{entry.num}.</dt>
