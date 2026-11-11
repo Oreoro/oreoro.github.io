@@ -51,7 +51,7 @@ Rules:
 
 ```ts
 export interface Product {
-	slug: keyof typeof productSites; // detail-page route: /products/<slug>/
+	slug: keyof typeof productSites; // stable identifier
 	name: string;
 	tagline: string; // one line
 	summary: string; // 1–2 sentences
@@ -61,18 +61,14 @@ export interface Product {
 	features: { title: string; body: string }[];
 	notFor: string[]; // "what it is not" positioning
 	stack?: string[]; // optional
-	plans?: { name: string; price: string; note?: string; includes: string[] }[];
-	sections?: { heading: string; intro?: string; items: string[] }[];
 }
 ```
 
 `productSites` in `src/data/product-sites.ts` is the shared source for website URLs.
-Each product has a full detail page at `/products/<slug>/` rendered from this data:
-hero, "What it does", detail sections (how it works, security, sources), pricing
-plans, "What it is not", and a CTA out to the product's own website.
 The Products listing, desktop and mobile navigation, and the Studio product list
-link to the detail pages. Keep `features`, `plans`, and `sections` in step with
-the live product sites — product copy must stay grounded in what the sites say.
+link directly to each product's own website. The Worker permanently redirects
+`/products/<slug>` (with or without a trailing slash or `index.html`) to that
+website for GET and HEAD, without forwarding query parameters.
 
 ## Books — `src/data/books.ts`
 

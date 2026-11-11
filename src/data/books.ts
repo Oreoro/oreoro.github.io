@@ -50,6 +50,34 @@ export const books: Book[] = [
 		links: [{ label: "theleanstartup.com", href: "https://theleanstartup.com/" }],
 	},
 	{
+		slug: "shape-up",
+		title: "Shape Up",
+		author: "Ryan Singer",
+		description:
+			"Stop running in circles and ship work that matters. The fixed-time, variable-scope method behind how we run a cycle.",
+		mark: "SU",
+		tint: 9,
+		links: [
+			{ label: "Read online", href: "https://basecamp.com/shapeup" },
+			{ label: "Chapter index", href: "https://basecamp.com/shapeup/0.3-chapter-01" },
+		],
+	},
+	{
+		slug: "continuous-discovery-habits",
+		title: "Continuous Discovery Habits",
+		author: "Teresa Torres",
+		description:
+			"How to stay close to customers every week instead of every quarter. Keeps us honest about what people actually need.",
+		mark: "CD",
+		tint: 8,
+		links: [
+			{
+				label: "producttalk.org",
+				href: "https://www.producttalk.org/continuous-discovery-habits/",
+			},
+		],
+	},
+	{
 		slug: "the-design-of-everyday-things",
 		title: "The Design of Everyday Things",
 		author: "Don Norman",
@@ -70,34 +98,6 @@ export const books: Book[] = [
 		mark: "RU",
 		tint: 7,
 		links: [{ label: "refactoringui.com", href: "https://www.refactoringui.com/" }],
-	},
-	{
-		slug: "continuous-discovery-habits",
-		title: "Continuous Discovery Habits",
-		author: "Teresa Torres",
-		description:
-			"How to stay close to customers every week instead of every quarter. Keeps us honest about what people actually need.",
-		mark: "CD",
-		tint: 8,
-		links: [
-			{
-				label: "producttalk.org",
-				href: "https://www.producttalk.org/continuous-discovery-habits/",
-			},
-		],
-	},
-	{
-		slug: "shape-up",
-		title: "Shape Up",
-		author: "Ryan Singer",
-		description:
-			"Stop running in circles and ship work that matters. The fixed-time, variable-scope method behind how we run a cycle.",
-		mark: "SU",
-		tint: 9,
-		links: [
-			{ label: "Read online", href: "https://basecamp.com/shapeup" },
-			{ label: "Chapter index", href: "https://basecamp.com/shapeup/0.3-chapter-01" },
-		],
 	},
 	{
 		slug: "the-effective-executive",
@@ -150,26 +150,6 @@ export const books: Book[] = [
 		],
 	},
 	{
-		slug: "practical-typography",
-		title: "Practical Typography",
-		author: "Butterick",
-		description:
-			"The one book on setting type that changed what we ship. Free to read, and the first thing a new designer is pointed at.",
-		mark: "PT",
-		tint: 1,
-		links: [{ label: "practicaltypography.com", href: "https://practicaltypography.com/" }],
-	},
-	{
-		slug: "seeing-like-a-state",
-		title: "Seeing Like a State",
-		author: "James C. Scott",
-		description:
-			"What happens when a system built to be legible to a centre stops being legible to the people living inside it. The best book about products and power we have read.",
-		mark: "SS",
-		tint: 2,
-		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Seeing_Like_a_State" }],
-	},
-	{
 		slug: "thinking-in-systems",
 		title: "Thinking in Systems",
 		author: "Donella Meadows",
@@ -192,73 +172,6 @@ export const books: Book[] = [
 		],
 	},
 	{
-		slug: "a-timeless-way-of-building",
-		title: "A Timeless Way of Building",
-		author: "Christopher Alexander",
-		description:
-			"Where the word pattern came from. Older than the web and still the best framing we have for why a design system is a language, not a kit.",
-		mark: "TT",
-		tint: 7,
-		links: [
-			{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/A_Timeless_Way_of_Building" },
-			{ label: "The author", href: "https://en.wikipedia.org/wiki/Christopher_Alexander" },
-		],
-	},
-	{
-		slug: "bird-by-bird",
-		title: "Bird by Bird",
-		author: "Anne Lamott",
-		description:
-			"On short daily writing as the actual mechanism, not as a warm-up for the real work. Read it the week you cannot write a single line.",
-		mark: "BB",
-		tint: 8,
-		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Bird_by_Bird" }],
-	},
-	{
-		slug: "the-remote-book",
-		title: "The Remote Book",
-		author: "Jason Fried & David Heinemeier Hansson",
-		description:
-			"Nine years of working remotely, written down. The longest-running experiment we have on record, and the one we keep re-reading.",
-		mark: "RM",
-		tint: 9,
-		links: [{ label: "basecamp.com", href: "https://basecamp.com/remote" }],
-	},
-	{
-		slug: "how-to-take-smart-notes",
-		title: "How to Take Smart Notes",
-		author: "Sönke Ahrens",
-		description:
-			"Notes in your own words, linked to each other. The only note system either of us has kept past the first month.",
-		mark: "SN",
-		tint: 10,
-		links: [{ label: "takesmartnotes.com", href: "https://takesmartnotes.com/" }],
-	},
-	{
-		slug: "notes-on-the-synthesis-of-form",
-		title: "Notes on the Synthesis of Form",
-		author: "Christopher Alexander",
-		description:
-			"The dense, difficult original behind the pattern language. Not a book to read for pleasure; a book to read twice and then argue with.",
-		mark: "NS",
-		tint: 11,
-		links: [
-			{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Notes_on_the_Synthesis_of_Form" },
-		],
-	},
-	{
-		slug: "a-mathematicians-apology",
-		title: "A Mathematician's Apology",
-		author: "W. H. Auden",
-		description:
-			"On the difference between what a field thinks it is for and what it is actually for. Short, and it reframes how you talk about your own work.",
-		mark: "MA",
-		tint: 12,
-		links: [
-			{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/A_Mathematician%27s_Apology" },
-		],
-	},
-	{
 		slug: "the-scout-mindset",
 		title: "The Scout Mindset",
 		author: "Julia Galef",
@@ -269,13 +182,13 @@ export const books: Book[] = [
 		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/The_Scout_Mindset" }],
 	},
 	{
-		slug: "thinking-fast-and-slow",
-		title: "Thinking, Fast and Slow",
-		author: "Daniel Kahneman",
+		slug: "how-to-take-smart-notes",
+		title: "How to Take Smart Notes",
+		author: "Sönke Ahrens",
 		description:
-			"The source of half the biases we now name out loud before making a call. Heavy, and worth the two hundred pages.",
-		mark: "TF",
-		tint: 2,
-		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow" }],
+			"Notes in your own words, linked to each other. The only note system either of us has kept past the first month.",
+		mark: "SN",
+		tint: 10,
+		links: [{ label: "takesmartnotes.com", href: "https://takesmartnotes.com/" }],
 	},
 ];

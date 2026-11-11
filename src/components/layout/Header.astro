@@ -5,7 +5,7 @@ import { products } from "@/data/products";
 
 const primary: Array<[string, string]> = [
 	["Stream", "/"],
-	...products.map((product): [string, string] => [product.name, `/products/${product.slug}/`]),
+	...products.map((product): [string, string] => [product.name, product.url]),
 ];
 
 const secondary: Array<[string, string]> = [

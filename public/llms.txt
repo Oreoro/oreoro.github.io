@@ -10,23 +10,23 @@ LinkedIn: https://www.linkedin.com/company/110646093/
 ## Products
 
 All three products are Focus Lab's own: we design, build, and operate them.
-Each has a full product page on this site and its own website with live
-documentation.
+Each product's website is the source of truth for details and pricing; the
+site links to them directly (and `/products/<slug>` redirects there).
 
-- [Urban Events](https://urbanevents.focuslab.pk): ticketing for Pakistan. Publish a branded event page, sell tickets in PKR via JazzCash, Easypaisa, and bank transfer, and check guests in by QR from any phone. Free for free events; 5% per paid ticket, settled in PKR, with weekly payouts. [Full page](https://focuslab.pk/products/urbanevents/).
-- [WorkProof](https://workproof.focuslab.pk): self-hosted workforce activity analytics. Active vs. idle, focus ratio, and per-person rollups computed on your own server. Captures what anyone types? Never. Domains, never full URLs; screenshots opt-in; audit log and CSV. Pricing on request, per person, billed annually. [Full page](https://focuslab.pk/products/workproof/).
-- [Fixer](https://fixer.focuslab.pk): production logs in, draft pull requests out. Connects to 24 log sources, isolates the exceptions worth a human, investigates against your code, and opens a draft pull request with a root cause and proposed fix. Draft PRs only — a human reviews and merges; the GitHub App has no merge permission. Bring your own model key, or self-host on your Cloudflare account. [Full page](https://focuslab.pk/products/fixer/).
+- [Urban Events](https://urbanevents.focuslab.pk): ticketing for Pakistan. Publish a branded event page, sell tickets in PKR via JazzCash, Easypaisa, and bank transfer, and check guests in by QR from any phone. Free for free events; 5% per paid ticket, settled in PKR, with weekly payouts.
+- [WorkProof](https://workproof.focuslab.pk): self-hosted workforce activity analytics. Active vs. idle, focus ratio, and per-person rollups computed on your own server. Captures what anyone types? Never. Domains, never full URLs; screenshots opt-in; audit log and CSV. Pricing on request, per person, billed annually.
+- [Fixer](https://fixer.focuslab.pk): production logs in, draft pull requests out. Connects to 24 log sources, isolates the exceptions worth a human, investigates against your code, and opens a draft pull request with a root cause and proposed fix. Draft PRs only — a human reviews and merges; the GitHub App has no merge permission. Bring your own model key, or self-host on your Cloudflare account.
 
 ## Pages
 
 - [Home](https://focuslab.pk/): the numbered stream of product launches and studio notes.
 - [Stream](https://focuslab.pk/stream/): the same 17 entries, searchable.
-- [Products](https://focuslab.pk/products/): the software we build and run.
+- [Products](https://focuslab.pk/products/): the software we build and run. Cards and navigation link straight to each product's website.
 - [Studio](https://focuslab.pk/studio/): who we are and how we work.
 - [Stack](https://focuslab.pk/stack/): the tools we build with.
-- [Thoughts](https://focuslab.pk/thoughts/): curated external writing we find useful (58 links, attributed).
-- [Podcast](https://focuslab.pk/podcast/): curated external shows we find useful (14 shows, attributed).
-- [Books](https://focuslab.pk/books/): 23 books that shaped how we build.
+- [Thoughts](https://focuslab.pk/thoughts/): curated external writing we find useful (20 links, attributed).
+- [Podcast](https://focuslab.pk/podcast/): curated external shows from Pakistan (6 shows, attributed).
+- [Books](https://focuslab.pk/books/): 14 books that shaped how we build.
 - [Jobs](https://focuslab.pk/jobs/): working at Focus Lab. [Jobs feed](https://focuslab.pk/feed/jobs.xml).
 - [Policies](https://focuslab.pk/policies/): terms, privacy, security, and the rest, in plain language.
 - [Contact](https://focuslab.pk/contact/): start a conversation.

@@ -1,7 +1,6 @@
 ---
 import type { Product } from "@/data/products";
 import Arrow from "@/components/ui/Arrow.astro";
-import { getNavLink } from "@/lib/blog-helpers";
 
 interface Props {
 	product: Product;
@@ -9,12 +8,13 @@ interface Props {
 
 const { product } = Astro.props;
 const headingId = `product-${product.slug}`;
-const href = getNavLink(`/products/${product.slug}/`);
 ---
 
 <a
 	class="product-card"
-	href={href}
+	href={product.url}
+	target="_blank"
+	rel="noopener"
 	aria-labelledby={headingId}
 >
 	<div class="product-card__head">
@@ -23,5 +23,5 @@ const href = getNavLink(`/products/${product.slug}/`);
 	</div>
 	<p class="product-card__tagline">{product.tagline}</p>
 	<p class="product-card__summary">{product.summary}</p>
-	<span class="product-card__cta">See the product <Arrow direction="forward" /></span>
+	<span class="product-card__cta">Visit website <Arrow direction="external" /></span>
 </a>
