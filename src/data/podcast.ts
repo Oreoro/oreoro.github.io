@@ -1,8 +1,3 @@
-/**
- * Podcasts we find useful — Pakistan-focused shows we actually listen to,
- * not our own. Each entry links out to the show. The first entry is featured.
- */
-
 export interface PodcastPick {
 	show: string;
 	title: string;

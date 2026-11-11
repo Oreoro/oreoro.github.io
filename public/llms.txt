@@ -26,7 +26,7 @@ site links to them directly (and `/products/<slug>` redirects there).
 - [Stack](https://focuslab.pk/stack/): the tools we build with.
 - [Thoughts](https://focuslab.pk/thoughts/): curated external writing we find useful (20 links, attributed).
 - [Podcast](https://focuslab.pk/podcast/): curated external shows from Pakistan (6 shows, attributed).
-- [Books](https://focuslab.pk/books/): 14 books that shaped how we build.
+- [Books](https://focuslab.pk/books/): 23 books — product, entrepreneurship, and Pakistan — that shaped how we build.
 - [Jobs](https://focuslab.pk/jobs/): working at Focus Lab. [Jobs feed](https://focuslab.pk/feed/jobs.xml).
 - [Policies](https://focuslab.pk/policies/): terms, privacy, security, and the rest, in plain language.
 - [Contact](https://focuslab.pk/contact/): start a conversation.

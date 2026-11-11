@@ -1,11 +1,3 @@
-/**
- * Books that shaped how Focus Lab builds. Rendered with the 37signals
- * `.books` layout: a cover, a title, a description, and a list of where to
- * get it. Swap the entries for our own shelf as it grows.
- *
- * Every `href` was checked with a plain `curl` and returned 200.
- */
-
 export interface BookLink {
 	label: string;
 	href: string;
@@ -16,11 +8,9 @@ export interface Book {
 	title: string;
 	author: string;
 	description: string;
-	links: BookLink[];
-	/** Two-letter mark shown on the placeholder cover. */
 	mark: string;
-	/** Palette index (1-12) used to tint the placeholder cover. */
 	tint: number;
+	links: BookLink[];
 }
 
 export const books: Book[] = [
@@ -28,10 +18,9 @@ export const books: Book[] = [
 		slug: "inspired",
 		title: "Inspired",
 		author: "Marty Cagan",
-		description:
-			"How the best product teams decide what to build and why. The clearest argument we know for putting product before process.",
+		description: "How strong product teams decide what to build, from SVPG's founder.",
 		mark: "IN",
-		tint: 5,
+		tint: 1,
 		links: [
 			{
 				label: "Publisher",
@@ -43,80 +32,162 @@ export const books: Book[] = [
 		slug: "the-lean-startup",
 		title: "The Lean Startup",
 		author: "Eric Ries",
-		description:
-			"Build, measure, learn. The loop behind every product we ship — and the reason we keep scope small enough to test.",
+		description: "The build-measure-learn loop behind fast, evidence-driven product work.",
 		mark: "LS",
-		tint: 6,
+		tint: 2,
 		links: [{ label: "theleanstartup.com", href: "https://theleanstartup.com/" }],
 	},
 	{
 		slug: "shape-up",
 		title: "Shape Up",
 		author: "Ryan Singer",
-		description:
-			"Stop running in circles and ship work that matters. The fixed-time, variable-scope method behind how we run a cycle.",
+		description: "Basecamp's fixed-time, variable-scope method for shipping meaningful work.",
 		mark: "SU",
-		tint: 9,
+		tint: 3,
 		links: [
-			{ label: "Read online", href: "https://basecamp.com/shapeup" },
-			{ label: "Chapter index", href: "https://basecamp.com/shapeup/0.3-chapter-01" },
+			{ label: "Read it", href: "https://basecamp.com/shapeup" },
+			{ label: "Chapter 1", href: "https://basecamp.com/shapeup/0.3-chapter-01" },
 		],
+	},
+	{
+		slug: "zero-to-one",
+		title: "Zero to One",
+		author: "Peter Thiel",
+		description: "Building companies that create new things rather than copying what exists.",
+		mark: "Z1",
+		tint: 4,
+		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Zero_to_One" }],
+	},
+	{
+		slug: "the-hard-thing-about-hard-things",
+		title: "The Hard Thing About Hard Things",
+		author: "Ben Horowitz",
+		description: "The unglamorous realities of running a startup — hiring, firing, and hard calls.",
+		mark: "HT",
+		tint: 1,
+		links: [
+			{
+				label: "Goodreads",
+				href: "https://www.goodreads.com/book/show/18176747-the-hard-thing-about-hard-things",
+			},
+		],
+	},
+	{
+		slug: "good-to-great",
+		title: "Good to Great",
+		author: "Jim Collins",
+		description: "What separates companies that become great from those that plateau.",
+		mark: "GG",
+		tint: 2,
+		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Good_to_Great" }],
+	},
+	{
+		slug: "the-e-myth-revisited",
+		title: "The E-Myth Revisited",
+		author: "Michael Gerber",
+		description: "Why small businesses fail, and how to build one that runs without you.",
+		mark: "EM",
+		tint: 3,
+		links: [{ label: "E-Myth", href: "https://www.e-myth.com/" }],
+	},
+	{
+		slug: "rich-dad-poor-dad",
+		title: "Rich Dad Poor Dad",
+		author: "Robert Kiyosaki",
+		description: "A plain-language primer on assets, liabilities, and how money actually works.",
+		mark: "RD",
+		tint: 4,
+		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Rich_Dad_Poor_Dad" }],
+	},
+	{
+		slug: "measure-what-matters",
+		title: "Measure What Matters",
+		author: "John Doerr",
+		description: "The OKR method — objectives and key results, as practiced at Google and Intel.",
+		mark: "MW",
+		tint: 1,
+		links: [{ label: "What Matters", href: "https://www.whatmatters.com/" }],
+	},
+	{
+		slug: "the-economy-of-modern-sindh",
+		title: "The Economy of Modern Sindh",
+		author: "Matthew McCartney",
+		description: "Development economics for Pakistan's largest province, from a leading Pakistan economist.",
+		mark: "ES",
+		tint: 2,
+		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Economy_of_Sindh" }],
+	},
+	{
+		slug: "how-to-get-filthy-rich-in-rising-asia",
+		title: "How to Get Filthy Rich in Rising Asia",
+		author: "Mohsin Hamid",
+		description: "A Pakistani novel that reads like a self-help book about getting ahead in a rising economy.",
+		mark: "FR",
+		tint: 3,
+		links: [
+			{
+				label: "Wikipedia",
+				href: "https://en.wikipedia.org/wiki/How_to_Get_Filthy_Rich_in_Rising_Asia",
+			},
+		],
+	},
+	{
+		slug: "pakistan-a-hard-country",
+		title: "Pakistan: A Hard Country",
+		author: "Anatol Lieven",
+		description: "How Pakistan actually works — its society, state, and the forces that hold it together.",
+		mark: "PK",
+		tint: 4,
+		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Pakistan:_A_Hard_Country" }],
 	},
 	{
 		slug: "continuous-discovery-habits",
 		title: "Continuous Discovery Habits",
 		author: "Teresa Torres",
-		description:
-			"How to stay close to customers every week instead of every quarter. Keeps us honest about what people actually need.",
+		description: "Staying close to customers every week instead of every quarter.",
 		mark: "CD",
-		tint: 8,
-		links: [
-			{
-				label: "producttalk.org",
-				href: "https://www.producttalk.org/continuous-discovery-habits/",
-			},
-		],
+		tint: 1,
+		links: [{ label: "Product Talk", href: "https://www.producttalk.org/continuous-discovery-habits/" }],
 	},
 	{
 		slug: "the-design-of-everyday-things",
 		title: "The Design of Everyday Things",
 		author: "Don Norman",
-		description:
-			"Why some interfaces feel obvious and others fight you. Required reading before we design anything.",
+		description: "Why some interfaces feel obvious and others fight the user.",
 		mark: "DO",
-		tint: 4,
+		tint: 2,
 		links: [
-			{ label: "Publisher", href: "https://www.nngroup.com/books/design-everyday-things-revised/" },
+			{
+				label: "Nielsen Norman Group",
+				href: "https://www.nngroup.com/books/design-everyday-things-revised/",
+			},
 		],
 	},
 	{
 		slug: "refactoring-ui",
 		title: "Refactoring UI",
 		author: "Adam Wathan & Steve Schoger",
-		description:
-			"Practical interface design for people who build. Tactics we reach for on every screen.",
+		description: "Practical interface design tactics for people who build software.",
 		mark: "RU",
-		tint: 7,
-		links: [{ label: "refactoringui.com", href: "https://www.refactoringui.com/" }],
+		tint: 3,
+		links: [{ label: "Refactoring UI", href: "https://www.refactoringui.com/" }],
 	},
 	{
 		slug: "the-effective-executive",
 		title: "The Effective Executive",
 		author: "Peter Drucker",
-		description:
-			"What to do with your own time. The first book we hand anyone who joins the studio, and the one we re-read when we take on too much.",
+		description: "What to do with your own time and attention as a manager of one.",
 		mark: "EE",
-		tint: 10,
+		tint: 4,
 		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/The_Effective_Executive" }],
 	},
 	{
 		slug: "zen-and-the-art-of-motorcycle-maintenance",
 		title: "Zen and the Art of Motorcycle Maintenance",
 		author: "Robert Pirsig",
-		description:
-			"The difference between quality and quantity, told as a story about a man taking a bike apart. Changed how we talk about care in a codebase.",
-		mark: "ZA",
-		tint: 3,
+		description: "The difference between quality and quantity, told through a cross-country ride.",
+		mark: "ZM",
+		tint: 1,
 		links: [
 			{
 				label: "Wikipedia",
@@ -128,67 +199,56 @@ export const books: Book[] = [
 		slug: "on-writing-well",
 		title: "On Writing Well",
 		author: "William Zinsser",
-		description:
-			"Clutter is the disease of American writing. The book behind every plain sentence on this site.",
+		description: "Writing plainly — the book behind every sentence on this site.",
 		mark: "OW",
-		tint: 11,
+		tint: 2,
 		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/On_Writing_Well" }],
 	},
 	{
 		slug: "elements-of-typographic-style",
 		title: "Elements of Typographic Style",
 		author: "Robert Bringhurst",
-		description:
-			"The reference we open when the question is about rhythm and hierarchy rather than taste. Chapter 8 is the one that matters.",
+		description: "The reference for rhythm and hierarchy in setting type.",
 		mark: "ET",
-		tint: 12,
+		tint: 3,
 		links: [
-			{
-				label: "Wikipedia",
-				href: "https://en.wikipedia.org/wiki/Elements_of_Typographic_Style",
-			},
+			{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Elements_of_Typographic_Style" },
 		],
 	},
 	{
 		slug: "thinking-in-systems",
 		title: "Thinking in Systems",
 		author: "Donella Meadows",
-		description:
-			"Stocks, flows, and why the thing you are optimising is rarely the thing you are measuring. Read before any pricing decision.",
+		description: "Stocks, flows, and why the thing you optimise is rarely the thing you measure.",
 		mark: "TS",
-		tint: 5,
-		links: [{ label: "Author", href: "https://en.wikipedia.org/wiki/Donella_Meadows" }],
+		tint: 4,
+		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Donella_Meadows" }],
 	},
 	{
 		slug: "poor-charlies-almanack",
 		title: "Poor Charlie's Almanack",
 		author: "Peter Kaufman (ed.)",
-		description:
-			"The clearest short statement of how to think about almost anything. A hundred pages, and every one of them earns its place.",
+		description: "Charlie Munger's frameworks for thinking about almost anything.",
 		mark: "PC",
-		tint: 6,
-		links: [
-			{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Poor_Charlie%27s_Almanack" },
-		],
+		tint: 1,
+		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/Poor_Charlie%27s_Almanack" }],
 	},
 	{
 		slug: "the-scout-mindset",
 		title: "The Scout Mindset",
 		author: "Julia Galef",
-		description:
-			"Evidence over confidence. The right book to hand someone on the day they are about to defend a decision they have already made.",
-		mark: "SC",
-		tint: 1,
+		description: "Judgment under uncertainty — evidence over confidence.",
+		mark: "SM",
+		tint: 2,
 		links: [{ label: "Wikipedia", href: "https://en.wikipedia.org/wiki/The_Scout_Mindset" }],
 	},
 	{
 		slug: "how-to-take-smart-notes",
 		title: "How to Take Smart Notes",
 		author: "Sönke Ahrens",
-		description:
-			"Notes in your own words, linked to each other. The only note system either of us has kept past the first month.",
+		description: "Notes in your own words, linked to each other, as a thinking system.",
 		mark: "SN",
-		tint: 10,
+		tint: 3,
 		links: [{ label: "takesmartnotes.com", href: "https://takesmartnotes.com/" }],
 	},
 ];

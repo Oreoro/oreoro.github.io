@@ -1,15 +1,3 @@
-/**
- * Thoughts — writing we find useful, not our own.
- *
- * A curated reading list, grouped by the question each piece helps answer.
- * Every entry links out to the original; none of it is ours. Swap or add as
- * our taste changes, and keep the note to one line — the note is a reason to
- * click, not a summary.
- *
- * Every URL in this file was checked with a plain `curl` and returned 200. If
- * you add one, check it before the commit.
- */
-
 export type Topic =
 	| "Product"
 	| "Engineering"
