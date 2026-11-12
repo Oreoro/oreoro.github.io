@@ -37,8 +37,8 @@ test("navigation, product cards, and stream content no longer link to detail pag
 		"utf8",
 	);
 	const studio = readFileSync(new URL("../src/pages/studio/index.astro", import.meta.url), "utf8");
-	assert.match(header, /products\.map/);
-	assert.match(header, /\[product\.name, product\.url\]/);
+	assert.doesNotMatch(header, /products\.map/);
+	assert.match(header, /\["Products", "\/products"\]/);
 	assert.match(card, /href=\{product\.url\}/);
 	assert.match(card, /target="_blank"/);
 	assert.match(card, /rel="noopener"/);

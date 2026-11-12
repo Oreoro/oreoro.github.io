@@ -1,11 +1,10 @@
 ---
 import { getNavLink } from "@/lib/blog-helpers";
 import Brand from "@/components/layout/Brand.astro";
-import { products } from "@/data/products";
 
 const primary: Array<[string, string]> = [
 	["Stream", "/"],
-	...products.map((product): [string, string] => [product.name, product.url]),
+	["Products", "/products"],
 ];
 
 /* The mobile sheet is one clean list — the products live under Products,
