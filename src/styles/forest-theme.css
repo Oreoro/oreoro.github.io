@@ -6,23 +6,23 @@
 :root.dark {
 	color-scheme: dark;
 	scroll-padding-bottom: calc(var(--font-size) * 4.5);
-	--rgb-theme: 35, 92, 67;
-	--rgb-ink: 244, 246, 243;
-	--rgb-paper: 35, 92, 67;
-	--rgb-accent: 244, 246, 243;
-	--rgb-shadow: 25, 37, 31;
-	--rgb-sheet: 27, 70, 51;
-	--rgb-sheet-ink: 244, 246, 243;
-	--rgb-error: 255, 184, 173;
-	--color-muted: #d1ded4;
-	--color-surface: #1d4d38;
-	--color-surface-hover: color-mix(in srgb, var(--color-surface) 92%, var(--color-ink));
-	--color-hairline: #527a61;
-	--color-boundary: #91b09b;
-	--ink-muted: 78%;
-	--ink-faint: 88%;
-	--radius-control: 6px;
-	--radius-surface: 12px;
+	--rgb-theme: 12, 12, 14;
+	--rgb-ink: 248, 247, 243;
+	--rgb-paper: 250, 249, 246;
+	--rgb-accent: 214, 175, 110;
+	--rgb-shadow: 0, 0, 0;
+	--rgb-sheet: 250, 249, 246;
+	--rgb-sheet-ink: 17, 17, 19;
+	--rgb-error: 255, 110, 110;
+	--color-muted: #9b978f;
+	--color-surface: color-mix(in srgb, var(--color-ink) 6%, var(--color-theme));
+	--color-surface-hover: color-mix(in srgb, var(--color-ink) 11%, var(--color-theme));
+	--color-hairline: rgba(248, 247, 243, 0.16);
+	--color-boundary: rgba(248, 247, 243, 0.38);
+	--ink-muted: 72%;
+	--ink-faint: 85%;
+	--radius-control: 8px;
+	--radius-surface: 14px;
 	--theme-bg: var(--color-theme);
 	--theme-text: var(--color-ink);
 	--theme-link: var(--color-accent);
@@ -30,15 +30,15 @@
 	--theme-accent-2: var(--color-muted);
 	--theme-quote: var(--color-muted);
 	--theme-popover-bg: var(--color-surface);
-	/* Covers keep their colours independently of the reading ground. */
-	--book-tint-1: #235c43;
-	--book-tint-2: #dce7e0;
-	--book-tint-3: #dae3e8;
-	--book-tint-4: #e1e6df;
-	--book-ink-1: #f4f6f3;
-	--book-ink-2: #19251f;
-	--book-ink-3: #19251f;
-	--book-ink-4: #19251f;
+	/* Covers keep their own dark surfaces, with light type to match. */
+	--book-tint-1: #1a1a1f;
+	--book-tint-2: #201d17;
+	--book-tint-3: #161a20;
+	--book-tint-4: #1d1914;
+	--book-ink-1: #f8f7f3;
+	--book-ink-2: #f8f7f3;
+	--book-ink-3: #f8f7f3;
+	--book-ink-4: #f8f7f3;
 }
 
 [hidden] {
@@ -50,7 +50,7 @@ html body.signals-shell {
 }
 
 html body.signals-shell ::selection {
-	color: var(--color-paper);
+	color: var(--color-sheet-ink);
 	background: var(--color-accent);
 }
 
@@ -59,20 +59,41 @@ html body.signals-shell .content a:not(.button) {
 	overflow-wrap: anywhere;
 }
 
-html body.signals-shell .button:not(.button--ghost) {
+/* The brand mark and the next-signal dots carry the gold accent. */
+html body.signals-shell .brand__mark {
+	color: var(--color-accent);
+}
+
+html body.signals-shell .controller a:after,
+html body.signals-shell .footer__next a:after {
 	background: var(--color-accent);
-	border-color: var(--color-accent);
-	color: var(--color-paper) !important;
+}
+
+html body.signals-shell .origin:after {
+	border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
+
+/* The in-page jump list and its underline share the accent on hover. */
+html body.signals-shell .page__anchors dd a:hover,
+html:not(.pointer-focus) body.signals-shell .page__anchors dd a:focus-visible {
+	color: var(--color-accent);
+}
+
+html body.signals-shell .button:not(.button--ghost) {
+	background: var(--color-paper);
+	border-color: var(--color-paper);
+	color: var(--color-sheet-ink) !important;
 }
 
 html body.signals-shell .button:not(.button--ghost):hover,
 html:not(.pointer-focus) body.signals-shell .button:not(.button--ghost):focus-visible {
-	background: color-mix(in srgb, var(--color-accent) 86%, var(--color-theme));
+	background: color-mix(in srgb, var(--color-paper) 90%, var(--color-accent));
+	border-color: color-mix(in srgb, var(--color-paper) 90%, var(--color-accent));
 }
 
 html body.signals-shell .button--ghost {
 	border-color: var(--color-boundary);
-	color: var(--color-accent) !important;
+	color: var(--color-ink) !important;
 }
 
 html body.signals-shell .button--ghost:hover,
@@ -333,6 +354,186 @@ html body.signals-shell .email-request__status:not(:empty) {
 	}
 }
 
+/* ---------- Editorial refinements — the magazine layer ---------- */
+/*
+ * Typographic moves that read like a printed magazine rather than a web
+ * template: an italic serif masthead, a letterspaced running header, a
+ * contents-page home stream with hairline rules, bigger display headlines,
+ * kickers above titles, italic serif standfirsts, and a gold drop cap on the
+ * opening paragraph of each stream entry.
+ */
+
+/* The masthead: an italic serif wordmark. */
+html body.signals-shell .brand__word {
+	font-style: italic;
+	letter-spacing: -0.03em;
+}
+
+/* The running header reads as a table of contents: small, tracked, caps. */
+html body.signals-shell .header ul li {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+/* The footer closes like a colophon, quiet and tracked to match. */
+html body.signals-shell .footer ul li {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+html body.signals-shell .footer ul li a {
+	font-weight: 600;
+}
+
+/* Home stream as a contents page: hairlines between rows, airier rows. */
+html body.signals-shell .cluster--index {
+	border-top: 1px solid var(--color-hairline);
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+html body.signals-shell .cluster--index .signal + .signal {
+	border-top: 1px solid var(--color-hairline);
+}
+
+html body.signals-shell .cluster--index .signal__header dl,
+html body.signals-shell .cluster--index .signal__header :is(h1, h2) {
+	padding-bottom: 0.5em;
+	padding-top: 0.5em;
+}
+
+/* Contents numbers stay mono but recede; meta becomes a tracked small label. */
+html body.signals-shell .cluster--index .signal__header dl dt {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+}
+
+html body.signals-shell .signal__meta {
+	font-family: var(--font-family-mono);
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+/* Hovering a contents row sets the title in italic — the paper gesture. */
+html body.signals-shell .cluster--index .signal__header a:hover dd,
+html body.signals-shell .cluster--index .signal__header a:focus-visible dd {
+	font-style: italic;
+}
+
+/* The archive list gets the same contents treatment. */
+html body.signals-shell .stream-list__title {
+	font-family: var(--font-family-display);
+}
+
+html body.signals-shell .stream-list__meta {
+	font-family: var(--font-family-mono);
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+/* Page titles: bigger, tighter, unmistakably a spread headline. */
+html body.signals-shell .page__headline h1,
+html body.signals-shell .page__headline h2 {
+	font-size: clamp(2.25rem, 1.1rem + 3.4vw, 4.5rem);
+	letter-spacing: -0.04em;
+	line-height: 1.02;
+}
+
+/* The entry headline on /01…/17 (both the static clone and the live select). */
+html body.signals-shell .signal--clone .signal__header h1,
+html body.signals-shell .signal--select .signal__header h1 {
+	font-size: clamp(2.125rem, 1.1rem + 3.2vw, 4.25rem);
+	letter-spacing: -0.035em;
+	line-height: 1.05;
+}
+
+/* A hairline closes the page header block, like a spread rule. */
+html body.signals-shell .page__headline {
+	border-bottom: 1px solid var(--color-hairline);
+	padding-bottom: 1.6em;
+}
+
+/* Kickers are wide-tracked small caps in gold. */
+html body.signals-shell .page__headline .page__kicker {
+	color: var(--color-accent);
+	font-size: 0.8125rem;
+	letter-spacing: 0.24em;
+}
+
+/* The entry kicker: gold mono, tracked, above the title. */
+html body.signals-shell .entry__meta {
+	color: var(--color-accent);
+	font-family: var(--font-family-mono);
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.18em;
+	margin: 0 0 1.4em;
+	text-transform: uppercase;
+}
+
+/* Standfirsts — page intros and the opening paragraph of each entry — are
+   set in italic serif, the way a magazine opens its features. */
+html body.signals-shell .page__headline > p:not(.page__kicker) {
+	color: color-mix(in srgb, var(--color-ink) 86%, transparent);
+	font-family: var(--font-family-display);
+	font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.8rem);
+	font-style: italic;
+	font-weight: 420;
+	line-height: 1.5;
+}
+
+html body.signals-shell .signal__content.content > p:first-of-type {
+	color: color-mix(in srgb, var(--color-ink) 90%, transparent);
+	font-family: var(--font-family-display);
+	font-size: var(--font-size-large);
+	font-style: italic;
+	font-weight: 420;
+	line-height: 1.55;
+}
+
+/* A gold upright initial opens the standfirst — reliable on every entry. */
+html body.signals-shell .signal__content.content > p:first-of-type::first-letter {
+	color: var(--color-accent);
+	float: left;
+	font-family: var(--font-family-display);
+	font-size: 2.55em;
+	font-style: normal;
+	font-weight: 540;
+	line-height: 0.82;
+	padding-right: 0.11em;
+	padding-top: 0.06em;
+}
+
+/* Pull quotes become large italic display type. */
+html body.signals-shell .pull {
+	font-family: var(--font-family-display);
+	font-size: var(--font-size-x-large);
+	font-style: italic;
+	font-weight: 440;
+	letter-spacing: -0.01em;
+	line-height: 1.35;
+}
+
+html body.signals-shell .pull cite {
+	font-family: var(--font-family-mono);
+	font-size: 0.75rem;
+	font-style: normal;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+/* Prose breathes a little more like a printed column. */
+html body.signals-shell .content {
+	line-height: 1.58;
+}
+
 @media print {
 	:root,
 	:root.dark {
@@ -360,7 +561,8 @@ html body.signals-shell .email-request__status:not(:empty) {
 	html body.signals-shell .skip-link,
 	html body.signals-shell .filter,
 	html body.signals-shell .entry__navigation,
-	html body.signals-shell .email-request {
+	html body.signals-shell .email-request,
+	html body.signals-shell .grain {
 		display: none;
 	}
 

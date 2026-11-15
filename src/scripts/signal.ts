@@ -282,11 +282,33 @@ function initScroll(): void {
 	window.scrollTo({ top: signalOffset, behavior: "instant" });
 }
 
+function initReveal(): void {
+	const targets = document.querySelectorAll<HTMLElement>(".cluster--index .signal");
+	if (!targets.length) return;
+	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		targets.forEach((target) => target.classList.add("is-revealed"));
+		return;
+	}
+	const observer = new IntersectionObserver(
+		(entries) => {
+			for (const entry of entries) {
+				if (entry.isIntersecting) {
+					(entry.target as HTMLElement).classList.add("is-revealed");
+					observer.unobserve(entry.target);
+				}
+			}
+		},
+		{ rootMargin: "0px 0px -12% 0px", threshold: 0.05 },
+	);
+	targets.forEach((target) => observer.observe(target));
+}
+
 function ready(): void {
 	initInputModality();
 	initMobileNav();
 	initController();
 	initNavigate();
+	initReveal();
 }
 
 if (document.readyState === "complete") {

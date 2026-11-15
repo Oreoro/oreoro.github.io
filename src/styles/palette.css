@@ -105,6 +105,150 @@
 	--rgb-book-ink-12: var(--rgb-book-ink-4);
 }
 
+/* ---------- Noir — the house look ---------- */
+/*
+ * A dark page built from the role tokens: every ground is a deep, warm black
+ * (each with a different temperature so the multi-ground system still has
+ * somewhere to go), ink is warm white, and the accent is a muted gold used
+ * sparingly — selections, kickers, hovers, the brand mark. `paper` is the
+ * inverse of ink, so surfaces that flip (the open menu sheet, download
+ * captions) read white against the dark page. Light ink over these grounds
+ * clears AA comfortably at the muted floor.
+ */
+:root[data-palette="noir"] {
+	color-scheme: dark;
+
+	--rgb-theme-1: 12, 12, 14; /* obsidian      #0c0c0e */
+	--rgb-theme-2: 16, 15, 13; /* espresso      #100f0d */
+	--rgb-theme-3: 14, 16, 19; /* midnight      #0e1013 */
+	--rgb-theme-4: 15, 14, 17; /* aubergine     #0f0e11 */
+	--rgb-theme-5: 13, 16, 15; /* deep-teal     #0d100f */
+	--rgb-theme-6: 18, 17, 15; /* umber         #12110f */
+	--rgb-theme-7: 10, 10, 12; /* ink-black     #0a0a0c */
+	--rgb-theme-8: 16, 17, 20; /* slate         #101114 */
+	--rgb-theme-9: 19, 16, 15; /* walnut        #13100f */
+	--rgb-theme-10: 15, 17, 16; /* deep-moss    #0f1110 */
+	--rgb-theme-11: 17, 14, 18; /* plum-night    #110e12 */
+	--rgb-theme-12: 12, 13, 12; /* graphite      #0c0d0c */
+	--rgb-theme-13: 18, 18, 16; /* charcoal      #121210 */
+	--rgb-theme-14: 14, 15, 18; /* petrol        #0e0f12 */
+	--rgb-theme-15: 19, 18, 17; /* smoke         #131211 */
+
+	--rgb-ink: 248, 247, 243; /* warm white     #f8f7f3 */
+	--rgb-paper: 250, 249, 246; /* parchment     #faf9f6 */
+	--rgb-accent: 214, 175, 110; /* gold          #d6af6e */
+	--rgb-shadow: 0, 0, 0;
+
+	/* The open menu sheet flips to paper: white ink-side for the dark page. */
+	--rgb-sheet: 250, 249, 246;
+	--rgb-sheet-ink: 17, 17, 19;
+
+	/* Light ink over the deepest ground at the muted floor: well above AA. */
+	--ink-muted: 72%;
+	--ink-faint: 85%;
+
+	--rgb-error: 255, 110, 110;
+
+	/* Premium geometry: softer cards, taller controls, a brighter hairline. */
+	--radius-surface: 14px;
+	--radius-control: 8px;
+	--rgb-hairline: 248, 247, 243;
+	--color-hairline: rgba(var(--rgb-hairline), 0.16);
+}
+
+/* Page grounds, one per `data-ground`, for the noir palette. */
+:root[data-palette="noir"][data-ground="0"] {
+	--rgb-theme: var(--rgb-theme-1);
+}
+:root[data-palette="noir"][data-ground="1"] {
+	--rgb-theme: var(--rgb-theme-2);
+}
+:root[data-palette="noir"][data-ground="2"] {
+	--rgb-theme: var(--rgb-theme-3);
+}
+:root[data-palette="noir"][data-ground="3"] {
+	--rgb-theme: var(--rgb-theme-4);
+}
+:root[data-palette="noir"][data-ground="4"] {
+	--rgb-theme: var(--rgb-theme-5);
+}
+:root[data-palette="noir"][data-ground="5"] {
+	--rgb-theme: var(--rgb-theme-6);
+}
+:root[data-palette="noir"][data-ground="6"] {
+	--rgb-theme: var(--rgb-theme-7);
+}
+:root[data-palette="noir"][data-ground="7"] {
+	--rgb-theme: var(--rgb-theme-8);
+}
+:root[data-palette="noir"][data-ground="8"] {
+	--rgb-theme: var(--rgb-theme-9);
+}
+:root[data-palette="noir"][data-ground="9"] {
+	--rgb-theme: var(--rgb-theme-10);
+}
+:root[data-palette="noir"][data-ground="10"] {
+	--rgb-theme: var(--rgb-theme-11);
+}
+:root[data-palette="noir"][data-ground="11"] {
+	--rgb-theme: var(--rgb-theme-12);
+}
+:root[data-palette="noir"][data-ground="12"] {
+	--rgb-theme: var(--rgb-theme-13);
+}
+:root[data-palette="noir"][data-ground="13"] {
+	--rgb-theme: var(--rgb-theme-14);
+}
+:root[data-palette="noir"][data-ground="14"] {
+	--rgb-theme: var(--rgb-theme-15);
+}
+
+/* The brand mark and the few gold moments share the accent. */
+:root[data-palette="noir"] body.signals-shell ::selection {
+	background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+	color: var(--color-ink);
+}
+
+:root[data-palette="noir"] body.signals-shell .page__kicker {
+	color: var(--color-accent);
+}
+
+:root[data-palette="noir"] body.signals-shell .brand__mark {
+	color: var(--color-accent);
+}
+
+:root[data-palette="noir"] body.signals-shell .button:not(.button--ghost) {
+	background: var(--color-paper);
+	border-color: var(--color-paper);
+	color: rgb(17, 17, 19) !important;
+}
+
+:root[data-palette="noir"] body.signals-shell .button:not(.button--ghost):hover,
+:root[data-palette="noir"] body.signals-shell .button:not(.button--ghost):focus-visible {
+	background: color-mix(in srgb, var(--color-paper) 88%, var(--color-accent));
+	border-color: color-mix(in srgb, var(--color-paper) 88%, var(--color-accent));
+}
+
+:root[data-palette="noir"] body.signals-shell .button--ghost {
+	border-color: rgba(var(--rgb-ink), 0.55);
+}
+
+:root[data-palette="noir"] body.signals-shell .button--ghost:hover,
+:root[data-palette="noir"] body.signals-shell .button--ghost:focus-visible {
+	background: rgba(var(--rgb-ink), 0.12);
+	border-color: var(--color-accent);
+}
+
+:root[data-palette="noir"] body.signals-shell .footer__next a:after,
+:root[data-palette="noir"] body.signals-shell .controller a:after {
+	background: var(--color-accent);
+	box-shadow: 0 0 1.3em 0.1em rgba(var(--rgb-accent), 0.35);
+}
+
+:root[data-palette="noir"] body.signals-shell .origin:after {
+	border-color: rgba(var(--rgb-accent), 0.55);
+}
+
 /* ---------- Pastel ---------- */
 /* Warm, chalky, low-contrast grounds that all take the same near-black ink. */
 :root[data-palette="pastel"] {

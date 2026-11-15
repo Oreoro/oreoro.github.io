@@ -8,6 +8,13 @@ export interface Palette {
 
 export const palettes: Palette[] = [
 	{
+		id: "noir",
+		label: "Noir",
+		initialGround: 0,
+		scheme: "dark",
+		themeColor: "#0C0C0E",
+	},
+	{
 		id: "focuslab",
 		label: "Focus Lab",
 		initialGround: 0,
@@ -20,4 +27,4 @@ export function getPaletteScheme(palette: Palette) {
 	return palette.scheme;
 }
 
-export const DEFAULT_PALETTE = "focuslab";
+export const DEFAULT_PALETTE = "noir";

@@ -136,12 +136,12 @@
 	 * use 37signals' green with dark ink until a page ground is selected.
 	 */
 	--rgb-theme: var(--rgb-theme-1);
-	--rgb-ink: 17, 17, 17;
-	--rgb-paper: 41, 152, 80;
-	--rgb-accent: 17, 17, 17;
+	--rgb-ink: 248, 247, 243;
+	--rgb-paper: 250, 249, 246;
+	--rgb-accent: 214, 175, 110;
 	--rgb-shadow: 0, 0, 0;
-	--rgb-sheet: 41, 152, 80;
-	--rgb-sheet-ink: 17, 17, 17;
+	--rgb-sheet: 250, 249, 246;
+	--rgb-sheet-ink: 17, 17, 19;
 
 	/*
 	 * The floor for any *text* colour that is not full-strength ink.
@@ -188,6 +188,9 @@
 	--color-theme-15: rgb(var(--rgb-theme-15));
 
 	--font-family:
+		"DM Sans", "DM Sans Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial,
+		sans-serif;
+	--font-family-display:
 		"DM Sans", "DM Sans Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial,
 		sans-serif;
 	--font-family-mono:
@@ -313,9 +316,17 @@ html body.signals-shell h4,
 html body.signals-shell h5,
 html body.signals-shell h6 {
 	color: var(--color-ink) !important;
+	font-family: var(--font-family-display);
 	font-weight: var(--font-weight-heading);
 	/* Stop a lone word ("Products.") owning a line of its own. */
 	text-wrap: balance;
+}
+
+/* Display elements that are not tags: signal labels and the brand word. */
+html body.signals-shell .signal__header dl dd,
+html body.signals-shell .signal__header :is(h1, h2) strong,
+html body.signals-shell .brand__word {
+	font-family: var(--font-family-display);
 }
 
 html body.signals-shell a {
@@ -3187,5 +3198,106 @@ html body.signals-shell .product__nav a {
 @media (min-width: 40em) {
 	html body.signals-shell .product__plans {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+/* ---------- Motion & finish — the house layer ---------- */
+
+/*
+ * The stream reveals row by row as you scroll. The hidden state is gated on
+ * `html.js`, which an inline script in BaseHead.astro adds before first paint,
+ * so content is never hidden when JavaScript is unavailable or fails.
+ */
+html.js body.signals-shell .cluster--index .signal {
+	opacity: 0;
+	transform: translateY(0.9em);
+	transition:
+		opacity 0.6s ease,
+		transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+	transition-delay: calc(var(--reveal-index, 0) * 55ms);
+}
+
+html.js body.signals-shell .cluster--index .signal.is-revealed {
+	opacity: 1;
+	transform: none;
+}
+
+/*
+ * The grain: a fixed film of noise over the page. Pointer-transparent and
+ * barely there (4.5%), it gives the flat colour grounds a printed feel without
+ * touching the type's contrast.
+ */
+html body.signals-shell .grain {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+	background-size: 140px 140px;
+	height: 100vh;
+	left: 0;
+	opacity: 0.045;
+	pointer-events: none;
+	position: fixed;
+	top: 0;
+	width: 100vw;
+	z-index: 96;
+}
+
+/* The brand mark answers the cursor: a slow scale-and-tilt, gold on hover. */
+html body.signals-shell .brand__mark {
+	transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html body.signals-shell .brand:hover .brand__mark,
+html:not(.pointer-focus) body.signals-shell .brand:focus-visible .brand__mark {
+	transform: scale(1.16) rotate(8deg);
+}
+
+/* The next-signal dot breathes, like a pulse you can follow. */
+@keyframes focuslab-breathe {
+	0%,
+	100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+}
+
+html body.signals-shell .controller a:after,
+html body.signals-shell .footer__next a:after {
+	animation: focuslab-breathe 3.2s ease-in-out infinite;
+}
+
+/* Hovering a signal lights it gold. */
+html body.signals-shell .cluster--index .signal__header a:hover,
+html body.signals-shell .cluster--index .signal__header a:focus-visible {
+	color: var(--color-accent);
+}
+
+/* Gold focus rings wherever keyboard focus lands. */
+html:not(.pointer-focus) body.signals-shell :focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 3px;
+}
+
+/* The open mobile sheet is frosted glass with a safe-area floor. */
+html body.signals-shell .nav:has(.nav-active:checked) {
+	-webkit-backdrop-filter: blur(18px);
+	backdrop-filter: blur(18px);
+	padding-bottom: env(safe-area-inset-bottom);
+}
+
+html body.signals-shell .nav__options > ul li a:hover,
+html body.signals-shell .nav__options > ul li a:focus-visible {
+	text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html.js body.signals-shell .cluster--index .signal,
+	html body.signals-shell .controller a:after,
+	html body.signals-shell .footer__next a:after,
+	html body.signals-shell .brand__mark {
+		animation: none;
+		transform: none;
+		transition: none;
+		opacity: 1 !important;
 	}
 }

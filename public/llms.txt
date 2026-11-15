@@ -84,11 +84,11 @@ Full schema, conventions, and examples: see `docs/CONTENT.md` in the repository.
 
 ## Notes
 
-- The design uses a stable forest green (#235C43) ground, soft white
-  (#F4F6F3) text, and a warm gold accent (#E8C469) for links, selection,
-  and call-to-action buttons, with locally hosted variable DM Sans
-  typography and monospace stream numbers. The palette is fixed; no
-  page-load rotation or stored overrides.
+- The design uses a deep noir ground (#0C0C0E) with warm white
+  (#F8F7F3) type and a muted gold accent (#D6AF6E) for links, kickers,
+  selection, and the brand mark. Typography is self-hosted variable type:
+  DM Sans for display and body, and Lab Grotesque Mono for the stream
+  numbers. The palette is fixed; no page-load rotation or stored overrides.
 - Jobs and policy updates prepare email requests, not automatic
   subscriptions. Visitors must open and send the draft from their own
   email app.

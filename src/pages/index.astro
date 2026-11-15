@@ -15,7 +15,7 @@ const metaFor = (entry: (typeof stream)[number]) => entry.source ?? kindLabel[en
 	meta={{
 		title: "Focus Lab",
 		description:
-			"Focus Lab is a product studio in Islamabad. We build and run Urban Events, WorkProof, and Fixer.",
+			"Focus Lab is a product studio in Islamabad, Pakistan. We design, build, and run our own software — Urban Events, WorkProof, and Fixer — and take on a limited amount of partner work.",
 	}}
 	footerNext={{ href: `/${firstEntry.num}`, label: `${firstEntry.num}. ${firstEntry.label}` }}
 >
@@ -23,8 +23,8 @@ const metaFor = (entry: (typeof stream)[number]) => entry.source ?? kindLabel[en
 
 	<div class="cluster cluster--index">
 		{
-			stream.map((entry) => (
-				<section class="signal">
+			stream.map((entry, index) => (
+				<section class="signal" style={`--reveal-index: ${index}`}>
 					<header class="signal__header">
 						<a
 							href={getNavLink(`/${entry.num}`)}

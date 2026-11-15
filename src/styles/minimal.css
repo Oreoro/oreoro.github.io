@@ -23,13 +23,13 @@
 
 :root.dark {
 	color-scheme: dark;
-	--theme-bg: #0f0e0e;
-	--theme-text: #f5f5f5;
-	--theme-link: #f5f5f5;
-	--theme-accent: #ff002f;
-	--theme-accent-2: #969696;
-	--theme-quote: #c8c8c8;
-	--theme-popover-bg: #0f0e0e;
+	--theme-bg: #0c0c0e;
+	--theme-text: #f8f7f3;
+	--theme-link: #f8f7f3;
+	--theme-accent: #d6af6e;
+	--theme-accent-2: #96969a;
+	--theme-quote: #c9c6bf;
+	--theme-popover-bg: #0c0c0e;
 }
 
 html {

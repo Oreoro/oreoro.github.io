@@ -53,19 +53,18 @@ const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
 >
 	<section class="signal signal--clone" data-signal={index - windowStart}>
 		<header class="signal__header">
-			<h1 aria-label={`${kindLabel[entry.kind]}: ${entry.label}`}>
-				<span>{entry.num}.</span>
-				<strong>{entry.label}</strong>
-			</h1>
-		</header>
-		<div class="signal__content content">
 			<p class="entry__meta">
 				<span class="entry__kind">{kindLabel[entry.kind]}</span>
 				{" · "}
 				<time datetime={entry.date}>{entry.date}</time>
 				{entry.source && ` · ${entry.source}`}
 			</p>
-
+			<h1 aria-label={`${kindLabel[entry.kind]}: ${entry.label}`}>
+				<span>{entry.num}.</span>
+				<strong>{entry.label}</strong>
+			</h1>
+		</header>
+		<div class="signal__content content">
 			<Fragment set:html={entry.content} />
 
 			{

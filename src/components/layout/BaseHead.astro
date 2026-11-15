@@ -72,6 +72,7 @@ const structuredData = [
 		},
 		email: site.email,
 		telephone: site.phone,
+		sameAs: [site.linkedin, site.whatsappHref].filter(Boolean),
 		address: {
 			"@type": "PostalAddress",
 			addressLocality: "Islamabad",
@@ -182,7 +183,7 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 {/* Preconnect to giscus for faster loading */}
 {useGiscus && <link rel="preconnect" href="https://giscus.app" crossorigin />}
 
-{/* One variable font covers regular copy, navigation and headings. */}
+{/* The original variable font covers copy, navigation and headings. */}
 <link
 	rel="preload"
 	href="/assets/fonts/dm-sans-latin-normal-v17-ca72d2bcea8f.woff2"
@@ -190,6 +191,11 @@ const socialImage = new URL(getNavLink("/icon-512.png"), siteUrl).href;
 	type="font/woff2"
 	crossorigin
 />
+
+{/* Mark the document as JS-capable before first paint (gates reveal motion). */}
+<script is:inline>
+	document.documentElement.classList.add("js");
+</script>
 
 {
 	ENABLE_LIGHTBOX && (
