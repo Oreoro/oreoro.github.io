@@ -24,14 +24,24 @@ import { site } from "@/data/focuslab";
 
 		<div class="page__content content">
 			<h2 id="include">What to include</h2>
-							<h3>The problem.</h3>
-				<p>What's broken or missing today, in a sentence.</p>
-				<h3>Who hits it.</h3>
-				<p>How many people, and how often.</p>
-				<h3>What done looks like.</h3>
-				<p>The finished product, described simply.</p>
-				<h3>Your timeline.</h3>
-				<p>When you need it, and what's already committed.</p>
+			<div class="includes">
+				<div>
+					<h3>The problem.</h3>
+					<p>What's broken or missing today, in a sentence.</p>
+				</div>
+				<div>
+					<h3>Who hits it.</h3>
+					<p>How many people, and how often.</p>
+				</div>
+				<div>
+					<h3>What done looks like.</h3>
+					<p>The finished product, described simply.</p>
+				</div>
+				<div>
+					<h3>Your timeline.</h3>
+					<p>When you need it, and what's already committed.</p>
+				</div>
+			</div>
 
 
 			<h2 id="reach">Where to reach us</h2>
@@ -88,11 +98,35 @@ import { site } from "@/data/focuslab";
 </PageLayout>
 
 <style>
-	.contact-list {
+	.includes {
+		display: grid;
+		gap: 1.4em;
+	}
+
+	.includes > div {
 		display: flex;
 		flex-direction: column;
-		gap: 1.4em;
+		gap: 0.25em;
+	}
+
+	.includes h3,
+	.includes p {
 		margin: 0;
+	}
+
+	.contact-list {
+		display: grid;
+		gap: 1.4em;
+		grid-template-columns: 1fr;
+		margin: 0;
+	}
+
+	@media (min-width: 48em) {
+		.includes,
+		.contact-list {
+			column-gap: 3rem;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
 	}
 
 	.contact-list div {
