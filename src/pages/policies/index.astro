@@ -2,8 +2,10 @@
 import PageLayout from "@/layouts/Base.astro";
 import Arrow from "@/components/ui/Arrow.astro";
 import { getNavLink } from "@/lib/blog-helpers";
-import { policyLinks } from "@/data/policies";
+import { policies } from "@/data/policies";
 import { site } from "@/data/focuslab";
+
+const readable = policies.filter((policy) => policy.slug !== "updates");
 ---
 
 <PageLayout
@@ -25,16 +27,20 @@ import { site } from "@/data/focuslab";
 		<div class="page__body">
 			<div class="page__content content content--policies">
 				<h2 id="read">Read these</h2>
-				<p>
-					{
-						policyLinks.map((policy, i) => (
-							<Fragment>
-								{i > 0 && " · "}
-								<a href={getNavLink(policy.href)}>{policy.label}</a>
-							</Fragment>
-						))
-					}
-				</p>
+				<table class="ledger">
+					<tbody>
+						{
+							readable.map((policy) => (
+								<tr>
+									<th scope="row">
+										<a href={getNavLink(`/policies/${policy.slug}`)}>{policy.title}</a>
+									</th>
+									<td>{policy.blurb ?? policy.intro}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
 
 				<h2 id="approach">How we treat these</h2>
 				<div class="pairs">

@@ -17,6 +17,12 @@ const PRODUCT_REDIRECTS = new Map(
 	]),
 );
 
+const SITE_REDIRECTS = new Map([
+	["/products", "/"],
+	["/products/", "/"],
+	["/products/index.html", "/"],
+]);
+
 function json(body, status = 200) {
 	return new Response(JSON.stringify(body), { status, headers: JSON_HEADERS });
 }
@@ -160,6 +166,14 @@ export default {
 		const productWebsite = PRODUCT_REDIRECTS.get(url.pathname);
 		if (productWebsite && (request.method === "GET" || request.method === "HEAD")) {
 			return withSecurityHeaders(request, Response.redirect(productWebsite, 301));
+		}
+
+		const sitePath = SITE_REDIRECTS.get(url.pathname);
+		if (sitePath && (request.method === "GET" || request.method === "HEAD")) {
+			return withSecurityHeaders(
+				request,
+				Response.redirect(new URL(sitePath, url.origin).toString(), 301),
+			);
 		}
 
 		if (url.pathname === "/api/context" || url.pathname.startsWith("/api/context/")) {

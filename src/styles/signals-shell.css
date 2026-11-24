@@ -1156,6 +1156,27 @@ html body.signals-shell .footer__next a:after {
 
 /* ---------- cluster.css ---------- */
 
+html body.signals-shell .home__intro {
+	margin: 7.4em var(--spacing) 0;
+}
+
+html body.signals-shell .home__intro h1 {
+	font-size: var(--font-size-xxxx-large);
+	font-weight: var(--font-weight-heading);
+	line-height: 1.1;
+	margin: 0;
+}
+
+html body.signals-shell .home__intro p {
+	color: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
+	margin: 0.5em 0 0;
+	max-width: var(--measure-headline);
+}
+
+html body.signals-shell .home__intro + .cluster {
+	margin-top: 1.5em;
+}
+
 html body.signals-shell .cluster {
 	margin: 7.4em var(--spacing) 4.5em var(--spacing);
 	opacity: 0;
