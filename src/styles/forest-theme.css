@@ -187,7 +187,7 @@ html body.signals-shell .page {
 		0 24px 60px -24px rgba(0, 0, 0, 0.4);
 	color: rgb(24, 35, 30);
 	max-width: none;
-	width: min(72rem, calc(100% - clamp(2.5rem, 6vw, 12rem)));
+	width: min(80rem, calc(100% - clamp(2.5rem, 6vw, 12rem)));
 	margin: 5.4em auto 0;
 	flex: 1 0 auto;
 	padding: var(--line-height) var(--spacing) calc(var(--line-height) * 2.4);
@@ -196,7 +196,7 @@ html body.signals-shell .page {
 /* The podcast sheet joins the paper: centred, wider, clear of the sides. */
 html body.signals-shell .broadsheet {
 	max-width: none;
-	width: min(72rem, calc(100% - clamp(2.5rem, 6vw, 12rem)));
+	width: min(80rem, calc(100% - clamp(2.5rem, 6vw, 12rem)));
 	margin: 5.4em auto 0;
 	flex: 1 0 auto;
 	padding: var(--line-height) var(--spacing) calc(var(--line-height) * 2.4);
