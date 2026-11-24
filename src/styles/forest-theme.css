@@ -165,13 +165,6 @@ html body.signals-shell .book-cover__title {
 	color: var(--book-ink, var(--color-ink));
 }
 
-/*
- * Paper sheet on subpages: a wide white page centred on the green shell.
- * Wider and longer than the old 64rem card, but it never touches the sides —
- * the sheet starts just under the header bar, runs down to the footer, and
- * short pages still fill the viewport. Dark ink and a deep-green accent on
- * the paper; prose keeps its measure inside.
- */
 html body.signals-shell .page {
 	--rgb-ink: 24, 35, 30;
 	--rgb-accent: 21, 77, 56;
@@ -186,42 +179,18 @@ html body.signals-shell .page {
 		0 1px 2px rgba(0, 0, 0, 0.08),
 		0 24px 60px -24px rgba(0, 0, 0, 0.4);
 	color: rgb(24, 35, 30);
-	max-width: none;
-	width: min(80rem, calc(100% - clamp(2.5rem, 6vw, 12rem)));
-	margin: 5.4em auto 0;
-	flex: 1 0 auto;
-	padding: var(--line-height) var(--spacing) calc(var(--line-height) * 2.4);
+	width: min(80rem, calc(100% - 3rem));
+	margin: 5.4em auto calc(var(--line-height) * 2.4);
+	padding: var(--line-height) var(--spacing);
 }
 
-/* The podcast sheet joins the paper: centred, wider, clear of the sides. */
 html body.signals-shell .broadsheet {
 	max-width: none;
-	width: min(80rem, calc(100% - clamp(2.5rem, 6vw, 12rem)));
-	margin: 5.4em auto 0;
-	flex: 1 0 auto;
-	padding: var(--line-height) var(--spacing) calc(var(--line-height) * 2.4);
+	width: min(80rem, calc(100% - 3rem));
+	margin: 5.4em auto calc(var(--line-height) * 2.4);
+	padding: var(--line-height) var(--spacing);
 }
 
-/*
- * The paper runs the whole length: short pages still fill the viewport down to
- * the footer band. Only subpage sheets stretch — the homepage and entry pages
- * keep their block flow and margin rhythm.
- */
-html body.signals-shell {
-	display: flex;
-	flex-direction: column;
-	min-height: 100svh;
-}
-
-html body.signals-shell > main:has(> .page),
-html body.signals-shell > main:has(> .broadsheet) {
-	display: flex;
-	flex-direction: column;
-	flex: 1 0 auto;
-	width: 100%;
-}
-
-/* Prose keeps a readable measure inside the wider sheet; grids run on. */
 html body.signals-shell .page .page__content,
 html body.signals-shell .page .content {
 	max-width: var(--measure-wide);
@@ -233,7 +202,6 @@ html body.signals-shell .page:after {
 	display: none;
 }
 
-/* The wide variant joins the sheet: same centred width. */
 html body.signals-shell .page.page--wide {
 	margin-inline: auto;
 	max-width: none;
