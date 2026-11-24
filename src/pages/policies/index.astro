@@ -1,9 +1,7 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import Arrow from "@/components/ui/Arrow.astro";
 import { getNavLink } from "@/lib/blog-helpers";
 import { policies } from "@/data/policies";
-import { site } from "@/data/focuslab";
 
 const readable = policies.filter((policy) => policy.slug !== "updates");
 ---
@@ -26,7 +24,6 @@ const readable = policies.filter((policy) => policy.slug !== "updates");
 
 		<div class="page__body">
 			<div class="page__content content content--policies">
-				<h2 id="read">Read these</h2>
 				<table class="ledger">
 					<tbody>
 						{
@@ -42,40 +39,11 @@ const readable = policies.filter((policy) => policy.slug !== "updates");
 					</tbody>
 				</table>
 
-				<h2 id="approach">How we treat these</h2>
-				<div class="pairs">
-					<div>
-						<h3>Written to be read.</h3>
-						<p>Plain language, short sentences, no clauses hidden in footnotes. If a policy needs a lawyer, we've written it wrong.</p>
-					</div>
-					<div>
-						<h3>Changed only when something changes.</h3>
-						<p>We update these when the law or how we work changes — not to look current.</p>
-					</div>
-					<div>
-						<h3>Request updates by email.</h3>
-						<p>
-							If you'd like to hear about policy changes, <a
-								href={getNavLink("/policies/updates")}>request policy updates by email</a
-							>. You'll send it from your email app; there is no automatic subscription.
-						</p>
-					</div>
-				</div>
-
-
-				<div class="panel">
-					<h3 class="panel__title">Something unclear?</h3>
-					<div class="panel__body">
-						<p>
-							Ask. Write to <a href={`mailto:${site.email}`}>{site.email}</a> and we'll explain it in
-							a sentence, or fix the page so nobody has to ask.
-						</p>
-					</div>
-					<div class="panel__actions">
-						<a class="button" href={`mailto:${site.email}`}>Email us <Arrow /></a>
-						<a class="button button--ghost" href={getNavLink("/contact/")}>Contact</a>
-					</div>
-				</div>
+				<p>
+					To hear about changes, <a
+						href={getNavLink("/policies/updates")}>request policy updates by email</a
+					>.
+				</p>
 			</div>
 		</div>
 	</div>
