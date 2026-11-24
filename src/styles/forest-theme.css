@@ -227,49 +227,6 @@ html body.signals-shell .page .content {
 	max-width: var(--measure-wide);
 }
 
-/*
- * Numbered principles on the paper pages: the same numbered language as the
- * stream, two columns wide on large sheets, one on small.
- */
-html body.signals-shell .steps {
-	counter-reset: steps;
-	display: grid;
-	gap: 1.6em;
-	list-style: none;
-	margin: 1.6em 0;
-	padding: 0;
-}
-
-@media (min-width: 64em) {
-	html body.signals-shell .steps {
-		column-gap: 3.7em;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-}
-
-html body.signals-shell .steps > li {
-	counter-increment: steps;
-}
-
-html body.signals-shell .steps > li > h3 {
-	align-items: baseline;
-	display: flex;
-	gap: 0.6em;
-}
-
-html body.signals-shell .steps > li > h3:before {
-	color: var(--color-accent);
-	content: counter(steps, decimal-leading-zero) ".";
-	font-family: var(--font-family-mono);
-	font-size: 0.82em;
-	font-variant-numeric: tabular-nums;
-	font-weight: 400;
-}
-
-html body.signals-shell .steps > li > p {
-	margin: 0.35em 0 0;
-}
-
 /* The sheet owns its edges; the green fade overlays are not needed on white. */
 html body.signals-shell .page:before,
 html body.signals-shell .page:after {

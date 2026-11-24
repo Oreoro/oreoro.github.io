@@ -10,7 +10,6 @@ export const policies: Policy[] = [
 	{
 		slug: "trust",
 		title: "Trust Center",
-		blurb: "Security, privacy, and compliance answers in one place.",
 		intro:
 			"Security, privacy, and compliance information for Focus Lab products, in one place. Ask us for anything that is missing.",
 		sections: [
@@ -33,7 +32,6 @@ export const policies: Policy[] = [
 	{
 		slug: "terms",
 		title: "Terms of Service",
-		blurb: "The agreement you accept when you use our products.",
 		intro:
 			"These Terms cover your use of Focus Lab products and services. By using them, you agree to these Terms.",
 		sections: [
@@ -73,7 +71,6 @@ export const policies: Policy[] = [
 	{
 		slug: "privacy",
 		title: "Privacy Policy",
-		blurb: "What we collect, why we collect it, and the rights you have over it.",
 		intro:
 			"This policy explains what data we collect, why we collect it, and the rights you have over it. We never sell your data.",
 		sections: [
@@ -113,7 +110,6 @@ export const policies: Policy[] = [
 	{
 		slug: "cancellation",
 		title: "Cancellation Policy",
-		blurb: "Cancel any time, from inside the product. No hostages.",
 		intro:
 			"You can cancel your account at any time, directly in our products. We want satisfied customers, not hostages.",
 		sections: [
@@ -144,7 +140,6 @@ export const policies: Policy[] = [
 	{
 		slug: "refund",
 		title: "Refund Policy",
-		blurb: "Unhappy with a charge? Tell us and we make it right.",
 		intro:
 			"If you are unhappy with a Focus Lab product for any reason, contact us. We will make it right.",
 		sections: [
@@ -174,7 +169,6 @@ export const policies: Policy[] = [
 	{
 		slug: "security",
 		title: "Security Overview",
-		blurb: "How your data is protected, in plain terms.",
 		intro: "We take the security of your data seriously. Here is how we protect it.",
 		sections: [
 			{
@@ -235,7 +229,6 @@ export const policies: Policy[] = [
 	{
 		slug: "taxes",
 		title: "Taxes on Services",
-		blurb: "Where we collect sales tax or VAT, and how it is calculated.",
 		intro:
 			"Where our products are taxable, we collect and remit consumption tax. Prices on our product sites exclude sales tax and VAT.",
 		sections: [
@@ -273,7 +266,6 @@ export const policies: Policy[] = [
 	{
 		slug: "ownership",
 		title: "Account Ownership Policy",
-		blurb: "Who owns an account, and how ownership moves.",
 		intro: "This policy explains who owns a Focus Lab account and the data in it.",
 		sections: [
 			{
