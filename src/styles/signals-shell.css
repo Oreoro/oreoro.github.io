@@ -192,23 +192,23 @@
 		sans-serif;
 	--font-family-mono:
 		"Lab Grotesque Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-	--font-weight-heading: 650;
+	--font-weight-heading: 700;
 	--font-weight-ui: 600;
 	/* Unlike ch, em keeps the title and article gutters equal across weights. */
 	--number-gutter: 2.5em;
 
 	/* Display type follows the reference; prose has its own readable scale. */
 	--font-size: clamp(1.25rem, 0.9375rem + 1.25vw, 1.75rem);
-	--font-size-copy: clamp(1.125rem, 0.9375rem + 0.75vw, 1.5rem);
+	--font-size-copy: clamp(1.1875rem, 1rem + 0.75vw, 1.5625rem);
 
 	/* Very small phones: the fluid base keeps a 20px floor that makes feed
-	   rows wrap; pin base and prose to 17px below 480px instead. Desktop
+	   rows wrap; pin base and prose to 19px below 480px instead. Desktop
 	   type is untouched (the min-width: 64em block below still applies). */
 	@media (max-width: 30em) {
-		--font-size: 1.0625rem;
-		--font-size-copy: 1.0625rem;
+		--font-size: 1.1875rem;
+		--font-size-copy: 1.1875rem;
 	}
-	--font-size-label: clamp(0.9375rem, 0.8125rem + 0.5vw, 1.125rem);
+	--font-size-label: clamp(1rem, 0.875rem + 0.5vw, 1.1875rem);
 	--font-size-x-small: max(0.8125rem, 75%);
 	--font-size-small: 85%;
 	--font-size-large: 115%;
@@ -282,7 +282,7 @@ html body.signals-shell {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-style: normal;
-	font-weight: 400;
+	font-weight: 500;
 	letter-spacing: normal;
 	line-height: 1.3;
 	margin: 0 !important;
@@ -1278,7 +1278,7 @@ html body.signals-shell .signal__header :is(h1, h2) {
 	align-items: baseline;
 	display: grid;
 	grid-template-columns: var(--number-gutter) minmax(0, 1fr);
-	font-weight: var(--font-weight-ui);
+	font-weight: var(--font-weight-heading);
 	padding-bottom: 0.15em;
 	padding-top: 0.15em;
 }

@@ -21,11 +21,11 @@ site links to them directly (and `/products/<slug>` redirects there).
 
 - [Home](https://focuslab.pk/): the numbered stream of product launches and studio notes.
 - [Stream](https://focuslab.pk/stream/): the same 17 entries, searchable.
-- [Products](https://focuslab.pk/products/): the software we build and run. Cards and navigation link straight to each product's website.
+- Products link straight from the site navigation — Urban Events, WorkProof, and Fixer each open their own website.
 - [Studio](https://focuslab.pk/studio/): who we are and how we work.
 - [Stack](https://focuslab.pk/stack/): the tools we build with.
 - [Thoughts](https://focuslab.pk/thoughts/): curated external writing we find useful (20 links, attributed).
-- [Podcast](https://focuslab.pk/podcast/): curated external shows from Pakistan (6 shows, attributed).
+- [Podcast](https://focuslab.pk/podcast/): curated external shows from Pakistan (10 shows, ~25 episodes, attributed).
 - [Books](https://focuslab.pk/books/): 23 books — product, entrepreneurship, and Pakistan — that shaped how we build.
 - [Jobs](https://focuslab.pk/jobs/): working at Focus Lab. [Jobs feed](https://focuslab.pk/feed/jobs.xml).
 - [Policies](https://focuslab.pk/policies/): terms, privacy, security, and the rest, in plain language.

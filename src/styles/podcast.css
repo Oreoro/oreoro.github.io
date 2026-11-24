@@ -1,7 +1,8 @@
 /*
  * Focus Lab Podcast — the 37signals "broadsheet" layout, adapted to the
- * signals shell. A sticky sidebar (masthead, subscribe, archive tags, about)
- * next to a grid of episodes with a featured first entry.
+ * signals shell. The list sits on a white paper sheet (flip the ink tokens
+ * locally), with a sticky sidebar, an auto-fill grid of episode cards, and
+ * a featured first entry with its own play button.
  *
  * Class names mirror 37signals' podcast app so the structure stays familiar:
  * broadsheet, broadsheet__sidebar, broadsheet__content, broadsheet__episodes,
@@ -9,18 +10,26 @@
  */
 
 html body.signals-shell .broadsheet {
-	--podcast-border: rgba(var(--rgb-ink), 0.16);
-	/* Was a literal 0.68, which measured 3.77:1 on #d4a373 and #99c1de —
-	   under AA for the episode numbers, the summaries and the masthead strap.
-	   Muted text reads the shell's floor; see signals-shell.css. */
-	--podcast-muted: color-mix(in srgb, var(--color-ink) var(--ink-muted), transparent);
-	--podcast-surface: rgba(var(--rgb-ink), 0.08);
+	--rgb-ink: 24, 35, 30;
+	--rgb-accent: 21, 77, 56;
+	--color-ink: rgb(var(--rgb-ink));
+	--color-accent: rgb(var(--rgb-accent));
+	--podcast-border: rgba(var(--rgb-ink), 0.14);
+	--podcast-muted: rgba(var(--rgb-ink), 0.62);
+	--podcast-surface: rgba(var(--rgb-ink), 0.06);
+	background: #ffffff;
+	border-radius: var(--radius-surface);
+	box-shadow:
+		0 1px 2px rgba(0, 0, 0, 0.08),
+		0 24px 60px -24px rgba(0, 0, 0, 0.4);
+	color: var(--color-ink);
 	display: grid;
 	font-size: var(--font-size-copy);
 	gap: var(--line-height);
 	grid-template-columns: minmax(0, 1fr);
 	line-height: 1.5;
 	margin: 7.4em var(--spacing) 7.4em var(--spacing);
+	padding: var(--line-height) var(--spacing);
 }
 
 html body.signals-shell .broadsheet__sidebar {
@@ -37,6 +46,7 @@ html body.signals-shell .broadsheet__content {
 /* ---------- sidebar ---------- */
 
 html body.signals-shell .podcast__masthead {
+	font-family: var(--font-family-mono);
 	font-size: var(--font-size-xx-large);
 	font-weight: 700;
 	line-height: 1;
@@ -49,18 +59,25 @@ html body.signals-shell .podcast__masthead a {
 }
 
 html body.signals-shell .masthead__mark {
-	color: var(--color-ink);
+	color: var(--color-accent);
 }
 
 html body.signals-shell .masthead__sub {
 	color: var(--podcast-muted);
-	font-weight: 300;
+	font-weight: 400;
 }
 
 html body.signals-shell .podcast__summary {
 	color: var(--podcast-muted);
 	font-size: inherit;
 	margin: 0;
+	max-width: 34em;
+}
+
+html body.signals-shell .podcast__sections {
+	display: grid;
+	gap: 0 var(--line-height);
+	grid-template-columns: minmax(0, 1fr);
 }
 
 html body.signals-shell .podcast__section {
@@ -77,7 +94,7 @@ html body.signals-shell .podcast__section-title {
 	align-items: center;
 	cursor: pointer;
 	display: flex;
-	font-size: inherit;
+	font-size: var(--font-size-label);
 	font-weight: 700;
 	gap: 0.4em;
 	list-style: none;
@@ -120,9 +137,9 @@ html body.signals-shell .podcast__subscribe {
 }
 
 html body.signals-shell .podcast__subscribe a {
-	background: var(--podcast-surface);
-	border: 1px solid var(--podcast-border);
-	border-radius: 1em;
+	background: var(--color-ink);
+	border-radius: 0.5em;
+	color: #ffffff;
 	font-size: var(--font-size-label);
 	font-weight: 500;
 	letter-spacing: normal;
@@ -132,7 +149,7 @@ html body.signals-shell .podcast__subscribe a {
 
 html body.signals-shell .podcast__subscribe a:hover,
 html:not(.pointer-focus) body.signals-shell .podcast__subscribe a:focus-visible {
-	background: rgba(var(--rgb-ink), 0.18);
+	background: var(--color-accent);
 }
 
 html body.signals-shell .podcast__tags {
@@ -155,25 +172,31 @@ html body.signals-shell .podcast__tags span {
 
 html body.signals-shell .podcast__tags a:hover,
 html:not(.pointer-focus) body.signals-shell .podcast__tags a:focus-visible {
-	background: rgba(var(--rgb-ink), 0.18);
+	background: var(--color-ink);
+	color: #ffffff;
 }
 
 /* ---------- waveform ---------- */
 
 html body.signals-shell .waveform {
 	align-items: flex-end;
-	display: flex;
+	display: none;
 	gap: 2px;
 	height: 4.5em;
 	margin-bottom: calc(var(--line-height) * 1.5);
-	opacity: 0.45;
+	opacity: 0.35;
 	overflow: hidden;
 }
 
+@media (min-width: 45em) {
+	html body.signals-shell .waveform {
+		display: flex;
+	}
+}
+
 html body.signals-shell .waveform div {
-	background: currentColor;
+	background: var(--color-accent);
 	border-radius: 1px;
-	color: var(--color-ink);
 	flex: 1;
 	min-height: 4%;
 }
@@ -184,7 +207,7 @@ html body.signals-shell .broadsheet__episodes {
 	align-items: start;
 	display: grid;
 	gap: 1.5em;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 16em), 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
 }
 
 html body.signals-shell .episode {
@@ -213,9 +236,10 @@ html body.signals-shell .episode__mast {
 html body.signals-shell .episode__number {
 	color: var(--podcast-muted);
 	display: block;
-	font-size: var(--font-size-label);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-x-small);
 	font-weight: 400;
-	letter-spacing: normal;
+	letter-spacing: 0.14em;
 	margin-bottom: 0.5em;
 	text-transform: uppercase;
 }
@@ -228,6 +252,7 @@ html body.signals-shell .episode__title {
 
 html body.signals-shell .episode__title a {
 	text-decoration: none;
+	text-decoration-color: var(--color-accent);
 }
 
 html body.signals-shell .episode__title a:hover,
@@ -240,7 +265,7 @@ html body.signals-shell .--featured .episode__title {
 }
 
 html body.signals-shell .episode__summary {
-	color: rgba(var(--rgb-ink), 0.85);
+	color: var(--podcast-muted);
 	font-size: inherit;
 	margin: 0 0 0.6em 0;
 	max-width: 46ch;
@@ -248,6 +273,7 @@ html body.signals-shell .episode__summary {
 
 html body.signals-shell .--featured .episode__summary {
 	font-size: var(--font-size-large);
+	color: var(--color-ink);
 }
 
 html body.signals-shell .episode__permalink {
@@ -256,6 +282,7 @@ html body.signals-shell .episode__permalink {
 }
 
 html body.signals-shell .episode__permalink a {
+	color: var(--color-accent);
 	font-weight: 700;
 	text-decoration: none;
 }
@@ -265,18 +292,24 @@ html:not(.pointer-focus) body.signals-shell .episode__permalink a:focus-visible 
 	text-decoration: underline;
 }
 
-/* Play affordance — decorative for now, links to the episode page. */
+/* Play affordance — a filled circle that opens the show. */
 html body.signals-shell .episode__play {
 	align-items: center;
-	background: var(--color-ink);
+	background: var(--color-accent);
 	border-radius: 100%;
-	color: var(--color-theme);
+	color: #ffffff;
 	display: inline-flex;
 	height: 3em;
 	justify-content: center;
 	margin-bottom: var(--spacing);
 	text-decoration: none;
+	transition: transform var(--transition);
 	width: 3em;
+}
+
+html body.signals-shell .episode__play:hover,
+html:not(.pointer-focus) body.signals-shell .episode__play:focus-visible {
+	transform: scale(1.06);
 }
 
 html body.signals-shell .episode__play::after {
@@ -304,6 +337,37 @@ html body.signals-shell .--featured .episode__title,
 html body.signals-shell .--featured .episode__summary,
 html body.signals-shell .--featured .episode__permalink {
 	grid-column: 2;
+}
+
+/* Episode lists under each show: hairline-separated, one line each. */
+html body.signals-shell .episode__list {
+	list-style: none;
+	margin: 0.4em 0 0.8em 0;
+	padding: 0;
+}
+
+html body.signals-shell .episode__list li {
+	border-top: 1px solid var(--podcast-border);
+	padding: 0.55em 0;
+}
+
+html body.signals-shell .episode__list a {
+	color: var(--color-ink);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+html body.signals-shell .episode__list a:hover,
+html:not(.pointer-focus) body.signals-shell .episode__list a:focus-visible {
+	text-decoration: underline;
+}
+
+html body.signals-shell .episode__ep-note {
+	color: var(--podcast-muted);
+	display: block;
+	font-size: var(--font-size-small);
+	letter-spacing: normal;
+	margin-top: 0.2em;
 }
 
 /* ---------- episode permalink page ---------- */
@@ -341,19 +405,21 @@ html body.signals-shell .episode__tags {
 
 @media (min-width: 64em) {
 	html body.signals-shell .broadsheet {
-		gap: clamp(2rem, 5vw, 5rem);
-		grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
-		margin-left: 2.8ch;
-		margin-right: 2.8ch;
+		margin-bottom: 7.4em;
+		margin-inline: auto;
 		margin-top: max(22.2vh, 5.4em);
+		max-width: 64rem;
+		padding: clamp(1.5rem, 3vw, 3rem);
 	}
 
+	/* The listening list sits below the episodes, full width. */
 	html body.signals-shell .broadsheet__sidebar {
-		align-self: start;
-		max-height: calc(100dvh - 12rem);
-		overflow-y: auto;
-		padding-right: var(--spacing);
-		position: sticky;
-		top: 6rem;
+		border-top: 1px solid var(--podcast-border);
+		margin-top: calc(var(--line-height) * 1.5);
+		padding-top: var(--line-height);
+	}
+
+	html body.signals-shell .broadsheet__sidebar .podcast__sections {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }

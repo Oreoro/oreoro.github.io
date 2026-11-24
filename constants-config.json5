@@ -373,6 +373,7 @@
 	// Format: "/old-path": "/new-path"
 	// Example: "/my-old-post.html": "/posts/my-new-post-slug/"
 	redirects: {
+		"/products": "/",
 		"/services": "/studio/",
 		"/capabilities": "/studio/",
 		"/work": "/studio/",

@@ -11,12 +11,12 @@
 	--rgb-paper: 35, 92, 67;
 	--rgb-accent: 244, 246, 243;
 	--rgb-shadow: 25, 37, 31;
-	--rgb-sheet: 27, 70, 51;
-	--rgb-sheet-ink: 244, 246, 243;
+	--rgb-sheet: 255, 255, 255;
+	--rgb-sheet-ink: 0, 0, 0;
 	--rgb-error: 255, 184, 173;
 	--color-muted: #d1ded4;
-	--color-surface: #1d4d38;
-	--color-surface-hover: color-mix(in srgb, var(--color-surface) 92%, var(--color-ink));
+	--color-surface: #ffffff;
+	--color-surface-hover: color-mix(in srgb, var(--color-surface) 94%, var(--color-theme));
 	--color-hairline: #527a61;
 	--color-boundary: #91b09b;
 	--ink-muted: 78%;
@@ -89,13 +89,75 @@ html body.signals-shell .ledger {
 	background: var(--color-surface);
 }
 
+/*
+ * Paper surfaces: white cards on the green ground, with their own dark ink
+ * and deep-green accent so every derived colour flips with the background.
+ * The subtle shadow lifts the cards off the page.
+ */
+html body.signals-shell .product-card,
+html body.signals-shell .panel,
+html body.signals-shell .cta-panel,
+html body.signals-shell .pull,
+html body.signals-shell .stack__item,
+html body.signals-shell .ledger,
+html body.signals-shell .signup,
+html body.signals-shell .filter__empty {
+	--rgb-ink: 24, 35, 30;
+	--rgb-accent: 21, 77, 56;
+	--rgb-paper: 255, 255, 255;
+	--color-ink: rgb(var(--rgb-ink));
+	--color-accent: rgb(var(--rgb-accent));
+	--color-paper: rgb(var(--rgb-paper));
+	--color-hairline: rgba(var(--rgb-ink), 0.14);
+	color: rgb(24, 35, 30);
+	box-shadow:
+		0 1px 2px rgba(0, 0, 0, 0.08),
+		0 10px 30px -14px rgba(0, 0, 0, 0.28);
+}
+
 html body.signals-shell .product-card:hover,
 html:not(.pointer-focus) body.signals-shell .product-card:focus-visible {
 	background: var(--color-surface-hover);
 }
 
+/* Compact product cards: fixed sizes so the sparse card stays tidy. */
+html body.signals-shell .product-card {
+	gap: 0.9rem;
+	padding: 1.4rem;
+}
+
+html body.signals-shell .product-card__head h2 {
+	font-size: 1.5rem;
+}
+
+html body.signals-shell .product-card__status {
+	font-size: 0.75rem;
+	line-height: 1;
+	padding: 0.35em 0.85em;
+}
+
+html body.signals-shell .product-card__tagline {
+	color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+	font-size: 1rem;
+	line-height: 1.4;
+	margin: 0;
+}
+
+html body.signals-shell .product-card__cta {
+	font-size: 1rem;
+	padding-top: 0;
+}
+
+
 html body.signals-shell .book-cover {
 	background: var(--book-tint, var(--color-surface));
+}
+
+/* Real cover art drops in with the same geometry as the placeholder. */
+html body.signals-shell .book-cover__img {
+	display: block;
+	object-fit: cover;
+	padding: 0;
 }
 
 html body.signals-shell .book-cover__mark,
@@ -103,8 +165,54 @@ html body.signals-shell .book-cover__title {
 	color: var(--book-ink, var(--color-ink));
 }
 
-html body.signals-shell .broadsheet {
-	--podcast-surface: var(--color-surface);
+@media (min-width: 64em) {
+	html body.signals-shell .page,
+	html body.signals-shell .broadsheet {
+		margin-left: var(--spacing);
+		margin-right: var(--spacing);
+		margin-top: max(22.2vh, 5.4em);
+	}
+}
+
+/*
+ * Paper sheet on subpages: white content on the green shell, dark ink and a
+ * deep-green accent, at the same width as the podcast sheet.
+ */
+html body.signals-shell .page {
+	--rgb-ink: 24, 35, 30;
+	--rgb-accent: 21, 77, 56;
+	--rgb-paper: 255, 255, 255;
+	--color-ink: rgb(var(--rgb-ink));
+	--color-accent: rgb(var(--rgb-accent));
+	--color-paper: rgb(var(--rgb-paper));
+	--color-hairline: rgba(var(--rgb-ink), 0.14);
+	background: #ffffff;
+	border-radius: var(--radius-surface);
+	box-shadow:
+		0 1px 2px rgba(0, 0, 0, 0.08),
+		0 24px 60px -24px rgba(0, 0, 0, 0.4);
+	color: rgb(24, 35, 30);
+	max-width: 64rem;
+	padding: var(--line-height) var(--spacing);
+}
+
+@media (min-width: 64em) {
+	html body.signals-shell .page {
+		margin-inline: auto;
+	}
+}
+
+/* The sheet owns its edges; the green fade overlays are not needed on white. */
+html body.signals-shell .page:before,
+html body.signals-shell .page:after {
+	display: none;
+}
+
+/* The wide variant joins the sheet: same width, same centre. */
+html body.signals-shell .page.page--wide {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 64rem;
 }
 
 /* Search remains progressive: without JavaScript the complete list is shown. */
@@ -140,10 +248,10 @@ html body.signals-shell .signup .email-request__form .email-request__input {
 	min-height: 48px;
 	margin: 0;
 	padding: 0.75rem;
-	border: 1px solid var(--color-boundary);
+	border: 1px solid rgba(24, 35, 30, 0.35);
 	border-radius: var(--radius-control);
-	background: var(--color-surface);
-	color: var(--color-ink);
+	background: #ffffff;
+	color: rgb(24, 35, 30);
 	font-family: var(--font-family);
 	font-size: 1rem;
 	line-height: 1.5;
@@ -152,7 +260,7 @@ html body.signals-shell .signup .email-request__form .email-request__input {
 html body.signals-shell .filter input::placeholder,
 html body.signals-shell .email-request__input::placeholder,
 html body.signals-shell .signup .email-request__form .email-request__input::placeholder {
-	color: var(--color-muted);
+	color: rgba(24, 35, 30, 0.55);
 	opacity: 1;
 }
 
@@ -292,6 +400,41 @@ html body.signals-shell .email-request__hint {
 	line-height: 1.6;
 }
 
+/* Inside the white signup card, muted type reads dark. */
+html body.signals-shell .signup .email-request__hint {
+	color: rgba(24, 35, 30, 0.62);
+}
+
+/* More air between the paper cards. */
+html body.signals-shell .product-cards {
+	gap: 1.6em;
+}
+
+html body.signals-shell .stack__items {
+	gap: 0.75em;
+}
+
+/* The stream archive reads at prose size, not display size. */
+html body.signals-shell .stream-list {
+	font-size: var(--font-size-copy);
+}
+
+html body.signals-shell .stream-list a {
+	min-height: 40px;
+	padding-block: 0.625rem;
+}
+
+/* The archive numbers keep pace with the titles. */
+html body.signals-shell .stream-list__number {
+	font-size: 0.9375rem;
+}
+
+@media (min-width: 64em) {
+	html body.signals-shell .stream-list__number {
+		font-size: 1.25rem;
+	}
+}
+
 html body.signals-shell .email-request__input[aria-invalid="true"],
 html body.signals-shell .signup .email-request__form .email-request__input[aria-invalid="true"] {
 	border: 2px solid var(--color-error);
@@ -384,4 +527,81 @@ html body.signals-shell .email-request__status:not(:empty) {
 	html body.signals-shell .book-cover__title {
 		color: var(--color-ink);
 	}
+}
+
+/* Denser mobile stream rows, 37signals-style: one line per entry. */
+@media (max-width: 63.99em) {
+	html body.signals-shell .signal__header a {
+		min-height: 38px;
+	}
+
+	html body.signals-shell .signal__header dl,
+	html body.signals-shell .signal__header :is(h1, h2) {
+		padding-bottom: 0.08em;
+		padding-top: 0.08em;
+	}
+
+	/* The archive list drops its meta column so titles stay on one line. */
+	html body.signals-shell .stream-list a {
+		grid-template-columns: 3.6ch minmax(0, 1fr) 1rem;
+		padding-block: 0.5rem;
+	}
+
+	html body.signals-shell .stream-list__meta {
+		display: none;
+	}
+
+	html body.signals-shell .stream-list__title {
+		line-height: 1.25;
+	}
+}
+
+/* The stream numbers read bold at every size. */
+html body.signals-shell .signal__header dl dt,
+html body.signals-shell .signal__header :is(h1, h2) span {
+	font-weight: 700;
+}
+
+/* Paper notes: small white cards inside the green stream content. */
+html body.signals-shell .paper-note {
+	--rgb-ink: 24, 35, 30;
+	--rgb-accent: 21, 77, 56;
+	--color-ink: rgb(var(--rgb-ink));
+	--color-accent: rgb(var(--rgb-accent));
+	background: #ffffff;
+	border-radius: var(--radius-surface);
+	box-shadow:
+		0 1px 2px rgba(0, 0, 0, 0.08),
+		0 10px 30px -14px rgba(0, 0, 0, 0.28);
+	color: rgb(24, 35, 30);
+	margin: 1.4em 0;
+	padding: 1.2em 1.4em;
+}
+
+html body.signals-shell .paper-note > * + * {
+	margin-top: 0.5em;
+}
+
+html body.signals-shell blockquote.paper-note {
+	font-size: var(--font-size-large);
+	font-style: italic;
+	margin-left: 0;
+	margin-right: 0;
+	position: relative;
+}
+
+html body.signals-shell blockquote.paper-note:before {
+	color: var(--color-accent);
+	content: "\201C";
+	font-size: 3em;
+	font-weight: 300;
+	left: 0.18em;
+	line-height: 1;
+	position: absolute;
+	top: 0.12em;
+}
+
+html body.signals-shell blockquote.paper-note p {
+	margin: 0;
+	padding-left: 2em;
 }

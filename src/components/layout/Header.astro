@@ -2,16 +2,22 @@
 import { getNavLink } from "@/lib/blog-helpers";
 import Brand from "@/components/layout/Brand.astro";
 
+import { productSites } from "@/data/product-sites";
+
 const primary: Array<[string, string]> = [
 	["Stream", "/"],
-	["Products", "/products"],
+	["Urban Events", productSites.urbanevents],
+	["WorkProof", productSites.workproof],
+	["Fixer", productSites.fixer],
 ];
 
 /* The mobile sheet is one clean list — the products live under Products,
    not twice in the same menu. */
 const mobile: Array<[string, string]> = [
 	["Stream", "/"],
-	["Products", "/products"],
+	["Urban Events", productSites.urbanevents],
+	["WorkProof", productSites.workproof],
+	["Fixer", productSites.fixer],
 	["Studio", "/studio"],
 	["Stack", "/stack"],
 	["Thoughts", "/thoughts"],

@@ -17,9 +17,8 @@ const total = books.length;
 			<p class="page__kicker">Books</p>
 			<h1>Books that shaped how we build.</h1>
 			<p>
-				On top of running our own products, we read about the craft. These {total} are the ones that
-				changed how we work — not just what we know. Links go to the publisher or a free edition where
-				one exists.
+				The {total} books that changed how we work, not just what we know. Links go to the publisher
+				or a free edition where one exists.
 			</p>
 		</div>
 
@@ -36,13 +35,26 @@ const total = books.length;
 										rel="noopener"
 										aria-label={book.title}
 									>
-										<span
-											class="book-cover"
-											style={`--book-tint: var(--book-tint-${(index % 4) + 1}); --book-ink: var(--book-ink-${(index % 4) + 1})`}
-										>
-											<span class="book-cover__mark">{book.mark}</span>
-											<span class="book-cover__title">{book.title}</span>
-										</span>
+										{book.cover ? (
+											<img
+												src={book.cover}
+												width="300"
+												height="400"
+												alt={`${book.title} cover`}
+												alt={`${book.title} cover`}
+												class="book-cover book-cover__img"
+												loading="lazy"
+												decoding="async"
+											/>
+										) : (
+											<span
+												class="book-cover"
+												style={`--book-tint: var(--book-tint-${(index % 4) + 1}); --book-ink: var(--book-ink-${(index % 4) + 1})`}
+											>
+												<span class="book-cover__mark">{book.mark}</span>
+												<span class="book-cover__title">{book.title}</span>
+											</span>
+										)}
 									</a>
 								</figure>
 
@@ -50,15 +62,16 @@ const total = books.length;
 									<h2>{book.title}</h2>
 									<p class="font-size-small">{book.author}</p>
 									<p>{book.description}</p>
-									<ul>
-										{book.links.map((item) => (
-											<li>
+									<p>
+										{book.links.map((item, i) => (
+											<Fragment>
+												{i > 0 && " · "}
 												<a href={item.href} target="_blank" rel="noopener">
 													{item.label}
 												</a>
-											</li>
+											</Fragment>
 										))}
-									</ul>
+									</p>
 								</div>
 							</div>
 						</div>

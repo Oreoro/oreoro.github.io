@@ -180,11 +180,9 @@ function initMobileNav(): void {
 	const background = document.querySelectorAll<HTMLElement>(
 		"body > main, body > .header, body > .footer, body > .skip-link",
 	);
-	const label = document.querySelector<HTMLElement>(".nav__toggle-text");
 	const sync = () => {
 		toggle.setAttribute("aria-expanded", String(toggle.checked));
 		toggle.setAttribute("aria-label", toggle.checked ? "Close menu" : "Open menu");
-		if (label) label.textContent = toggle.checked ? "Close" : "Menu";
 		background.forEach((element) => {
 			element.inert = toggle.checked;
 		});

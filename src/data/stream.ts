@@ -21,7 +21,7 @@ export const stream: StreamEntry[] = [
 		kind: "note",
 		label: "Start here",
 		date: "2026-09-22",
-		content: `<p>Focus Lab is a product company based in Islamabad, Pakistan. We design, build, and operate our own software: <a href="https://urbanevents.focuslab.pk" target="_blank" rel="noopener">Urban Events</a>, <a href="https://workproof.focuslab.pk" target="_blank" rel="noopener">WorkProof</a>, and <a href="https://fixer.focuslab.pk" target="_blank" rel="noopener">Fixer</a>.</p>
+		content: `<p>Focus Lab is a product studio in Islamabad — we design, build, and run <a href="https://urbanevents.focuslab.pk" target="_blank" rel="noopener">Urban Events</a>, <a href="https://workproof.focuslab.pk" target="_blank" rel="noopener">WorkProof</a>, and <a href="https://fixer.focuslab.pk" target="_blank" rel="noopener">Fixer</a>.</p>
 <h2>What you will find here</h2>
 <p>Product launches, product updates, and notes on how we work. Each entry is self-contained — you never need the one before it.</p>
 <h2>How to read it</h2>
@@ -58,11 +58,7 @@ export const stream: StreamEntry[] = [
 		date: "2026-10-20",
 		content: `<p>Urban Events, a Focus Lab product, processes event payments the way Pakistan pays: JazzCash, Easypaisa, and bank transfer, all priced and settled in PKR. On paid tickets a simple 5% is added at checkout — no subscriptions, no contracts.</p>
 <h2>Payment methods</h2>
-<ul>
-<li><strong>JazzCash</strong> — Pakistan's most widely used mobile wallet.</li>
-<li><strong>Easypaisa</strong> — the second national wallet, equally supported.</li>
-<li><strong>Bank transfer</strong> — for organisers moving larger sums.</li>
-</ul>
+<p><strong>JazzCash</strong> — Pakistan's most widely used mobile wallet; <strong>Easypaisa</strong> — the second national wallet, equally supported; and <strong>bank transfer</strong> — for organisers moving larger sums.</p>
 <h2>Pricing model</h2>
 <p>Free events cost nothing: Rs 0 forever, with unlimited tickets, a custom event page, and QR check-in. Paid events carry a simple 5% added at checkout and settled in PKR — organisers never pay to list.</p>
 <h2>Payouts</h2>
@@ -76,12 +72,7 @@ export const stream: StreamEntry[] = [
 		date: "2026-09-21",
 		content: `<p>Fixer is Focus Lab's production-error triage product for engineering teams. It connects to the log sources you already use, isolates the exceptions worth human attention, investigates each one against your actual code, and prepares a draft pull request with a root cause, supporting evidence, and a proposed fix.</p>
 <h2>How it works</h2>
-<ol>
-<li><strong>Find</strong> — new errors are surfaced; repeated alerts are not.</li>
-<li><strong>Investigate</strong> — the cause and the code involved are traced from the log trail.</li>
-<li><strong>Fix</strong> — a proposed fix and test results are prepared for review.</li>
-<li><strong>Review</strong> — an engineer approves a draft pull request, creates a ticket, or dismisses the issue.</li>
-</ol>
+<p>The loop runs in four steps: <strong>Find</strong> — new errors are surfaced, repeated alerts are not; <strong>Investigate</strong> — the cause and the code involved are traced from the log trail; <strong>Fix</strong> — a proposed fix and test results are prepared for review; <strong>Review</strong> — an engineer approves a draft pull request, creates a ticket, or dismisses the issue.</p>
 <h2>Governance</h2>
 <p>Fixer opens draft pull requests only. No proposed change is pushed before an engineer approves it, and the GitHub App has no merge permission. You review, you merge.</p>
 <h2>Bring your own model</h2>
@@ -95,20 +86,10 @@ export const stream: StreamEntry[] = [
 		date: "2026-09-14",
 		content: `<p>WorkProof is Focus Lab's self-hosted workforce analytics product. It measures active vs. idle time, focus ratio, and per-person rollups — computed entirely on the customer's own server, without ever capturing what anyone types, reads, or says.</p>
 <h2>What it measures</h2>
-<ul>
-<li>Active vs. idle time</li>
-<li>Focus ratio</li>
-<li>Top apps and website domains</li>
-<li>Per-person rollups</li>
-</ul>
+<p>It measures <strong>active vs. idle time</strong>, <strong>focus ratio</strong>, <strong>top apps and website domains</strong>, and <strong>per-person rollups</strong>.</p>
 <h2>What it never captures</h2>
-<ul>
-<li>What anyone types</li>
-<li>Passwords or credentials</li>
-<li>Message or document contents</li>
-<li>Clipboard contents, audio, or microphone</li>
-</ul>
-<p>Domains, never full URLs. The boundaries are enforced in code, not merely stated in policy.</p>
+<p>It never captures <strong>what anyone types</strong>, <strong>passwords or credentials</strong>, <strong>message or document contents</strong>, or <strong>clipboard contents, audio, or microphone</strong>.</p>
+<div class="paper-note"><p>Domains, never full URLs. The boundaries are enforced in code, not merely stated in policy.</p></div>
 <p><a href="https://workproof.focuslab.pk" target="_blank" rel="noopener">See WorkProof</a> or <a href="https://workproof.focuslab.pk/demo/" target="_blank" rel="noopener">try the live demo</a>.</p>`,
 	},
 	{
@@ -120,13 +101,9 @@ export const stream: StreamEntry[] = [
 <h2>Who it serves</h2>
 <p>University MUNs, student society concerts, professional workshops, and community meetups — small to medium-scale organisers across Pakistan. Free events cost nothing: Rs 0 forever.</p>
 <h2>How it works</h2>
-<ol>
-<li><strong>Publish</strong> — a fast, mobile-first event page with your branding, ticket tiers, sale windows, and sold-out states.</li>
-<li><strong>Sell tickets</strong> — JazzCash, Easypaisa, and bank transfer, priced in PKR.</li>
-<li><strong>Check in</strong> — scan QR codes from any phone; live counts sync across every device at the door.</li>
-</ol>
+<p><strong>Publish</strong> — a fast, mobile-first event page with your branding, ticket tiers, sale windows, and sold-out states. <strong>Sell tickets</strong> — JazzCash, Easypaisa, and bank transfer, priced in PKR. <strong>Check in</strong> — scan QR codes from any phone, with live counts syncing across every device at the door.</p>
 <h2>Pricing</h2>
-<p>Free for free events, forever. On paid tickets a simple 5% is added at checkout — no monthly fees, no contracts.</p>
+<div class="paper-note"><p>Free for free events, forever. On paid tickets a simple 5% is added at checkout — no monthly fees, no contracts.</p></div>
 <p><a href="https://urbanevents.focuslab.pk" target="_blank" rel="noopener">Start an event</a>.</p>`,
 	},
 	{
@@ -147,11 +124,7 @@ export const stream: StreamEntry[] = [
 		date: "2026-03-03",
 		content: `<p>WorkProof enrollment takes under a minute: one command on the laptop and the device appears. No MDM, no accounts to create, and no toolchain to install.</p>
 <h2>Enrollment steps</h2>
-<ol>
-<li><strong>Create a workspace</strong> — the administrator receives an owner key.</li>
-<li><strong>Send one command</strong> — the employee pastes it and the device is enrolled.</li>
-<li><strong>See the week</strong> — activity appears per person, per device, per day.</li>
-</ol>
+<p><strong>Create a workspace</strong> — the administrator receives an owner key; <strong>send one command</strong> — the employee pastes it and the device is enrolled; <strong>see the week</strong> — activity appears per person, per device, per day.</p>
 <p>Supported on macOS and Windows.</p>
 <p><a href="https://workproof.focuslab.pk" target="_blank" rel="noopener">See WorkProof</a>.</p>`,
 	},
@@ -172,7 +145,7 @@ export const stream: StreamEntry[] = [
 		date: "2026-01-06",
 		content: `<p>Fixer focuses engineering attention on new issues, not repeated alerts. In a busy window of 18,402 distinct errors, it surfaces the handful that are actually new — and collapses repeats into a single finding.</p>
 <h2>One investigation per issue</h2>
-<p>“KeyError: 'id' seen 14×” is one review item, not fourteen. Each finding is a single investigation with the code involved, ready for an engineer's decision.</p>
+<blockquote class="paper-note"><p>“KeyError: 'id' seen 14×” is one review item, not fourteen. Each finding is a single investigation with the code involved, ready for an engineer's decision.</p></blockquote>
 <h2>Follow-up where you already work</h2>
 <p>Findings track into GitHub Issues, Jira, Linear, or Azure Boards, and Slack notifications bring them to the team's channel.</p>
 <p><a href="https://fixer.focuslab.pk/demo" target="_blank" rel="noopener">See the live demo</a>.</p>`,
@@ -205,6 +178,7 @@ export const stream: StreamEntry[] = [
 		label: "We are a studio, not an agency",
 		date: "2025-04-29",
 		content: `<p>Partner work at Focus Lab is delivered on the same terms as our own products: a real problem, a clear owner, and the latitude to decide how to solve it. We would rather decline early than deliver work we do not stand behind.</p>
+<blockquote class="paper-note"><p>We deliver what solves the problem — which sometimes means telling you the brief is asking the wrong question.</p></blockquote>
 <h2>How we differ from an agency</h2>
 <p>An agency delivers what the brief says. We deliver what solves the problem — which sometimes means telling you the brief is asking the wrong question. When we are not the right fit, we say so in the first reply, not the third.</p>`,
 	},
@@ -239,7 +213,7 @@ export const stream: StreamEntry[] = [
 		date: "2024-11-19",
 		content: `<p>Fixer opens draft pull requests. It cannot merge, and no code path grants it merge permission — no proposed change is pushed before an engineer approves it.</p>
 <h2>The constraint is the product</h2>
-<p>Human approval before changes is not a limitation we work around; it is the product. Fixer can propose, but only an engineer can ship.</p>
+<blockquote class="paper-note"><p>Human approval before changes is not a limitation we work around; it is the product. Fixer can propose, but only an engineer can ship.</p></blockquote>
 <h2>Staying in control</h2>
 <p>Connect your own model key, set a daily spend limit, and approve what reaches your repository. The diagnosis, log trail, and test commands are reviewed before every decision.</p>
 <p><a href="https://fixer.focuslab.pk" target="_blank" rel="noopener">Read more about Fixer</a>.</p>`,

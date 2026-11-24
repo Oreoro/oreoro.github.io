@@ -42,7 +42,7 @@ export const products: Product[] = [
 			},
 		],
 		summary:
-			"Publish a polished event page, sell tickets in PKR, and check guests in from any phone. Built for student societies, MUNs, workshops, and meetups across Pakistan.",
+			"Publish a polished event page, sell tickets in PKR, and check guests in from any phone.",
 		notFor: [
 			"Large conferences with seat maps and multi-tier ticketing.",
 			"Online courses or subscriptions. No drip content, no paywall.",
@@ -77,7 +77,7 @@ export const products: Product[] = [
 			},
 		],
 		summary:
-			"Know where the week actually went. Self-hosted workforce activity analytics with real privacy: no content capture, and your data stays on your infrastructure.",
+			"Know where the week went. Self-hosted workforce analytics with real privacy — no content capture, data stays on your infrastructure.",
 		notFor: [
 			"Scoring or ranking people against each other.",
 			"Keystrokes, screenshots, or full URLs. None of that is collected.",
@@ -116,7 +116,7 @@ export const products: Product[] = [
 			},
 		],
 		summary:
-			"Fixer watches your production logs, reduces them to the handful of exceptions actually worth a human's time, investigates each one against your real code, and opens a draft pull request with a root cause, the evidence behind it, and a proposed fix.",
+			"Watches production logs, isolates the errors worth a human, and opens a draft pull request with a root cause and a proposed fix.",
 		notFor: [
 			"Fixing and merging on its own. A human reviews and merges every pull request.",
 			"Incident triage. It is for recurring errors, not the page that is down right now.",

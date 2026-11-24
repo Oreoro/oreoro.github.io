@@ -15,12 +15,10 @@ const bars = Array.from({ length: 96 }, (_, i) => {
 	meta={{
 		title: "Podcast",
 		description:
-			"Podcasts we find useful — shows on building, shipping, and running software at a small studio.",
+			"Pakistan podcasts we actually listen to — 10 shows on startups, tech, economy, and building, with the episodes we'd start with.",
 	}}
 >
 	<div class="broadsheet">
-		<PodcastSidebar />
-
 		<section class="broadsheet__content" aria-label="Podcasts">
 			<div class="waveform" aria-hidden="true">
 				{bars.map((height) => <div style={`height:${height}%`} />)}
@@ -37,24 +35,33 @@ const bars = Array.from({ length: 96 }, (_, i) => {
 									</p>
 								)}
 								<div class="episode__mast">
+									<a
+										class="episode__play"
+										href={podcast.url}
+										target="_blank"
+										rel="noopener"
+										aria-label={`Listen to ${podcast.show}`}
+									></a>
 									<small class="episode__number">{podcast.show}</small>
 									<h2 class="episode__title">
 										<a href={podcast.url} target="_blank" rel="noopener">
-											{podcast.title}
+											{podcast.show}
 										</a>
 									</h2>
 									<p class="episode__summary">{podcast.note}</p>
-									<p class="episode__permalink">
-										<a href={podcast.url} target="_blank" rel="noopener">
-											Visit show <Arrow direction="external" />
-										</a>
-									</p>
 								</div>
+								<p class="episode__permalink">
+									<a href={podcast.url} target="_blank" rel="noopener">
+										Visit show <Arrow direction="external" />
+									</a>
+								</p>
 							</article>
 						);
 					})
 				}
 			</div>
+
+			<PodcastSidebar />
 		</section>
 	</div>
 </PageLayout>

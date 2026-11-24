@@ -1,7 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 import Arrow from "@/components/ui/Arrow.astro";
-import PageAnchors from "@/components/layout/PageAnchors.astro";
 import { products } from "@/data/products";
 import { getNavLink } from "@/lib/blog-helpers";
 import { site } from "@/data/focuslab";
@@ -21,51 +20,21 @@ import { site } from "@/data/focuslab";
 			<p>
 				Focus Lab is a product studio in Islamabad. We design, build, and run our own software.
 			</p>
-			<PageAnchors
-				anchors={[
-					{ id: "believe", label: "What we believe" },
-					{ id: "built", label: "What we've built" },
-					{ id: "working", label: "Working with us" },
-				]}
-			/>
 		</div>
 
 		<div class="page__content content">
 			<h2 id="believe">What we believe</h2>
-			<ol class="numbered">
-				<li>
-					<div class="numbered__body">
-						<h3 class="numbered__title">Product first.</h3>
-						<p>
-							Start with the smallest thing worth building, and put it in front of a real person as
-							early as you can.
-						</p>
-					</div>
-				</li>
-				<li>
-					<div class="numbered__body">
-						<h3 class="numbered__title">Ship to learn.</h3>
-						<p>
-							Working software tells the truth. A guess costs more the longer you hold it.
-						</p>
-					</div>
-				</li>
-				<li>
-					<div class="numbered__body">
-						<h3 class="numbered__title">Small on purpose.</h3>
-						<p>Small teams move faster and decide better.</p>
-					</div>
-				</li>
-				<li>
-					<div class="numbered__body">
-						<h3 class="numbered__title">Own the outcome.</h3>
-						<p>
-							Stay for support, metrics, and the second year. Handing a product over at launch is
-							not running a product.
-						</p>
-					</div>
-				</li>
-			</ol>
+							<h3>Product first.</h3>
+				<p>Start with the smallest thing worth building, and put it in front of a real person as
+							early as you can.</p>
+				<h3>Ship to learn.</h3>
+				<p>Working software tells the truth. A guess costs more the longer you hold it.</p>
+				<h3>Small on purpose.</h3>
+				<p>Small teams move faster and decide better.</p>
+				<h3>Own the outcome.</h3>
+				<p>Stay for support, metrics, and the second year. Handing a product over at launch is
+							not running a product.</p>
+
 
 			<h2 id="built">What we've built</h2>
 			<table class="ledger">
@@ -85,10 +54,6 @@ import { site } from "@/data/focuslab";
 				</tbody>
 			</table>
 
-			<blockquote class="pull">
-				<p>Small enough to still answer the phone in year three.</p>
-				<cite>Focus Lab</cite>
-			</blockquote>
 
 			<h2 id="working">Working with us</h2>
 			<p>

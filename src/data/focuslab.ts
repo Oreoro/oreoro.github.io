@@ -7,5 +7,6 @@ export const site = {
 	phone: "+92 333 5507394",
 	whatsapp: "+92 333 5507394",
 	whatsappHref: "https://wa.me/923335507394",
+	linkedin: "https://www.linkedin.com/company/110646093/",
 	location: "Islamabad, Pakistan",
 };

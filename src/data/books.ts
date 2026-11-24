@@ -5,6 +5,7 @@ export interface BookLink {
 
 export interface Book {
 	slug: string;
+	cover?: string;
 	title: string;
 	author: string;
 	description: string;
@@ -17,6 +18,7 @@ export const books: Book[] = [
 	{
 		slug: "inspired",
 		title: "Inspired",
+		cover: "/assets/books/inspired.jpg",
 		author: "Marty Cagan",
 		description: "How strong product teams decide what to build, from SVPG's founder.",
 		mark: "IN",
@@ -31,6 +33,7 @@ export const books: Book[] = [
 	{
 		slug: "the-lean-startup",
 		title: "The Lean Startup",
+		cover: "/assets/books/the-lean-startup.jpg",
 		author: "Eric Ries",
 		description: "The build-measure-learn loop behind fast, evidence-driven product work.",
 		mark: "LS",
@@ -40,6 +43,7 @@ export const books: Book[] = [
 	{
 		slug: "shape-up",
 		title: "Shape Up",
+		cover: "/assets/books/shape-up.jpg",
 		author: "Ryan Singer",
 		description: "Basecamp's fixed-time, variable-scope method for shipping meaningful work.",
 		mark: "SU",
@@ -52,6 +56,7 @@ export const books: Book[] = [
 	{
 		slug: "zero-to-one",
 		title: "Zero to One",
+		cover: "/assets/books/zero-to-one.jpg",
 		author: "Peter Thiel",
 		description: "Building companies that create new things rather than copying what exists.",
 		mark: "Z1",
@@ -61,6 +66,7 @@ export const books: Book[] = [
 	{
 		slug: "the-hard-thing-about-hard-things",
 		title: "The Hard Thing About Hard Things",
+		cover: "/assets/books/the-hard-thing-about-hard-things.jpg",
 		author: "Ben Horowitz",
 		description: "The unglamorous realities of running a startup — hiring, firing, and hard calls.",
 		mark: "HT",
@@ -75,6 +81,7 @@ export const books: Book[] = [
 	{
 		slug: "good-to-great",
 		title: "Good to Great",
+		cover: "/assets/books/good-to-great.jpg",
 		author: "Jim Collins",
 		description: "What separates companies that become great from those that plateau.",
 		mark: "GG",
@@ -84,6 +91,7 @@ export const books: Book[] = [
 	{
 		slug: "the-e-myth-revisited",
 		title: "The E-Myth Revisited",
+		cover: "/assets/books/the-e-myth-revisited.jpg",
 		author: "Michael Gerber",
 		description: "Why small businesses fail, and how to build one that runs without you.",
 		mark: "EM",
@@ -93,6 +101,7 @@ export const books: Book[] = [
 	{
 		slug: "rich-dad-poor-dad",
 		title: "Rich Dad Poor Dad",
+		cover: "/assets/books/rich-dad-poor-dad.jpg",
 		author: "Robert Kiyosaki",
 		description: "A plain-language primer on assets, liabilities, and how money actually works.",
 		mark: "RD",
@@ -102,6 +111,7 @@ export const books: Book[] = [
 	{
 		slug: "measure-what-matters",
 		title: "Measure What Matters",
+		cover: "/assets/books/measure-what-matters.jpg",
 		author: "John Doerr",
 		description: "The OKR method — objectives and key results, as practiced at Google and Intel.",
 		mark: "MW",
@@ -120,6 +130,7 @@ export const books: Book[] = [
 	{
 		slug: "how-to-get-filthy-rich-in-rising-asia",
 		title: "How to Get Filthy Rich in Rising Asia",
+		cover: "/assets/books/how-to-get-filthy-rich-in-rising-asia.jpg",
 		author: "Mohsin Hamid",
 		description: "A Pakistani novel that reads like a self-help book about getting ahead in a rising economy.",
 		mark: "FR",
@@ -134,6 +145,7 @@ export const books: Book[] = [
 	{
 		slug: "pakistan-a-hard-country",
 		title: "Pakistan: A Hard Country",
+		cover: "/assets/books/pakistan-a-hard-country.jpg",
 		author: "Anatol Lieven",
 		description: "How Pakistan actually works — its society, state, and the forces that hold it together.",
 		mark: "PK",
@@ -143,6 +155,7 @@ export const books: Book[] = [
 	{
 		slug: "continuous-discovery-habits",
 		title: "Continuous Discovery Habits",
+		cover: "/assets/books/continuous-discovery-habits.jpg",
 		author: "Teresa Torres",
 		description: "Staying close to customers every week instead of every quarter.",
 		mark: "CD",
@@ -152,6 +165,7 @@ export const books: Book[] = [
 	{
 		slug: "the-design-of-everyday-things",
 		title: "The Design of Everyday Things",
+		cover: "/assets/books/the-design-of-everyday-things.jpg",
 		author: "Don Norman",
 		description: "Why some interfaces feel obvious and others fight the user.",
 		mark: "DO",
@@ -166,6 +180,7 @@ export const books: Book[] = [
 	{
 		slug: "refactoring-ui",
 		title: "Refactoring UI",
+		cover: "/assets/books/refactoring-ui.jpg",
 		author: "Adam Wathan & Steve Schoger",
 		description: "Practical interface design tactics for people who build software.",
 		mark: "RU",
@@ -175,6 +190,7 @@ export const books: Book[] = [
 	{
 		slug: "the-effective-executive",
 		title: "The Effective Executive",
+		cover: "/assets/books/the-effective-executive.jpg",
 		author: "Peter Drucker",
 		description: "What to do with your own time and attention as a manager of one.",
 		mark: "EE",
@@ -184,6 +200,7 @@ export const books: Book[] = [
 	{
 		slug: "zen-and-the-art-of-motorcycle-maintenance",
 		title: "Zen and the Art of Motorcycle Maintenance",
+		cover: "/assets/books/zen-and-the-art-of-motorcycle-maintenance.jpg",
 		author: "Robert Pirsig",
 		description: "The difference between quality and quantity, told through a cross-country ride.",
 		mark: "ZM",
@@ -198,6 +215,7 @@ export const books: Book[] = [
 	{
 		slug: "on-writing-well",
 		title: "On Writing Well",
+		cover: "/assets/books/on-writing-well.jpg",
 		author: "William Zinsser",
 		description: "Writing plainly — the book behind every sentence on this site.",
 		mark: "OW",
@@ -207,6 +225,7 @@ export const books: Book[] = [
 	{
 		slug: "elements-of-typographic-style",
 		title: "Elements of Typographic Style",
+		cover: "/assets/books/elements-of-typographic-style.jpg",
 		author: "Robert Bringhurst",
 		description: "The reference for rhythm and hierarchy in setting type.",
 		mark: "ET",
@@ -218,6 +237,7 @@ export const books: Book[] = [
 	{
 		slug: "thinking-in-systems",
 		title: "Thinking in Systems",
+		cover: "/assets/books/thinking-in-systems.jpg",
 		author: "Donella Meadows",
 		description: "Stocks, flows, and why the thing you optimise is rarely the thing you measure.",
 		mark: "TS",
@@ -227,6 +247,7 @@ export const books: Book[] = [
 	{
 		slug: "poor-charlies-almanack",
 		title: "Poor Charlie's Almanack",
+		cover: "/assets/books/poor-charlies-almanack.jpg",
 		author: "Peter Kaufman (ed.)",
 		description: "Charlie Munger's frameworks for thinking about almost anything.",
 		mark: "PC",
@@ -236,6 +257,7 @@ export const books: Book[] = [
 	{
 		slug: "the-scout-mindset",
 		title: "The Scout Mindset",
+		cover: "/assets/books/the-scout-mindset.jpg",
 		author: "Julia Galef",
 		description: "Judgment under uncertainty — evidence over confidence.",
 		mark: "SM",
@@ -245,6 +267,7 @@ export const books: Book[] = [
 	{
 		slug: "how-to-take-smart-notes",
 		title: "How to Take Smart Notes",
+		cover: "/assets/books/how-to-take-smart-notes.jpg",
 		author: "Sönke Ahrens",
 		description: "Notes in your own words, linked to each other, as a thinking system.",
 		mark: "SN",

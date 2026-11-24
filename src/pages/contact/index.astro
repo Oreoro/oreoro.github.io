@@ -1,7 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 import Arrow from "@/components/ui/Arrow.astro";
-import PageAnchors from "@/components/layout/PageAnchors.astro";
 import { getNavLink } from "@/lib/blog-helpers";
 import { site } from "@/data/focuslab";
 ---
@@ -21,42 +20,19 @@ import { site } from "@/data/focuslab";
 				Four lines is plenty — the problem, who it affects, what done looks like, and
 				your timeline.
 			</p>
-			<PageAnchors
-				anchors={[
-					{ id: "include", label: "What to include" },
-					{ id: "reach", label: "Where to reach us" },
-				]}
-			/>
 		</div>
 
 		<div class="page__content content">
 			<h2 id="include">What to include</h2>
-			<ol class="numbered">
-				<li>
-					<div class="numbered__body">
-						<h3 class="numbered__title">The problem.</h3>
-						<p>What's broken or missing today, in a sentence.</p>
-					</div>
-				</li>
-				<li>
-					<div class="numbered__body">
-						<h3 class="numbered__title">Who hits it.</h3>
-						<p>How many people, and how often.</p>
-					</div>
-				</li>
-				<li>
-					<div class="numbered__body">
-						<h3 class="numbered__title">What done looks like.</h3>
-						<p>The finished product, described simply.</p>
-					</div>
-				</li>
-				<li>
-					<div class="numbered__body">
-						<h3 class="numbered__title">Your timeline.</h3>
-						<p>When you need it, and what's already committed.</p>
-					</div>
-				</li>
-			</ol>
+							<h3>The problem.</h3>
+				<p>What's broken or missing today, in a sentence.</p>
+				<h3>Who hits it.</h3>
+				<p>How many people, and how often.</p>
+				<h3>What done looks like.</h3>
+				<p>The finished product, described simply.</p>
+				<h3>Your timeline.</h3>
+				<p>When you need it, and what's already committed.</p>
+
 
 			<h2 id="reach">Where to reach us</h2>
 			<dl class="contact-list">

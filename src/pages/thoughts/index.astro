@@ -1,6 +1,5 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import PageAnchors from "@/components/layout/PageAnchors.astro";
 import ListFilter from "@/components/ui/ListFilter.astro";
 import { thoughts, thoughtsByTopic } from "@/data/thoughts";
 
@@ -20,21 +19,14 @@ const plural = total === 1 ? "link" : "links";
 			<p class="page__kicker">Thoughts</p>
 			<h1>Writing we find useful</h1>
 			<p>
-				{total} {plural} on product and engineering — grouped by the question each one helps answer.
-				A short shelf of writing we keep coming back to — none of it is ours, and every
-				link goes to the original.
+				{total} {plural} on product and engineering, grouped by topic — none of it ours, every
+				link to the original.
 			</p>
 			<ListFilter
 				id="thoughts-search"
 				label="Find something useful"
 				placeholder="Search by title, author, or topic"
 				controls="thoughts-results"
-			/>
-			<PageAnchors
-				anchors={thoughtsByTopic.map((group) => ({
-					id: group.topic.toLowerCase(),
-					label: `${group.topic} · ${group.entries.length}`,
-				}))}
 			/>
 		</div>
 
