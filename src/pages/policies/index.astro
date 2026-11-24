@@ -2,8 +2,10 @@
 import PageLayout from "@/layouts/Base.astro";
 import Arrow from "@/components/ui/Arrow.astro";
 import { getNavLink } from "@/lib/blog-helpers";
-import { policyLinks } from "@/data/policies";
+import { policies } from "@/data/policies";
 import { site } from "@/data/focuslab";
+
+const readable = policies.filter((policy) => policy.slug !== "updates");
 ---
 
 <PageLayout
@@ -26,36 +28,47 @@ import { site } from "@/data/focuslab";
 		<div class="page__body">
 			<div class="page__content content content--policies">
 				<h2 id="read">Read these</h2>
-				<p>
-					{
-						policyLinks.map((policy, i) => (
-							<Fragment>
-								{i > 0 && " · "}
-								<a href={getNavLink(policy.href)}>{policy.label}</a>
-							</Fragment>
-						))
-					}
-				</p>
+				<table class="ledger">
+					<tbody>
+						{
+							readable.map((policy) => (
+								<tr>
+									<th scope="row">
+										<a href={getNavLink(`/policies/${policy.slug}`)}>{policy.title}</a>
+									</th>
+									<td>{policy.blurb ?? policy.intro}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
 
 				<h2 id="approach">How we treat these</h2>
-								<h3>Written to be read.</h3>
-				<p>
-								Plain language, short sentences, and no clauses hidden in the footnotes. If a policy
-								needs a lawyer to understand, we've written it wrong.
-							</p>
-				<h3>Changed only when something changes.</h3>
-				<p>
-								We update these to comply with the law and to reflect how we actually work. We don't
-								reshuffle the wording just to look current.
-							</p>
-				<h3>Request updates by email.</h3>
-				<p>
-								If you'd like to hear about policy changes, <a
-									href={getNavLink("/policies/updates")}>request policy updates by email</a
-								>. You'll prepare a draft and send it from your email app; there is no automatic
-								subscription on this site.
-							</p>
-
+				<ol class="steps">
+					<li>
+						<h3>Written to be read.</h3>
+						<p>
+							Plain language, short sentences, and no clauses hidden in the footnotes. If a policy
+							needs a lawyer to understand, we've written it wrong.
+						</p>
+					</li>
+					<li>
+						<h3>Changed only when something changes.</h3>
+						<p>
+							We update these to comply with the law and to reflect how we actually work. We don't
+							reshuffle the wording just to look current.
+						</p>
+					</li>
+					<li>
+						<h3>Request updates by email.</h3>
+						<p>
+							If you'd like to hear about policy changes, <a
+								href={getNavLink("/policies/updates")}>request policy updates by email</a
+							>. You'll prepare a draft and send it from your email app; there is no automatic
+							subscription on this site.
+						</p>
+					</li>
+				</ol>
 
 				<div class="panel">
 					<h3 class="panel__title">Something unclear?</h3>
