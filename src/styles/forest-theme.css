@@ -165,21 +165,12 @@ html body.signals-shell .book-cover__title {
 	color: var(--book-ink, var(--color-ink));
 }
 
-@media (min-width: 64em) {
-	html body.signals-shell .page,
-	html body.signals-shell .broadsheet {
-		margin-left: 0;
-		margin-right: 0;
-		margin-top: 5.4em;
-	}
-}
-
 /*
- * Paper sheet on subpages: a full-bleed white ground. The sheet spans the
- * whole width and runs from just under the header bar down to the footer, so
- * the green stays as the frame — the fixed header, the gap above the paper,
- * and the footer band at the bottom. Prose keeps its measure inside; grids
- * and lists take the full width.
+ * Paper sheet on subpages: a wide white page centred on the green shell.
+ * Wider and longer than the old 64rem card, but it never touches the sides —
+ * the sheet starts just under the header bar, runs down to the footer, and
+ * short pages still fill the viewport. Dark ink and a deep-green accent on
+ * the paper; prose keeps its measure inside.
  */
 html body.signals-shell .page {
 	--rgb-ink: 24, 35, 30;
@@ -190,25 +181,25 @@ html body.signals-shell .page {
 	--color-paper: rgb(var(--rgb-paper));
 	--color-hairline: rgba(var(--rgb-ink), 0.14);
 	background: #ffffff;
-	border-radius: 0;
-	box-shadow: none;
+	border-radius: var(--radius-surface);
+	box-shadow:
+		0 1px 2px rgba(0, 0, 0, 0.08),
+		0 24px 60px -24px rgba(0, 0, 0, 0.4);
 	color: rgb(24, 35, 30);
 	max-width: none;
-	margin: 5.4em 0 0;
-	width: 100%;
+	width: min(72rem, calc(100% - clamp(2.5rem, 6vw, 12rem)));
+	margin: 5.4em auto 0;
 	flex: 1 0 auto;
-	padding: var(--line-height) clamp(1.25rem, 5vw, 6rem) calc(var(--line-height) * 2.4);
+	padding: var(--line-height) var(--spacing) calc(var(--line-height) * 2.4);
 }
 
-/* The podcast sheet joins the paper: same full-bleed edges. */
+/* The podcast sheet joins the paper: centred, wider, clear of the sides. */
 html body.signals-shell .broadsheet {
-	border-radius: 0;
-	box-shadow: none;
 	max-width: none;
-	margin: 5.4em 0 0;
-	width: 100%;
+	width: min(72rem, calc(100% - clamp(2.5rem, 6vw, 12rem)));
+	margin: 5.4em auto 0;
 	flex: 1 0 auto;
-	padding: var(--line-height) clamp(1.25rem, 5vw, 6rem) calc(var(--line-height) * 2.4);
+	padding: var(--line-height) var(--spacing) calc(var(--line-height) * 2.4);
 }
 
 /*
@@ -242,10 +233,9 @@ html body.signals-shell .page:after {
 	display: none;
 }
 
-/* The wide variant joins the sheet: same full-bleed edges. */
+/* The wide variant joins the sheet: same centred width. */
 html body.signals-shell .page.page--wide {
-	margin-left: 0;
-	margin-right: 0;
+	margin-inline: auto;
 	max-width: none;
 }
 
