@@ -23,7 +23,7 @@ const metaFor = (entry: (typeof stream)[number]) => entry.source ?? kindLabel[en
 
 	<div class="cluster cluster--index">
 		{
-			stream.map((entry) => (
+			stream.slice(0, 10).map((entry) => (
 				<section class="signal">
 					<header class="signal__header">
 						<a
