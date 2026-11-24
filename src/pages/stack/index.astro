@@ -1,6 +1,5 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import { getNavLink } from "@/lib/blog-helpers";
 
 interface StackItem {
 	name: string;
@@ -86,8 +85,7 @@ const groups: { title: string; note: string; items: StackItem[] }[] = [
 			<p class="page__kicker">Stack</p>
 			<h1>The tools we build with.</h1>
 			<p>
-				We pick boring, proven technology and push it hard — a small typed core for everything that
-				matters, and AI models where they earn their place.
+				Boring, proven tools, pushed hard — AI models where they earn their place.
 			</p>
 		</div>
 
@@ -113,42 +111,5 @@ const groups: { title: string; note: string; items: StackItem[] }[] = [
 			}
 		</div>
 
-		<div class="page__content content">
-			<hr class="ornament" />
-
-			<h2 id="choose">How we choose</h2>
-			<div class="pairs">
-				<div>
-					<h3>Boring beats novel.</h3>
-					<p>Years of docs, real failure modes, and people who know them. Novelty is a cost, not a feature.</p>
-				</div>
-				<div>
-					<h3>Every layer earns its place.</h3>
-					<p>If a dependency doesn't remove more work than it adds, we write the small version ourselves.</p>
-				</div>
-				<div>
-					<h3>We own the whole path.</h3>
-					<p>From the first commit to the last deploy. That's the only way to keep it fast, cheap, and ours to fix.</p>
-				</div>
-				<div>
-					<h3>AI where it helps, not everywhere.</h3>
-					<p>Models earn a place by removing real work. Anywhere else, a typed function is cheaper and more predictable.</p>
-				</div>
-			</div>
-
-
-
-			<div class="panel">
-				<h3 class="panel__title">Something missing?</h3>
-				<div class="panel__body">
-					<p>
-						This is what runs in production today. If a tool belongs here, tell us what it would replace.
-					</p>
-				</div>
-				<div class="panel__actions">
-					<a class="button button--ghost" href={getNavLink("/contact/")}>Get in touch</a>
-				</div>
-			</div>
 		</div>
-	</div>
 </PageLayout>

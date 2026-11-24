@@ -1,7 +1,5 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
-import Arrow from "@/components/ui/Arrow.astro";
-import { getNavLink } from "@/lib/blog-helpers";
 import { site } from "@/data/focuslab";
 ---
 
@@ -23,27 +21,6 @@ import { site } from "@/data/focuslab";
 		</div>
 
 		<div class="page__content content">
-			<h2 id="include">What to include</h2>
-			<div class="pairs">
-				<div>
-					<h3>The problem.</h3>
-					<p>What's broken or missing today, in a sentence.</p>
-				</div>
-				<div>
-					<h3>Who hits it.</h3>
-					<p>How many people, and how often.</p>
-				</div>
-				<div>
-					<h3>What done looks like.</h3>
-					<p>The finished product, described simply.</p>
-				</div>
-				<div>
-					<h3>Your timeline.</h3>
-					<p>When you need it, and what's already committed.</p>
-				</div>
-			</div>
-
-
 			<h2 id="reach">Where to reach us</h2>
 			<dl class="contact-list">
 				<div>
@@ -81,19 +58,7 @@ import { site } from "@/data/focuslab";
 				</div>
 			</dl>
 
-			<div class="panel">
-				<h3 class="panel__title">A note on fit</h3>
-				<div class="panel__body">
-					<p>
-						Partner work only when the fit is mutual. If we're not right, we say so early.
-					</p>
-				</div>
-				<div class="panel__actions">
-					<a class="button" href={`mailto:${site.email}`}>Email us <Arrow /></a>
-					<a class="button button--ghost" href={getNavLink("/studio/")}>The studio</a>
-				</div>
 			</div>
-		</div>
 	</div>
 </PageLayout>
 

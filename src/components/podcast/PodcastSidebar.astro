@@ -1,7 +1,4 @@
 ---
-import { site } from "@/data/focuslab";
-
-const topics = ["Tech", "Startups", "Business", "Economy", "Society"];
 ---
 
 <aside class="broadsheet__sidebar" aria-label="About this podcast list">
@@ -23,26 +20,5 @@ const topics = ["Tech", "Startups", "Business", "Economy", "Society"];
 		</p>
 	</details>
 
-	<details class="podcast__section">
-		<summary class="podcast__section-title">Topics</summary>
-		<div class="podcast__tags">
-			{topics.map((topic) => <span>{topic}</span>)}
-		</div>
-	</details>
-
-	<details class="podcast__section">
-		<summary class="podcast__section-title">About this list</summary>
-		<p>
-			We keep a short list of shows that stay worth the time — not a directory.
-		</p>
-	</details>
-
-	<details class="podcast__section">
-		<summary class="podcast__section-title">Get in touch</summary>
-		<p>
-			Have a show we should listen to? Email us at <a href={`mailto:${site.email}`}>{site.email}</a
-			>.
-		</p>
-	</details>
 	</div>
 </aside>
