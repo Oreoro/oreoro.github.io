@@ -1157,7 +1157,7 @@ html body.signals-shell .footer__next a:after {
 /* ---------- cluster.css ---------- */
 
 html body.signals-shell .home__intro {
-	margin: 7.4em var(--spacing) 0;
+	margin: 5.4em var(--spacing) 0;
 }
 
 html body.signals-shell .home__intro h1 {
