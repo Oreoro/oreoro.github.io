@@ -196,6 +196,29 @@ html body.signals-shell .page .content {
 	max-width: var(--measure-wide);
 }
 
+html body.signals-shell .pairs {
+	display: grid;
+	gap: 1.4em;
+}
+
+html body.signals-shell .pairs > div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25em;
+}
+
+html body.signals-shell .pairs h3,
+html body.signals-shell .pairs p {
+	margin: 0;
+}
+
+@media (min-width: 48em) {
+	html body.signals-shell .pairs {
+		column-gap: 3rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
 /* The sheet owns its edges; the green fade overlays are not needed on white. */
 html body.signals-shell .page:before,
 html body.signals-shell .page:after {

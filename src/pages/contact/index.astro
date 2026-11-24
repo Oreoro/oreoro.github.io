@@ -24,7 +24,7 @@ import { site } from "@/data/focuslab";
 
 		<div class="page__content content">
 			<h2 id="include">What to include</h2>
-			<div class="includes">
+			<div class="pairs">
 				<div>
 					<h3>The problem.</h3>
 					<p>What's broken or missing today, in a sentence.</p>
@@ -98,22 +98,6 @@ import { site } from "@/data/focuslab";
 </PageLayout>
 
 <style>
-	.includes {
-		display: grid;
-		gap: 1.4em;
-	}
-
-	.includes > div {
-		display: flex;
-		flex-direction: column;
-		gap: 0.25em;
-	}
-
-	.includes h3,
-	.includes p {
-		margin: 0;
-	}
-
 	.contact-list {
 		display: grid;
 		gap: 1.4em;
@@ -122,7 +106,6 @@ import { site } from "@/data/focuslab";
 	}
 
 	@media (min-width: 48em) {
-		.includes,
 		.contact-list {
 			column-gap: 3rem;
 			grid-template-columns: repeat(2, minmax(0, 1fr));
