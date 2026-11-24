@@ -120,6 +120,20 @@ html:not(.pointer-focus) body.signals-shell .product-card:focus-visible {
 	background: var(--color-surface-hover);
 }
 
+html body.signals-shell .page .panel,
+html body.signals-shell .broadsheet .panel,
+html body.signals-shell .page .signup,
+html body.signals-shell .page .stack__item,
+html body.signals-shell .page .filter__empty,
+html body.signals-shell .page .ledger {
+	background: rgba(24, 35, 30, 0.05);
+	box-shadow: none;
+}
+
+html body.signals-shell .page .ledger tbody tr:hover {
+	background: rgba(24, 35, 30, 0.04);
+}
+
 /* Compact product cards: fixed sizes so the sparse card stays tidy. */
 html body.signals-shell .product-card {
 	gap: 0.9rem;
